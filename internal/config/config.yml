@@ -1,0 +1,11 @@
+app_name: "retui Demo"
+version: "1.0.0"
+default_page: "dashboard"
+
+theme: "dark"
+debug: true
+
+api_endpoint: "http://localhost:8080"
+log_level: "debug"
+
+sqlite_path: "./data/retui.db"
