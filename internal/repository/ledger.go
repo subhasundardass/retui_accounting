@@ -175,3 +175,15 @@ func (r *LedgerRepository) Exists(ctx context.Context, id int) (bool, error) {
 		Where(ledger.ID(id)).
 		Exist(ctx)
 }
+
+// Get By Code
+func (r *LedgerRepository) GetByCode(ctx context.Context, code string) (*ent.Ledger, error) {
+	client := r.db.GetClient()
+	if client == nil {
+		return nil, fmt.Errorf("database client not initialized")
+	}
+	return client.Ledger.Query().
+		Where(ledger.CodeEQ(code)).
+		WithGroup().
+		Only(ctx)
+}

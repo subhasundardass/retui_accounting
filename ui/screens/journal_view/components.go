@@ -2,6 +2,7 @@ package journal_view
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/subhasundardass/retui/ent"
 	"github.com/subhasundardass/retui/retui"
@@ -29,7 +30,6 @@ func (c *Components) RenderScreen() retui.Element {
 	journal, setJournal := retui.UseState[*ent.Journal](nil)
 
 	retui.UseEffect(func() func() {
-		// c.controller.GetJournal(journalID)
 		j := c.controller.GetJournal(journalID)
 		if j != nil {
 			setJournal(j)
@@ -39,6 +39,7 @@ func (c *Components) RenderScreen() retui.Element {
 	}, []any{})
 
 	panel := components.Panel().
+		Width(retui.Fixed(180)).
 		Header(retui.Box(
 			retui.Props{
 				Direction: retui.Row,
@@ -54,9 +55,9 @@ func (c *Components) RenderScreen() retui.Element {
 		).
 		DividerWithText("Journal Entries").
 		Children(
+
 			c.lineItemRows(journal)...,
 		).
-		DividerWithText("Total").
 		Render()
 
 	return retui.Box(
@@ -152,6 +153,20 @@ func headerCellLabel(label string, width int) string {
 	return fmt.Sprintf("[ %-*s ]", width, label)
 }
 
+func derefString(s *string) string {
+	if s == nil {
+		return ""
+	}
+	return *s
+}
+
+func derefInt(i *int) string {
+	if i == nil {
+		return ""
+	}
+	return strconv.Itoa(*i)
+}
+
 func (c *Components) lineItemRows(journal *ent.Journal) []retui.Element {
 	rows := make([]retui.Element, 0)
 
@@ -172,7 +187,7 @@ func (c *Components) lineItemRows(journal *ent.Journal) []retui.Element {
 			Direction: retui.Row,
 			Width:     retui.Grow(1), Height: retui.Grow(1),
 			Gap:     2,
-			Padding: [4]int{0, 1, 0, 1},
+			Padding: [4]int{0, 1, 1, 1},
 		},
 		retui.NewStyle(),
 
@@ -180,6 +195,12 @@ func (c *Components) lineItemRows(journal *ent.Journal) []retui.Element {
 		retui.Text(headerCellLabel("Debit", debitColWidth), retui.NewStyle().Bold(true)),
 		retui.Text(headerCellLabel("Credit", creditColWidth), retui.NewStyle().Bold(true)),
 		retui.Text(headerCellLabel("Remarks", remarksColWidth), retui.NewStyle().Bold(true)),
+	))
+
+	rows = append(rows, retui.Box(
+		retui.Props{},
+		retui.NewStyle(),
+		retui.Text("", retui.NewStyle()),
 	))
 
 	for _, line := range journal.Edges.Lines {
@@ -217,7 +238,7 @@ func (c *Components) lineItemRows(journal *ent.Journal) []retui.Element {
 
 			components.TextInput().
 				Width(remarksColWidth+4).
-				Value(*line.Description).
+				Value(derefString(line.Description)).
 				Render(),
 		))
 	}

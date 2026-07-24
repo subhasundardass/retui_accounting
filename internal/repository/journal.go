@@ -68,7 +68,10 @@ func (r *JournalRepository) GetJournalWithLine(ctx context.Context, journalID in
 	j, err := client.Journal.
 		Query().
 		Where(journal.IDEQ(journalID)).
-		WithLines().
+		WithLines(func(q *ent.JournalLineQuery) {
+			q.WithLedger().
+				Order(ent.Asc(journal_line.FieldLineNo))
+		}).
 		Only(ctx)
 	if err != nil {
 		return nil, err

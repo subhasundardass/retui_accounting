@@ -24,14 +24,18 @@ func Root(ctx *appctx.AppContext, props retui.Props) retui.Element {
 		retui.SetFocus("sidebar")
 	}
 
-	// ── Get current screen  ─────────────────────────────────
+	// ── Get screen  ─────────────────────────────────
+
 	currentID := retui.CurrentScreen()
 
 	var content retui.Element
 	screen, ok := ui.GetScreen(currentID)
 
 	if !ok {
-		content = retui.Text("404 - Page Not Found", retui.NewStyle().Foreground(retui.Red))
+
+		// content = retui.Text("404 - Page Not Found", retui.NewStyle().Foreground(retui.Red))
+		screen, _ = ui.GetScreen("dashboard")
+		content = screen.Render(ctx, retui.Props{})
 		retui.SetFocus("sidebar")
 	} else {
 		content = screen.Render(ctx, retui.Props{})
