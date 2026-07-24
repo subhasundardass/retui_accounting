@@ -18,11 +18,8 @@ func MasterLayout(ctx *appctx.AppContext, props LayoutProps) retui.Element {
 		return retui.Text("ERROR: ctx is nil in MasterLayout", retui.NewStyle().Foreground(retui.Red))
 	}
 
-	//Main content with border and title
-	// borderChars := retui.BorderRounded
-	if retui.IsFocused("content") {
-		// borderChars = retui.BorderDouble
-	}
+	//Main content
+
 	mainContent := retui.Box(
 		retui.Props{
 			Direction: retui.Column,
@@ -31,13 +28,7 @@ func MasterLayout(ctx *appctx.AppContext, props LayoutProps) retui.Element {
 			Gap:       1,
 		},
 		retui.NewStyle().Border(retui.Border{
-			// Top:    true,
-			// Right: true,
-			// Bottom: true,
-			// Left: true,
-			// Chars:  borderChars,
 			Color: retui.Color{Type: retui.ColorANSI256, R: 40, G: 40, B: 40},
-			Title: props.Title,
 		}).Background(retui.Black),
 		props.Content, // ← Your page content goes here
 	)

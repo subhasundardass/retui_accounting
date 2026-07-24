@@ -24,7 +24,7 @@ var sidebarTree = []components.TreeNode{
 	},
 	{
 		ID:    "accounting",
-		Label: "accounting",
+		Label: "Accounting",
 		Children: []components.TreeNode{
 			{
 				ID:    "accounting-ledger",
@@ -55,16 +55,26 @@ var sidebarTree = []components.TreeNode{
 		Label: "Reports",
 		Children: []components.TreeNode{
 			{ID: "journal_report", Label: "Journals"},
+			{ID: "cash_book", Label: "Cash Book"},
+			{ID: "bank_book", Label: "Bank Book"},
+			{ID: "trail_balance", Label: "Trail Balance"},
+			{ID: "balance_sheet", Label: "Balance Sheet"},
+			{ID: "party", Label: "Party",
+				Children: []components.TreeNode{
+					{ID: "sundry_debtors", Label: "Sundry Debtors"},
+					{ID: "sundry_creditors", Label: "Sundry Debtors"},
+				},
+			},
 		},
 	},
-	// {
-	// 	ID:    "docs",
-	// 	Label: "docs",
-	// 	Children: []components.TreeNode{
-	// 		{ID: "docs-readme", Label: "README.md"},
-	// 		{ID: "docs-api", Label: "API.md"},
-	// 	},
-	// },
+	{
+		ID:    "settings",
+		Label: "Settings",
+		Children: []components.TreeNode{
+			{ID: "docs-readme", Label: "README.md"},
+			{ID: "docs-api", Label: "API.md"},
+		},
+	},
 	// {
 	// 	ID:    "gomod",
 	// 	Label: "go.mod",
@@ -96,19 +106,33 @@ func SidebarTree(ctx *context.AppContext, props retui.Props) retui.Element {
 	findLeafNodes(sidebarTree)
 
 	return retui.Box(
-		retui.Props{Direction: retui.Column, Padding: [4]int{1, 0, 0, 1}, Width: retui.Fixed(30), Gap: 0},
+		retui.Props{Direction: retui.Column, Padding: [4]int{0, 0, 0, 1}, Width: retui.Percent(15), Gap: 0},
 		retui.NewStyle().Border(retui.Border{
 			Top: true, Right: true, Bottom: true, Left: true,
-			Chars: retui.BorderRounded, Color: retui.Blue,
-			// Chars: borderChars,
-			// Color: retui.Color{Type: retui.ColorANSI256, R: 200, G: 200, B: 200},
-			Title: "Navigation",
-		}).Background(retui.Black),
+			Chars: retui.BorderRounded, Color: retui.Gray(1),
+		}),
+		// retui.NewStyle().
+		// 	Border(retui.BorderAll()).
+		// Title(retui.Title{
+		// 	Text:       "Bavigation",
+		// 	Foreground: retui.Cyan,
+		// 	Bold:       true,
+		// 	Align:      retui.AlignStart,
+		// }),
 
 		// Sidebar tree panel
 		retui.Box(
 			retui.Props{Direction: retui.Column, Gap: 0},
 			retui.NewStyle(),
+
+			retui.Box(
+				retui.Props{
+					Justify: retui.JustifySpaceBetween,
+					Padding: [4]int{0, 0, 1, 0}},
+				retui.NewStyle(),
+				retui.Text("Navigation", retui.NewStyle().Bold(true).Foreground(retui.Cyan)),
+				retui.Text("[ F2 ]", retui.NewStyle().Foreground(retui.Cyan)),
+			),
 
 			components.Tree(
 				"sidebar",

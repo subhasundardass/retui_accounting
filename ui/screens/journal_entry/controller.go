@@ -63,6 +63,7 @@ func (c *Controller) LedgerFilterOptions(query string) []components.SelectOption
 	for i, l := range ledgers {
 		opts[i] = components.SelectOption{Label: l.Name, Value: l.Code}
 	}
+
 	return opts
 }
 
@@ -91,18 +92,15 @@ func (c *Controller) LedgerSeedOptions(currentValue string) []components.SelectO
 	// prepend it, so the select shows the real name instead of falling
 	// back to the placeholder.
 	if !found && currentValue != "" {
-		results, err := c.repoLedger.Search(c.ctx.Context, currentValue, 1)
+		selected, err := c.repoLedger.GetByCode(c.ctx.Context, currentValue)
 		if err != nil {
-			retui.Debug("LedgerSeedOptions Search error: " + err.Error())
-		} else if len(results) > 0 {
-			selected := results[0]
+			retui.Debug("LedgerSeedOptions GetByCode error: " + err.Error())
+		} else if selected != nil {
 			opts = append([]components.SelectOption{
 				{Label: selected.Name, Value: selected.Code},
 			}, opts...)
 		}
 	}
-
-	// retui.Debug(fmt.Sprintf("LedgerSeedOptions currentValue=%q -> %d options", currentValue, len(opts)))
 
 	return opts
 }

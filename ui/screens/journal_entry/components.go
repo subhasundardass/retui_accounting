@@ -32,11 +32,8 @@ func newEmptyJournalLines(n int) []JournalLine {
 
 // updateLine returns a copy of lines with the field(s) at idx mutated.
 func updateLine(lines []JournalLine, idx int, mutate func(*JournalLine)) []JournalLine {
-	updated := make([]JournalLine, len(lines))
-	copy(updated, lines)
-	l := updated[idx]
-	mutate(&l)
-	updated[idx] = l
+	updated := append([]JournalLine(nil), lines...)
+	mutate(&updated[idx])
 	return updated
 }
 
@@ -153,8 +150,6 @@ func (c *Components) RenderScreen() retui.Element {
 	}
 
 	isFocused := func(idx int) bool { return focusIndex == idx }
-
-	//======
 
 	panel := components.Panel().
 		FixedWidth(180). // Use FixedWidth
@@ -333,6 +328,7 @@ func (c *Components) lineItemRows(
 
 	for i := range lines {
 		i := i // capture loop var for closures
+		// retui.Debugf("Render[%d] Ledger=%q", i, lines[i].LedgerCode)
 		line := lines[i]
 		baseIdx := 4 + i*5
 
@@ -349,9 +345,14 @@ func (c *Components) lineItemRows(
 			Value(line.LedgerCode).
 			Focused(isFocused(baseIdx + 0)).
 			OnChange(func(id, value string) {
-				setLines(updateLine(lines, i, func(l *JournalLine) {
+				updated := updateLine(lines, i, func(l *JournalLine) {
 					l.LedgerCode = value
-				}))
+				})
+
+				// retui.Debugf("Before : %+v", lines[i])
+				// retui.Debugf("After  : %+v", updated[i])
+
+				setLines(updated)
 			}).
 			Render()
 

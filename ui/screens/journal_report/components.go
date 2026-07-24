@@ -42,12 +42,13 @@ func (c *Components) RenderScreen() retui.Element {
 
 		rows[i] = []string{
 			j.VoucherDate.Format("02/01/2006"),
-			j.VoucherNo,
-			*j.ReferenceNo,
-			j.VoucherType,
+			string(j.VoucherNo),
+			string(*j.ReferenceNo),
+			string(j.VoucherType),
 			fmt.Sprintf("%.2f", j.TotalDebit),
 			fmt.Sprintf("%.2f", j.TotalCredit),
 			*j.Narration,
+			string(j.JournalStatus),
 		}
 	}
 
@@ -84,7 +85,7 @@ func (c *Components) header(selected *ent.Journal) retui.Element {
 			Align:     retui.AlignCenter,
 		},
 		retui.NewStyle().Foreground(retui.BrightCyan).
-			Border(retui.Border{Bottom: true, Left: true, Right: true, Top: true}),
+			Border(retui.Border{Bottom: true, Left: true, Right: true, Top: true, Color: retui.Gray(1)}),
 		retui.Text(title, retui.NewStyle().Bold(true)),
 	)
 }
@@ -105,6 +106,7 @@ func (c *Components) buildTable(
 			"Debit",
 			"Credit",
 			"Narration",
+			"Status",
 		}).
 		Alignments([]string{
 			"left",
@@ -114,6 +116,7 @@ func (c *Components) buildTable(
 			"right",
 			"right",
 			"left",
+			"center",
 		}).
 		Focused(true).
 		Rows(rows).
@@ -129,6 +132,7 @@ func (c *Components) buildTable(
 			20,
 			20,
 			60,
+			10,
 		}).
 		OnChange(func(i int) {
 			if i >= 0 && i < len(journals) {
