@@ -187,6 +187,10 @@ func init() {
 	ledgerDescIsCash := ledgerFields[10].Descriptor()
 	// ledger.DefaultIsCash holds the default value on creation for the is_cash field.
 	ledger.DefaultIsCash = ledgerDescIsCash.Default.(bool)
+	// ledgerDescIsActive is the schema descriptor for is_active field.
+	ledgerDescIsActive := ledgerFields[11].Descriptor()
+	// ledger.DefaultIsActive holds the default value on creation for the is_active field.
+	ledger.DefaultIsActive = ledgerDescIsActive.Default.(bool)
 	ledger_groupFields := schema.Ledger_Group{}.Fields()
 	_ = ledger_groupFields
 	// ledger_groupDescCode is the schema descriptor for code field.

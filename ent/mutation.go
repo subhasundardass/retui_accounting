@@ -3251,6 +3251,7 @@ type LedgerMutation struct {
 	is_party             *bool
 	is_bank              *bool
 	is_cash              *bool
+	is_active            *bool
 	clearedFields        map[string]struct{}
 	group                *int
 	clearedgroup         bool
@@ -3896,6 +3897,42 @@ func (m *LedgerMutation) ResetIsCash() {
 	m.is_cash = nil
 }
 
+// SetIsActive sets the "is_active" field.
+func (m *LedgerMutation) SetIsActive(b bool) {
+	m.is_active = &b
+}
+
+// IsActive returns the value of the "is_active" field in the mutation.
+func (m *LedgerMutation) IsActive() (r bool, exists bool) {
+	v := m.is_active
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsActive returns the old "is_active" field's value of the Ledger entity.
+// If the Ledger object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LedgerMutation) OldIsActive(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldIsActive is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldIsActive requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsActive: %w", err)
+	}
+	return oldValue.IsActive, nil
+}
+
+// ResetIsActive resets all changes to the "is_active" field.
+func (m *LedgerMutation) ResetIsActive() {
+	m.is_active = nil
+}
+
 // ClearGroup clears the "group" edge to the Ledger_Group entity.
 func (m *LedgerMutation) ClearGroup() {
 	m.clearedgroup = true
@@ -4050,7 +4087,7 @@ func (m *LedgerMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *LedgerMutation) Fields() []string {
-	fields := make([]string, 0, 13)
+	fields := make([]string, 0, 14)
 	if m.create_time != nil {
 		fields = append(fields, ledger.FieldCreateTime)
 	}
@@ -4090,6 +4127,9 @@ func (m *LedgerMutation) Fields() []string {
 	if m.is_cash != nil {
 		fields = append(fields, ledger.FieldIsCash)
 	}
+	if m.is_active != nil {
+		fields = append(fields, ledger.FieldIsActive)
+	}
 	return fields
 }
 
@@ -4124,6 +4164,8 @@ func (m *LedgerMutation) Field(name string) (ent.Value, bool) {
 		return m.IsBank()
 	case ledger.FieldIsCash:
 		return m.IsCash()
+	case ledger.FieldIsActive:
+		return m.IsActive()
 	}
 	return nil, false
 }
@@ -4159,6 +4201,8 @@ func (m *LedgerMutation) OldField(ctx context.Context, name string) (ent.Value, 
 		return m.OldIsBank(ctx)
 	case ledger.FieldIsCash:
 		return m.OldIsCash(ctx)
+	case ledger.FieldIsActive:
+		return m.OldIsActive(ctx)
 	}
 	return nil, fmt.Errorf("unknown Ledger field %s", name)
 }
@@ -4258,6 +4302,13 @@ func (m *LedgerMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetIsCash(v)
+		return nil
+	case ledger.FieldIsActive:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsActive(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Ledger field %s", name)
@@ -4388,6 +4439,9 @@ func (m *LedgerMutation) ResetField(name string) error {
 		return nil
 	case ledger.FieldIsCash:
 		m.ResetIsCash()
+		return nil
+	case ledger.FieldIsActive:
+		m.ResetIsActive()
 		return nil
 	}
 	return fmt.Errorf("unknown Ledger field %s", name)

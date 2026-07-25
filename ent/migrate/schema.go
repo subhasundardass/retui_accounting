@@ -148,6 +148,7 @@ var (
 		{Name: "is_party", Type: field.TypeBool, Default: false},
 		{Name: "is_bank", Type: field.TypeBool, Default: false},
 		{Name: "is_cash", Type: field.TypeBool, Default: false},
+		{Name: "is_active", Type: field.TypeBool, Default: true},
 		{Name: "group_id", Type: field.TypeInt},
 		{Name: "ledger_group_ledgers", Type: field.TypeInt, Nullable: true},
 	}
@@ -159,13 +160,13 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "ledgers_ledger_groups_group",
-				Columns:    []*schema.Column{LedgersColumns[13]},
+				Columns:    []*schema.Column{LedgersColumns[14]},
 				RefColumns: []*schema.Column{LedgerGroupsColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
 			{
 				Symbol:     "ledgers_ledger_groups_ledgers",
-				Columns:    []*schema.Column{LedgersColumns[14]},
+				Columns:    []*schema.Column{LedgersColumns[15]},
 				RefColumns: []*schema.Column{LedgerGroupsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -184,7 +185,7 @@ var (
 			{
 				Name:    "ledger_group_id",
 				Unique:  false,
-				Columns: []*schema.Column{LedgersColumns[13]},
+				Columns: []*schema.Column{LedgersColumns[14]},
 			},
 			{
 				Name:    "ledger_is_party",
@@ -199,7 +200,7 @@ var (
 			{
 				Name:    "ledger_group_id_name",
 				Unique:  false,
-				Columns: []*schema.Column{LedgersColumns[13], LedgersColumns[4]},
+				Columns: []*schema.Column{LedgersColumns[14], LedgersColumns[4]},
 			},
 		},
 	}

@@ -120,6 +120,11 @@ func IsCash(v bool) predicate.Ledger {
 	return predicate.Ledger(sql.FieldEQ(FieldIsCash, v))
 }
 
+// IsActive applies equality check predicate on the "is_active" field. It's identical to IsActiveEQ.
+func IsActive(v bool) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldIsActive, v))
+}
+
 // CreateTimeEQ applies the EQ predicate on the "create_time" field.
 func CreateTimeEQ(v time.Time) predicate.Ledger {
 	return predicate.Ledger(sql.FieldEQ(FieldCreateTime, v))
@@ -618,6 +623,16 @@ func IsCashEQ(v bool) predicate.Ledger {
 // IsCashNEQ applies the NEQ predicate on the "is_cash" field.
 func IsCashNEQ(v bool) predicate.Ledger {
 	return predicate.Ledger(sql.FieldNEQ(FieldIsCash, v))
+}
+
+// IsActiveEQ applies the EQ predicate on the "is_active" field.
+func IsActiveEQ(v bool) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldIsActive, v))
+}
+
+// IsActiveNEQ applies the NEQ predicate on the "is_active" field.
+func IsActiveNEQ(v bool) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNEQ(FieldIsActive, v))
 }
 
 // HasGroup applies the HasEdge predicate on the "group" edge.

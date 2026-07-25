@@ -37,11 +37,11 @@
         "description": "RetUI Box",
         "body": [
             "retui.Box(",
-            "\tetui.NewStyle(),",
             "\tretui.Props{",
-            "\t\tDirection: retui.Column,",
+            "\t\tGap: 1,",
             "\t},",
-            "\t$0,",
+            "\tretui.NewStyle(),",
+            "\t$0",
             ")"
         ]
     },

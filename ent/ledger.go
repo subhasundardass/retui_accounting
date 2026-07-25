@@ -45,6 +45,8 @@ type Ledger struct {
 	IsBank bool `json:"is_bank,omitempty"`
 	// IsCash holds the value of the "is_cash" field.
 	IsCash bool `json:"is_cash,omitempty"`
+	// IsActive holds the value of the "is_active" field.
+	IsActive bool `json:"is_active,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the LedgerQuery when eager-loading is set.
 	Edges                LedgerEdges `json:"edges"`
@@ -101,7 +103,7 @@ func (*Ledger) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case ledger.FieldIsSystem, ledger.FieldIsParty, ledger.FieldIsBank, ledger.FieldIsCash:
+		case ledger.FieldIsSystem, ledger.FieldIsParty, ledger.FieldIsBank, ledger.FieldIsCash, ledger.FieldIsActive:
 			values[i] = new(sql.NullBool)
 		case ledger.FieldOpeningBalance, ledger.FieldBalance:
 			values[i] = new(sql.NullFloat64)
@@ -212,6 +214,12 @@ func (_m *Ledger) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				_m.IsCash = value.Bool
 			}
+		case ledger.FieldIsActive:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field is_active", values[i])
+			} else if value.Valid {
+				_m.IsActive = value.Bool
+			}
 		case ledger.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for edge-field ledger_group_ledgers", value)
@@ -308,6 +316,9 @@ func (_m *Ledger) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("is_cash=")
 	builder.WriteString(fmt.Sprintf("%v", _m.IsCash))
+	builder.WriteString(", ")
+	builder.WriteString("is_active=")
+	builder.WriteString(fmt.Sprintf("%v", _m.IsActive))
 	builder.WriteByte(')')
 	return builder.String()
 }

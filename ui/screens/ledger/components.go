@@ -6,6 +6,7 @@ import (
 	"github.com/subhasundardass/retui/ent"
 	"github.com/subhasundardass/retui/retui"
 	"github.com/subhasundardass/retui/retui/components"
+	"github.com/subhasundardass/retui/ui/screens/ledger_create"
 )
 
 type Components struct {
@@ -20,24 +21,30 @@ func (c *Components) RenderScreen() retui.Element {
 
 	groupID := 0
 	params := retui.CurrentScreenParams()
+
 	if params != nil {
 		if id, ok := params["groupID"].(int); ok {
 			groupID = id
 		}
 	}
 
-	// retui.Debugf("Params-----------%d", groupID)
-
 	ledgers, setLedger := retui.UseState([]*ent.Ledger{})
 	selected, setSelected := retui.UseState(&ent.Ledger{})
 
 	retui.UseEffect(func() func() {
-
 		legs := c.controller.GetLedgers(groupID)
 		setLedger(legs)
 
 		return nil
 	}, []any{ledgers})
+
+	//--Key
+	switch retui.CurrentKey.Code {
+	case retui.KeyF2:
+		retui.Debugf("F2 Pressed.......")
+		win := ledger_create.Window(c.controller.ctx)
+		win.Show()
+	}
 
 	rows := make([][]string, len(ledgers))
 	for i, rs := range ledgers {
@@ -87,6 +94,7 @@ func (c *Components) header(selected *ent.Ledger) retui.Element {
 		retui.NewStyle().Foreground(retui.BrightCyan).
 			Border(retui.Border{Bottom: true, Left: true, Right: true, Top: true}),
 		retui.Text(title, retui.NewStyle().Bold(true)),
+		retui.Text("Create <F2>", retui.NewStyle().Bold(true).Foreground(retui.Gold)),
 	)
 }
 
@@ -113,8 +121,6 @@ func (c *Components) buildLedgerTable(
 		}).
 		Focused(true).
 		Rows(rows).
-		// Width(100).
-		// Height(33).
 		SelectedIndex(0).
 		HeaderColor(retui.Cyan).
 		ColumnWidths([]int{15, 30, 30, 30, 10}).
@@ -127,5 +133,4 @@ func (c *Components) buildLedgerTable(
 		Render()
 
 	return tbl
-
 }

@@ -217,6 +217,20 @@ func (_u *LedgerUpdate) SetNillableIsCash(v *bool) *LedgerUpdate {
 	return _u
 }
 
+// SetIsActive sets the "is_active" field.
+func (_u *LedgerUpdate) SetIsActive(v bool) *LedgerUpdate {
+	_u.mutation.SetIsActive(v)
+	return _u
+}
+
+// SetNillableIsActive sets the "is_active" field if the given value is not nil.
+func (_u *LedgerUpdate) SetNillableIsActive(v *bool) *LedgerUpdate {
+	if v != nil {
+		_u.SetIsActive(*v)
+	}
+	return _u
+}
+
 // SetGroup sets the "group" edge to the Ledger_Group entity.
 func (_u *LedgerUpdate) SetGroup(v *Ledger_Group) *LedgerUpdate {
 	return _u.SetGroupID(v.ID)
@@ -409,6 +423,9 @@ func (_u *LedgerUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	}
 	if value, ok := _u.mutation.IsCash(); ok {
 		_spec.SetField(ledger.FieldIsCash, field.TypeBool, value)
+	}
+	if value, ok := _u.mutation.IsActive(); ok {
+		_spec.SetField(ledger.FieldIsActive, field.TypeBool, value)
 	}
 	if _u.mutation.GroupCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -719,6 +736,20 @@ func (_u *LedgerUpdateOne) SetNillableIsCash(v *bool) *LedgerUpdateOne {
 	return _u
 }
 
+// SetIsActive sets the "is_active" field.
+func (_u *LedgerUpdateOne) SetIsActive(v bool) *LedgerUpdateOne {
+	_u.mutation.SetIsActive(v)
+	return _u
+}
+
+// SetNillableIsActive sets the "is_active" field if the given value is not nil.
+func (_u *LedgerUpdateOne) SetNillableIsActive(v *bool) *LedgerUpdateOne {
+	if v != nil {
+		_u.SetIsActive(*v)
+	}
+	return _u
+}
+
 // SetGroup sets the "group" edge to the Ledger_Group entity.
 func (_u *LedgerUpdateOne) SetGroup(v *Ledger_Group) *LedgerUpdateOne {
 	return _u.SetGroupID(v.ID)
@@ -941,6 +972,9 @@ func (_u *LedgerUpdateOne) sqlSave(ctx context.Context) (_node *Ledger, err erro
 	}
 	if value, ok := _u.mutation.IsCash(); ok {
 		_spec.SetField(ledger.FieldIsCash, field.TypeBool, value)
+	}
+	if value, ok := _u.mutation.IsActive(); ok {
+		_spec.SetField(ledger.FieldIsActive, field.TypeBool, value)
 	}
 	if _u.mutation.GroupCleared() {
 		edge := &sqlgraph.EdgeSpec{
