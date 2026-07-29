@@ -1,4 +1,4 @@
-package ledger_create
+package createcompany
 
 import (
 	"github.com/subhasundardass/retui/internal/context"

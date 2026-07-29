@@ -272,13 +272,13 @@ render:
 	textStyle := config.Style
 	if focused {
 		textStyle = textStyle.
-			Foreground(retui.BrightWhite).
-			Background(retui.Blue).
+			Foreground(retui.White).Bold(true).
+			Background(retui.Gray(2)).
 			Bold(true)
 	} else {
 		textStyle = textStyle.
-			Foreground(retui.BrightBlack).
-			Background(retui.Hex("#0c0c0c")).
+			// Foreground(retui.BrightBlack).
+			// Background(retui.Gray(1)).
 			Bold(true)
 	}
 
@@ -331,7 +331,7 @@ render:
 	// Apply validation styling
 	textStyleForDisplay := textStyle
 	if !isValid && !focused {
-		textStyleForDisplay = textStyleForDisplay.Foreground(retui.Red)
+		textStyleForDisplay = textStyleForDisplay
 	}
 
 	elements = append(elements, retui.Text(paddedDisplay, textStyleForDisplay))

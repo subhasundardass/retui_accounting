@@ -12,6 +12,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
+	"github.com/subhasundardass/retui/ent/company"
 	"github.com/subhasundardass/retui/ent/country"
 	"github.com/subhasundardass/retui/ent/journal"
 	"github.com/subhasundardass/retui/ent/journal_line"
@@ -80,6 +81,7 @@ var (
 func checkColumn(t, c string) error {
 	initCheck.Do(func() {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
+			company.Table:      company.ValidColumn,
 			country.Table:      country.ValidColumn,
 			journal.Table:      journal.ValidColumn,
 			journal_line.Table: journal_line.ValidColumn,

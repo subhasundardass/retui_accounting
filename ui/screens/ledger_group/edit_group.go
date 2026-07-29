@@ -151,7 +151,7 @@ func (c *GroupEditComponents) editGroupForm(
 				retui.NewStyle(),
 				components.TextInput().
 					ID("groupCode").
-					Width(20).
+					Width(retui.Fixed(20).Value).
 					Focused(isFocused(0)).
 					Value(code).
 					Style(retui.NewStyle().Bold(true)).
@@ -176,7 +176,7 @@ func (c *GroupEditComponents) editGroupForm(
 				retui.NewStyle(),
 				components.TextInput().
 					ID("groupName").
-					Width(50).
+					Width(retui.Fixed(50).Value).
 					Focused(isFocused(1)).
 					Value(name).
 					Style(retui.NewStyle().Bold(true)).
@@ -202,7 +202,7 @@ func (c *GroupEditComponents) editGroupForm(
 				components.TextInput().
 					ID("groupDescription").
 					Focused(isFocused(2)).
-					Width(50).
+					Width(retui.Fixed(50).Value).
 					Value(description).
 					Style(retui.NewStyle().Bold(true)).
 					OnChange(func(id string, value string) {

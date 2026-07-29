@@ -114,39 +114,3 @@ func (c *AppContext) ToggleDark() {
 	}
 	c.toggleDark()
 }
-
-// func (c *AppContext) PushScreen(screenID string) {
-
-// 	if c == nil {
-// 		return
-// 	}
-// 	c.pushScreen(screenID)
-// }
-
-// func (c *AppContext) ReplaceScreen(screenID string) {
-// 	if c == nil || c.replaceScreen == nil {
-// 		return
-// 	}
-// 	c.replaceScreen(screenID)
-// }
-
-// func (c *AppContext) PopScreen() string {
-// 	if c == nil || c.popScreen == nil {
-// 		return "home"
-// 	}
-// 	return c.popScreen()
-// }
-
-// func (c *AppContext) GetStack() []string {
-// 	if c == nil || c.getStack == nil {
-// 		return []string{"home"}
-// 	}
-// 	return c.getStack()
-// }
-
-// func (c *AppContext) GetCurrent() string {
-// 	if c == nil || c.getCurrent == nil {
-// 		return "home"
-// 	}
-// 	return c.getCurrent()
-// }

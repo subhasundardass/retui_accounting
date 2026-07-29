@@ -71,8 +71,7 @@ var sidebarTree = []components.TreeNode{
 		ID:    "settings",
 		Label: "Settings",
 		Children: []components.TreeNode{
-			{ID: "docs-readme", Label: "README.md"},
-			{ID: "docs-api", Label: "API.md"},
+			{ID: "companies", Label: "Companies"},
 		},
 	},
 	// {
@@ -110,15 +109,14 @@ func SidebarTree(ctx *context.AppContext, props retui.Props) retui.Element {
 		retui.NewStyle().Border(retui.Border{
 			Top: true, Right: true, Bottom: true, Left: true,
 			Chars: retui.BorderRounded, Color: retui.Gray(1),
+			// Title: &retui.BorderTitle{
+			// 	Text: "Navigation",
+			// 	Style: retui.NewStyle().
+			// 		Foreground(retui.Yellow).
+			// 		Bold(true),
+			// 	Align: retui.AlignStart,
+			// },
 		}),
-		// retui.NewStyle().
-		// 	Border(retui.BorderAll()).
-		// Title(retui.Title{
-		// 	Text:       "Bavigation",
-		// 	Foreground: retui.Cyan,
-		// 	Bold:       true,
-		// 	Align:      retui.AlignStart,
-		// }),
 
 		// Sidebar tree panel
 		retui.Box(

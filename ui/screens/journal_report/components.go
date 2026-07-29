@@ -84,9 +84,9 @@ func (c *Components) header(selected *ent.Journal) retui.Element {
 			Justify:   retui.JustifySpaceBetween,
 			Align:     retui.AlignCenter,
 		},
-		retui.NewStyle().Foreground(retui.BrightCyan).
+		retui.NewStyle().
 			Border(retui.Border{Bottom: true, Left: true, Right: true, Top: true, Color: retui.Gray(1)}),
-		retui.Text(title, retui.NewStyle().Bold(true)),
+		retui.Text(title, retui.NewStyle().Bold(true).Foreground(retui.Cyan)),
 	)
 }
 

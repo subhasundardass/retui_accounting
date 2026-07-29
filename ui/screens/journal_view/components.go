@@ -90,7 +90,7 @@ func (c *Components) headerSection(journal *ent.Journal) retui.Element {
 			retui.Box(retui.Props{Width: retui.Fit()}, retui.NewStyle(), retui.Text("Voucher No:", retui.NewStyle())),
 			retui.Box(retui.Props{}, retui.NewStyle(),
 				components.TextInput().
-					Width(20).
+					Width(retui.Fixed(20).Value).
 					ID("vNo").
 					Value(journal.VoucherNo).
 					Style(retui.NewStyle().Bold(true)).
@@ -122,7 +122,7 @@ func (c *Components) headerSection(journal *ent.Journal) retui.Element {
 				components.TextInput().
 					ID("vReference").
 					Value(*journal.ReferenceNo).
-					Width(20).
+					Width(retui.Fixed(20).Value).
 					Placeholder("Enter Reference").
 					Style(retui.NewStyle().Bold(true)).
 					Render(),
@@ -136,7 +136,7 @@ func (c *Components) headerSection(journal *ent.Journal) retui.Element {
 			retui.Box(retui.Props{}, retui.NewStyle(),
 				components.TextInput().
 					ID("vNarration").
-					Width(68).
+					Width(retui.Fixed(68).Value).
 					Value(*journal.Narration).
 					Placeholder("Enter Narration").
 					Style(retui.NewStyle().Bold(true)).
@@ -220,7 +220,7 @@ func (c *Components) lineItemRows(journal *ent.Journal) []retui.Element {
 			retui.NewStyle(),
 
 			components.TextInput().
-				Width(ledgerColWidth+4).
+				Width(retui.Fixed(ledgerColWidth+4).Value).
 				Value(ledgerName).
 				Render(),
 
@@ -237,7 +237,7 @@ func (c *Components) lineItemRows(journal *ent.Journal) []retui.Element {
 				Render(),
 
 			components.TextInput().
-				Width(remarksColWidth+4).
+				Width(retui.Fixed(remarksColWidth+4).Value).
 				Value(derefString(line.Description)).
 				Render(),
 		))

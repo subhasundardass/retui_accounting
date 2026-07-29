@@ -80,7 +80,7 @@ import (
 
 func Screen(ctx *context.AppContext, props retui.Props) retui.Element {
 
-	if retui.CurrentKey.Code == retui.KeyEscape {
+	if retui.CurrentKey.Code == retui.KeyEscape && !retui.IsAnyOverlayOpen() {
 		retui.PopScreen()
 		retui.FocusPrev()
 		return retui.Box(retui.Props{}, retui.NewStyle())
@@ -126,7 +126,17 @@ func NewComponents(controller *Controller) *Components {
 	return &Components{controller: controller}
 }
 
+func (c *Components) bindKeys() {
+	if retui.IsFocused("screen_id") {
+		switch retui.CurrentKey.Code {
+		}
+	}
+}
+
 func (c *Components) RenderScreen() retui.Element {
+	//--Key bindings
+	c.bindKeys()
+
 	return retui.Box(
 		retui.Props{Direction: retui.Column, Gap: 1},
 		retui.NewStyle(),

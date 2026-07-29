@@ -6,7 +6,7 @@ import (
 	"github.com/subhasundardass/retui/retui/window"
 )
 
-const totalFields = 5 // Name, Code, Group, OpeningBal, IsActive
+const totalFields = 7 // Name, Code, Group, OpeningBal, IsActive
 
 type Components struct {
 	controller *Controller
@@ -23,8 +23,7 @@ type LedgerState struct {
 	Name string
 	Code string
 
-	GroupID   int
-	GroupName string
+	GroupID string
 
 	OpeningBal  float64
 	IsActive    bool
@@ -65,11 +64,21 @@ func (c *Components) bindKeys() {
 
 	c.win.OnKeyPress(func(key retui.Key) bool {
 
+		retui.Debugf("Window captured=%q key=%v",
+			retui.CapturedFocus(),
+			key.Code,
+		)
+
+		if retui.CapturedFocus() != "" {
+			return false
+		}
+
 		switch key.Code {
 
-		case retui.KeyEscape:
-			c.win.Close()
-			return true
+		// case retui.KeyEscape:
+
+		// 	c.win.Close()
+		// 	return true
 
 		case retui.KeyDown:
 			retui.Debugf("================ Down%v", totalFields)
@@ -86,31 +95,10 @@ func (c *Components) bindKeys() {
 			c.setState(s)
 			return true
 
-		case retui.KeyEnter:
-			c.submit()
-			return true
 		}
 
 		return false
 	})
-}
-
-func (c *Components) submit() {
-	if c.state.Name == "" || c.state.Code == "" || c.state.GroupID == 0 {
-		return // nothing selected/filled yet, ignore
-	}
-
-	// openingBal, _ := strconv.ParseFloat(c.state.OpeningBal, 64)
-
-	// c.controller.CreateLedger(ent.Ledger{
-	// 	Name:       c.state.Name,
-	// 	Code:       c.state.Code,
-	// 	GroupID:    c.state.GroupID,
-	// 	OpeningBal: openingBal,
-	// 	IsActive:   c.state.IsActive,
-	// })
-
-	c.win.Close()
 }
 
 func (c *Components) render() retui.Element {
@@ -128,6 +116,7 @@ func (c *Components) render() retui.Element {
 				retui.NewStyle(),
 				retui.Text(label, retui.NewStyle()),
 			),
+
 			input,
 		)
 	}
@@ -136,6 +125,7 @@ func (c *Components) render() retui.Element {
 		retui.Props{
 			Direction: retui.Column,
 			Gap:       0,
+			Padding:   [4]int{1, 1, 0, 1},
 		},
 		retui.NewStyle(),
 
@@ -147,7 +137,7 @@ func (c *Components) render() retui.Element {
 
 			row("Ledger Name", components.TextInput().
 				ID("name").
-				Width(40).
+				Width(retui.Fixed(40).Value).
 				Focused(isFocused(0)).
 				Value(c.state.Name).
 				OnChange(func(id, value string) {
@@ -160,7 +150,7 @@ func (c *Components) render() retui.Element {
 
 			row("Code", components.TextInput().
 				ID("code").
-				Width(40).
+				Width(retui.Fixed(40).Value).
 				Focused(isFocused(1)).
 				Value(c.state.Code).
 				OnChange(func(id, value string) {
@@ -191,17 +181,21 @@ func (c *Components) render() retui.Element {
 				Render(),
 			),
 
-			row("Active", components.Checkbox().
-				ID("is_active").
-				Focused(isFocused(3)).
-				Checked(c.state.IsActive).
-				OnChange(func(id string, value bool) {
-					s := c.state
-					s.IsActive = value
-					c.setState(s)
-				}).
-				Render(),
-			),
+			row("Group",
+				components.SelectDropdown().
+					ID("ledger_group").
+					Focused(isFocused(3)).
+					OverlayAbsPos(80, 5).
+					OnFilter(func(id, query string) []components.SelectOption {
+						return c.controller.LedgerFilterOptions(query)
+					}).
+					Value(c.state.GroupID).
+					OnChange(func(id, value string) {
+						s := c.state
+						s.GroupID = value
+						c.setState(s)
+					}).
+					Render()),
 		),
 
 		//Description
@@ -219,33 +213,26 @@ func (c *Components) render() retui.Element {
 			Render(),
 		),
 
-		// row("Group", components.Select().
-		// 	ID("group").
-		// 	Width(40).
-		// 	Focused(isFocused(2)).
-		// 	Options(c.groupOptions()).
-		// 	Value(strconv.Itoa(c.state.GroupID)).
-		// 	OnSelect(func(id, groupID, groupName string) {
-		// 		gid, err := strconv.Atoi(groupID)
-		// 		if err != nil {
-		// 			return
-		// 		}
-		// 		s := c.state
-		// 		s.GroupID = gid
-		// 		s.GroupName = groupName
-		// 		c.setState(s)
-		// 	}).
-		// 	Render(),
-		// ),
+		row("Active", components.Checkbox().
+			ID("is_active").
+			Focused(isFocused(5)).
+			Checked(c.state.IsActive).
+			OnChange(func(id string, value bool) {
+				s := c.state
+				s.IsActive = value
+				c.setState(s)
+			}).
+			Render(),
+		),
 
+		retui.Box(
+			retui.Props{Padding: [4]int{1, 0, 0, 0}},
+			retui.NewStyle(),
+			components.Button().
+				ID("submit").
+				Focused(isFocused(6)).
+				Label("Submit").
+				Render(),
+		),
 	)
 }
-
-// func (c *Components) groupOptions() []components.SelectOption {
-// 	groups := c.controller.ListGroups()
-// 	opts := make([]components.SelectOption, len(groups))
-// 	for i, g := range groups {
-// 		opts[i] = components.SelectOption{ID: strconv.Itoa(g.ID), Label: g.Name}
-// 	}
-// 	return opts
-// }

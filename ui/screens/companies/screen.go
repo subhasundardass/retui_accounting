@@ -1,4 +1,4 @@
-package journal_entry
+package companies
 
 import (
 	"github.com/subhasundardass/retui/internal/context"
@@ -14,9 +14,8 @@ func Screen(ctx *context.AppContext, props retui.Props) retui.Element {
 		return retui.Box(retui.Props{}, retui.NewStyle())
 	}
 
-	repo := repository.NewJournalRepository(ctx.DB)
-	repoLedger := repository.NewLedgerRepository(ctx.DB)
-	controller := NewController(ctx, repo, repoLedger)
+	repo := repository.NewCompanyRepository(ctx.DB)
+	controller := NewController(ctx, repo)
 	components := NewComponents(controller)
 
 	return components.RenderScreen()
