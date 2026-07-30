@@ -277,9 +277,7 @@ render:
 			Bold(true)
 	} else {
 		textStyle = textStyle.
-			// Foreground(retui.BrightBlack).
-			// Background(retui.Gray(1)).
-			Bold(true)
+			Foreground(retui.White).Bold(true)
 	}
 
 	// Border color based on focus and validation

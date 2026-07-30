@@ -1,11 +1,13 @@
 package createcompany
 
 import (
+	"strconv"
 	"strings"
 
 	"github.com/subhasundardass/retui/retui"
 	"github.com/subhasundardass/retui/retui/components"
 	"github.com/subhasundardass/retui/retui/window"
+	"github.com/subhasundardass/retui/ui/widgets"
 )
 
 type State struct {
@@ -16,16 +18,17 @@ type State struct {
 	Name       string
 	LegalName  string
 	Email      string
-	Phone      string
+	Phone      float64
 	Website    string
-	Country    string
-	State      string
+	Country    int
+	State      int
 	City       string
-	PostalCode string
+	PostalCode float64
 	Address    string
 	TaxID      string
 	GSTIN      string
 	PAN        string
+	IsActive   bool
 }
 
 type Components struct {
@@ -62,7 +65,7 @@ func NewComponents(controller *Controller) *Components {
 	}
 }
 
-const totalFields = 17
+const totalFields = 18
 
 func (c *Components) bindKeys() {
 
@@ -94,8 +97,6 @@ func (c *Components) bindKeys() {
 }
 
 func (c *Components) RenderWindow() *window.Window {
-
-	c.state, c.setState = retui.UseState(State{})
 
 	c.win = window.NewWindow().
 		SetTitle("Create Company").
@@ -173,6 +174,12 @@ func (c *Components) render() retui.Element {
 				ID("name").
 				Width(retui.Fixed(40).Value).
 				Focused(isFocused(1)).
+				Value(c.state.Name).
+				OnChange(func(id, value string) {
+					s := c.state
+					s.Name = value
+					c.setState(s)
+				}).
 				Render(),
 		),
 		retui.Box(
@@ -191,6 +198,12 @@ func (c *Components) render() retui.Element {
 				ID("legal_name").
 				Width(retui.Fixed(40).Value).
 				Focused(isFocused(2)).
+				Value(c.state.LegalName).
+				OnChange(func(id, value string) {
+					s := c.state
+					s.LegalName = value
+					c.setState(s)
+				}).
 				Render(),
 		),
 	)
@@ -217,6 +230,12 @@ func (c *Components) render() retui.Element {
 				ID("email").
 				Width(retui.Fixed(30).Value).
 				Focused(isFocused(3)).
+				Value(c.state.Email).
+				OnChange(func(id, value string) {
+					s := c.state
+					s.Email = value
+					c.setState(s)
+				}).
 				Render(),
 		),
 
@@ -232,10 +251,17 @@ func (c *Components) render() retui.Element {
 				retui.NewStyle(),
 				retui.Text("Phone", retui.NewStyle()),
 			),
-			components.TextInput().
+			components.NumberInput().
 				ID("phone").
 				Width(retui.Fixed(30).Value).
 				Focused(isFocused(4)).
+				Decimals(0).
+				Value(float64(c.state.Phone)).
+				OnChange(func(id string, value float64) {
+					s := c.state
+					s.Phone = value
+					c.setState(s)
+				}).
 				Render(),
 		),
 		retui.Box(
@@ -254,6 +280,12 @@ func (c *Components) render() retui.Element {
 				ID("website").
 				Width(retui.Fixed(30).Value).
 				Focused(isFocused(5)).
+				Value(c.state.Website).
+				OnChange(func(id, value string) {
+					s := c.state
+					s.Website = value
+					c.setState(s)
+				}).
 				Render(),
 		),
 	)
@@ -275,10 +307,25 @@ func (c *Components) render() retui.Element {
 				retui.NewStyle(),
 				retui.Text("Country", retui.NewStyle()),
 			),
-			components.TextInput().
-				ID("Country").
-				Focused(isFocused(6)).
-				Render(),
+
+			widgets.CountryComponent(
+				c.controller.ctx,
+				c.state.Country,
+				30,
+				isFocused(6),
+				func(id, value string) {
+					s := c.state
+					i, err := strconv.Atoi(value)
+					if err != nil {
+						retui.Debugf("Invalid country ID: %v", err)
+						return
+					}
+
+					s.Country = i
+					c.setState(s)
+					// c.state.Country = value
+				},
+			),
 		),
 		retui.Box(
 			retui.Props{
@@ -292,11 +339,24 @@ func (c *Components) render() retui.Element {
 				retui.NewStyle(),
 				retui.Text("State", retui.NewStyle()),
 			),
-			components.TextInput().
-				ID("state").
-				Width(retui.Fixed(30).Value).
-				Focused(isFocused(7)).
-				Render(),
+
+			widgets.StateComponent(
+				c.state.Country,
+				c.controller.ctx,
+				c.state.State,
+				30,
+				isFocused(7),
+				func(id, value string) {
+					s := c.state
+					i, err := strconv.Atoi(value)
+					if err != nil {
+						retui.Debugf("Invalid Sate ID: %v", err)
+						return
+					}
+					s.State = i
+					c.setState(s)
+				},
+			),
 		),
 
 		retui.Box(
@@ -315,6 +375,12 @@ func (c *Components) render() retui.Element {
 				ID("city").
 				Width(retui.Fixed(30).Value).
 				Focused(isFocused(8)).
+				Value(c.state.City).
+				OnChange(func(id, value string) {
+					s := c.state
+					s.City = value
+					c.setState(s)
+				}).
 				Render(),
 		),
 	)
@@ -338,10 +404,22 @@ func (c *Components) render() retui.Element {
 				retui.NewStyle(),
 				retui.Text("Postal Code", retui.NewStyle()),
 			),
-			components.TextInput().
+			// components.TextInput().
+			// 	ID("postal_code").
+			// 	Width(retui.Fixed(30).Value).
+			// 	Focused(isFocused(9)).
+			// 	Render(),
+			components.NumberInput().
 				ID("postal_code").
 				Width(retui.Fixed(30).Value).
 				Focused(isFocused(9)).
+				Decimals(0).
+				Value(float64(c.state.PostalCode)).
+				OnChange(func(id string, value float64) {
+					s := c.state
+					s.PostalCode = value
+					c.setState(s)
+				}).
 				Render(),
 		),
 		retui.Box(
@@ -360,6 +438,12 @@ func (c *Components) render() retui.Element {
 				ID("address").
 				Width(retui.Fixed(72).Value).
 				Focused(isFocused(10)).
+				Value(c.state.Address).
+				OnChange(func(id, value string) {
+					s := c.state
+					s.Address = value
+					c.setState(s)
+				}).
 				Render(),
 		),
 	)
@@ -385,6 +469,12 @@ func (c *Components) render() retui.Element {
 			components.TextInput().
 				ID("tax_id").
 				Focused(isFocused(11)).
+				Value(c.state.TaxID).
+				OnChange(func(id, value string) {
+					s := c.state
+					s.TaxID = value
+					c.setState(s)
+				}).
 				Render(),
 		),
 
@@ -404,6 +494,12 @@ func (c *Components) render() retui.Element {
 				ID("gstin").
 				Width(retui.Fixed(30).Value).
 				Focused(isFocused(12)).
+				Value(c.state.GSTIN).
+				OnChange(func(id, value string) {
+					s := c.state
+					s.GSTIN = value
+					c.setState(s)
+				}).
 				Render(),
 		),
 		retui.Box(
@@ -422,6 +518,12 @@ func (c *Components) render() retui.Element {
 				ID("pan").
 				Width(retui.Fixed(30).Value).
 				Focused(isFocused(13)).
+				Value(c.state.PAN).
+				OnChange(func(id, value string) {
+					s := c.state
+					s.PAN = value
+					c.setState(s)
+				}).
 				Render(),
 		),
 	)
@@ -475,28 +577,49 @@ func (c *Components) render() retui.Element {
 			retui.Box(
 				retui.Props{
 					Gap: 1,
+					// Margin:  [4]int{1, 0, 0, 0},
+					Justify: retui.JustifySpaceBetween,
+					Width:   retui.Grow(1),
 				},
 				retui.NewStyle(),
-				components.Button().
-					ID("save").
-					Label("Save").
+				components.Checkbox().
+					ID("IsActive").
+					Label("Is Active").
+					Checked(c.state.IsActive).
 					Focused(isFocused(14)).
-					Style(retui.NewStyle().Background(retui.Gray(2)).Foreground(retui.BrightWhite)).
+					OnChange(func(id string, checked bool) {
+						s := c.state
+						s.IsActive = checked
+						c.setState(s)
+					}).
 					Render(),
 
-				components.Button().
-					ID("cancel").
-					Label("Cancel").
-					Focused(isFocused(15)).
-					Style(retui.NewStyle().Background(retui.Gray(2)).Foreground(retui.BrightWhite)).
-					Render(),
+				retui.Box(
+					retui.Props{
+						Gap: 1,
+					},
+					retui.NewStyle(),
+					components.Button().
+						ID("save").
+						Label("Save").
+						Focused(isFocused(15)).
+						Style(retui.NewStyle().Background(retui.Gray(2)).Foreground(retui.BrightWhite)).
+						Render(),
 
-				components.Button().
-					ID("reset").
-					Label("Reset").
-					Focused(isFocused(16)).
-					Style(retui.NewStyle().Background(retui.Gray(2)).Foreground(retui.BrightWhite)).
-					Render(),
+					components.Button().
+						ID("cancel").
+						Label("Cancel").
+						Focused(isFocused(16)).
+						Style(retui.NewStyle().Background(retui.Gray(2)).Foreground(retui.BrightWhite)).
+						Render(),
+
+					components.Button().
+						ID("reset").
+						Label("Reset").
+						Focused(isFocused(17)).
+						Style(retui.NewStyle().Background(retui.Gray(2)).Foreground(retui.BrightWhite)).
+						Render(),
+				),
 			),
 		),
 	)

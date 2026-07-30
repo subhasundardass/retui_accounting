@@ -14,8 +14,7 @@ func Header(props retui.Props) retui.Element {
 			Justify:   retui.JustifySpaceBetween,
 			Align:     retui.AlignCenter,
 		},
-		retui.NewStyle().Background(retui.Blue),
-		// retui.Text(appctx.AppName(), retui.NewStyle()),
+		retui.NewStyle().Background(retui.Gray(1)),
 		retui.Text("layout demo", retui.NewStyle()),
 		retui.Text("v0.0.15", retui.NewStyle()),
 	)
