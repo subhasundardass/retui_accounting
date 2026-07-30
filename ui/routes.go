@@ -4,6 +4,7 @@ import (
 	appctx "github.com/subhasundardass/retui/internal/context"
 	"github.com/subhasundardass/retui/retui"
 
+	"github.com/subhasundardass/retui/ui/screens/companies"
 	"github.com/subhasundardass/retui/ui/screens/dashboard"
 	"github.com/subhasundardass/retui/ui/screens/journal_entry"
 	"github.com/subhasundardass/retui/ui/screens/journal_line"
@@ -36,6 +37,11 @@ var Routes = map[string]Screen{
 		ID:     "dashboard",
 		Title:  "Dashboard",
 		Render: dashboard.Screen,
+	},
+	"companies": {
+		ID:     "companies",
+		Title:  "Companies",
+		Render: companies.Screen,
 	},
 	"ledger_group": {
 		ID:     "ledger_group",

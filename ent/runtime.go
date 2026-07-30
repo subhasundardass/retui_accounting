@@ -5,6 +5,7 @@ package ent
 import (
 	"time"
 
+	"github.com/subhasundardass/retui/ent/company"
 	"github.com/subhasundardass/retui/ent/country"
 	"github.com/subhasundardass/retui/ent/journal"
 	"github.com/subhasundardass/retui/ent/journal_line"
@@ -20,6 +21,90 @@ import (
 // (default values, validators, hooks and policies) and stitches it
 // to their package variables.
 func init() {
+	companyFields := schema.Company{}.Fields()
+	_ = companyFields
+	// companyDescName is the schema descriptor for name field.
+	companyDescName := companyFields[0].Descriptor()
+	// company.NameValidator is a validator for the "name" field. It is called by the builders before save.
+	company.NameValidator = func() func(string) error {
+		validators := companyDescName.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(name string) error {
+			for _, fn := range fns {
+				if err := fn(name); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// companyDescCode is the schema descriptor for code field.
+	companyDescCode := companyFields[1].Descriptor()
+	// company.CodeValidator is a validator for the "code" field. It is called by the builders before save.
+	company.CodeValidator = func() func(string) error {
+		validators := companyDescCode.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(code string) error {
+			for _, fn := range fns {
+				if err := fn(code); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// companyDescLegalName is the schema descriptor for legal_name field.
+	companyDescLegalName := companyFields[2].Descriptor()
+	// company.LegalNameValidator is a validator for the "legal_name" field. It is called by the builders before save.
+	company.LegalNameValidator = companyDescLegalName.Validators[0].(func(string) error)
+	// companyDescPhone is the schema descriptor for phone field.
+	companyDescPhone := companyFields[4].Descriptor()
+	// company.PhoneValidator is a validator for the "phone" field. It is called by the builders before save.
+	company.PhoneValidator = companyDescPhone.Validators[0].(func(string) error)
+	// companyDescTaxID is the schema descriptor for tax_id field.
+	companyDescTaxID := companyFields[6].Descriptor()
+	// company.TaxIDValidator is a validator for the "tax_id" field. It is called by the builders before save.
+	company.TaxIDValidator = companyDescTaxID.Validators[0].(func(string) error)
+	// companyDescGstin is the schema descriptor for gstin field.
+	companyDescGstin := companyFields[7].Descriptor()
+	// company.GstinValidator is a validator for the "gstin" field. It is called by the builders before save.
+	company.GstinValidator = companyDescGstin.Validators[0].(func(string) error)
+	// companyDescPan is the schema descriptor for pan field.
+	companyDescPan := companyFields[8].Descriptor()
+	// company.PanValidator is a validator for the "pan" field. It is called by the builders before save.
+	company.PanValidator = companyDescPan.Validators[0].(func(string) error)
+	// companyDescCurrency is the schema descriptor for currency field.
+	companyDescCurrency := companyFields[9].Descriptor()
+	// company.DefaultCurrency holds the default value on creation for the currency field.
+	company.DefaultCurrency = companyDescCurrency.Default.(string)
+	// companyDescTimezone is the schema descriptor for timezone field.
+	companyDescTimezone := companyFields[10].Descriptor()
+	// company.DefaultTimezone holds the default value on creation for the timezone field.
+	company.DefaultTimezone = companyDescTimezone.Default.(string)
+	// companyDescCountry is the schema descriptor for country field.
+	companyDescCountry := companyFields[15].Descriptor()
+	// company.DefaultCountry holds the default value on creation for the country field.
+	company.DefaultCountry = companyDescCountry.Default.(string)
+	// companyDescActive is the schema descriptor for active field.
+	companyDescActive := companyFields[17].Descriptor()
+	// company.DefaultActive holds the default value on creation for the active field.
+	company.DefaultActive = companyDescActive.Default.(bool)
+	// companyDescCreatedAt is the schema descriptor for created_at field.
+	companyDescCreatedAt := companyFields[18].Descriptor()
+	// company.DefaultCreatedAt holds the default value on creation for the created_at field.
+	company.DefaultCreatedAt = companyDescCreatedAt.Default.(func() time.Time)
+	// companyDescUpdatedAt is the schema descriptor for updated_at field.
+	companyDescUpdatedAt := companyFields[19].Descriptor()
+	// company.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	company.DefaultUpdatedAt = companyDescUpdatedAt.Default.(func() time.Time)
+	// company.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	company.UpdateDefaultUpdatedAt = companyDescUpdatedAt.UpdateDefault.(func() time.Time)
 	countryFields := schema.Country{}.Fields()
 	_ = countryFields
 	// countryDescName is the schema descriptor for name field.
@@ -187,6 +272,10 @@ func init() {
 	ledgerDescIsCash := ledgerFields[10].Descriptor()
 	// ledger.DefaultIsCash holds the default value on creation for the is_cash field.
 	ledger.DefaultIsCash = ledgerDescIsCash.Default.(bool)
+	// ledgerDescIsActive is the schema descriptor for is_active field.
+	ledgerDescIsActive := ledgerFields[11].Descriptor()
+	// ledger.DefaultIsActive holds the default value on creation for the is_active field.
+	ledger.DefaultIsActive = ledgerDescIsActive.Default.(bool)
 	ledger_groupFields := schema.Ledger_Group{}.Fields()
 	_ = ledger_groupFields
 	// ledger_groupDescCode is the schema descriptor for code field.

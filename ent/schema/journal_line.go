@@ -63,7 +63,6 @@ func (Journal_Line) Indexes() []ent.Index {
 // Edges of the Journal_Line.
 func (Journal_Line) Edges() []ent.Edge {
 	return []ent.Edge{
-
 		edge.From("journal", Journal.Type).
 			Ref("lines").
 			Field("journal_id").
@@ -71,8 +70,9 @@ func (Journal_Line) Edges() []ent.Edge {
 			Unique(),
 
 		edge.From("ledger", Ledger.Type).
-			Ref("journal_lines"). // make sure Ledger has edge.To("journal_lines", Journal_Line.Type)
+			Ref("journal_lines").
 			Field("ledger_id").
-			Required(),
+			Required().
+			Unique(),
 	}
 }

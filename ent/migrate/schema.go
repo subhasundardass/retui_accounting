@@ -9,6 +9,36 @@ import (
 )
 
 var (
+	// CompaniesColumns holds the columns for the "companies" table.
+	CompaniesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "name", Type: field.TypeString, Size: 150},
+		{Name: "code", Type: field.TypeString, Unique: true, Size: 20},
+		{Name: "legal_name", Type: field.TypeString, Nullable: true, Size: 200},
+		{Name: "email", Type: field.TypeString, Nullable: true},
+		{Name: "phone", Type: field.TypeString, Nullable: true, Size: 30},
+		{Name: "website", Type: field.TypeString, Nullable: true},
+		{Name: "tax_id", Type: field.TypeString, Nullable: true, Size: 50},
+		{Name: "gstin", Type: field.TypeString, Nullable: true, Size: 20},
+		{Name: "pan", Type: field.TypeString, Nullable: true, Size: 20},
+		{Name: "currency", Type: field.TypeString, Default: "INR"},
+		{Name: "timezone", Type: field.TypeString, Default: "Asia/Kolkata"},
+		{Name: "logo", Type: field.TypeString, Nullable: true},
+		{Name: "address", Type: field.TypeString, Nullable: true, Size: 2147483647},
+		{Name: "city", Type: field.TypeString, Nullable: true},
+		{Name: "state", Type: field.TypeString, Nullable: true},
+		{Name: "country", Type: field.TypeString, Default: "India"},
+		{Name: "postal_code", Type: field.TypeString, Nullable: true},
+		{Name: "active", Type: field.TypeBool, Default: true},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
+	}
+	// CompaniesTable holds the schema information for the "companies" table.
+	CompaniesTable = &schema.Table{
+		Name:       "companies",
+		Columns:    CompaniesColumns,
+		PrimaryKey: []*schema.Column{CompaniesColumns[0]},
+	}
 	// CountriesColumns holds the columns for the "countries" table.
 	CountriesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
@@ -148,6 +178,7 @@ var (
 		{Name: "is_party", Type: field.TypeBool, Default: false},
 		{Name: "is_bank", Type: field.TypeBool, Default: false},
 		{Name: "is_cash", Type: field.TypeBool, Default: false},
+		{Name: "is_active", Type: field.TypeBool, Default: true},
 		{Name: "group_id", Type: field.TypeInt},
 		{Name: "ledger_group_ledgers", Type: field.TypeInt, Nullable: true},
 	}
@@ -159,13 +190,13 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "ledgers_ledger_groups_group",
-				Columns:    []*schema.Column{LedgersColumns[13]},
+				Columns:    []*schema.Column{LedgersColumns[14]},
 				RefColumns: []*schema.Column{LedgerGroupsColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
 			{
 				Symbol:     "ledgers_ledger_groups_ledgers",
-				Columns:    []*schema.Column{LedgersColumns[14]},
+				Columns:    []*schema.Column{LedgersColumns[15]},
 				RefColumns: []*schema.Column{LedgerGroupsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -184,7 +215,7 @@ var (
 			{
 				Name:    "ledger_group_id",
 				Unique:  false,
-				Columns: []*schema.Column{LedgersColumns[13]},
+				Columns: []*schema.Column{LedgersColumns[14]},
 			},
 			{
 				Name:    "ledger_is_party",
@@ -199,7 +230,7 @@ var (
 			{
 				Name:    "ledger_group_id_name",
 				Unique:  false,
-				Columns: []*schema.Column{LedgersColumns[13], LedgersColumns[4]},
+				Columns: []*schema.Column{LedgersColumns[14], LedgersColumns[4]},
 			},
 		},
 	}
@@ -377,6 +408,7 @@ var (
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
+		CompaniesTable,
 		CountriesTable,
 		JournalsTable,
 		JournalLinesTable,

@@ -181,6 +181,20 @@ func (_c *LedgerCreate) SetNillableIsCash(v *bool) *LedgerCreate {
 	return _c
 }
 
+// SetIsActive sets the "is_active" field.
+func (_c *LedgerCreate) SetIsActive(v bool) *LedgerCreate {
+	_c.mutation.SetIsActive(v)
+	return _c
+}
+
+// SetNillableIsActive sets the "is_active" field if the given value is not nil.
+func (_c *LedgerCreate) SetNillableIsActive(v *bool) *LedgerCreate {
+	if v != nil {
+		_c.SetIsActive(*v)
+	}
+	return _c
+}
+
 // SetGroup sets the "group" edge to the Ledger_Group entity.
 func (_c *LedgerCreate) SetGroup(v *Ledger_Group) *LedgerCreate {
 	return _c.SetGroupID(v.ID)
@@ -295,6 +309,10 @@ func (_c *LedgerCreate) defaults() {
 		v := ledger.DefaultIsCash
 		_c.mutation.SetIsCash(v)
 	}
+	if _, ok := _c.mutation.IsActive(); !ok {
+		v := ledger.DefaultIsActive
+		_c.mutation.SetIsActive(v)
+	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -346,6 +364,9 @@ func (_c *LedgerCreate) check() error {
 	}
 	if _, ok := _c.mutation.IsCash(); !ok {
 		return &ValidationError{Name: "is_cash", err: errors.New(`ent: missing required field "Ledger.is_cash"`)}
+	}
+	if _, ok := _c.mutation.IsActive(); !ok {
+		return &ValidationError{Name: "is_active", err: errors.New(`ent: missing required field "Ledger.is_active"`)}
 	}
 	if len(_c.mutation.GroupIDs()) == 0 {
 		return &ValidationError{Name: "group", err: errors.New(`ent: missing required edge "Ledger.group"`)}
@@ -423,6 +444,10 @@ func (_c *LedgerCreate) createSpec() (*Ledger, *sqlgraph.CreateSpec) {
 	if value, ok := _c.mutation.IsCash(); ok {
 		_spec.SetField(ledger.FieldIsCash, field.TypeBool, value)
 		_node.IsCash = value
+	}
+	if value, ok := _c.mutation.IsActive(); ok {
+		_spec.SetField(ledger.FieldIsActive, field.TypeBool, value)
+		_node.IsActive = value
 	}
 	if nodes := _c.mutation.GroupIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

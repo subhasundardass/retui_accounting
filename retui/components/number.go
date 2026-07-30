@@ -629,19 +629,17 @@ render:
 	if focused {
 		if selected {
 			textStyle = textStyle.
-				Foreground(retui.Black).
-				Background(retui.Cyan).
+				Foreground(retui.White).Bold(true).
+				Background(retui.Gray(2)).
 				Bold(true)
 		} else {
 			textStyle = textStyle.
-				Foreground(retui.White).
-				Background(retui.Blue).
-				Bold(true)
+				Foreground(retui.White).Bold(true)
+
 		}
 	} else {
 		textStyle = textStyle.
-			Foreground(retui.BrightBlack).
-			Bold(true)
+			Foreground(retui.White).Bold(true)
 	}
 
 	// Check validation against the committed value (not the in-progress text)

@@ -8,7 +8,7 @@ import (
 
 func Screen(ctx *context.AppContext, props retui.Props) retui.Element {
 
-	if retui.CurrentKey.Code == retui.KeyEscape {
+	if retui.CurrentKey.Code == retui.KeyEscape && !retui.IsAnyOverlayOpen() {
 		retui.PopScreen()
 		retui.FocusPrev()
 		return retui.Box(retui.Props{}, retui.NewStyle())

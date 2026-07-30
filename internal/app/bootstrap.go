@@ -205,13 +205,13 @@ func (b *Bootstrap) setContext() {
 	}
 
 	b.AppCtx.Set(appctx.AppContextValues{
-		CurrentPage: retui.CurrentScreen(),
-		AppName:     b.state.config.AppName,
-		DarkMode:    b.state.darkMode,
-		DB:          b.DB,
-		Context:     b.Ctx,
-		GetStack:    retui.ScreenStackSnapshot,
-		GetCurrent:  retui.CurrentScreen,
+		// CurrentPage: retui.CurrentScreen(),
+		AppName:  b.state.config.AppName,
+		DarkMode: b.state.darkMode,
+		DB:       b.DB,
+		Context:  b.Ctx,
+		// GetStack:   retui.ScreenStackSnapshot,
+		// GetCurrent: retui.CurrentScreen,
 
 		ToggleDark: func() {
 			b.mu.Lock()

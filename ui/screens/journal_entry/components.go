@@ -215,7 +215,7 @@ func (c *Components) headerSection(
 			retui.Box(retui.Props{Width: retui.Fit()}, retui.NewStyle(), retui.Text("Voucher No:", retui.NewStyle())),
 			retui.Box(retui.Props{}, retui.NewStyle(),
 				components.TextInput().
-					Width(20).
+					// Width(20).
 					ID("vNo").
 					Focused(isFocused(0)).
 					Value(vNo).
@@ -255,7 +255,7 @@ func (c *Components) headerSection(
 					ID("vReference").
 					Focused(isFocused(2)).
 					Value(vReference).
-					Width(20).
+					// Width(20).
 					Placeholder("Enter Reference").
 					Style(retui.NewStyle().Bold(true)).
 					OnChange(func(id string, value string) { setVReference(value) }).
@@ -272,7 +272,7 @@ func (c *Components) headerSection(
 				components.TextInput().
 					ID("vNarration").
 					Focused(isFocused(3)).
-					Width(68).
+					// Width(68).
 					Value(vNarration).
 					Placeholder("Enter Narration").
 					Style(retui.NewStyle().Bold(true)).
@@ -335,10 +335,9 @@ func (c *Components) lineItemRows(
 		ledgerField := components.SelectDropdown().
 			ID(fmt.Sprintf("lineLedger_%d", i)).
 			Width(ledgerColWidth+4).
-			Style(retui.NewStyle().Bold(true).Background(retui.Red)).
 			OverlayAbsPos(40, 5).
 			Height(10).
-			Options(c.controller.LedgerSeedOptions(line.LedgerCode)). // ← MUST be non-empty
+			// Options(c.controller.LedgerSeedOptions(line.LedgerCode)). // ← MUST be non-empty
 			OnFilter(func(id, query string) []components.SelectOption {
 				return c.controller.LedgerFilterOptions(query)
 			}).
@@ -383,7 +382,7 @@ func (c *Components) lineItemRows(
 
 		remarksField := components.TextInput().
 			ID(fmt.Sprintf("lineRemarks_%d", i)).
-			Width(remarksColWidth + 4).
+			Width(retui.Fixed(remarksColWidth + 4).Value).
 			Focused(isFocused(baseIdx + 3)).
 			Value(line.Remarks).
 			// Placeholder("Remarks").

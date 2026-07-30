@@ -62,6 +62,9 @@ func (Ledger) Fields() []ent.Field {
 
 		field.Bool("is_cash").
 			Default(false),
+
+		field.Bool("is_active").
+			Default(true),
 	}
 }
 

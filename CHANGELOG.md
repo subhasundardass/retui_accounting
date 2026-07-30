@@ -6,6 +6,18 @@ The format is based on **Keep a Changelog**, and this project follows **Semantic
 
 ---
 
+## [v0.6.0] - 2026-07-30
+
+### Added
+
+- Added Margin to Box
+
+### Updates
+
+- Update: Render(), Layout()
+
+---
+
 ## [v0.5.0] - 2026-07-22
 
 ### Added
