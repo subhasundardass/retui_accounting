@@ -6,11 +6,13 @@ The format is based on **Keep a Changelog**, and this project follows **Semantic
 
 ---
 
-## [v0.6.0] - 2026-07-30
+## [v0.6.0] - 2026-07-31
 
 ### Added
 
 - Added Margin to Box
+- Added All component Test
+- Added Security Check Test
 
 ### Updates
 

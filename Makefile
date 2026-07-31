@@ -60,8 +60,7 @@ screen: ## Generate a new screen (Usage: make screen NAME=general)
 
 test:
 	go test -v -count=1 ./retui/...
-lint:
-	go test -v -count=1 ./retui/...	
+
 
 log:
 	tail -n +1 -f retui.log

@@ -1,0 +1,1757 @@
+=== RUN   TestPropsDefault
+--- PASS: TestPropsDefault (0.00s)
+=== RUN   TestPropsGet
+--- PASS: TestPropsGet (0.00s)
+=== RUN   TestPropsGetWithNilValues
+--- PASS: TestPropsGetWithNilValues (0.00s)
+=== RUN   TestElementDefault
+--- PASS: TestElementDefault (0.00s)
+=== RUN   TestElementWithID
+--- PASS: TestElementWithID (0.00s)
+=== RUN   TestElementWithText
+--- PASS: TestElementWithText (0.00s)
+=== RUN   TestElementWithStyle
+--- PASS: TestElementWithStyle (0.00s)
+=== RUN   TestElementWithChildren
+--- PASS: TestElementWithChildren (0.00s)
+=== RUN   TestPropsPadding
+--- PASS: TestPropsPadding (0.00s)
+=== RUN   TestLayoutPropsDefault
+--- PASS: TestLayoutPropsDefault (0.00s)
+=== RUN   TestMarkdownContentDefault
+--- PASS: TestMarkdownContentDefault (0.00s)
+=== RUN   TestElementWithMarkdown
+--- PASS: TestElementWithMarkdown (0.00s)
+=== RUN   TestElementOverlay
+--- PASS: TestElementOverlay (0.00s)
+=== RUN   TestSizing
+--- PASS: TestSizing (0.00s)
+=== RUN   TestSizingZeroValue
+--- PASS: TestSizingZeroValue (0.00s)
+=== RUN   TestNewFocusManager
+--- PASS: TestNewFocusManager (0.00s)
+=== RUN   TestSetAndGetFocus
+--- PASS: TestSetAndGetFocus (0.00s)
+=== RUN   TestSetFocusEmptyClearsFocus
+--- PASS: TestSetFocusEmptyClearsFocus (0.00s)
+=== RUN   TestSetOrder
+--- PASS: TestSetOrder (0.00s)
+=== RUN   TestNextFocus
+--- PASS: TestNextFocus (0.00s)
+=== RUN   TestNextFocusWithEmptyOrder
+--- PASS: TestNextFocusWithEmptyOrder (0.00s)
+=== RUN   TestPrevFocus
+--- PASS: TestPrevFocus (0.00s)
+=== RUN   TestPrevFocusWithEmptyOrder
+--- PASS: TestPrevFocusWithEmptyOrder (0.00s)
+=== RUN   TestNextFocusWhenCurrentNotInOrder
+--- PASS: TestNextFocusWhenCurrentNotInOrder (0.00s)
+=== RUN   TestPrevFocusWhenCurrentNotInOrder
+--- PASS: TestPrevFocusWhenCurrentNotInOrder (0.00s)
+=== RUN   TestPushAndPopFocus
+--- PASS: TestPushAndPopFocus (0.00s)
+=== RUN   TestPopFocusWithEmptyStack
+--- PASS: TestPopFocusWithEmptyStack (0.00s)
+=== RUN   TestPushFocusWhenNoCurrentFocus
+--- PASS: TestPushFocusWhenNoCurrentFocus (0.00s)
+=== RUN   TestGlobalFocusFunctions
+--- PASS: TestGlobalFocusFunctions (0.00s)
+=== RUN   TestFocusManagerConcurrency
+--- PASS: TestFocusManagerConcurrency (0.00s)
+=== RUN   TestIndexOf
+--- PASS: TestIndexOf (0.00s)
+=== RUN   TestUseState
+--- PASS: TestUseState (0.00s)
+=== RUN   TestUseStateMultiple
+--- PASS: TestUseStateMultiple (0.00s)
+=== RUN   TestUseStateSetOrder
+--- PASS: TestUseStateSetOrder (0.00s)
+=== RUN   TestUseStateKeyed
+--- PASS: TestUseStateKeyed (0.00s)
+=== RUN   TestUseStateKeyedSameKey
+--- PASS: TestUseStateKeyedSameKey (0.00s)
+=== RUN   TestUseEffect
+--- PASS: TestUseEffect (0.00s)
+=== RUN   TestCreateContext
+--- PASS: TestCreateContext (0.00s)
+=== RUN   TestContextProvideAndUse
+--- PASS: TestContextProvideAndUse (0.00s)
+=== RUN   TestContextNested
+--- PASS: TestContextNested (0.00s)
+=== RUN   TestContextWithPanic
+--- PASS: TestContextWithPanic (0.00s)
+=== RUN   TestResetComponentState
+--- PASS: TestResetComponentState (0.00s)
+=== RUN   TestGrowWeightDistribution
+--- PASS: TestGrowWeightDistribution (0.00s)
+=== RUN   TestGrowDistributionNoRoundingLossAtLastChild
+--- PASS: TestGrowDistributionNoRoundingLossAtLastChild (0.00s)
+=== RUN   TestJustifySpaceBetweenPacksEdges
+--- PASS: TestJustifySpaceBetweenPacksEdges (0.00s)
+=== RUN   TestJustifySpaceBetweenIntegerDivisionSlack
+--- PASS: TestJustifySpaceBetweenIntegerDivisionSlack (0.00s)
+=== RUN   TestAlignStretchOverridesExplicitChildCrossSize
+--- PASS: TestAlignStretchOverridesExplicitChildCrossSize (0.00s)
+=== RUN   TestAlignStartRespectsExplicitChildCrossSize
+--- PASS: TestAlignStartRespectsExplicitChildCrossSize (0.00s)
+=== RUN   TestZeroValueSizingDefaultsToFixedZero
+--- PASS: TestZeroValueSizingDefaultsToFixedZero (0.00s)
+=== RUN   TestReflowFiresBeforeGrowResolutionInColumn
+--- PASS: TestReflowFiresBeforeGrowResolutionInColumn (0.00s)
+=== RUN   TestReflowFiresAfterGrowResolutionInRow
+--- PASS: TestReflowFiresAfterGrowResolutionInRow (0.00s)
+=== RUN   TestEffectCleanupOnUnmount
+[H[2J[3J[?25l[?2004h--- PASS: TestEffectCleanupOnUnmount (0.00s)
+=== RUN   TestStateTruncation
+[H[2J[3J[?25l[?2004h--- PASS: TestStateTruncation (0.00s)
+=== RUN   TestEffectDependencyChangeCleanup
+[H[2J[3J[?25l[?2004h--- PASS: TestEffectDependencyChangeCleanup (0.00s)
+=== RUN   TestRenderMemoryLeak
+[H[2J[3J[?25l[?2004h--- PASS: TestRenderMemoryLeak (0.03s)
+=== RUN   TestNewApp
+[H[2J[3J[?25l[?2004h--- PASS: TestNewApp (0.00s)
+=== RUN   TestNewAppDimensions
+[H[2J[3J[?25l[?2004h--- PASS: TestNewAppDimensions (0.00s)
+=== RUN   TestAppRender
+[H[2J[3J[?25l[?2004h--- PASS: TestAppRender (0.00s)
+=== RUN   TestAppRenderWithState
+[H[2J[3J[?25l[?2004h[?2004l[?25h[0m--- PASS: TestAppRenderWithState (0.00s)
+=== RUN   TestExit
+--- PASS: TestExit (0.00s)
+=== RUN   TestAppRun
+[H[2J[3J[?25l[?2004h[H[2J[3J[?25l[?2004h[?2004l[?25h[0m[?2004l[?25h[0m--- PASS: TestAppRun (0.00s)
+=== RUN   TestAppRunWithPanic
+[H[2J[3J[?25l[?2004h[H[2J[3J[?25l[?2004h[?2004l[?25h[0m[?2004l[?25h[0m--- PASS: TestAppRunWithPanic (0.10s)
+=== RUN   TestKeyHandlingInApp
+[H[2J[3J[?25l[?2004h[?2004l[?25h[0m--- PASS: TestKeyHandlingInApp (0.00s)
+=== RUN   TestTicker
+[H[2J[3J[?25l[?2004h[?2004l[?25h[0m--- PASS: TestTicker (0.00s)
+PASS
+ok  	github.com/subhasundardass/retui/retui	0.145s
+=== RUN   TestBadge
+=== RUN   TestBadge/creates_a_badge_with_label_and_colors
+=== RUN   TestBadge/renders_with_spaces_around_label
+=== RUN   TestBadge/handles_empty_label
+=== RUN   TestBadge/handles_single_character_label
+=== RUN   TestBadge/handles_long_label
+=== RUN   TestBadge/handles_special_characters_in_label
+=== RUN   TestBadge/handles_Unicode_characters
+=== RUN   TestBadge/handles_different_color_combinations
+=== RUN   TestBadge/handles_different_color_combinations/White_on_Navy
+=== RUN   TestBadge/handles_different_color_combinations/Black_on_Yellow
+=== RUN   TestBadge/handles_different_color_combinations/Green_on_Red
+=== RUN   TestBadge/handles_different_color_combinations/Cyan_on_Navy
+=== RUN   TestBadge/handles_different_color_combinations/Magenta_on_White
+=== RUN   TestBadge/handles_different_color_combinations/Yellow_on_Blue
+=== RUN   TestBadge/always_returns_bold_style
+=== RUN   TestBadge/creates_badge_with_default_colors
+=== RUN   TestBadge/multiple_badges_can_be_created_independently
+=== RUN   TestBadge/badge_text_preserves_case
+=== RUN   TestBadge/badge_text_preserves_case/lowercase
+=== RUN   TestBadge/badge_text_preserves_case/UPPERCASE
+=== RUN   TestBadge/badge_text_preserves_case/MixedCase
+=== RUN   TestBadge/badge_text_preserves_case/cAmElCaSe
+=== RUN   TestBadge/badge_with_numbers_in_label
+=== RUN   TestBadge/badge_with_mixed_alphanumeric
+--- PASS: TestBadge (0.00s)
+    --- PASS: TestBadge/creates_a_badge_with_label_and_colors (0.00s)
+    --- PASS: TestBadge/renders_with_spaces_around_label (0.00s)
+    --- PASS: TestBadge/handles_empty_label (0.00s)
+    --- PASS: TestBadge/handles_single_character_label (0.00s)
+    --- PASS: TestBadge/handles_long_label (0.00s)
+    --- PASS: TestBadge/handles_special_characters_in_label (0.00s)
+    --- PASS: TestBadge/handles_Unicode_characters (0.00s)
+    --- PASS: TestBadge/handles_different_color_combinations (0.00s)
+        --- PASS: TestBadge/handles_different_color_combinations/White_on_Navy (0.00s)
+        --- PASS: TestBadge/handles_different_color_combinations/Black_on_Yellow (0.00s)
+        --- PASS: TestBadge/handles_different_color_combinations/Green_on_Red (0.00s)
+        --- PASS: TestBadge/handles_different_color_combinations/Cyan_on_Navy (0.00s)
+        --- PASS: TestBadge/handles_different_color_combinations/Magenta_on_White (0.00s)
+        --- PASS: TestBadge/handles_different_color_combinations/Yellow_on_Blue (0.00s)
+    --- PASS: TestBadge/always_returns_bold_style (0.00s)
+    --- PASS: TestBadge/creates_badge_with_default_colors (0.00s)
+    --- PASS: TestBadge/multiple_badges_can_be_created_independently (0.00s)
+    --- PASS: TestBadge/badge_text_preserves_case (0.00s)
+        --- PASS: TestBadge/badge_text_preserves_case/lowercase (0.00s)
+        --- PASS: TestBadge/badge_text_preserves_case/UPPERCASE (0.00s)
+        --- PASS: TestBadge/badge_text_preserves_case/MixedCase (0.00s)
+        --- PASS: TestBadge/badge_text_preserves_case/cAmElCaSe (0.00s)
+    --- PASS: TestBadge/badge_with_numbers_in_label (0.00s)
+    --- PASS: TestBadge/badge_with_mixed_alphanumeric (0.00s)
+=== RUN   TestButtonBuilder_Defaults
+--- PASS: TestButtonBuilder_Defaults (0.00s)
+=== RUN   TestButtonBuilder_StringFields
+=== RUN   TestButtonBuilder_StringFields/sets_ID_correctly
+=== RUN   TestButtonBuilder_StringFields/sets_Label_correctly
+=== RUN   TestButtonBuilder_StringFields/sets_Prefix_correctly
+=== RUN   TestButtonBuilder_StringFields/sets_Suffix_correctly
+--- PASS: TestButtonBuilder_StringFields (0.00s)
+    --- PASS: TestButtonBuilder_StringFields/sets_ID_correctly (0.00s)
+    --- PASS: TestButtonBuilder_StringFields/sets_Label_correctly (0.00s)
+    --- PASS: TestButtonBuilder_StringFields/sets_Prefix_correctly (0.00s)
+    --- PASS: TestButtonBuilder_StringFields/sets_Suffix_correctly (0.00s)
+=== RUN   TestButtonBuilder_Width
+--- PASS: TestButtonBuilder_Width (0.00s)
+=== RUN   TestButtonBuilder_Styles
+=== RUN   TestButtonBuilder_Styles/sets_Style_correctly
+=== RUN   TestButtonBuilder_Styles/sets_HoverStyle_correctly
+=== RUN   TestButtonBuilder_Styles/sets_ActiveStyle_correctly
+--- PASS: TestButtonBuilder_Styles (0.00s)
+    --- PASS: TestButtonBuilder_Styles/sets_Style_correctly (0.00s)
+    --- PASS: TestButtonBuilder_Styles/sets_HoverStyle_correctly (0.00s)
+    --- PASS: TestButtonBuilder_Styles/sets_ActiveStyle_correctly (0.00s)
+=== RUN   TestButtonBuilder_State
+=== RUN   TestButtonBuilder_State/sets_Focused_state_correctly
+=== RUN   TestButtonBuilder_State/sets_Active_state_correctly
+--- PASS: TestButtonBuilder_State (0.00s)
+    --- PASS: TestButtonBuilder_State/sets_Focused_state_correctly (0.00s)
+    --- PASS: TestButtonBuilder_State/sets_Active_state_correctly (0.00s)
+=== RUN   TestButtonCallbacks
+=== RUN   TestButtonCallbacks/OnClick_callback_is_set_and_invoked_correctly
+=== RUN   TestButtonCallbacks/OnKeyPress_callback_is_set_and_invoked_correctly
+=== RUN   TestButtonCallbacks/OnFocus_callback_is_set_and_invoked_correctly
+=== RUN   TestButtonCallbacks/OnBlur_callback_is_set_and_invoked_correctly
+--- PASS: TestButtonCallbacks (0.00s)
+    --- PASS: TestButtonCallbacks/OnClick_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestButtonCallbacks/OnKeyPress_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestButtonCallbacks/OnFocus_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestButtonCallbacks/OnBlur_callback_is_set_and_invoked_correctly (0.00s)
+=== RUN   TestButtonRender
+=== RUN   TestButtonRender/returns_an_Element_with_text_type
+=== RUN   TestButtonRender/renders_with_default_label_when_empty
+=== RUN   TestButtonRender/includes_prefix_in_rendered_output
+=== RUN   TestButtonRender/includes_suffix_in_rendered_output
+--- PASS: TestButtonRender (0.00s)
+    --- PASS: TestButtonRender/returns_an_Element_with_text_type (0.00s)
+    --- PASS: TestButtonRender/renders_with_default_label_when_empty (0.00s)
+    --- PASS: TestButtonRender/includes_prefix_in_rendered_output (0.00s)
+    --- PASS: TestButtonRender/includes_suffix_in_rendered_output (0.00s)
+=== RUN   TestRenderButtonFunction
+=== RUN   TestRenderButtonFunction/renders_with_default_style_when_not_focused_or_active
+=== RUN   TestRenderButtonFunction/renders_with_hover_style_when_focused
+=== RUN   TestRenderButtonFunction/renders_with_active_style_when_active
+=== RUN   TestRenderButtonFunction/handles_width_padding
+=== RUN   TestRenderButtonFunction/triggers_OnFocus_when_focused
+=== RUN   TestRenderButtonFunction/triggers_OnBlur_when_not_focused
+=== RUN   TestRenderButtonFunction/does_not_trigger_focus/blur_without_ID
+--- PASS: TestRenderButtonFunction (0.00s)
+    --- PASS: TestRenderButtonFunction/renders_with_default_style_when_not_focused_or_active (0.00s)
+    --- PASS: TestRenderButtonFunction/renders_with_hover_style_when_focused (0.00s)
+    --- PASS: TestRenderButtonFunction/renders_with_active_style_when_active (0.00s)
+    --- PASS: TestRenderButtonFunction/handles_width_padding (0.00s)
+    --- PASS: TestRenderButtonFunction/triggers_OnFocus_when_focused (0.00s)
+    --- PASS: TestRenderButtonFunction/triggers_OnBlur_when_not_focused (0.00s)
+    --- PASS: TestRenderButtonFunction/does_not_trigger_focus/blur_without_ID (0.00s)
+=== RUN   TestButtonChaining
+--- PASS: TestButtonChaining (0.00s)
+=== RUN   TestButtonDefaultStyles
+=== RUN   TestButtonDefaultStyles/has_default_hover_style
+=== RUN   TestButtonDefaultStyles/has_default_active_style
+--- PASS: TestButtonDefaultStyles (0.00s)
+    --- PASS: TestButtonDefaultStyles/has_default_hover_style (0.00s)
+    --- PASS: TestButtonDefaultStyles/has_default_active_style (0.00s)
+=== RUN   TestCheckboxBuilder_Defaults
+--- PASS: TestCheckboxBuilder_Defaults (0.00s)
+=== RUN   TestCheckboxBuilder_StringFields
+=== RUN   TestCheckboxBuilder_StringFields/sets_ID_correctly
+=== RUN   TestCheckboxBuilder_StringFields/sets_Label_correctly
+--- PASS: TestCheckboxBuilder_StringFields (0.00s)
+    --- PASS: TestCheckboxBuilder_StringFields/sets_ID_correctly (0.00s)
+    --- PASS: TestCheckboxBuilder_StringFields/sets_Label_correctly (0.00s)
+=== RUN   TestCheckboxBuilder_Width
+--- PASS: TestCheckboxBuilder_Width (0.00s)
+=== RUN   TestCheckboxBuilder_Checked
+=== RUN   TestCheckboxBuilder_Checked/sets_Checked_to_true
+=== RUN   TestCheckboxBuilder_Checked/sets_Checked_to_false
+--- PASS: TestCheckboxBuilder_Checked (0.00s)
+    --- PASS: TestCheckboxBuilder_Checked/sets_Checked_to_true (0.00s)
+    --- PASS: TestCheckboxBuilder_Checked/sets_Checked_to_false (0.00s)
+=== RUN   TestCheckboxBuilder_Styles
+=== RUN   TestCheckboxBuilder_Styles/sets_Style_correctly
+=== RUN   TestCheckboxBuilder_Styles/sets_CheckedStyle_correctly
+=== RUN   TestCheckboxBuilder_Styles/sets_UncheckedStyle_correctly
+--- PASS: TestCheckboxBuilder_Styles (0.00s)
+    --- PASS: TestCheckboxBuilder_Styles/sets_Style_correctly (0.00s)
+    --- PASS: TestCheckboxBuilder_Styles/sets_CheckedStyle_correctly (0.00s)
+    --- PASS: TestCheckboxBuilder_Styles/sets_UncheckedStyle_correctly (0.00s)
+=== RUN   TestCheckboxBuilder_State
+=== RUN   TestCheckboxBuilder_State/sets_Focused_state_correctly
+=== RUN   TestCheckboxBuilder_State/sets_Focused_state_to_false
+--- PASS: TestCheckboxBuilder_State (0.00s)
+    --- PASS: TestCheckboxBuilder_State/sets_Focused_state_correctly (0.00s)
+    --- PASS: TestCheckboxBuilder_State/sets_Focused_state_to_false (0.00s)
+=== RUN   TestCheckboxCallbacks
+=== RUN   TestCheckboxCallbacks/OnChange_callback_is_set_and_invoked_correctly
+=== RUN   TestCheckboxCallbacks/OnKeyPress_callback_is_set_and_invoked_correctly
+=== RUN   TestCheckboxCallbacks/OnFocus_callback_is_set_and_invoked_correctly
+=== RUN   TestCheckboxCallbacks/OnBlur_callback_is_set_and_invoked_correctly
+--- PASS: TestCheckboxCallbacks (0.00s)
+    --- PASS: TestCheckboxCallbacks/OnChange_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestCheckboxCallbacks/OnKeyPress_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestCheckboxCallbacks/OnFocus_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestCheckboxCallbacks/OnBlur_callback_is_set_and_invoked_correctly (0.00s)
+=== RUN   TestCheckboxRender
+=== RUN   TestCheckboxRender/returns_an_Element_of_type_ElementText
+=== RUN   TestCheckboxRender/renders_unchecked_checkbox_by_default
+=== RUN   TestCheckboxRender/renders_checked_checkbox_when_Checked_is_true
+=== RUN   TestCheckboxRender/renders_without_label_when_empty
+=== RUN   TestCheckboxRender/renders_checked_without_label
+=== RUN   TestCheckboxRender/renders_with_width_padding
+--- PASS: TestCheckboxRender (0.00s)
+    --- PASS: TestCheckboxRender/returns_an_Element_of_type_ElementText (0.00s)
+    --- PASS: TestCheckboxRender/renders_unchecked_checkbox_by_default (0.00s)
+    --- PASS: TestCheckboxRender/renders_checked_checkbox_when_Checked_is_true (0.00s)
+    --- PASS: TestCheckboxRender/renders_without_label_when_empty (0.00s)
+    --- PASS: TestCheckboxRender/renders_checked_without_label (0.00s)
+    --- PASS: TestCheckboxRender/renders_with_width_padding (0.00s)
+=== RUN   TestRenderCheckboxFunction
+=== RUN   TestRenderCheckboxFunction/renders_unchecked_checkbox_when_not_focused
+=== RUN   TestRenderCheckboxFunction/renders_checked_checkbox
+=== RUN   TestRenderCheckboxFunction/renders_with_focus_style_when_focused
+=== RUN   TestRenderCheckboxFunction/renders_checked_with_checked_style
+=== RUN   TestRenderCheckboxFunction/triggers_OnFocus_when_focused
+=== RUN   TestRenderCheckboxFunction/triggers_OnBlur_when_not_focused
+=== RUN   TestRenderCheckboxFunction/does_not_trigger_focus/blur_without_ID
+=== RUN   TestRenderCheckboxFunction/handles_OnKeyPress_callback
+--- PASS: TestRenderCheckboxFunction (0.00s)
+    --- PASS: TestRenderCheckboxFunction/renders_unchecked_checkbox_when_not_focused (0.00s)
+    --- PASS: TestRenderCheckboxFunction/renders_checked_checkbox (0.00s)
+    --- PASS: TestRenderCheckboxFunction/renders_with_focus_style_when_focused (0.00s)
+    --- PASS: TestRenderCheckboxFunction/renders_checked_with_checked_style (0.00s)
+    --- PASS: TestRenderCheckboxFunction/triggers_OnFocus_when_focused (0.00s)
+    --- PASS: TestRenderCheckboxFunction/triggers_OnBlur_when_not_focused (0.00s)
+    --- PASS: TestRenderCheckboxFunction/does_not_trigger_focus/blur_without_ID (0.00s)
+    --- PASS: TestRenderCheckboxFunction/handles_OnKeyPress_callback (0.00s)
+=== RUN   TestCheckboxChaining
+--- PASS: TestCheckboxChaining (0.00s)
+=== RUN   TestCheckboxDefaultStyles
+=== RUN   TestCheckboxDefaultStyles/has_default_checked_style
+=== RUN   TestCheckboxDefaultStyles/has_default_unchecked_style
+--- PASS: TestCheckboxDefaultStyles (0.00s)
+    --- PASS: TestCheckboxDefaultStyles/has_default_checked_style (0.00s)
+    --- PASS: TestCheckboxDefaultStyles/has_default_unchecked_style (0.00s)
+=== RUN   TestCheckboxEdgeCases
+=== RUN   TestCheckboxEdgeCases/handles_empty_label_gracefully
+=== RUN   TestCheckboxEdgeCases/handles_negative_width_gracefully
+=== RUN   TestCheckboxEdgeCases/handles_very_long_labels
+=== RUN   TestCheckboxEdgeCases/handles_nil_callbacks_gracefully
+=== RUN   TestCheckboxEdgeCases/toggles_checked_state_on_render
+--- PASS: TestCheckboxEdgeCases (0.00s)
+    --- PASS: TestCheckboxEdgeCases/handles_empty_label_gracefully (0.00s)
+    --- PASS: TestCheckboxEdgeCases/handles_negative_width_gracefully (0.00s)
+    --- PASS: TestCheckboxEdgeCases/handles_very_long_labels (0.00s)
+    --- PASS: TestCheckboxEdgeCases/handles_nil_callbacks_gracefully (0.00s)
+    --- PASS: TestCheckboxEdgeCases/toggles_checked_state_on_render (0.00s)
+=== RUN   TestDateInputBuilder_Defaults
+--- PASS: TestDateInputBuilder_Defaults (0.00s)
+=== RUN   TestDateInputBuilder_StringFields
+=== RUN   TestDateInputBuilder_StringFields/sets_ID_correctly
+=== RUN   TestDateInputBuilder_StringFields/sets_Value_correctly
+=== RUN   TestDateInputBuilder_StringFields/sets_Format_correctly
+=== RUN   TestDateInputBuilder_StringFields/sets_Placeholder_correctly
+=== RUN   TestDateInputBuilder_StringFields/sets_Prefix_correctly
+=== RUN   TestDateInputBuilder_StringFields/sets_Suffix_correctly
+=== RUN   TestDateInputBuilder_StringFields/sets_Min_correctly
+=== RUN   TestDateInputBuilder_StringFields/sets_Max_correctly
+--- PASS: TestDateInputBuilder_StringFields (0.00s)
+    --- PASS: TestDateInputBuilder_StringFields/sets_ID_correctly (0.00s)
+    --- PASS: TestDateInputBuilder_StringFields/sets_Value_correctly (0.00s)
+    --- PASS: TestDateInputBuilder_StringFields/sets_Format_correctly (0.00s)
+    --- PASS: TestDateInputBuilder_StringFields/sets_Placeholder_correctly (0.00s)
+    --- PASS: TestDateInputBuilder_StringFields/sets_Prefix_correctly (0.00s)
+    --- PASS: TestDateInputBuilder_StringFields/sets_Suffix_correctly (0.00s)
+    --- PASS: TestDateInputBuilder_StringFields/sets_Min_correctly (0.00s)
+    --- PASS: TestDateInputBuilder_StringFields/sets_Max_correctly (0.00s)
+=== RUN   TestDateInputBuilder_Width
+--- PASS: TestDateInputBuilder_Width (0.00s)
+=== RUN   TestDateInputBuilder_Style
+=== RUN   TestDateInputBuilder_Style/sets_Style_correctly
+--- PASS: TestDateInputBuilder_Style (0.00s)
+    --- PASS: TestDateInputBuilder_Style/sets_Style_correctly (0.00s)
+=== RUN   TestDateInputBuilder_State
+=== RUN   TestDateInputBuilder_State/sets_Focused_state_correctly
+=== RUN   TestDateInputBuilder_State/sets_Focused_state_to_false
+--- PASS: TestDateInputBuilder_State (0.00s)
+    --- PASS: TestDateInputBuilder_State/sets_Focused_state_correctly (0.00s)
+    --- PASS: TestDateInputBuilder_State/sets_Focused_state_to_false (0.00s)
+=== RUN   TestDateInputCallbacks
+=== RUN   TestDateInputCallbacks/OnChange_callback_is_set_and_invoked_correctly
+=== RUN   TestDateInputCallbacks/OnKeyPress_callback_is_set_and_invoked_correctly
+=== RUN   TestDateInputCallbacks/OnFocus_callback_is_set_and_invoked_correctly
+=== RUN   TestDateInputCallbacks/OnBlur_callback_is_set_and_invoked_correctly
+=== RUN   TestDateInputCallbacks/OnSubmit_callback_is_set_and_invoked_correctly
+--- PASS: TestDateInputCallbacks (0.00s)
+    --- PASS: TestDateInputCallbacks/OnChange_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestDateInputCallbacks/OnKeyPress_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestDateInputCallbacks/OnFocus_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestDateInputCallbacks/OnBlur_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestDateInputCallbacks/OnSubmit_callback_is_set_and_invoked_correctly (0.00s)
+=== RUN   TestDateInputRender
+=== RUN   TestDateInputRender/returns_an_Element_of_type_ElementBox
+=== RUN   TestDateInputRender/renders_with_default_format
+=== RUN   TestDateInputRender/renders_with_placeholder
+=== RUN   TestDateInputRender/renders_with_prefix
+=== RUN   TestDateInputRender/renders_with_suffix
+=== RUN   TestDateInputRender/renders_with_value
+--- PASS: TestDateInputRender (0.00s)
+    --- PASS: TestDateInputRender/returns_an_Element_of_type_ElementBox (0.00s)
+    --- PASS: TestDateInputRender/renders_with_default_format (0.00s)
+    --- PASS: TestDateInputRender/renders_with_placeholder (0.00s)
+    --- PASS: TestDateInputRender/renders_with_prefix (0.00s)
+    --- PASS: TestDateInputRender/renders_with_suffix (0.00s)
+    --- PASS: TestDateInputRender/renders_with_value (0.00s)
+=== RUN   TestRenderDateInputFunction
+=== RUN   TestRenderDateInputFunction/renders_with_default_style_when_not_focused
+=== RUN   TestRenderDateInputFunction/renders_with_focus_style_when_focused
+=== RUN   TestRenderDateInputFunction/triggers_OnFocus_when_focused
+=== RUN   TestRenderDateInputFunction/triggers_OnBlur_when_not_focused
+=== RUN   TestRenderDateInputFunction/does_not_trigger_focus/blur_without_ID
+--- PASS: TestRenderDateInputFunction (0.00s)
+    --- PASS: TestRenderDateInputFunction/renders_with_default_style_when_not_focused (0.00s)
+    --- PASS: TestRenderDateInputFunction/renders_with_focus_style_when_focused (0.00s)
+    --- PASS: TestRenderDateInputFunction/triggers_OnFocus_when_focused (0.00s)
+    --- PASS: TestRenderDateInputFunction/triggers_OnBlur_when_not_focused (0.00s)
+    --- PASS: TestRenderDateInputFunction/does_not_trigger_focus/blur_without_ID (0.00s)
+=== RUN   TestDateInputChaining
+--- PASS: TestDateInputChaining (0.00s)
+=== RUN   TestDateInputEdgeCases
+=== RUN   TestDateInputEdgeCases/handles_empty_format_gracefully
+=== RUN   TestDateInputEdgeCases/handles_negative_width_gracefully
+=== RUN   TestDateInputEdgeCases/handles_very_long_placeholder
+=== RUN   TestDateInputEdgeCases/handles_nil_callbacks_gracefully
+=== RUN   TestDateInputEdgeCases/handles_different_date_formats
+=== RUN   TestDateInputEdgeCases/handles_different_date_formats/YYYY-MM-DD
+=== RUN   TestDateInputEdgeCases/handles_different_date_formats/MM/DD/YYYY
+=== RUN   TestDateInputEdgeCases/handles_different_date_formats/DD/MM/YYYY
+=== RUN   TestDateInputEdgeCases/handles_different_date_formats/YYYY.MM.DD
+--- PASS: TestDateInputEdgeCases (0.00s)
+    --- PASS: TestDateInputEdgeCases/handles_empty_format_gracefully (0.00s)
+    --- PASS: TestDateInputEdgeCases/handles_negative_width_gracefully (0.00s)
+    --- PASS: TestDateInputEdgeCases/handles_very_long_placeholder (0.00s)
+    --- PASS: TestDateInputEdgeCases/handles_nil_callbacks_gracefully (0.00s)
+    --- PASS: TestDateInputEdgeCases/handles_different_date_formats (0.00s)
+        --- PASS: TestDateInputEdgeCases/handles_different_date_formats/YYYY-MM-DD (0.00s)
+        --- PASS: TestDateInputEdgeCases/handles_different_date_formats/MM/DD/YYYY (0.00s)
+        --- PASS: TestDateInputEdgeCases/handles_different_date_formats/DD/MM/YYYY (0.00s)
+        --- PASS: TestDateInputEdgeCases/handles_different_date_formats/YYYY.MM.DD (0.00s)
+=== RUN   TestHelperFunctions
+=== RUN   TestHelperFunctions/extractDigitsOnly_extracts_only_digits
+=== RUN   TestHelperFunctions/countDigitsInMask_counts_digit_placeholders
+=== RUN   TestHelperFunctions/applyMaskFormat_applies_digits_to_mask
+=== RUN   TestHelperFunctions/isValidCalendarDate_validates_dates_correctly
+=== RUN   TestHelperFunctions/dateSortKey_returns_correct_sort_key
+=== RUN   TestHelperFunctions/maskFieldSpecs_identifies_field_positions
+=== RUN   TestHelperFunctions/extractDateParts_extracts_date_parts_correctly
+=== RUN   TestHelperFunctions/parseFormattedDate_parses_formatted_dates
+=== RUN   TestHelperFunctions/evaluateDate_evaluates_date_validity
+=== RUN   TestHelperFunctions/calculateCursorDisplayPos_calculates_correct_position
+--- PASS: TestHelperFunctions (0.00s)
+    --- PASS: TestHelperFunctions/extractDigitsOnly_extracts_only_digits (0.00s)
+    --- PASS: TestHelperFunctions/countDigitsInMask_counts_digit_placeholders (0.00s)
+    --- PASS: TestHelperFunctions/applyMaskFormat_applies_digits_to_mask (0.00s)
+    --- PASS: TestHelperFunctions/isValidCalendarDate_validates_dates_correctly (0.00s)
+    --- PASS: TestHelperFunctions/dateSortKey_returns_correct_sort_key (0.00s)
+    --- PASS: TestHelperFunctions/maskFieldSpecs_identifies_field_positions (0.00s)
+    --- PASS: TestHelperFunctions/extractDateParts_extracts_date_parts_correctly (0.00s)
+    --- PASS: TestHelperFunctions/parseFormattedDate_parses_formatted_dates (0.00s)
+    --- PASS: TestHelperFunctions/evaluateDate_evaluates_date_validity (0.00s)
+    --- PASS: TestHelperFunctions/calculateCursorDisplayPos_calculates_correct_position (0.00s)
+=== RUN   TestListBuilder_Defaults
+--- PASS: TestListBuilder_Defaults (0.00s)
+=== RUN   TestListBuilder_StringFields
+=== RUN   TestListBuilder_StringFields/sets_ID_correctly
+=== RUN   TestListBuilder_StringFields/sets_Prefix_correctly
+=== RUN   TestListBuilder_StringFields/sets_Suffix_correctly
+--- PASS: TestListBuilder_StringFields (0.00s)
+    --- PASS: TestListBuilder_StringFields/sets_ID_correctly (0.00s)
+    --- PASS: TestListBuilder_StringFields/sets_Prefix_correctly (0.00s)
+    --- PASS: TestListBuilder_StringFields/sets_Suffix_correctly (0.00s)
+=== RUN   TestListBuilder_Items
+=== RUN   TestListBuilder_Items/sets_Items_correctly
+=== RUN   TestListBuilder_Items/sets_empty_Items_correctly
+--- PASS: TestListBuilder_Items (0.00s)
+    --- PASS: TestListBuilder_Items/sets_Items_correctly (0.00s)
+    --- PASS: TestListBuilder_Items/sets_empty_Items_correctly (0.00s)
+=== RUN   TestListBuilder_Selected
+=== RUN   TestListBuilder_Selected/sets_Selected_correctly
+=== RUN   TestListBuilder_Selected/sets_Selected_to_0_by_default
+--- PASS: TestListBuilder_Selected (0.00s)
+    --- PASS: TestListBuilder_Selected/sets_Selected_correctly (0.00s)
+    --- PASS: TestListBuilder_Selected/sets_Selected_to_0_by_default (0.00s)
+=== RUN   TestListBuilder_Width
+--- PASS: TestListBuilder_Width (0.00s)
+=== RUN   TestListBuilder_Styles
+=== RUN   TestListBuilder_Styles/sets_Style_correctly
+=== RUN   TestListBuilder_Styles/sets_SelectedStyle_correctly
+=== RUN   TestListBuilder_Styles/sets_UnselectedStyle_correctly
+--- PASS: TestListBuilder_Styles (0.00s)
+    --- PASS: TestListBuilder_Styles/sets_Style_correctly (0.00s)
+    --- PASS: TestListBuilder_Styles/sets_SelectedStyle_correctly (0.00s)
+    --- PASS: TestListBuilder_Styles/sets_UnselectedStyle_correctly (0.00s)
+=== RUN   TestListBuilder_State
+=== RUN   TestListBuilder_State/sets_Focused_state_correctly
+=== RUN   TestListBuilder_State/sets_Focused_state_to_false
+--- PASS: TestListBuilder_State (0.00s)
+    --- PASS: TestListBuilder_State/sets_Focused_state_correctly (0.00s)
+    --- PASS: TestListBuilder_State/sets_Focused_state_to_false (0.00s)
+=== RUN   TestListCallbacks
+=== RUN   TestListCallbacks/OnSelect_callback_is_set_and_invoked_correctly
+=== RUN   TestListCallbacks/OnKeyPress_callback_is_set_and_invoked_correctly
+=== RUN   TestListCallbacks/OnFocus_callback_is_set_and_invoked_correctly
+=== RUN   TestListCallbacks/OnBlur_callback_is_set_and_invoked_correctly
+=== RUN   TestListCallbacks/OnSubmit_callback_is_set_and_invoked_correctly
+--- PASS: TestListCallbacks (0.00s)
+    --- PASS: TestListCallbacks/OnSelect_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestListCallbacks/OnKeyPress_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestListCallbacks/OnFocus_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestListCallbacks/OnBlur_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestListCallbacks/OnSubmit_callback_is_set_and_invoked_correctly (0.00s)
+=== RUN   TestListRender
+=== RUN   TestListRender/returns_an_Element_of_type_ElementBox
+=== RUN   TestListRender/renders_with_empty_items
+=== RUN   TestListRender/renders_with_prefix
+=== RUN   TestListRender/renders_with_suffix
+=== RUN   TestListRender/renders_with_width
+--- PASS: TestListRender (0.00s)
+    --- PASS: TestListRender/returns_an_Element_of_type_ElementBox (0.00s)
+    --- PASS: TestListRender/renders_with_empty_items (0.00s)
+    --- PASS: TestListRender/renders_with_prefix (0.00s)
+    --- PASS: TestListRender/renders_with_suffix (0.00s)
+    --- PASS: TestListRender/renders_with_width (0.00s)
+=== RUN   TestRenderListFunction
+=== RUN   TestRenderListFunction/renders_with_default_style_when_not_focused
+=== RUN   TestRenderListFunction/renders_with_focus_style_when_focused
+=== RUN   TestRenderListFunction/selects_first_item_by_default
+=== RUN   TestRenderListFunction/handles_empty_items_list
+=== RUN   TestRenderListFunction/triggers_OnFocus_when_focused
+=== RUN   TestRenderListFunction/triggers_OnBlur_when_not_focused
+=== RUN   TestRenderListFunction/does_not_trigger_focus/blur_without_ID
+--- PASS: TestRenderListFunction (0.00s)
+    --- PASS: TestRenderListFunction/renders_with_default_style_when_not_focused (0.00s)
+    --- PASS: TestRenderListFunction/renders_with_focus_style_when_focused (0.00s)
+    --- PASS: TestRenderListFunction/selects_first_item_by_default (0.00s)
+    --- PASS: TestRenderListFunction/handles_empty_items_list (0.00s)
+    --- PASS: TestRenderListFunction/triggers_OnFocus_when_focused (0.00s)
+    --- PASS: TestRenderListFunction/triggers_OnBlur_when_not_focused (0.00s)
+    --- PASS: TestRenderListFunction/does_not_trigger_focus/blur_without_ID (0.00s)
+=== RUN   TestListChaining
+--- PASS: TestListChaining (0.00s)
+=== RUN   TestListDefaultStyles
+=== RUN   TestListDefaultStyles/has_default_selected_style
+=== RUN   TestListDefaultStyles/has_default_unselected_style
+--- PASS: TestListDefaultStyles (0.00s)
+    --- PASS: TestListDefaultStyles/has_default_selected_style (0.00s)
+    --- PASS: TestListDefaultStyles/has_default_unselected_style (0.00s)
+=== RUN   TestListEdgeCases
+=== RUN   TestListEdgeCases/handles_empty_items_gracefully
+=== RUN   TestListEdgeCases/handles_negative_width_gracefully
+=== RUN   TestListEdgeCases/handles_negative_selected_index_gracefully
+=== RUN   TestListEdgeCases/handles_selected_index_out_of_bounds
+=== RUN   TestListEdgeCases/handles_very_long_items
+=== RUN   TestListEdgeCases/handles_many_items
+=== RUN   TestListEdgeCases/handles_nil_callbacks_gracefully
+=== RUN   TestListEdgeCases/handles_empty_prefix_and_suffix
+=== RUN   TestListEdgeCases/handles_special_characters_in_items
+--- PASS: TestListEdgeCases (0.00s)
+    --- PASS: TestListEdgeCases/handles_empty_items_gracefully (0.00s)
+    --- PASS: TestListEdgeCases/handles_negative_width_gracefully (0.00s)
+    --- PASS: TestListEdgeCases/handles_negative_selected_index_gracefully (0.00s)
+    --- PASS: TestListEdgeCases/handles_selected_index_out_of_bounds (0.00s)
+    --- PASS: TestListEdgeCases/handles_very_long_items (0.00s)
+    --- PASS: TestListEdgeCases/handles_many_items (0.00s)
+    --- PASS: TestListEdgeCases/handles_nil_callbacks_gracefully (0.00s)
+    --- PASS: TestListEdgeCases/handles_empty_prefix_and_suffix (0.00s)
+    --- PASS: TestListEdgeCases/handles_special_characters_in_items (0.00s)
+=== RUN   TestNumberInputBuilder_Defaults
+--- PASS: TestNumberInputBuilder_Defaults (0.00s)
+=== RUN   TestNumberInputBuilder_StringFields
+=== RUN   TestNumberInputBuilder_StringFields/sets_ID_correctly
+=== RUN   TestNumberInputBuilder_StringFields/sets_Placeholder_correctly
+=== RUN   TestNumberInputBuilder_StringFields/sets_Prefix_correctly
+=== RUN   TestNumberInputBuilder_StringFields/sets_Suffix_correctly
+--- PASS: TestNumberInputBuilder_StringFields (0.00s)
+    --- PASS: TestNumberInputBuilder_StringFields/sets_ID_correctly (0.00s)
+    --- PASS: TestNumberInputBuilder_StringFields/sets_Placeholder_correctly (0.00s)
+    --- PASS: TestNumberInputBuilder_StringFields/sets_Prefix_correctly (0.00s)
+    --- PASS: TestNumberInputBuilder_StringFields/sets_Suffix_correctly (0.00s)
+=== RUN   TestNumberInputBuilder_Value
+=== RUN   TestNumberInputBuilder_Value/sets_Value_and_marks_Empty_false
+=== RUN   TestNumberInputBuilder_Value/sets_Value_to_0_and_marks_Empty_false
+--- PASS: TestNumberInputBuilder_Value (0.00s)
+    --- PASS: TestNumberInputBuilder_Value/sets_Value_and_marks_Empty_false (0.00s)
+    --- PASS: TestNumberInputBuilder_Value/sets_Value_to_0_and_marks_Empty_false (0.00s)
+=== RUN   TestNumberInputBuilder_Empty
+=== RUN   TestNumberInputBuilder_Empty/sets_Empty_true
+=== RUN   TestNumberInputBuilder_Empty/sets_Empty_false
+--- PASS: TestNumberInputBuilder_Empty (0.00s)
+    --- PASS: TestNumberInputBuilder_Empty/sets_Empty_true (0.00s)
+    --- PASS: TestNumberInputBuilder_Empty/sets_Empty_false (0.00s)
+=== RUN   TestNumberInputBuilder_Width
+--- PASS: TestNumberInputBuilder_Width (0.00s)
+=== RUN   TestNumberInputBuilder_Style
+=== RUN   TestNumberInputBuilder_Style/sets_Style_correctly
+--- PASS: TestNumberInputBuilder_Style (0.00s)
+    --- PASS: TestNumberInputBuilder_Style/sets_Style_correctly (0.00s)
+=== RUN   TestNumberInputBuilder_Bounds
+=== RUN   TestNumberInputBuilder_Bounds/sets_Min_and_enables_HasMin
+=== RUN   TestNumberInputBuilder_Bounds/sets_Max_and_enables_HasMax
+=== RUN   TestNumberInputBuilder_Bounds/sets_both_Min_and_Max
+--- PASS: TestNumberInputBuilder_Bounds (0.00s)
+    --- PASS: TestNumberInputBuilder_Bounds/sets_Min_and_enables_HasMin (0.00s)
+    --- PASS: TestNumberInputBuilder_Bounds/sets_Max_and_enables_HasMax (0.00s)
+    --- PASS: TestNumberInputBuilder_Bounds/sets_both_Min_and_Max (0.00s)
+=== RUN   TestNumberInputBuilder_Step
+=== RUN   TestNumberInputBuilder_Step/sets_Step_correctly
+=== RUN   TestNumberInputBuilder_Step/ignores_non-positive_Step_and_uses_default_1
+=== RUN   TestNumberInputBuilder_Step/ignores_zero_Step_and_uses_default_1
+--- PASS: TestNumberInputBuilder_Step (0.00s)
+    --- PASS: TestNumberInputBuilder_Step/sets_Step_correctly (0.00s)
+    --- PASS: TestNumberInputBuilder_Step/ignores_non-positive_Step_and_uses_default_1 (0.00s)
+    --- PASS: TestNumberInputBuilder_Step/ignores_zero_Step_and_uses_default_1 (0.00s)
+=== RUN   TestNumberInputBuilder_Decimals
+=== RUN   TestNumberInputBuilder_Decimals/sets_Decimals_correctly
+=== RUN   TestNumberInputBuilder_Decimals/ignores_negative_Decimals_and_uses_0
+--- PASS: TestNumberInputBuilder_Decimals (0.00s)
+    --- PASS: TestNumberInputBuilder_Decimals/sets_Decimals_correctly (0.00s)
+    --- PASS: TestNumberInputBuilder_Decimals/ignores_negative_Decimals_and_uses_0 (0.00s)
+=== RUN   TestNumberInputBuilder_ArrowStep
+=== RUN   TestNumberInputBuilder_ArrowStep/sets_ArrowStep_true
+=== RUN   TestNumberInputBuilder_ArrowStep/sets_ArrowStep_false
+--- PASS: TestNumberInputBuilder_ArrowStep (0.00s)
+    --- PASS: TestNumberInputBuilder_ArrowStep/sets_ArrowStep_true (0.00s)
+    --- PASS: TestNumberInputBuilder_ArrowStep/sets_ArrowStep_false (0.00s)
+=== RUN   TestNumberInputBuilder_SelectAllOnFocus
+=== RUN   TestNumberInputBuilder_SelectAllOnFocus/sets_SelectAllOnFocus_true
+=== RUN   TestNumberInputBuilder_SelectAllOnFocus/sets_SelectAllOnFocus_false
+--- PASS: TestNumberInputBuilder_SelectAllOnFocus (0.00s)
+    --- PASS: TestNumberInputBuilder_SelectAllOnFocus/sets_SelectAllOnFocus_true (0.00s)
+    --- PASS: TestNumberInputBuilder_SelectAllOnFocus/sets_SelectAllOnFocus_false (0.00s)
+=== RUN   TestNumberInputBuilder_State
+=== RUN   TestNumberInputBuilder_State/sets_Focused_state_correctly
+=== RUN   TestNumberInputBuilder_State/sets_Focused_state_to_false
+--- PASS: TestNumberInputBuilder_State (0.00s)
+    --- PASS: TestNumberInputBuilder_State/sets_Focused_state_correctly (0.00s)
+    --- PASS: TestNumberInputBuilder_State/sets_Focused_state_to_false (0.00s)
+=== RUN   TestNumberInputCallbacks
+=== RUN   TestNumberInputCallbacks/OnChange_callback_is_set_and_invoked_correctly
+=== RUN   TestNumberInputCallbacks/OnKeyPress_callback_is_set_and_invoked_correctly
+=== RUN   TestNumberInputCallbacks/OnFocus_callback_is_set_and_invoked_correctly
+=== RUN   TestNumberInputCallbacks/OnBlur_callback_is_set_and_invoked_correctly
+=== RUN   TestNumberInputCallbacks/OnSubmit_callback_is_set_and_invoked_correctly
+--- PASS: TestNumberInputCallbacks (0.00s)
+    --- PASS: TestNumberInputCallbacks/OnChange_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestNumberInputCallbacks/OnKeyPress_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestNumberInputCallbacks/OnFocus_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestNumberInputCallbacks/OnBlur_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestNumberInputCallbacks/OnSubmit_callback_is_set_and_invoked_correctly (0.00s)
+=== RUN   TestNumberInputRender
+=== RUN   TestNumberInputRender/returns_an_Element_of_type_ElementBox
+=== RUN   TestNumberInputRender/renders_with_placeholder_when_empty
+=== RUN   TestNumberInputRender/renders_with_value_when_not_empty
+=== RUN   TestNumberInputRender/renders_with_prefix
+=== RUN   TestNumberInputRender/renders_with_suffix
+=== RUN   TestNumberInputRender/renders_with_width
+--- PASS: TestNumberInputRender (0.00s)
+    --- PASS: TestNumberInputRender/returns_an_Element_of_type_ElementBox (0.00s)
+    --- PASS: TestNumberInputRender/renders_with_placeholder_when_empty (0.00s)
+    --- PASS: TestNumberInputRender/renders_with_value_when_not_empty (0.00s)
+    --- PASS: TestNumberInputRender/renders_with_prefix (0.00s)
+    --- PASS: TestNumberInputRender/renders_with_suffix (0.00s)
+    --- PASS: TestNumberInputRender/renders_with_width (0.00s)
+=== RUN   TestRenderNumberInputFunction
+=== RUN   TestRenderNumberInputFunction/renders_with_default_style_when_not_focused
+=== RUN   TestRenderNumberInputFunction/renders_with_focus_style_when_focused
+=== RUN   TestRenderNumberInputFunction/renders_with_placeholder_when_empty
+=== RUN   TestRenderNumberInputFunction/triggers_OnFocus_when_focused
+=== RUN   TestRenderNumberInputFunction/triggers_OnBlur_when_not_focused
+=== RUN   TestRenderNumberInputFunction/does_not_trigger_focus/blur_without_ID
+--- PASS: TestRenderNumberInputFunction (0.00s)
+    --- PASS: TestRenderNumberInputFunction/renders_with_default_style_when_not_focused (0.00s)
+    --- PASS: TestRenderNumberInputFunction/renders_with_focus_style_when_focused (0.00s)
+    --- PASS: TestRenderNumberInputFunction/renders_with_placeholder_when_empty (0.00s)
+    --- PASS: TestRenderNumberInputFunction/triggers_OnFocus_when_focused (0.00s)
+    --- PASS: TestRenderNumberInputFunction/triggers_OnBlur_when_not_focused (0.00s)
+    --- PASS: TestRenderNumberInputFunction/does_not_trigger_focus/blur_without_ID (0.00s)
+=== RUN   TestNumberInputChaining
+--- PASS: TestNumberInputChaining (0.00s)
+=== RUN   TestNumberInputHelperFunctions
+=== RUN   TestNumberInputHelperFunctions/formatNumber_formats_numbers_correctly
+=== RUN   TestNumberInputHelperFunctions/roundToDecimals_rounds_correctly
+=== RUN   TestNumberInputHelperFunctions/parseNumber_parses_numbers_correctly
+=== RUN   TestNumberInputHelperFunctions/clampValue_clamps_correctly
+=== RUN   TestNumberInputHelperFunctions/isValidNumber_validates_numbers_correctly
+=== RUN   TestNumberInputHelperFunctions/applyParsedValue_applies_parsed_value_correctly
+--- PASS: TestNumberInputHelperFunctions (0.00s)
+    --- PASS: TestNumberInputHelperFunctions/formatNumber_formats_numbers_correctly (0.00s)
+    --- PASS: TestNumberInputHelperFunctions/roundToDecimals_rounds_correctly (0.00s)
+    --- PASS: TestNumberInputHelperFunctions/parseNumber_parses_numbers_correctly (0.00s)
+    --- PASS: TestNumberInputHelperFunctions/clampValue_clamps_correctly (0.00s)
+    --- PASS: TestNumberInputHelperFunctions/isValidNumber_validates_numbers_correctly (0.00s)
+    --- PASS: TestNumberInputHelperFunctions/applyParsedValue_applies_parsed_value_correctly (0.00s)
+=== RUN   TestNumberInputEdgeCases
+=== RUN   TestNumberInputEdgeCases/handles_negative_width_gracefully
+=== RUN   TestNumberInputEdgeCases/handles_very_large_numbers
+=== RUN   TestNumberInputEdgeCases/handles_very_small_numbers
+=== RUN   TestNumberInputEdgeCases/handles_nil_callbacks_gracefully
+=== RUN   TestNumberInputEdgeCases/handles_empty_prefix_and_suffix
+=== RUN   TestNumberInputEdgeCases/validates_bounds_correctly
+--- PASS: TestNumberInputEdgeCases (0.00s)
+    --- PASS: TestNumberInputEdgeCases/handles_negative_width_gracefully (0.00s)
+    --- PASS: TestNumberInputEdgeCases/handles_very_large_numbers (0.00s)
+    --- PASS: TestNumberInputEdgeCases/handles_very_small_numbers (0.00s)
+    --- PASS: TestNumberInputEdgeCases/handles_nil_callbacks_gracefully (0.00s)
+    --- PASS: TestNumberInputEdgeCases/handles_empty_prefix_and_suffix (0.00s)
+    --- PASS: TestNumberInputEdgeCases/validates_bounds_correctly (0.00s)
+=== RUN   TestPanelBuilder_Defaults
+--- PASS: TestPanelBuilder_Defaults (0.00s)
+=== RUN   TestPanelBuilder_Width
+=== RUN   TestPanelBuilder_Width/sets_Width_with_Grow_sizing
+=== RUN   TestPanelBuilder_Width/sets_Width_with_Fixed_sizing
+--- PASS: TestPanelBuilder_Width (0.00s)
+    --- PASS: TestPanelBuilder_Width/sets_Width_with_Grow_sizing (0.00s)
+    --- PASS: TestPanelBuilder_Width/sets_Width_with_Fixed_sizing (0.00s)
+=== RUN   TestPanelBuilder_FixedWidth
+=== RUN   TestPanelBuilder_FixedWidth/sets_FixedWidth_correctly
+=== RUN   TestPanelBuilder_FixedWidth/sets_FixedWidth_to_0
+--- PASS: TestPanelBuilder_FixedWidth (0.00s)
+    --- PASS: TestPanelBuilder_FixedWidth/sets_FixedWidth_correctly (0.00s)
+    --- PASS: TestPanelBuilder_FixedWidth/sets_FixedWidth_to_0 (0.00s)
+=== RUN   TestPanelBuilder_Height
+=== RUN   TestPanelBuilder_Height/sets_Height_with_Grow_sizing
+=== RUN   TestPanelBuilder_Height/sets_Height_with_Fixed_sizing
+--- PASS: TestPanelBuilder_Height (0.00s)
+    --- PASS: TestPanelBuilder_Height/sets_Height_with_Grow_sizing (0.00s)
+    --- PASS: TestPanelBuilder_Height/sets_Height_with_Fixed_sizing (0.00s)
+=== RUN   TestPanelBuilder_FixedHeight
+=== RUN   TestPanelBuilder_FixedHeight/sets_FixedHeight_correctly
+=== RUN   TestPanelBuilder_FixedHeight/sets_FixedHeight_to_0
+--- PASS: TestPanelBuilder_FixedHeight (0.00s)
+    --- PASS: TestPanelBuilder_FixedHeight/sets_FixedHeight_correctly (0.00s)
+    --- PASS: TestPanelBuilder_FixedHeight/sets_FixedHeight_to_0 (0.00s)
+=== RUN   TestPanelBuilder_Style
+=== RUN   TestPanelBuilder_Style/sets_Style_correctly
+--- PASS: TestPanelBuilder_Style (0.00s)
+    --- PASS: TestPanelBuilder_Style/sets_Style_correctly (0.00s)
+=== RUN   TestPanelBuilder_Header
+=== RUN   TestPanelBuilder_Header/sets_Header_correctly
+--- PASS: TestPanelBuilder_Header (0.00s)
+    --- PASS: TestPanelBuilder_Header/sets_Header_correctly (0.00s)
+=== RUN   TestPanelBuilder_ContentGap
+=== RUN   TestPanelBuilder_ContentGap/sets_ContentGap_correctly
+=== RUN   TestPanelBuilder_ContentGap/sets_ContentGap_to_0
+--- PASS: TestPanelBuilder_ContentGap (0.00s)
+    --- PASS: TestPanelBuilder_ContentGap/sets_ContentGap_correctly (0.00s)
+    --- PASS: TestPanelBuilder_ContentGap/sets_ContentGap_to_0 (0.00s)
+=== RUN   TestPanelBuilder_Children
+=== RUN   TestPanelBuilder_Children/adds_children_correctly
+=== RUN   TestPanelBuilder_Children/ignores_empty_children
+--- PASS: TestPanelBuilder_Children (0.00s)
+    --- PASS: TestPanelBuilder_Children/adds_children_correctly (0.00s)
+    --- PASS: TestPanelBuilder_Children/ignores_empty_children (0.00s)
+=== RUN   TestPanelBuilder_Divider
+=== RUN   TestPanelBuilder_Divider/adds_Divider_correctly
+=== RUN   TestPanelBuilder_Divider/adds_Divider_with_FixedWidth
+--- PASS: TestPanelBuilder_Divider (0.00s)
+    --- PASS: TestPanelBuilder_Divider/adds_Divider_correctly (0.00s)
+    --- PASS: TestPanelBuilder_Divider/adds_Divider_with_FixedWidth (0.00s)
+=== RUN   TestPanelBuilder_DividerWithText
+=== RUN   TestPanelBuilder_DividerWithText/adds_DividerWithText_correctly
+=== RUN   TestPanelBuilder_DividerWithText/adds_DividerWithText_with_FixedWidth
+=== RUN   TestPanelBuilder_DividerWithText/handles_long_text_in_DividerWithText
+--- PASS: TestPanelBuilder_DividerWithText (0.00s)
+    --- PASS: TestPanelBuilder_DividerWithText/adds_DividerWithText_correctly (0.00s)
+    --- PASS: TestPanelBuilder_DividerWithText/adds_DividerWithText_with_FixedWidth (0.00s)
+    --- PASS: TestPanelBuilder_DividerWithText/handles_long_text_in_DividerWithText (0.00s)
+=== RUN   TestPanelRender
+=== RUN   TestPanelRender/returns_an_Element_of_type_ElementBox
+=== RUN   TestPanelRender/renders_with_default_style
+=== RUN   TestPanelRender/renders_with_custom_style
+=== RUN   TestPanelRender/renders_with_header
+=== RUN   TestPanelRender/renders_with_children
+=== RUN   TestPanelRender/renders_with_FixedWidth
+=== RUN   TestPanelRender/renders_with_FixedHeight
+=== RUN   TestPanelRender/renders_with_Divider
+=== RUN   TestPanelRender/renders_with_DividerWithText
+--- PASS: TestPanelRender (0.00s)
+    --- PASS: TestPanelRender/returns_an_Element_of_type_ElementBox (0.00s)
+    --- PASS: TestPanelRender/renders_with_default_style (0.00s)
+    --- PASS: TestPanelRender/renders_with_custom_style (0.00s)
+    --- PASS: TestPanelRender/renders_with_header (0.00s)
+    --- PASS: TestPanelRender/renders_with_children (0.00s)
+    --- PASS: TestPanelRender/renders_with_FixedWidth (0.00s)
+    --- PASS: TestPanelRender/renders_with_FixedHeight (0.00s)
+    --- PASS: TestPanelRender/renders_with_Divider (0.00s)
+    --- PASS: TestPanelRender/renders_with_DividerWithText (0.00s)
+=== RUN   TestPanelChaining
+--- PASS: TestPanelChaining (0.00s)
+=== RUN   TestPanelHelperFunctions
+=== RUN   TestPanelHelperFunctions/measureHeight_measures_Element_height_correctly
+=== RUN   TestPanelHelperFunctions/measureHeight_measures_Element_height_correctly/empty_Element
+=== RUN   TestPanelHelperFunctions/measureHeight_measures_Element_height_correctly/Text_element
+=== RUN   TestPanelHelperFunctions/measureHeight_measures_Element_height_correctly/Text_with_newline
+=== RUN   TestPanelHelperFunctions/measureHeight_measures_Element_height_correctly/Box_with_children
+=== RUN   TestPanelHelperFunctions/buildVerticalBorder_builds_vertical_border_correctly
+=== RUN   TestPanelHelperFunctions/getBorderStyle_returns_default_style_when_nil
+=== RUN   TestPanelHelperFunctions/getBorderStyle_returns_custom_style_when_set
+--- PASS: TestPanelHelperFunctions (0.00s)
+    --- PASS: TestPanelHelperFunctions/measureHeight_measures_Element_height_correctly (0.00s)
+        --- PASS: TestPanelHelperFunctions/measureHeight_measures_Element_height_correctly/empty_Element (0.00s)
+        --- PASS: TestPanelHelperFunctions/measureHeight_measures_Element_height_correctly/Text_element (0.00s)
+        --- PASS: TestPanelHelperFunctions/measureHeight_measures_Element_height_correctly/Text_with_newline (0.00s)
+        --- PASS: TestPanelHelperFunctions/measureHeight_measures_Element_height_correctly/Box_with_children (0.00s)
+    --- PASS: TestPanelHelperFunctions/buildVerticalBorder_builds_vertical_border_correctly (0.00s)
+    --- PASS: TestPanelHelperFunctions/getBorderStyle_returns_default_style_when_nil (0.00s)
+    --- PASS: TestPanelHelperFunctions/getBorderStyle_returns_custom_style_when_set (0.00s)
+=== RUN   TestPanelEdgeCases
+=== RUN   TestPanelEdgeCases/handles_FixedWidth_with_negative_value
+=== RUN   TestPanelEdgeCases/handles_FixedHeight_with_negative_value
+=== RUN   TestPanelEdgeCases/handles_many_children
+=== RUN   TestPanelEdgeCases/handles_empty_header
+=== RUN   TestPanelEdgeCases/handles_multiple_dividers
+=== RUN   TestPanelEdgeCases/handles_ContentGap_with_no_children
+=== RUN   TestPanelEdgeCases/handles_FixedHeight_with_content_overflow
+--- PASS: TestPanelEdgeCases (0.00s)
+    --- PASS: TestPanelEdgeCases/handles_FixedWidth_with_negative_value (0.00s)
+    --- PASS: TestPanelEdgeCases/handles_FixedHeight_with_negative_value (0.00s)
+    --- PASS: TestPanelEdgeCases/handles_many_children (0.00s)
+    --- PASS: TestPanelEdgeCases/handles_empty_header (0.00s)
+    --- PASS: TestPanelEdgeCases/handles_multiple_dividers (0.00s)
+    --- PASS: TestPanelEdgeCases/handles_ContentGap_with_no_children (0.00s)
+    --- PASS: TestPanelEdgeCases/handles_FixedHeight_with_content_overflow (0.00s)
+=== RUN   TestPasswordBuilder_Defaults
+--- PASS: TestPasswordBuilder_Defaults (0.00s)
+=== RUN   TestPasswordBuilder_StringFields
+=== RUN   TestPasswordBuilder_StringFields/sets_ID_correctly
+=== RUN   TestPasswordBuilder_StringFields/sets_Value_correctly
+=== RUN   TestPasswordBuilder_StringFields/sets_Placeholder_correctly
+=== RUN   TestPasswordBuilder_StringFields/sets_Prefix_correctly
+=== RUN   TestPasswordBuilder_StringFields/sets_Suffix_correctly
+=== RUN   TestPasswordBuilder_StringFields/sets_MaskChar_correctly
+--- PASS: TestPasswordBuilder_StringFields (0.00s)
+    --- PASS: TestPasswordBuilder_StringFields/sets_ID_correctly (0.00s)
+    --- PASS: TestPasswordBuilder_StringFields/sets_Value_correctly (0.00s)
+    --- PASS: TestPasswordBuilder_StringFields/sets_Placeholder_correctly (0.00s)
+    --- PASS: TestPasswordBuilder_StringFields/sets_Prefix_correctly (0.00s)
+    --- PASS: TestPasswordBuilder_StringFields/sets_Suffix_correctly (0.00s)
+    --- PASS: TestPasswordBuilder_StringFields/sets_MaskChar_correctly (0.00s)
+=== RUN   TestPasswordBuilder_Width
+--- PASS: TestPasswordBuilder_Width (0.00s)
+=== RUN   TestPasswordBuilder_Style
+=== RUN   TestPasswordBuilder_Style/sets_Style_correctly
+--- PASS: TestPasswordBuilder_Style (0.00s)
+    --- PASS: TestPasswordBuilder_Style/sets_Style_correctly (0.00s)
+=== RUN   TestPasswordBuilder_MinLength
+=== RUN   TestPasswordBuilder_MinLength/sets_MinLength_correctly
+=== RUN   TestPasswordBuilder_MinLength/sets_MinLength_to_0
+--- PASS: TestPasswordBuilder_MinLength (0.00s)
+    --- PASS: TestPasswordBuilder_MinLength/sets_MinLength_correctly (0.00s)
+    --- PASS: TestPasswordBuilder_MinLength/sets_MinLength_to_0 (0.00s)
+=== RUN   TestPasswordBuilder_MaxLength
+=== RUN   TestPasswordBuilder_MaxLength/sets_MaxLength_correctly
+=== RUN   TestPasswordBuilder_MaxLength/sets_MaxLength_to_0
+--- PASS: TestPasswordBuilder_MaxLength (0.00s)
+    --- PASS: TestPasswordBuilder_MaxLength/sets_MaxLength_correctly (0.00s)
+    --- PASS: TestPasswordBuilder_MaxLength/sets_MaxLength_to_0 (0.00s)
+=== RUN   TestPasswordBuilder_ShowLastChar
+=== RUN   TestPasswordBuilder_ShowLastChar/sets_ShowLastChar_true
+=== RUN   TestPasswordBuilder_ShowLastChar/sets_ShowLastChar_false
+--- PASS: TestPasswordBuilder_ShowLastChar (0.00s)
+    --- PASS: TestPasswordBuilder_ShowLastChar/sets_ShowLastChar_true (0.00s)
+    --- PASS: TestPasswordBuilder_ShowLastChar/sets_ShowLastChar_false (0.00s)
+=== RUN   TestPasswordBuilder_State
+=== RUN   TestPasswordBuilder_State/sets_Focused_state_correctly
+=== RUN   TestPasswordBuilder_State/sets_Focused_state_to_false
+--- PASS: TestPasswordBuilder_State (0.00s)
+    --- PASS: TestPasswordBuilder_State/sets_Focused_state_correctly (0.00s)
+    --- PASS: TestPasswordBuilder_State/sets_Focused_state_to_false (0.00s)
+=== RUN   TestPasswordCallbacks
+=== RUN   TestPasswordCallbacks/OnChange_callback_is_set_and_invoked_correctly
+=== RUN   TestPasswordCallbacks/OnKeyPress_callback_is_set_and_invoked_correctly
+=== RUN   TestPasswordCallbacks/OnFocus_callback_is_set_and_invoked_correctly
+=== RUN   TestPasswordCallbacks/OnBlur_callback_is_set_and_invoked_correctly
+=== RUN   TestPasswordCallbacks/OnSubmit_callback_is_set_and_invoked_correctly
+--- PASS: TestPasswordCallbacks (0.00s)
+    --- PASS: TestPasswordCallbacks/OnChange_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestPasswordCallbacks/OnKeyPress_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestPasswordCallbacks/OnFocus_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestPasswordCallbacks/OnBlur_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestPasswordCallbacks/OnSubmit_callback_is_set_and_invoked_correctly (0.00s)
+=== RUN   TestPasswordRender
+=== RUN   TestPasswordRender/returns_an_Element_of_type_ElementBox
+=== RUN   TestPasswordRender/renders_with_placeholder_when_empty
+=== RUN   TestPasswordRender/renders_with_masked_value
+=== RUN   TestPasswordRender/renders_with_prefix
+=== RUN   TestPasswordRender/renders_with_suffix
+=== RUN   TestPasswordRender/renders_with_width
+--- PASS: TestPasswordRender (0.00s)
+    --- PASS: TestPasswordRender/returns_an_Element_of_type_ElementBox (0.00s)
+    --- PASS: TestPasswordRender/renders_with_placeholder_when_empty (0.00s)
+    --- PASS: TestPasswordRender/renders_with_masked_value (0.00s)
+    --- PASS: TestPasswordRender/renders_with_prefix (0.00s)
+    --- PASS: TestPasswordRender/renders_with_suffix (0.00s)
+    --- PASS: TestPasswordRender/renders_with_width (0.00s)
+=== RUN   TestRenderPasswordFunction
+=== RUN   TestRenderPasswordFunction/renders_with_default_style_when_not_focused
+=== RUN   TestRenderPasswordFunction/renders_with_focus_style_when_focused
+=== RUN   TestRenderPasswordFunction/renders_with_placeholder_when_empty
+=== RUN   TestRenderPasswordFunction/renders_with_custom_mask_character
+=== RUN   TestRenderPasswordFunction/triggers_OnFocus_when_focused
+=== RUN   TestRenderPasswordFunction/triggers_OnBlur_when_not_focused
+=== RUN   TestRenderPasswordFunction/does_not_trigger_focus/blur_without_ID
+--- PASS: TestRenderPasswordFunction (0.00s)
+    --- PASS: TestRenderPasswordFunction/renders_with_default_style_when_not_focused (0.00s)
+    --- PASS: TestRenderPasswordFunction/renders_with_focus_style_when_focused (0.00s)
+    --- PASS: TestRenderPasswordFunction/renders_with_placeholder_when_empty (0.00s)
+    --- PASS: TestRenderPasswordFunction/renders_with_custom_mask_character (0.00s)
+    --- PASS: TestRenderPasswordFunction/triggers_OnFocus_when_focused (0.00s)
+    --- PASS: TestRenderPasswordFunction/triggers_OnBlur_when_not_focused (0.00s)
+    --- PASS: TestRenderPasswordFunction/does_not_trigger_focus/blur_without_ID (0.00s)
+=== RUN   TestPasswordChaining
+--- PASS: TestPasswordChaining (0.00s)
+=== RUN   TestPasswordHelperFunctions
+=== RUN   TestPasswordHelperFunctions/maskPassword_masks_password_correctly
+=== RUN   TestPasswordHelperFunctions/maskPassword_handles_Unicode_characters
+--- PASS: TestPasswordHelperFunctions (0.00s)
+    --- PASS: TestPasswordHelperFunctions/maskPassword_masks_password_correctly (0.00s)
+    --- PASS: TestPasswordHelperFunctions/maskPassword_handles_Unicode_characters (0.00s)
+=== RUN   TestPasswordEdgeCases
+=== RUN   TestPasswordEdgeCases/handles_negative_width_gracefully
+=== RUN   TestPasswordEdgeCases/handles_empty_mask_character_gracefully
+=== RUN   TestPasswordEdgeCases/handles_very_long_password
+=== RUN   TestPasswordEdgeCases/handles_nil_callbacks_gracefully
+=== RUN   TestPasswordEdgeCases/handles_empty_prefix_and_suffix
+=== RUN   TestPasswordEdgeCases/validates_min_length_correctly
+=== RUN   TestPasswordEdgeCases/validates_max_length_correctly
+=== RUN   TestPasswordEdgeCases/handles_ShowLastChar_false
+--- PASS: TestPasswordEdgeCases (0.00s)
+    --- PASS: TestPasswordEdgeCases/handles_negative_width_gracefully (0.00s)
+    --- PASS: TestPasswordEdgeCases/handles_empty_mask_character_gracefully (0.00s)
+    --- PASS: TestPasswordEdgeCases/handles_very_long_password (0.00s)
+    --- PASS: TestPasswordEdgeCases/handles_nil_callbacks_gracefully (0.00s)
+    --- PASS: TestPasswordEdgeCases/handles_empty_prefix_and_suffix (0.00s)
+    --- PASS: TestPasswordEdgeCases/validates_min_length_correctly (0.00s)
+    --- PASS: TestPasswordEdgeCases/validates_max_length_correctly (0.00s)
+    --- PASS: TestPasswordEdgeCases/handles_ShowLastChar_false (0.00s)
+=== RUN   TestProgressBar
+=== RUN   TestProgressBar/creates_a_progress_bar_with_default_colors
+=== RUN   TestProgressBar/renders_full_bar_for_value_1.0
+=== RUN   TestProgressBar/renders_empty_bar_for_value_0.0
+=== RUN   TestProgressBar/renders_half-filled_bar_for_value_0.5
+=== RUN   TestProgressBar/clamps_value_below_0_to_0
+=== RUN   TestProgressBar/clamps_value_above_1_to_1
+=== RUN   TestProgressBar/handles_minimum_valid_width_of_2
+=== RUN   TestProgressBar/handles_different_colors
+=== RUN   TestProgressBar/handles_different_colors/Green
+=== RUN   TestProgressBar/handles_different_colors/Red
+=== RUN   TestProgressBar/handles_different_colors/Blue
+=== RUN   TestProgressBar/handles_different_colors/Cyan
+=== RUN   TestProgressBar/handles_different_colors/Yellow
+=== RUN   TestProgressBar/handles_different_colors/Magenta
+=== RUN   TestProgressBar/handles_different_colors/White
+=== RUN   TestProgressBar/handles_different_colors/Black
+=== RUN   TestProgressBar/handles_various_values_correctly
+=== RUN   TestProgressBar/handles_various_values_correctly/0%
+=== RUN   TestProgressBar/handles_various_values_correctly/10%
+=== RUN   TestProgressBar/handles_various_values_correctly/20%
+=== RUN   TestProgressBar/handles_various_values_correctly/30%
+=== RUN   TestProgressBar/handles_various_values_correctly/40%
+=== RUN   TestProgressBar/handles_various_values_correctly/50%
+=== RUN   TestProgressBar/handles_various_values_correctly/60%
+=== RUN   TestProgressBar/handles_various_values_correctly/70%
+=== RUN   TestProgressBar/handles_various_values_correctly/80%
+=== RUN   TestProgressBar/handles_various_values_correctly/90%
+=== RUN   TestProgressBar/handles_various_values_correctly/100%
+=== RUN   TestProgressBar/rounds_correctly_for_fractional_values
+=== RUN   TestProgressBar/rounds_correctly_for_fractional_values/33%
+=== RUN   TestProgressBar/rounds_correctly_for_fractional_values/34%
+=== RUN   TestProgressBar/rounds_correctly_for_fractional_values/35%
+=== RUN   TestProgressBar/rounds_correctly_for_fractional_values/66%
+=== RUN   TestProgressBar/rounds_correctly_for_fractional_values/67%
+=== RUN   TestProgressBar/rounds_correctly_for_fractional_values/68%
+=== RUN   TestProgressBar/handles_large_width_values
+--- PASS: TestProgressBar (0.00s)
+    --- PASS: TestProgressBar/creates_a_progress_bar_with_default_colors (0.00s)
+    --- PASS: TestProgressBar/renders_full_bar_for_value_1.0 (0.00s)
+    --- PASS: TestProgressBar/renders_empty_bar_for_value_0.0 (0.00s)
+    --- PASS: TestProgressBar/renders_half-filled_bar_for_value_0.5 (0.00s)
+    --- PASS: TestProgressBar/clamps_value_below_0_to_0 (0.00s)
+    --- PASS: TestProgressBar/clamps_value_above_1_to_1 (0.00s)
+    --- PASS: TestProgressBar/handles_minimum_valid_width_of_2 (0.00s)
+    --- PASS: TestProgressBar/handles_different_colors (0.00s)
+        --- PASS: TestProgressBar/handles_different_colors/Green (0.00s)
+        --- PASS: TestProgressBar/handles_different_colors/Red (0.00s)
+        --- PASS: TestProgressBar/handles_different_colors/Blue (0.00s)
+        --- PASS: TestProgressBar/handles_different_colors/Cyan (0.00s)
+        --- PASS: TestProgressBar/handles_different_colors/Yellow (0.00s)
+        --- PASS: TestProgressBar/handles_different_colors/Magenta (0.00s)
+        --- PASS: TestProgressBar/handles_different_colors/White (0.00s)
+        --- PASS: TestProgressBar/handles_different_colors/Black (0.00s)
+    --- PASS: TestProgressBar/handles_various_values_correctly (0.00s)
+        --- PASS: TestProgressBar/handles_various_values_correctly/0% (0.00s)
+        --- PASS: TestProgressBar/handles_various_values_correctly/10% (0.00s)
+        --- PASS: TestProgressBar/handles_various_values_correctly/20% (0.00s)
+        --- PASS: TestProgressBar/handles_various_values_correctly/30% (0.00s)
+        --- PASS: TestProgressBar/handles_various_values_correctly/40% (0.00s)
+        --- PASS: TestProgressBar/handles_various_values_correctly/50% (0.00s)
+        --- PASS: TestProgressBar/handles_various_values_correctly/60% (0.00s)
+        --- PASS: TestProgressBar/handles_various_values_correctly/70% (0.00s)
+        --- PASS: TestProgressBar/handles_various_values_correctly/80% (0.00s)
+        --- PASS: TestProgressBar/handles_various_values_correctly/90% (0.00s)
+        --- PASS: TestProgressBar/handles_various_values_correctly/100% (0.00s)
+    --- PASS: TestProgressBar/rounds_correctly_for_fractional_values (0.00s)
+        --- PASS: TestProgressBar/rounds_correctly_for_fractional_values/33% (0.00s)
+        --- PASS: TestProgressBar/rounds_correctly_for_fractional_values/34% (0.00s)
+        --- PASS: TestProgressBar/rounds_correctly_for_fractional_values/35% (0.00s)
+        --- PASS: TestProgressBar/rounds_correctly_for_fractional_values/66% (0.00s)
+        --- PASS: TestProgressBar/rounds_correctly_for_fractional_values/67% (0.00s)
+        --- PASS: TestProgressBar/rounds_correctly_for_fractional_values/68% (0.00s)
+    --- PASS: TestProgressBar/handles_large_width_values (0.00s)
+=== RUN   TestProgressBar_ElementType
+=== RUN   TestProgressBar_ElementType/returns_Element_of_type_ElementText
+=== RUN   TestProgressBar_ElementType/returns_ElementText_for_all_values
+=== RUN   TestProgressBar_ElementType/returns_ElementText_for_all_values/zero
+=== RUN   TestProgressBar_ElementType/returns_ElementText_for_all_values/quarter
+=== RUN   TestProgressBar_ElementType/returns_ElementText_for_all_values/half
+=== RUN   TestProgressBar_ElementType/returns_ElementText_for_all_values/three_quarter
+=== RUN   TestProgressBar_ElementType/returns_ElementText_for_all_values/full
+--- PASS: TestProgressBar_ElementType (0.00s)
+    --- PASS: TestProgressBar_ElementType/returns_Element_of_type_ElementText (0.00s)
+    --- PASS: TestProgressBar_ElementType/returns_ElementText_for_all_values (0.00s)
+        --- PASS: TestProgressBar_ElementType/returns_ElementText_for_all_values/zero (0.00s)
+        --- PASS: TestProgressBar_ElementType/returns_ElementText_for_all_values/quarter (0.00s)
+        --- PASS: TestProgressBar_ElementType/returns_ElementText_for_all_values/half (0.00s)
+        --- PASS: TestProgressBar_ElementType/returns_ElementText_for_all_values/three_quarter (0.00s)
+        --- PASS: TestProgressBar_ElementType/returns_ElementText_for_all_values/full (0.00s)
+=== RUN   TestProgressBar_EdgeCases
+=== RUN   TestProgressBar_EdgeCases/handles_zero_value_with_custom_color
+=== RUN   TestProgressBar_EdgeCases/handles_full_value_with_custom_color
+=== RUN   TestProgressBar_EdgeCases/handles_very_large_width
+--- PASS: TestProgressBar_EdgeCases (0.00s)
+    --- PASS: TestProgressBar_EdgeCases/handles_zero_value_with_custom_color (0.00s)
+    --- PASS: TestProgressBar_EdgeCases/handles_full_value_with_custom_color (0.00s)
+    --- PASS: TestProgressBar_EdgeCases/handles_very_large_width (0.00s)
+=== RUN   TestProgressBar_InvalidWidth
+=== RUN   TestProgressBar_InvalidWidth/handles_width_1_gracefully
+    progressbar_test.go:291: ProgressBar panicked with width 1 as expected
+=== RUN   TestProgressBar_InvalidWidth/handles_width_0_gracefully
+    progressbar_test.go:301: ProgressBar panicked with width 0 as expected
+=== RUN   TestProgressBar_InvalidWidth/handles_negative_width_gracefully
+    progressbar_test.go:311: ProgressBar panicked with negative width as expected
+--- PASS: TestProgressBar_InvalidWidth (0.00s)
+    --- PASS: TestProgressBar_InvalidWidth/handles_width_1_gracefully (0.00s)
+    --- PASS: TestProgressBar_InvalidWidth/handles_width_0_gracefully (0.00s)
+    --- PASS: TestProgressBar_InvalidWidth/handles_negative_width_gracefully (0.00s)
+=== RUN   TestSelectDropdownBuilder_Defaults
+--- PASS: TestSelectDropdownBuilder_Defaults (0.00s)
+=== RUN   TestSelectDropdownBuilder_StringFields
+=== RUN   TestSelectDropdownBuilder_StringFields/sets_ID_correctly
+=== RUN   TestSelectDropdownBuilder_StringFields/sets_Label_correctly
+=== RUN   TestSelectDropdownBuilder_StringFields/sets_Value_correctly
+=== RUN   TestSelectDropdownBuilder_StringFields/sets_Placeholder_correctly
+--- PASS: TestSelectDropdownBuilder_StringFields (0.00s)
+    --- PASS: TestSelectDropdownBuilder_StringFields/sets_ID_correctly (0.00s)
+    --- PASS: TestSelectDropdownBuilder_StringFields/sets_Label_correctly (0.00s)
+    --- PASS: TestSelectDropdownBuilder_StringFields/sets_Value_correctly (0.00s)
+    --- PASS: TestSelectDropdownBuilder_StringFields/sets_Placeholder_correctly (0.00s)
+=== RUN   TestSelectDropdownBuilder_Options
+=== RUN   TestSelectDropdownBuilder_Options/sets_Options_correctly
+=== RUN   TestSelectDropdownBuilder_Options/sets_Options_with_disabled_items
+--- PASS: TestSelectDropdownBuilder_Options (0.00s)
+    --- PASS: TestSelectDropdownBuilder_Options/sets_Options_correctly (0.00s)
+    --- PASS: TestSelectDropdownBuilder_Options/sets_Options_with_disabled_items (0.00s)
+=== RUN   TestSelectDropdownBuilder_Width
+--- PASS: TestSelectDropdownBuilder_Width (0.00s)
+=== RUN   TestSelectDropdownBuilder_Height
+--- PASS: TestSelectDropdownBuilder_Height (0.00s)
+=== RUN   TestSelectDropdownBuilder_Style
+=== RUN   TestSelectDropdownBuilder_Style/sets_Style_correctly
+--- PASS: TestSelectDropdownBuilder_Style (0.00s)
+    --- PASS: TestSelectDropdownBuilder_Style/sets_Style_correctly (0.00s)
+=== RUN   TestSelectDropdownBuilder_Disabled
+=== RUN   TestSelectDropdownBuilder_Disabled/sets_Disabled_true
+=== RUN   TestSelectDropdownBuilder_Disabled/sets_Disabled_false
+--- PASS: TestSelectDropdownBuilder_Disabled (0.00s)
+    --- PASS: TestSelectDropdownBuilder_Disabled/sets_Disabled_true (0.00s)
+    --- PASS: TestSelectDropdownBuilder_Disabled/sets_Disabled_false (0.00s)
+=== RUN   TestSelectDropdownBuilder_State
+=== RUN   TestSelectDropdownBuilder_State/sets_Focused_state_correctly
+=== RUN   TestSelectDropdownBuilder_State/sets_Focused_state_to_false
+--- PASS: TestSelectDropdownBuilder_State (0.00s)
+    --- PASS: TestSelectDropdownBuilder_State/sets_Focused_state_correctly (0.00s)
+    --- PASS: TestSelectDropdownBuilder_State/sets_Focused_state_to_false (0.00s)
+=== RUN   TestSelectDropdownCallbacks
+=== RUN   TestSelectDropdownCallbacks/OnChange_callback_is_set_and_invoked_correctly
+=== RUN   TestSelectDropdownCallbacks/OnKeyPress_callback_is_set_and_invoked_correctly
+=== RUN   TestSelectDropdownCallbacks/OnFocus_callback_is_set_and_invoked_correctly
+=== RUN   TestSelectDropdownCallbacks/OnBlur_callback_is_set_and_invoked_correctly
+=== RUN   TestSelectDropdownCallbacks/OnOpenChange_callback_is_set_and_invoked_correctly
+=== RUN   TestSelectDropdownCallbacks/OnFilter_callback_is_set_correctly
+--- PASS: TestSelectDropdownCallbacks (0.00s)
+    --- PASS: TestSelectDropdownCallbacks/OnChange_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestSelectDropdownCallbacks/OnKeyPress_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestSelectDropdownCallbacks/OnFocus_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestSelectDropdownCallbacks/OnBlur_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestSelectDropdownCallbacks/OnOpenChange_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestSelectDropdownCallbacks/OnFilter_callback_is_set_correctly (0.00s)
+=== RUN   TestSelectDropdownRender
+=== RUN   TestSelectDropdownRender/returns_an_Element_of_type_ElementBox
+=== RUN   TestSelectDropdownRender/renders_with_placeholder_when_no_value_selected
+=== RUN   TestSelectDropdownRender/renders_with_selected_value
+=== RUN   TestSelectDropdownRender/renders_with_label
+=== RUN   TestSelectDropdownRender/renders_with_disabled_state
+--- PASS: TestSelectDropdownRender (0.00s)
+    --- PASS: TestSelectDropdownRender/returns_an_Element_of_type_ElementBox (0.00s)
+    --- PASS: TestSelectDropdownRender/renders_with_placeholder_when_no_value_selected (0.00s)
+    --- PASS: TestSelectDropdownRender/renders_with_selected_value (0.00s)
+    --- PASS: TestSelectDropdownRender/renders_with_label (0.00s)
+    --- PASS: TestSelectDropdownRender/renders_with_disabled_state (0.00s)
+=== RUN   TestSelectChaining
+--- PASS: TestSelectChaining (0.00s)
+=== RUN   TestSelectHelperFunctions
+=== RUN   TestSelectHelperFunctions/findValueIndex_finds_value_in_options
+=== RUN   TestSelectHelperFunctions/firstEnabledIndex_returns_first_enabled_option
+=== RUN   TestSelectHelperFunctions/firstEnabledIndex_returns_0_when_all_disabled
+=== RUN   TestSelectHelperFunctions/lastEnabledIndex_returns_last_enabled_option
+=== RUN   TestSelectHelperFunctions/nextEnabledIndex_navigates_correctly
+=== RUN   TestSelectHelperFunctions/filterOptions_filters_with_static_options
+=== RUN   TestSelectHelperFunctions/filterOptions_filters_case-insensitively
+=== RUN   TestSelectHelperFunctions/filterOptions_returns_all_for_empty_query
+=== RUN   TestSelectHelperFunctions/filterOptions_uses_OnFilter_when_set
+=== RUN   TestSelectHelperFunctions/truncateText_truncates_correctly
+=== RUN   TestSelectHelperFunctions/padSearchText_pads_correctly
+--- PASS: TestSelectHelperFunctions (0.00s)
+    --- PASS: TestSelectHelperFunctions/findValueIndex_finds_value_in_options (0.00s)
+    --- PASS: TestSelectHelperFunctions/firstEnabledIndex_returns_first_enabled_option (0.00s)
+    --- PASS: TestSelectHelperFunctions/firstEnabledIndex_returns_0_when_all_disabled (0.00s)
+    --- PASS: TestSelectHelperFunctions/lastEnabledIndex_returns_last_enabled_option (0.00s)
+    --- PASS: TestSelectHelperFunctions/nextEnabledIndex_navigates_correctly (0.00s)
+    --- PASS: TestSelectHelperFunctions/filterOptions_filters_with_static_options (0.00s)
+    --- PASS: TestSelectHelperFunctions/filterOptions_filters_case-insensitively (0.00s)
+    --- PASS: TestSelectHelperFunctions/filterOptions_returns_all_for_empty_query (0.00s)
+    --- PASS: TestSelectHelperFunctions/filterOptions_uses_OnFilter_when_set (0.00s)
+    --- PASS: TestSelectHelperFunctions/truncateText_truncates_correctly (0.00s)
+    --- PASS: TestSelectHelperFunctions/padSearchText_pads_correctly (0.00s)
+=== RUN   TestSelectEdgeCases
+=== RUN   TestSelectEdgeCases/handles_empty_options_gracefully
+=== RUN   TestSelectEdgeCases/handles_nil_options_gracefully
+=== RUN   TestSelectEdgeCases/handles_negative_width_gracefully
+    select_dropdown_test.go:582: SelectDropdown panicked with negative width as expected
+=== RUN   TestSelectEdgeCases/handles_negative_height_gracefully
+=== RUN   TestSelectEdgeCases/handles_nil_callbacks_gracefully
+=== RUN   TestSelectEdgeCases/handles_all_options_disabled
+=== RUN   TestSelectEdgeCases/handles_value_not_in_options
+=== RUN   TestSelectEdgeCases/handles_very_long_option_labels
+=== RUN   TestSelectEdgeCases/handles_width_less_than_2
+    select_dropdown_test.go:647: SelectDropdown panicked with width 1 as expected
+--- PASS: TestSelectEdgeCases (0.00s)
+    --- PASS: TestSelectEdgeCases/handles_empty_options_gracefully (0.00s)
+    --- PASS: TestSelectEdgeCases/handles_nil_options_gracefully (0.00s)
+    --- PASS: TestSelectEdgeCases/handles_negative_width_gracefully (0.00s)
+    --- PASS: TestSelectEdgeCases/handles_negative_height_gracefully (0.00s)
+    --- PASS: TestSelectEdgeCases/handles_nil_callbacks_gracefully (0.00s)
+    --- PASS: TestSelectEdgeCases/handles_all_options_disabled (0.00s)
+    --- PASS: TestSelectEdgeCases/handles_value_not_in_options (0.00s)
+    --- PASS: TestSelectEdgeCases/handles_very_long_option_labels (0.00s)
+    --- PASS: TestSelectEdgeCases/handles_width_less_than_2 (0.00s)
+=== RUN   TestSelectPickerBuilder_Defaults
+--- PASS: TestSelectPickerBuilder_Defaults (0.00s)
+=== RUN   TestSelectPickerBuilder_StringFields
+=== RUN   TestSelectPickerBuilder_StringFields/sets_ID_correctly
+=== RUN   TestSelectPickerBuilder_StringFields/sets_Prefix_correctly
+=== RUN   TestSelectPickerBuilder_StringFields/sets_Suffix_correctly
+--- PASS: TestSelectPickerBuilder_StringFields (0.00s)
+    --- PASS: TestSelectPickerBuilder_StringFields/sets_ID_correctly (0.00s)
+    --- PASS: TestSelectPickerBuilder_StringFields/sets_Prefix_correctly (0.00s)
+    --- PASS: TestSelectPickerBuilder_StringFields/sets_Suffix_correctly (0.00s)
+=== RUN   TestSelectPickerBuilder_Options
+=== RUN   TestSelectPickerBuilder_Options/sets_Options_correctly
+=== RUN   TestSelectPickerBuilder_Options/sets_empty_Options_correctly
+--- PASS: TestSelectPickerBuilder_Options (0.00s)
+    --- PASS: TestSelectPickerBuilder_Options/sets_Options_correctly (0.00s)
+    --- PASS: TestSelectPickerBuilder_Options/sets_empty_Options_correctly (0.00s)
+=== RUN   TestSelectPickerBuilder_Selected
+=== RUN   TestSelectPickerBuilder_Selected/sets_Selected_correctly
+=== RUN   TestSelectPickerBuilder_Selected/sets_Selected_to_0_by_default
+=== RUN   TestSelectPickerBuilder_Selected/sets_Selected_to_negative_value
+--- PASS: TestSelectPickerBuilder_Selected (0.00s)
+    --- PASS: TestSelectPickerBuilder_Selected/sets_Selected_correctly (0.00s)
+    --- PASS: TestSelectPickerBuilder_Selected/sets_Selected_to_0_by_default (0.00s)
+    --- PASS: TestSelectPickerBuilder_Selected/sets_Selected_to_negative_value (0.00s)
+=== RUN   TestSelectPickerBuilder_Width
+--- PASS: TestSelectPickerBuilder_Width (0.00s)
+=== RUN   TestSelectPickerBuilder_Style
+=== RUN   TestSelectPickerBuilder_Style/sets_Style_correctly
+--- PASS: TestSelectPickerBuilder_Style (0.00s)
+    --- PASS: TestSelectPickerBuilder_Style/sets_Style_correctly (0.00s)
+=== RUN   TestSelectPickerBuilder_State
+=== RUN   TestSelectPickerBuilder_State/sets_Focused_state_correctly
+=== RUN   TestSelectPickerBuilder_State/sets_Focused_state_to_false
+--- PASS: TestSelectPickerBuilder_State (0.00s)
+    --- PASS: TestSelectPickerBuilder_State/sets_Focused_state_correctly (0.00s)
+    --- PASS: TestSelectPickerBuilder_State/sets_Focused_state_to_false (0.00s)
+=== RUN   TestSelectPickerCallbacks
+=== RUN   TestSelectPickerCallbacks/OnChange_callback_is_set_and_invoked_correctly
+=== RUN   TestSelectPickerCallbacks/OnKeyPress_callback_is_set_and_invoked_correctly
+=== RUN   TestSelectPickerCallbacks/OnFocus_callback_is_set_and_invoked_correctly
+=== RUN   TestSelectPickerCallbacks/OnBlur_callback_is_set_and_invoked_correctly
+=== RUN   TestSelectPickerCallbacks/OnSubmit_callback_is_set_and_invoked_correctly
+--- PASS: TestSelectPickerCallbacks (0.00s)
+    --- PASS: TestSelectPickerCallbacks/OnChange_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestSelectPickerCallbacks/OnKeyPress_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestSelectPickerCallbacks/OnFocus_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestSelectPickerCallbacks/OnBlur_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestSelectPickerCallbacks/OnSubmit_callback_is_set_and_invoked_correctly (0.00s)
+=== RUN   TestSelectPickerRender
+=== RUN   TestSelectPickerRender/returns_an_Element_of_type_ElementBox
+=== RUN   TestSelectPickerRender/renders_with_empty_options
+    select_picker_test.go:264: SelectPicker panicked with empty options as expected
+=== RUN   TestSelectPickerRender/renders_with_prefix
+=== RUN   TestSelectPickerRender/renders_with_suffix
+=== RUN   TestSelectPickerRender/renders_with_width
+=== RUN   TestSelectPickerRender/renders_with_selected_value
+--- PASS: TestSelectPickerRender (0.00s)
+    --- PASS: TestSelectPickerRender/returns_an_Element_of_type_ElementBox (0.00s)
+    --- PASS: TestSelectPickerRender/renders_with_empty_options (0.00s)
+    --- PASS: TestSelectPickerRender/renders_with_prefix (0.00s)
+    --- PASS: TestSelectPickerRender/renders_with_suffix (0.00s)
+    --- PASS: TestSelectPickerRender/renders_with_width (0.00s)
+    --- PASS: TestSelectPickerRender/renders_with_selected_value (0.00s)
+=== RUN   TestRenderSelectPickerFunction
+=== RUN   TestRenderSelectPickerFunction/renders_with_default_style_when_not_focused
+=== RUN   TestRenderSelectPickerFunction/renders_with_focus_style_when_focused
+=== RUN   TestRenderSelectPickerFunction/selects_first_item_by_default
+=== RUN   TestRenderSelectPickerFunction/handles_empty_options_list
+    select_picker_test.go:345: renderSelectPicker panicked with empty options as expected
+=== RUN   TestRenderSelectPickerFunction/triggers_OnFocus_when_focused
+=== RUN   TestRenderSelectPickerFunction/triggers_OnBlur_when_not_focused
+=== RUN   TestRenderSelectPickerFunction/does_not_trigger_focus/blur_without_ID
+--- PASS: TestRenderSelectPickerFunction (0.00s)
+    --- PASS: TestRenderSelectPickerFunction/renders_with_default_style_when_not_focused (0.00s)
+    --- PASS: TestRenderSelectPickerFunction/renders_with_focus_style_when_focused (0.00s)
+    --- PASS: TestRenderSelectPickerFunction/selects_first_item_by_default (0.00s)
+    --- PASS: TestRenderSelectPickerFunction/handles_empty_options_list (0.00s)
+    --- PASS: TestRenderSelectPickerFunction/triggers_OnFocus_when_focused (0.00s)
+    --- PASS: TestRenderSelectPickerFunction/triggers_OnBlur_when_not_focused (0.00s)
+    --- PASS: TestRenderSelectPickerFunction/does_not_trigger_focus/blur_without_ID (0.00s)
+=== RUN   TestSelectPickerChaining
+--- PASS: TestSelectPickerChaining (0.00s)
+=== RUN   TestSelectPickerEdgeCases
+=== RUN   TestSelectPickerEdgeCases/handles_empty_options_gracefully
+    select_picker_test.go:456: SelectPicker panicked with empty options as expected
+=== RUN   TestSelectPickerEdgeCases/handles_nil_options_gracefully
+    select_picker_test.go:467: SelectPicker panicked with nil options as expected
+=== RUN   TestSelectPickerEdgeCases/handles_negative_width_gracefully
+=== RUN   TestSelectPickerEdgeCases/handles_negative_selected_index_gracefully
+=== RUN   TestSelectPickerEdgeCases/handles_selected_index_out_of_bounds
+=== RUN   TestSelectPickerEdgeCases/handles_very_long_options
+=== RUN   TestSelectPickerEdgeCases/handles_many_options
+=== RUN   TestSelectPickerEdgeCases/handles_nil_callbacks_gracefully
+=== RUN   TestSelectPickerEdgeCases/handles_empty_prefix_and_suffix
+=== RUN   TestSelectPickerEdgeCases/handles_special_characters_in_options
+=== RUN   TestSelectPickerEdgeCases/handles_Unicode_characters_in_options
+--- PASS: TestSelectPickerEdgeCases (0.00s)
+    --- PASS: TestSelectPickerEdgeCases/handles_empty_options_gracefully (0.00s)
+    --- PASS: TestSelectPickerEdgeCases/handles_nil_options_gracefully (0.00s)
+    --- PASS: TestSelectPickerEdgeCases/handles_negative_width_gracefully (0.00s)
+    --- PASS: TestSelectPickerEdgeCases/handles_negative_selected_index_gracefully (0.00s)
+    --- PASS: TestSelectPickerEdgeCases/handles_selected_index_out_of_bounds (0.00s)
+    --- PASS: TestSelectPickerEdgeCases/handles_very_long_options (0.00s)
+    --- PASS: TestSelectPickerEdgeCases/handles_many_options (0.00s)
+    --- PASS: TestSelectPickerEdgeCases/handles_nil_callbacks_gracefully (0.00s)
+    --- PASS: TestSelectPickerEdgeCases/handles_empty_prefix_and_suffix (0.00s)
+    --- PASS: TestSelectPickerEdgeCases/handles_special_characters_in_options (0.00s)
+    --- PASS: TestSelectPickerEdgeCases/handles_Unicode_characters_in_options (0.00s)
+=== RUN   TestSpinner
+=== RUN   TestSpinner/creates_a_spinner_with_label_and_default_color
+=== RUN   TestSpinner/includes_label_in_the_rendered_text
+=== RUN   TestSpinner/displays_a_spinner_frame_before_the_label
+=== RUN   TestSpinner/handles_empty_label
+=== RUN   TestSpinner/handles_long_label
+=== RUN   TestSpinner/handles_special_characters_in_label
+=== RUN   TestSpinner/handles_Unicode_characters_in_label
+=== RUN   TestSpinner/returns_correct_style
+=== RUN   TestSpinner/formats_text_as_'frame_label'
+--- PASS: TestSpinner (0.00s)
+    --- PASS: TestSpinner/creates_a_spinner_with_label_and_default_color (0.00s)
+    --- PASS: TestSpinner/includes_label_in_the_rendered_text (0.00s)
+    --- PASS: TestSpinner/displays_a_spinner_frame_before_the_label (0.00s)
+    --- PASS: TestSpinner/handles_empty_label (0.00s)
+    --- PASS: TestSpinner/handles_long_label (0.00s)
+    --- PASS: TestSpinner/handles_special_characters_in_label (0.00s)
+    --- PASS: TestSpinner/handles_Unicode_characters_in_label (0.00s)
+    --- PASS: TestSpinner/returns_correct_style (0.00s)
+    --- PASS: TestSpinner/formats_text_as_'frame_label' (0.00s)
+=== RUN   TestSpinner_FrameCycle
+=== RUN   TestSpinner_FrameCycle/all_frames_are_valid_braille_characters
+=== RUN   TestSpinner_FrameCycle/spinner_has_exactly_10_frames
+=== RUN   TestSpinner_FrameCycle/spinner_frames_are_all_unique
+=== RUN   TestSpinner_FrameCycle/spinner_frame_is_always_one_of_the_defined_frames
+--- PASS: TestSpinner_FrameCycle (0.00s)
+    --- PASS: TestSpinner_FrameCycle/all_frames_are_valid_braille_characters (0.00s)
+    --- PASS: TestSpinner_FrameCycle/spinner_has_exactly_10_frames (0.00s)
+    --- PASS: TestSpinner_FrameCycle/spinner_frames_are_all_unique (0.00s)
+    --- PASS: TestSpinner_FrameCycle/spinner_frame_is_always_one_of_the_defined_frames (0.00s)
+=== RUN   TestSpinner_ElementType
+=== RUN   TestSpinner_ElementType/returns_Element_of_type_ElementText
+=== RUN   TestSpinner_ElementType/returns_ElementText_for_all_labels
+--- PASS: TestSpinner_ElementType (0.00s)
+    --- PASS: TestSpinner_ElementType/returns_Element_of_type_ElementText (0.00s)
+    --- PASS: TestSpinner_ElementType/returns_ElementText_for_all_labels (0.00s)
+=== RUN   TestSpinner_EdgeCases
+=== RUN   TestSpinner_EdgeCases/handles_very_long_label_gracefully
+=== RUN   TestSpinner_EdgeCases/handles_label_with_multiple_spaces
+=== RUN   TestSpinner_EdgeCases/handles_label_with_newlines
+=== RUN   TestSpinner_EdgeCases/handles_label_with_tabs
+=== RUN   TestSpinner_EdgeCases/handles_label_with_emoji
+--- PASS: TestSpinner_EdgeCases (0.00s)
+    --- PASS: TestSpinner_EdgeCases/handles_very_long_label_gracefully (0.00s)
+    --- PASS: TestSpinner_EdgeCases/handles_label_with_multiple_spaces (0.00s)
+    --- PASS: TestSpinner_EdgeCases/handles_label_with_newlines (0.00s)
+    --- PASS: TestSpinner_EdgeCases/handles_label_with_tabs (0.00s)
+    --- PASS: TestSpinner_EdgeCases/handles_label_with_emoji (0.00s)
+=== RUN   TestTableBuilder_Defaults
+--- PASS: TestTableBuilder_Defaults (0.00s)
+=== RUN   TestTableBuilder_ID
+--- PASS: TestTableBuilder_ID (0.00s)
+=== RUN   TestTableBuilder_Headers
+=== RUN   TestTableBuilder_Headers/sets_Headers_correctly
+--- PASS: TestTableBuilder_Headers (0.00s)
+    --- PASS: TestTableBuilder_Headers/sets_Headers_correctly (0.00s)
+=== RUN   TestTableBuilder_Rows
+=== RUN   TestTableBuilder_Rows/sets_Rows_correctly
+--- PASS: TestTableBuilder_Rows (0.00s)
+    --- PASS: TestTableBuilder_Rows/sets_Rows_correctly (0.00s)
+=== RUN   TestTableBuilder_Focused
+=== RUN   TestTableBuilder_Focused/sets_Focused_true
+=== RUN   TestTableBuilder_Focused/sets_Focused_false
+--- PASS: TestTableBuilder_Focused (0.00s)
+    --- PASS: TestTableBuilder_Focused/sets_Focused_true (0.00s)
+    --- PASS: TestTableBuilder_Focused/sets_Focused_false (0.00s)
+=== RUN   TestTableBuilder_OnChange
+--- PASS: TestTableBuilder_OnChange (0.00s)
+=== RUN   TestTableBuilder_SelectedIndex
+--- PASS: TestTableBuilder_SelectedIndex (0.00s)
+=== RUN   TestTableBuilder_ColumnWidths
+--- PASS: TestTableBuilder_ColumnWidths (0.00s)
+=== RUN   TestTableBuilder_MinColumnWidth
+--- PASS: TestTableBuilder_MinColumnWidth (0.00s)
+=== RUN   TestTableBuilder_MaxColumnWidth
+--- PASS: TestTableBuilder_MaxColumnWidth (0.00s)
+=== RUN   TestTableBuilder_CellPadding
+--- PASS: TestTableBuilder_CellPadding (0.00s)
+=== RUN   TestTableBuilder_Colors
+=== RUN   TestTableBuilder_Colors/sets_HeaderColor_correctly
+=== RUN   TestTableBuilder_Colors/sets_HeaderBackground_correctly
+=== RUN   TestTableBuilder_Colors/sets_SelectedBackground_correctly
+=== RUN   TestTableBuilder_Colors/sets_SelectedForeground_correctly
+=== RUN   TestTableBuilder_Colors/sets_RowColor_correctly
+=== RUN   TestTableBuilder_Colors/sets_RowBackground_correctly
+=== RUN   TestTableBuilder_Colors/sets_BorderColor_correctly
+--- PASS: TestTableBuilder_Colors (0.00s)
+    --- PASS: TestTableBuilder_Colors/sets_HeaderColor_correctly (0.00s)
+    --- PASS: TestTableBuilder_Colors/sets_HeaderBackground_correctly (0.00s)
+    --- PASS: TestTableBuilder_Colors/sets_SelectedBackground_correctly (0.00s)
+    --- PASS: TestTableBuilder_Colors/sets_SelectedForeground_correctly (0.00s)
+    --- PASS: TestTableBuilder_Colors/sets_RowColor_correctly (0.00s)
+    --- PASS: TestTableBuilder_Colors/sets_RowBackground_correctly (0.00s)
+    --- PASS: TestTableBuilder_Colors/sets_BorderColor_correctly (0.00s)
+=== RUN   TestTableBuilder_Styles
+=== RUN   TestTableBuilder_Styles/sets_HeaderStyle_correctly
+=== RUN   TestTableBuilder_Styles/sets_SelectedStyle_correctly
+=== RUN   TestTableBuilder_Styles/sets_RowStyle_correctly
+=== RUN   TestTableBuilder_Styles/sets_BorderStyle_correctly
+--- PASS: TestTableBuilder_Styles (0.00s)
+    --- PASS: TestTableBuilder_Styles/sets_HeaderStyle_correctly (0.00s)
+    --- PASS: TestTableBuilder_Styles/sets_SelectedStyle_correctly (0.00s)
+    --- PASS: TestTableBuilder_Styles/sets_RowStyle_correctly (0.00s)
+    --- PASS: TestTableBuilder_Styles/sets_BorderStyle_correctly (0.00s)
+=== RUN   TestTableBuilder_Alignments
+--- PASS: TestTableBuilder_Alignments (0.00s)
+=== RUN   TestTableBuilder_ShowFlags
+=== RUN   TestTableBuilder_ShowFlags/sets_ShowHeaders_correctly
+=== RUN   TestTableBuilder_ShowFlags/sets_ShowBorders_correctly
+=== RUN   TestTableBuilder_ShowFlags/sets_ShowSelection_correctly
+--- PASS: TestTableBuilder_ShowFlags (0.00s)
+    --- PASS: TestTableBuilder_ShowFlags/sets_ShowHeaders_correctly (0.00s)
+    --- PASS: TestTableBuilder_ShowFlags/sets_ShowBorders_correctly (0.00s)
+    --- PASS: TestTableBuilder_ShowFlags/sets_ShowSelection_correctly (0.00s)
+=== RUN   TestTableBuilder_Selectable
+=== RUN   TestTableBuilder_Selectable/sets_Selectable_false
+--- PASS: TestTableBuilder_Selectable (0.00s)
+    --- PASS: TestTableBuilder_Selectable/sets_Selectable_false (0.00s)
+=== RUN   TestTableBuilder_Width
+=== RUN   TestTableBuilder_Width/sets_Width_correctly
+--- PASS: TestTableBuilder_Width (0.00s)
+    --- PASS: TestTableBuilder_Width/sets_Width_correctly (0.00s)
+=== RUN   TestTableBuilder_Height
+=== RUN   TestTableBuilder_Height/sets_Height_correctly
+--- PASS: TestTableBuilder_Height (0.00s)
+    --- PASS: TestTableBuilder_Height/sets_Height_correctly (0.00s)
+=== RUN   TestTableChaining
+--- PASS: TestTableChaining (0.00s)
+=== RUN   TestTableRender
+=== RUN   TestTableRender/returns_an_Element_with_ContentBuilder
+=== RUN   TestTableRender/builds_table_with_headers
+=== RUN   TestTableRender/builds_table_without_headers
+=== RUN   TestTableRender/builds_table_without_borders
+--- PASS: TestTableRender (0.00s)
+    --- PASS: TestTableRender/returns_an_Element_with_ContentBuilder (0.00s)
+    --- PASS: TestTableRender/builds_table_with_headers (0.00s)
+    --- PASS: TestTableRender/builds_table_without_headers (0.00s)
+    --- PASS: TestTableRender/builds_table_without_borders (0.00s)
+=== RUN   TestTableHelperFunctions
+=== RUN   TestTableHelperFunctions/displayWidth_calculates_width_correctly
+=== RUN   TestTableHelperFunctions/truncateToWidth_truncates_correctly
+=== RUN   TestTableHelperFunctions/padText_pads_correctly_with_left_alignment
+=== RUN   TestTableHelperFunctions/padText_pads_correctly_with_center_alignment
+=== RUN   TestTableHelperFunctions/padText_pads_correctly_with_right_alignment
+=== RUN   TestTableHelperFunctions/getAlignment_returns_default_alignment
+=== RUN   TestTableHelperFunctions/getAlignment_returns_custom_alignment
+--- PASS: TestTableHelperFunctions (0.00s)
+    --- PASS: TestTableHelperFunctions/displayWidth_calculates_width_correctly (0.00s)
+    --- PASS: TestTableHelperFunctions/truncateToWidth_truncates_correctly (0.00s)
+    --- PASS: TestTableHelperFunctions/padText_pads_correctly_with_left_alignment (0.00s)
+    --- PASS: TestTableHelperFunctions/padText_pads_correctly_with_center_alignment (0.00s)
+    --- PASS: TestTableHelperFunctions/padText_pads_correctly_with_right_alignment (0.00s)
+    --- PASS: TestTableHelperFunctions/getAlignment_returns_default_alignment (0.00s)
+    --- PASS: TestTableHelperFunctions/getAlignment_returns_custom_alignment (0.00s)
+=== RUN   TestTableEdgeCases
+=== RUN   TestTableEdgeCases/handles_empty_headers
+=== RUN   TestTableEdgeCases/handles_empty_rows
+=== RUN   TestTableEdgeCases/handles_rows_with_different_column_counts
+=== RUN   TestTableEdgeCases/handles_negative_width
+=== RUN   TestTableEdgeCases/handles_negative_height
+=== RUN   TestTableEdgeCases/handles_selected_index_out_of_bounds
+=== RUN   TestTableEdgeCases/handles_very_long_text_in_cells
+=== RUN   TestTableEdgeCases/handles_many_rows
+--- PASS: TestTableEdgeCases (0.00s)
+    --- PASS: TestTableEdgeCases/handles_empty_headers (0.00s)
+    --- PASS: TestTableEdgeCases/handles_empty_rows (0.00s)
+    --- PASS: TestTableEdgeCases/handles_rows_with_different_column_counts (0.00s)
+    --- PASS: TestTableEdgeCases/handles_negative_width (0.00s)
+    --- PASS: TestTableEdgeCases/handles_negative_height (0.00s)
+    --- PASS: TestTableEdgeCases/handles_selected_index_out_of_bounds (0.00s)
+    --- PASS: TestTableEdgeCases/handles_very_long_text_in_cells (0.00s)
+    --- PASS: TestTableEdgeCases/handles_many_rows (0.00s)
+=== RUN   TestTextInputBuilder_Defaults
+--- PASS: TestTextInputBuilder_Defaults (0.00s)
+=== RUN   TestTextInputBuilder_StringFields
+=== RUN   TestTextInputBuilder_StringFields/sets_ID_correctly
+=== RUN   TestTextInputBuilder_StringFields/sets_Value_correctly
+=== RUN   TestTextInputBuilder_StringFields/sets_Placeholder_correctly
+=== RUN   TestTextInputBuilder_StringFields/sets_Prefix_correctly
+=== RUN   TestTextInputBuilder_StringFields/sets_Suffix_correctly
+--- PASS: TestTextInputBuilder_StringFields (0.00s)
+    --- PASS: TestTextInputBuilder_StringFields/sets_ID_correctly (0.00s)
+    --- PASS: TestTextInputBuilder_StringFields/sets_Value_correctly (0.00s)
+    --- PASS: TestTextInputBuilder_StringFields/sets_Placeholder_correctly (0.00s)
+    --- PASS: TestTextInputBuilder_StringFields/sets_Prefix_correctly (0.00s)
+    --- PASS: TestTextInputBuilder_StringFields/sets_Suffix_correctly (0.00s)
+=== RUN   TestTextInputBuilder_Width
+--- PASS: TestTextInputBuilder_Width (0.00s)
+=== RUN   TestTextInputBuilder_Style
+=== RUN   TestTextInputBuilder_Style/sets_Style_correctly
+--- PASS: TestTextInputBuilder_Style (0.00s)
+    --- PASS: TestTextInputBuilder_Style/sets_Style_correctly (0.00s)
+=== RUN   TestTextInputBuilder_MinLength
+=== RUN   TestTextInputBuilder_MinLength/sets_MinLength_correctly
+--- PASS: TestTextInputBuilder_MinLength (0.00s)
+    --- PASS: TestTextInputBuilder_MinLength/sets_MinLength_correctly (0.00s)
+=== RUN   TestTextInputBuilder_MaxLength
+=== RUN   TestTextInputBuilder_MaxLength/sets_MaxLength_correctly
+--- PASS: TestTextInputBuilder_MaxLength (0.00s)
+    --- PASS: TestTextInputBuilder_MaxLength/sets_MaxLength_correctly (0.00s)
+=== RUN   TestTextInputBuilder_State
+=== RUN   TestTextInputBuilder_State/sets_Focused_state_correctly
+=== RUN   TestTextInputBuilder_State/sets_Focused_state_to_false
+--- PASS: TestTextInputBuilder_State (0.00s)
+    --- PASS: TestTextInputBuilder_State/sets_Focused_state_correctly (0.00s)
+    --- PASS: TestTextInputBuilder_State/sets_Focused_state_to_false (0.00s)
+=== RUN   TestTextInputCallbacks
+=== RUN   TestTextInputCallbacks/OnChange_callback_is_set_and_invoked_correctly
+=== RUN   TestTextInputCallbacks/OnKeyPress_callback_is_set_and_invoked_correctly
+=== RUN   TestTextInputCallbacks/OnFocus_callback_is_set_and_invoked_correctly
+=== RUN   TestTextInputCallbacks/OnBlur_callback_is_set_and_invoked_correctly
+=== RUN   TestTextInputCallbacks/OnSubmit_callback_is_set_and_invoked_correctly
+--- PASS: TestTextInputCallbacks (0.00s)
+    --- PASS: TestTextInputCallbacks/OnChange_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestTextInputCallbacks/OnKeyPress_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestTextInputCallbacks/OnFocus_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestTextInputCallbacks/OnBlur_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestTextInputCallbacks/OnSubmit_callback_is_set_and_invoked_correctly (0.00s)
+=== RUN   TestTextInputRender
+=== RUN   TestTextInputRender/returns_an_Element_of_type_ElementBox
+=== RUN   TestTextInputRender/renders_with_placeholder_when_empty
+=== RUN   TestTextInputRender/renders_with_value
+=== RUN   TestTextInputRender/renders_with_prefix
+=== RUN   TestTextInputRender/renders_with_suffix
+=== RUN   TestTextInputRender/renders_with_width
+--- PASS: TestTextInputRender (0.00s)
+    --- PASS: TestTextInputRender/returns_an_Element_of_type_ElementBox (0.00s)
+    --- PASS: TestTextInputRender/renders_with_placeholder_when_empty (0.00s)
+    --- PASS: TestTextInputRender/renders_with_value (0.00s)
+    --- PASS: TestTextInputRender/renders_with_prefix (0.00s)
+    --- PASS: TestTextInputRender/renders_with_suffix (0.00s)
+    --- PASS: TestTextInputRender/renders_with_width (0.00s)
+=== RUN   TestRenderInputFunction
+=== RUN   TestRenderInputFunction/renders_with_default_style_when_not_focused
+=== RUN   TestRenderInputFunction/renders_with_focus_style_when_focused
+=== RUN   TestRenderInputFunction/renders_with_placeholder_when_empty
+=== RUN   TestRenderInputFunction/triggers_OnFocus_when_focused
+=== RUN   TestRenderInputFunction/triggers_OnBlur_when_not_focused
+=== RUN   TestRenderInputFunction/does_not_trigger_focus/blur_without_ID
+--- PASS: TestRenderInputFunction (0.00s)
+    --- PASS: TestRenderInputFunction/renders_with_default_style_when_not_focused (0.00s)
+    --- PASS: TestRenderInputFunction/renders_with_focus_style_when_focused (0.00s)
+    --- PASS: TestRenderInputFunction/renders_with_placeholder_when_empty (0.00s)
+    --- PASS: TestRenderInputFunction/triggers_OnFocus_when_focused (0.00s)
+    --- PASS: TestRenderInputFunction/triggers_OnBlur_when_not_focused (0.00s)
+    --- PASS: TestRenderInputFunction/does_not_trigger_focus/blur_without_ID (0.00s)
+=== RUN   TestTextInputChaining
+--- PASS: TestTextInputChaining (0.00s)
+=== RUN   TestTextInputEdgeCases
+=== RUN   TestTextInputEdgeCases/handles_empty_value_gracefully
+=== RUN   TestTextInputEdgeCases/handles_negative_width_gracefully
+=== RUN   TestTextInputEdgeCases/handles_very_long_value
+=== RUN   TestTextInputEdgeCases/handles_nil_callbacks_gracefully
+=== RUN   TestTextInputEdgeCases/handles_empty_prefix_and_suffix
+=== RUN   TestTextInputEdgeCases/handles_Unicode_characters
+=== RUN   TestTextInputEdgeCases/handles_special_characters
+=== RUN   TestTextInputEdgeCases/validates_min_length_correctly
+=== RUN   TestTextInputEdgeCases/validates_max_length_correctly
+--- PASS: TestTextInputEdgeCases (0.00s)
+    --- PASS: TestTextInputEdgeCases/handles_empty_value_gracefully (0.00s)
+    --- PASS: TestTextInputEdgeCases/handles_negative_width_gracefully (0.00s)
+    --- PASS: TestTextInputEdgeCases/handles_very_long_value (0.00s)
+    --- PASS: TestTextInputEdgeCases/handles_nil_callbacks_gracefully (0.00s)
+    --- PASS: TestTextInputEdgeCases/handles_empty_prefix_and_suffix (0.00s)
+    --- PASS: TestTextInputEdgeCases/handles_Unicode_characters (0.00s)
+    --- PASS: TestTextInputEdgeCases/handles_special_characters (0.00s)
+    --- PASS: TestTextInputEdgeCases/validates_min_length_correctly (0.00s)
+    --- PASS: TestTextInputEdgeCases/validates_max_length_correctly (0.00s)
+=== RUN   TestTextAreaBuilder_Defaults
+--- PASS: TestTextAreaBuilder_Defaults (0.00s)
+=== RUN   TestTextAreaBuilder_StringFields
+=== RUN   TestTextAreaBuilder_StringFields/sets_ID_correctly
+=== RUN   TestTextAreaBuilder_StringFields/sets_Value_correctly
+=== RUN   TestTextAreaBuilder_StringFields/sets_Placeholder_correctly
+=== RUN   TestTextAreaBuilder_StringFields/sets_Prefix_correctly
+=== RUN   TestTextAreaBuilder_StringFields/sets_Suffix_correctly
+--- PASS: TestTextAreaBuilder_StringFields (0.00s)
+    --- PASS: TestTextAreaBuilder_StringFields/sets_ID_correctly (0.00s)
+    --- PASS: TestTextAreaBuilder_StringFields/sets_Value_correctly (0.00s)
+    --- PASS: TestTextAreaBuilder_StringFields/sets_Placeholder_correctly (0.00s)
+    --- PASS: TestTextAreaBuilder_StringFields/sets_Prefix_correctly (0.00s)
+    --- PASS: TestTextAreaBuilder_StringFields/sets_Suffix_correctly (0.00s)
+=== RUN   TestTextAreaBuilder_Width
+--- PASS: TestTextAreaBuilder_Width (0.00s)
+=== RUN   TestTextAreaBuilder_Height
+--- PASS: TestTextAreaBuilder_Height (0.00s)
+=== RUN   TestTextAreaBuilder_Style
+=== RUN   TestTextAreaBuilder_Style/sets_Style_correctly
+--- PASS: TestTextAreaBuilder_Style (0.00s)
+    --- PASS: TestTextAreaBuilder_Style/sets_Style_correctly (0.00s)
+=== RUN   TestTextAreaBuilder_MinLength
+=== RUN   TestTextAreaBuilder_MinLength/sets_MinLength_correctly
+--- PASS: TestTextAreaBuilder_MinLength (0.00s)
+    --- PASS: TestTextAreaBuilder_MinLength/sets_MinLength_correctly (0.00s)
+=== RUN   TestTextAreaBuilder_MaxLength
+=== RUN   TestTextAreaBuilder_MaxLength/sets_MaxLength_correctly
+--- PASS: TestTextAreaBuilder_MaxLength (0.00s)
+    --- PASS: TestTextAreaBuilder_MaxLength/sets_MaxLength_correctly (0.00s)
+=== RUN   TestTextAreaBuilder_State
+=== RUN   TestTextAreaBuilder_State/sets_Focused_state_correctly
+=== RUN   TestTextAreaBuilder_State/sets_Focused_state_to_false
+--- PASS: TestTextAreaBuilder_State (0.00s)
+    --- PASS: TestTextAreaBuilder_State/sets_Focused_state_correctly (0.00s)
+    --- PASS: TestTextAreaBuilder_State/sets_Focused_state_to_false (0.00s)
+=== RUN   TestTextAreaCallbacks
+=== RUN   TestTextAreaCallbacks/OnChange_callback_is_set_and_invoked_correctly
+=== RUN   TestTextAreaCallbacks/OnKeyPress_callback_is_set_and_invoked_correctly
+=== RUN   TestTextAreaCallbacks/OnFocus_callback_is_set_and_invoked_correctly
+=== RUN   TestTextAreaCallbacks/OnBlur_callback_is_set_and_invoked_correctly
+=== RUN   TestTextAreaCallbacks/OnSubmit_callback_is_set_and_invoked_correctly
+--- PASS: TestTextAreaCallbacks (0.00s)
+    --- PASS: TestTextAreaCallbacks/OnChange_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestTextAreaCallbacks/OnKeyPress_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestTextAreaCallbacks/OnFocus_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestTextAreaCallbacks/OnBlur_callback_is_set_and_invoked_correctly (0.00s)
+    --- PASS: TestTextAreaCallbacks/OnSubmit_callback_is_set_and_invoked_correctly (0.00s)
+=== RUN   TestTextAreaRender
+=== RUN   TestTextAreaRender/returns_an_Element_of_type_ElementBox
+=== RUN   TestTextAreaRender/renders_with_placeholder_when_empty
+=== RUN   TestTextAreaRender/renders_with_value
+=== RUN   TestTextAreaRender/renders_with_prefix
+=== RUN   TestTextAreaRender/renders_with_suffix
+=== RUN   TestTextAreaRender/renders_with_width_and_height
+--- PASS: TestTextAreaRender (0.00s)
+    --- PASS: TestTextAreaRender/returns_an_Element_of_type_ElementBox (0.00s)
+    --- PASS: TestTextAreaRender/renders_with_placeholder_when_empty (0.00s)
+    --- PASS: TestTextAreaRender/renders_with_value (0.00s)
+    --- PASS: TestTextAreaRender/renders_with_prefix (0.00s)
+    --- PASS: TestTextAreaRender/renders_with_suffix (0.00s)
+    --- PASS: TestTextAreaRender/renders_with_width_and_height (0.00s)
+=== RUN   TestRenderTextAreaFunction
+=== RUN   TestRenderTextAreaFunction/renders_with_default_style_when_not_focused
+=== RUN   TestRenderTextAreaFunction/renders_with_focus_style_when_focused
+=== RUN   TestRenderTextAreaFunction/renders_with_placeholder_when_empty
+=== RUN   TestRenderTextAreaFunction/triggers_OnFocus_when_focused
+=== RUN   TestRenderTextAreaFunction/triggers_OnBlur_when_not_focused
+=== RUN   TestRenderTextAreaFunction/does_not_trigger_focus/blur_without_ID
+--- PASS: TestRenderTextAreaFunction (0.00s)
+    --- PASS: TestRenderTextAreaFunction/renders_with_default_style_when_not_focused (0.00s)
+    --- PASS: TestRenderTextAreaFunction/renders_with_focus_style_when_focused (0.00s)
+    --- PASS: TestRenderTextAreaFunction/renders_with_placeholder_when_empty (0.00s)
+    --- PASS: TestRenderTextAreaFunction/triggers_OnFocus_when_focused (0.00s)
+    --- PASS: TestRenderTextAreaFunction/triggers_OnBlur_when_not_focused (0.00s)
+    --- PASS: TestRenderTextAreaFunction/does_not_trigger_focus/blur_without_ID (0.00s)
+=== RUN   TestTextAreaChaining
+--- PASS: TestTextAreaChaining (0.00s)
+=== RUN   TestTextAreaHelperFunctions
+=== RUN   TestTextAreaHelperFunctions/lineStart_finds_start_of_line
+=== RUN   TestTextAreaHelperFunctions/lineEnd_finds_end_of_line
+=== RUN   TestTextAreaHelperFunctions/movePosVertically_moves_up
+=== RUN   TestTextAreaHelperFunctions/movePosVertically_moves_down
+=== RUN   TestTextAreaHelperFunctions/movePosVertically_handles_boundaries
+=== RUN   TestTextAreaHelperFunctions/wrapTextArea_wraps_text_correctly
+=== RUN   TestTextAreaHelperFunctions/wrapTextArea_preserves_newlines
+=== RUN   TestTextAreaHelperFunctions/wrapTextArea_handles_multiple_spaces
+--- PASS: TestTextAreaHelperFunctions (0.00s)
+    --- PASS: TestTextAreaHelperFunctions/lineStart_finds_start_of_line (0.00s)
+    --- PASS: TestTextAreaHelperFunctions/lineEnd_finds_end_of_line (0.00s)
+    --- PASS: TestTextAreaHelperFunctions/movePosVertically_moves_up (0.00s)
+    --- PASS: TestTextAreaHelperFunctions/movePosVertically_moves_down (0.00s)
+    --- PASS: TestTextAreaHelperFunctions/movePosVertically_handles_boundaries (0.00s)
+    --- PASS: TestTextAreaHelperFunctions/wrapTextArea_wraps_text_correctly (0.00s)
+    --- PASS: TestTextAreaHelperFunctions/wrapTextArea_preserves_newlines (0.00s)
+    --- PASS: TestTextAreaHelperFunctions/wrapTextArea_handles_multiple_spaces (0.00s)
+=== RUN   TestTextAreaEdgeCases
+=== RUN   TestTextAreaEdgeCases/handles_empty_value_gracefully
+=== RUN   TestTextAreaEdgeCases/handles_negative_width_gracefully
+=== RUN   TestTextAreaEdgeCases/handles_negative_height_gracefully
+=== RUN   TestTextAreaEdgeCases/handles_very_long_value
+=== RUN   TestTextAreaEdgeCases/handles_nil_callbacks_gracefully
+=== RUN   TestTextAreaEdgeCases/handles_empty_prefix_and_suffix
+=== RUN   TestTextAreaEdgeCases/handles_Unicode_characters
+=== RUN   TestTextAreaEdgeCases/handles_multiline_text
+=== RUN   TestTextAreaEdgeCases/validates_min_length_correctly
+=== RUN   TestTextAreaEdgeCases/validates_max_length_correctly
+--- PASS: TestTextAreaEdgeCases (0.00s)
+    --- PASS: TestTextAreaEdgeCases/handles_empty_value_gracefully (0.00s)
+    --- PASS: TestTextAreaEdgeCases/handles_negative_width_gracefully (0.00s)
+    --- PASS: TestTextAreaEdgeCases/handles_negative_height_gracefully (0.00s)
+    --- PASS: TestTextAreaEdgeCases/handles_very_long_value (0.00s)
+    --- PASS: TestTextAreaEdgeCases/handles_nil_callbacks_gracefully (0.00s)
+    --- PASS: TestTextAreaEdgeCases/handles_empty_prefix_and_suffix (0.00s)
+    --- PASS: TestTextAreaEdgeCases/handles_Unicode_characters (0.00s)
+    --- PASS: TestTextAreaEdgeCases/handles_multiline_text (0.00s)
+    --- PASS: TestTextAreaEdgeCases/validates_min_length_correctly (0.00s)
+    --- PASS: TestTextAreaEdgeCases/validates_max_length_correctly (0.00s)
+=== RUN   TestTree
+=== RUN   TestTree/creates_a_tree_with_nodes
+=== RUN   TestTree/renders_empty_tree_with_placeholder
+=== RUN   TestTree/renders_tree_with_multiple_root_nodes
+=== RUN   TestTree/renders_tree_with_nested_children
+=== RUN   TestTree/handles_focus_correctly
+=== RUN   TestTree/triggers_onChange_when_selecting_leaf
+=== RUN   TestTree/handles_nodes_without_IDs_using_labels_as_IDs
+--- PASS: TestTree (0.00s)
+    --- PASS: TestTree/creates_a_tree_with_nodes (0.00s)
+    --- PASS: TestTree/renders_empty_tree_with_placeholder (0.00s)
+    --- PASS: TestTree/renders_tree_with_multiple_root_nodes (0.00s)
+    --- PASS: TestTree/renders_tree_with_nested_children (0.00s)
+    --- PASS: TestTree/handles_focus_correctly (0.00s)
+    --- PASS: TestTree/triggers_onChange_when_selecting_leaf (0.00s)
+    --- PASS: TestTree/handles_nodes_without_IDs_using_labels_as_IDs (0.00s)
+=== RUN   TestTree_FlattenTree
+=== RUN   TestTree_FlattenTree/flattens_tree_with_expanded_nodes
+=== RUN   TestTree_FlattenTree/flattens_tree_with_collapsed_nodes
+=== RUN   TestTree_FlattenTree/flattens_deeply_nested_tree
+=== RUN   TestTree_FlattenTree/handles_leaf_nodes_correctly
+=== RUN   TestTree_FlattenTree/sets_isLast_correctly
+=== RUN   TestTree_FlattenTree/handles_tree_with_mixed_leaf_and_branch_nodes
+--- PASS: TestTree_FlattenTree (0.00s)
+    --- PASS: TestTree_FlattenTree/flattens_tree_with_expanded_nodes (0.00s)
+    --- PASS: TestTree_FlattenTree/flattens_tree_with_collapsed_nodes (0.00s)
+    --- PASS: TestTree_FlattenTree/flattens_deeply_nested_tree (0.00s)
+    --- PASS: TestTree_FlattenTree/handles_leaf_nodes_correctly (0.00s)
+    --- PASS: TestTree_FlattenTree/sets_isLast_correctly (0.00s)
+    --- PASS: TestTree_FlattenTree/handles_tree_with_mixed_leaf_and_branch_nodes (0.00s)
+=== RUN   TestTree_NodeTypes
+=== RUN   TestTree_NodeTypes/TreeNode_has_correct_fields
+=== RUN   TestTree_NodeTypes/visibleNode_has_correct_fields
+--- PASS: TestTree_NodeTypes (0.00s)
+    --- PASS: TestTree_NodeTypes/TreeNode_has_correct_fields (0.00s)
+    --- PASS: TestTree_NodeTypes/visibleNode_has_correct_fields (0.00s)
+=== RUN   TestTree_EdgeCases
+=== RUN   TestTree_EdgeCases/handles_nil_nodes
+=== RUN   TestTree_EdgeCases/handles_empty_string_IDs
+=== RUN   TestTree_EdgeCases/handles_very_deep_tree
+=== RUN   TestTree_EdgeCases/handles_many_siblings
+=== RUN   TestTree_EdgeCases/handles_nil_onChange_callback
+--- PASS: TestTree_EdgeCases (0.00s)
+    --- PASS: TestTree_EdgeCases/handles_nil_nodes (0.00s)
+    --- PASS: TestTree_EdgeCases/handles_empty_string_IDs (0.00s)
+    --- PASS: TestTree_EdgeCases/handles_very_deep_tree (0.00s)
+    --- PASS: TestTree_EdgeCases/handles_many_siblings (0.00s)
+    --- PASS: TestTree_EdgeCases/handles_nil_onChange_callback (0.00s)
+=== RUN   TestTree_FlattenTreeHelpers
+=== RUN   TestTree_FlattenTreeHelpers/walkTree_traverses_tree_correctly
+=== RUN   TestTree_FlattenTreeHelpers/walkTree_respects_expanded_state
+--- PASS: TestTree_FlattenTreeHelpers (0.00s)
+    --- PASS: TestTree_FlattenTreeHelpers/walkTree_traverses_tree_correctly (0.00s)
+    --- PASS: TestTree_FlattenTreeHelpers/walkTree_respects_expanded_state (0.00s)
+=== RUN   ExampleProgressBar
+--- PASS: ExampleProgressBar (0.00s)
+PASS
+ok  	github.com/subhasundardass/retui/retui/components	(cached)
+=== RUN   TestNewWindow
+--- PASS: TestNewWindow (0.00s)
+=== RUN   TestWindowSetTitle
+--- PASS: TestWindowSetTitle (0.00s)
+=== RUN   TestWindowSetSize
+--- PASS: TestWindowSetSize (0.00s)
+=== RUN   TestWindowSetPosition
+--- PASS: TestWindowSetPosition (0.00s)
+=== RUN   TestWindowSetModal
+--- PASS: TestWindowSetModal (0.00s)
+=== RUN   TestWindowShow
+--- PASS: TestWindowShow (0.00s)
+=== RUN   TestWindowHide
+--- PASS: TestWindowHide (0.00s)
+=== RUN   TestWindowClose
+--- PASS: TestWindowClose (0.00s)
+=== RUN   TestWindowFocus
+--- PASS: TestWindowFocus (0.00s)
+=== RUN   TestWindowCenter
+--- PASS: TestWindowCenter (0.00s)
+=== RUN   TestWindowCenterOnScreen
+--- PASS: TestWindowCenterOnScreen (0.00s)
+=== RUN   TestWindowGetBounds
+--- PASS: TestWindowGetBounds (0.00s)
+=== RUN   TestWindowRender
+--- PASS: TestWindowRender (0.00s)
+=== RUN   TestWindowManagerAddWindow
+--- PASS: TestWindowManagerAddWindow (0.00s)
+=== RUN   TestWindowManagerRemoveWindow
+--- PASS: TestWindowManagerRemoveWindow (0.00s)
+=== RUN   TestWindowManagerBringToFront
+--- PASS: TestWindowManagerBringToFront (0.00s)
+=== RUN   TestWindowManagerGetFocused
+--- PASS: TestWindowManagerGetFocused (0.00s)
+=== RUN   TestWindowManagerIsAnyModalOpen
+--- PASS: TestWindowManagerIsAnyModalOpen (0.00s)
+=== RUN   TestWindowManagerGetTopVisibleModal
+--- PASS: TestWindowManagerGetTopVisibleModal (0.00s)
+=== RUN   TestWindowManagerCount
+--- PASS: TestWindowManagerCount (0.00s)
+=== RUN   TestCloseAll
+--- PASS: TestCloseAll (0.00s)
+=== RUN   TestWindowString
+--- PASS: TestWindowString (0.00s)
+=== RUN   TestWindowClone
+--- PASS: TestWindowClone (0.00s)
+=== RUN   TestModalFocusBlocking
+--- PASS: TestModalFocusBlocking (0.00s)
+PASS
+ok  	github.com/subhasundardass/retui/retui/window	(cached)

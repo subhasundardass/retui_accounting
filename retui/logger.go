@@ -7,7 +7,6 @@ package retui
 //----------
 import (
 	"fmt"
-	"io"
 	"log"
 	"os"
 	"path/filepath"
@@ -18,12 +17,11 @@ import (
 )
 
 var (
-	logger     *log.Logger
-	debugMode  bool
-	logFile    *os.File
-	logMu      sync.RWMutex
-	logLevel   LogLevel
-	logOutputs []io.Writer
+	logger    *log.Logger
+	debugMode bool
+	logFile   *os.File
+	logMu     sync.RWMutex
+	logLevel  LogLevel
 )
 
 // LogLevel represents the logging level
@@ -74,7 +72,6 @@ func init() {
 	// Initialize with default settings
 	debugMode = true
 	logLevel = LevelDebug
-	logOutputs = make([]io.Writer, 0)
 
 	// Setup logging
 	if err := setupLogging(); err != nil {
@@ -209,15 +206,6 @@ func logMessage(level LogLevel, color string, args ...interface{}) {
 	// if isTerminal() {
 	// 	fmt.Printf("%s%s%s\n", color, logEntry, colorReset)
 	// }
-}
-
-// isTerminal checks if stdout is a terminal
-func isTerminal() bool {
-	fileInfo, err := os.Stdout.Stat()
-	if err != nil {
-		return false
-	}
-	return (fileInfo.Mode() & os.ModeCharDevice) != 0
 }
 
 // Debug logs debug messages (only shown in debug mode)

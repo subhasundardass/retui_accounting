@@ -92,7 +92,7 @@ func wrapText(text string, maxWidth int) []string {
 			// Word doesn't fit: flush line and start fresh.
 			lines = append(lines, line.String())
 			line.Reset()
-			lineWidth = 0
+			// lineWidth = 0
 
 			// Hard-break oversized word if necessary.
 			for wordWidth > maxWidth {

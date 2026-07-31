@@ -329,7 +329,7 @@ render:
 	// Apply validation styling
 	textStyleForDisplay := textStyle
 	if !isValid && !focused {
-		textStyleForDisplay = textStyleForDisplay
+		textStyleForDisplay = textStyle
 	}
 
 	elements = append(elements, retui.Text(paddedDisplay, textStyleForDisplay))

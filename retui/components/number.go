@@ -396,14 +396,14 @@ func renderNumberInput(focused bool, config *NumberInputConfig) retui.Element {
 	justGainedFocus := focused && !wasFocused
 
 	if focused && !wasFocused {
-		wasFocused = true
+		// wasFocused = true
 		setWasFocused(true)
 		if config.SelectAllOnFocus {
 			selected = true
 			setSelected(true)
 		}
 	} else if !focused && wasFocused {
-		wasFocused = false
+		// wasFocused = false
 		setWasFocused(false)
 		selected = false
 		setSelected(false)
