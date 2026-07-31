@@ -105,7 +105,7 @@ jobs:
           staticcheck ./retui/... 2>/dev/null || true
 
       - name: Run gosec
-        uses: securego/gosec@v2
+        uses: securego/gosec@master
         with:
           args: ./retui/...
 
