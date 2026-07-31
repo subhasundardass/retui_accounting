@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        go-version: ["1.23", "1.22"]
+        go-version: ["1.26.3", "1.23"]  # Include the version from go.mod
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -81,7 +81,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: "1.23"
+          go-version: "1.26.3"  # Use the version from go.mod
           cache: true
 
       - name: Install golangci-lint
@@ -92,7 +92,7 @@ jobs:
         run: |
           golangci-lint run ./retui/... --timeout=5m
 
-      - name: Install additional linters
+      - name: Install additional linters (optional)
         run: |
           go install github.com/go-critic/go-critic/cmd/gocritic@latest
           go install honnef.co/go/tools/cmd/staticcheck@latest
@@ -120,7 +120,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: "1.23"
+          go-version: "1.26.3"  # Use the version from go.mod
           cache: true
 
       - name: Install govulncheck
