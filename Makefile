@@ -59,7 +59,7 @@ screen: ## Generate a new screen (Usage: make screen NAME=general)
 	@go run ./cmd/retui-gen -make screen:$(NAME)	
 
 test:
-	go test -v -count=1 ./retui/...
+	./test-workflow.sh
 
 
 log:
