@@ -101,7 +101,10 @@ func NewBootstrap() (*Bootstrap, error) {
 	// Store globally
 	SetBootstrap(b)
 
-	retui.Success("Bootstrap completed successfully ✅")
+	//Register modules
+	b.registerModules()
+
+	retui.Success("Bootstrap completed successfully")
 	return b, nil
 }
 

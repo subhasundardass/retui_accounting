@@ -116,17 +116,6 @@ The format is based on **Keep a Changelog**, and this project follows **Semantic
 
 ---
 
-## Version History
-
-| Version | Release Date | Description                    |
-| ------- | ------------ | ------------------------------ |
-| v0.4.0  | 2026-07-18   | Added Table, Select Picker     |
-| v0.3.0  | 2026-07-14   | Added Badge, Spinner, Progress |
-| v0.2.0  | 2026-07-13   | Added new features, Bug Fixed  |
-| v0.1.0  | 2026-07-11   | Initial public release         |
-
----
-
 ## Notes
 
 Future releases will continue documenting:

@@ -92,7 +92,7 @@ func (c *Components) header(selected *ent.Ledger) retui.Element {
 			Align:     retui.AlignCenter,
 		},
 		retui.NewStyle().Foreground(retui.BrightCyan).
-			Border(retui.Border{Bottom: true, Left: true, Right: true, Top: true}),
+			Border(retui.Border{Bottom: true, Left: true, Right: true, Top: true, Color: retui.Gray(1)}),
 		retui.Text(title, retui.NewStyle().Bold(true)),
 		retui.Text("Create <F2>", retui.NewStyle().Bold(true).Foreground(retui.Gold)),
 	)
