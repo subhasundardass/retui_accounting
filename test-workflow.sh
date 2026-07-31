@@ -8,10 +8,17 @@ RED='\033[0;31m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
+# Pin versions to match .github/workflows/ci.yml
+GOLANGCI_LINT_VERSION="v2.12.2"
+GOSEC_VERSION="latest" # gosec Action uses @master; go install below tracks latest tagged release
+
 # Function to check if a command exists
 command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
+
+# Track overall failure without exiting immediately, so we get a full report
+FAILED=0
 
 # Test 1: Build
 echo "📦 Testing build..."
@@ -33,16 +40,19 @@ fi
 
 # Test 3: Gofmt
 echo "📝 Testing gofmt..."
-if [ -z "$(gofmt -l ./retui)" ]; then
+fmt_out="$(gofmt -l ./retui)"
+if [ -z "$fmt_out" ]; then
     echo -e "${GREEN}✅ Gofmt passed${NC}"
 else
     echo -e "${RED}❌ Gofmt failed${NC}"
+    echo "The following files are not gofmt'd:"
+    echo "$fmt_out"
     exit 1
 fi
 
-# Test 4: Tests with coverage
+# Test 4: Tests with coverage (matches CI: race + atomic covermode + coverpkg)
 echo "🧪 Testing tests..."
-if go test ./retui/... -v -race -coverprofile=coverage.out; then
+if go test ./retui/... -v -race -covermode=atomic -coverprofile=coverage.out -coverpkg=./retui/...; then
     echo -e "${GREEN}✅ Tests passed${NC}"
     go tool cover -func=coverage.out | grep total
 else
@@ -50,13 +60,17 @@ else
     exit 1
 fi
 
-# Test 5: Lint with golangci-lint
-echo "🔎 Testing lint (golangci-lint)..."
+# Test 5: Lint with golangci-lint (pinned to v2.12.2 to match CI — v1.x lacks go1.26 support)
+echo "🔎 Testing lint (golangci-lint ${GOLANGCI_LINT_VERSION})..."
 
-# Install golangci-lint if not present
-if ! command_exists golangci-lint; then
-    echo -e "${YELLOW}⚠️  golangci-lint not found. Installing...${NC}"
-    go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+installed_version=""
+if command_exists golangci-lint; then
+    installed_version="$(golangci-lint version 2>/dev/null | grep -oE 'version [^ ]+' | awk '{print $2}')"
+fi
+
+if [ "$installed_version" != "${GOLANGCI_LINT_VERSION#v}" ]; then
+    echo -e "${YELLOW}⚠️  golangci-lint ${GOLANGCI_LINT_VERSION} not found (have: ${installed_version:-none}). Installing...${NC}"
+    go install "github.com/golangci/golangci-lint/v2/cmd/golangci-lint@${GOLANGCI_LINT_VERSION}"
 fi
 
 if golangci-lint run ./retui/... --timeout=5m; then
@@ -66,9 +80,22 @@ else
     exit 1
 fi
 
+# Test 6: gosec (matches CI's securego/gosec action)
+echo "🛡️  Testing gosec..."
 
+if ! command_exists gosec; then
+    echo -e "${YELLOW}⚠️  gosec not found. Installing...${NC}"
+    go install github.com/securego/gosec/v2/cmd/gosec@latest
+fi
 
-# Test 9: govulncheck (optional)
+if gosec ./retui/...; then
+    echo -e "${GREEN}✅ gosec passed${NC}"
+else
+    echo -e "${RED}❌ gosec failed${NC}"
+    exit 1
+fi
+
+# Test 7: govulncheck (optional / non-failing, matches CI)
 echo "🔒 Testing govulncheck..."
 
 if ! command_exists govulncheck; then
@@ -76,18 +103,19 @@ if ! command_exists govulncheck; then
     go install golang.org/x/vuln/cmd/govulncheck@latest
 fi
 
-if govulncheck ./retui/... 2>/dev/null; then
+if govulncheck ./retui/...; then
     echo -e "${GREEN}✅ govulncheck passed${NC}"
 else
     echo -e "${YELLOW}⚠️  govulncheck found issues (not failing)${NC}"
 fi
 
-# Test 10: Dependency check
+# Test 8: Dependency check
 echo "📦 Checking dependencies..."
-if go mod tidy && git diff --exit-code go.mod go.sum 2>/dev/null; then
+go mod tidy
+if git diff --exit-code go.mod go.sum; then
     echo -e "${GREEN}✅ Dependencies are tidy${NC}"
 else
-    echo -e "${RED}❌ Dependencies are not tidy. Run 'go mod tidy'${NC}"
+    echo -e "${RED}❌ Dependencies are not tidy. Run 'go mod tidy' and commit the changes${NC}"
     exit 1
 fi
 
