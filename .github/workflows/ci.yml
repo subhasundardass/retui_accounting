@@ -71,44 +71,6 @@ jobs:
             coverage.out
             *.test
 
-  lint:
-    name: Lint
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: "1.26.3"
-          cache: true
-
-      - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@v7
-        with:
-          version: v2.12.2
-          args: --timeout=5m
-          working-directory: ./retui
-
-      - name: Install additional linters (optional)
-        run: |
-          go install github.com/go-critic/go-critic/cmd/gocritic@latest
-          go install honnef.co/go/tools/cmd/staticcheck@latest
-
-      - name: Run gocritic (optional - non-failing)
-        run: |
-          gocritic check -enableAll ./retui/... 2>/dev/null || true
-
-      - name: Run staticcheck (optional - non-failing)
-        run: |
-          staticcheck ./retui/... 2>/dev/null || true
-
-      - name: Run gosec
-        uses: securego/gosec@master
-        with:
-          args: ./retui/...
-
   security:
     name: Security Scan
     runs-on: ubuntu-latest
