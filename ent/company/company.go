@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 const (
@@ -41,10 +42,6 @@ const (
 	FieldAddress = "address"
 	// FieldCity holds the string denoting the city field in the database.
 	FieldCity = "city"
-	// FieldState holds the string denoting the state field in the database.
-	FieldState = "state"
-	// FieldCountry holds the string denoting the country field in the database.
-	FieldCountry = "country"
 	// FieldPostalCode holds the string denoting the postal_code field in the database.
 	FieldPostalCode = "postal_code"
 	// FieldActive holds the string denoting the active field in the database.
@@ -53,8 +50,26 @@ const (
 	FieldCreatedAt = "created_at"
 	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
 	FieldUpdatedAt = "updated_at"
+	// EdgeCountryRef holds the string denoting the country_ref edge name in mutations.
+	EdgeCountryRef = "country_ref"
+	// EdgeStateRef holds the string denoting the state_ref edge name in mutations.
+	EdgeStateRef = "state_ref"
 	// Table holds the table name of the company in the database.
 	Table = "companies"
+	// CountryRefTable is the table that holds the country_ref relation/edge.
+	CountryRefTable = "companies"
+	// CountryRefInverseTable is the table name for the Country entity.
+	// It exists in this package in order to avoid circular dependency with the "country" package.
+	CountryRefInverseTable = "countries"
+	// CountryRefColumn is the table column denoting the country_ref relation/edge.
+	CountryRefColumn = "company_country_ref"
+	// StateRefTable is the table that holds the state_ref relation/edge.
+	StateRefTable = "companies"
+	// StateRefInverseTable is the table name for the State entity.
+	// It exists in this package in order to avoid circular dependency with the "state" package.
+	StateRefInverseTable = "states"
+	// StateRefColumn is the table column denoting the state_ref relation/edge.
+	StateRefColumn = "company_state_ref"
 )
 
 // Columns holds all SQL columns for company fields.
@@ -74,18 +89,28 @@ var Columns = []string{
 	FieldLogo,
 	FieldAddress,
 	FieldCity,
-	FieldState,
-	FieldCountry,
 	FieldPostalCode,
 	FieldActive,
 	FieldCreatedAt,
 	FieldUpdatedAt,
 }
 
+// ForeignKeys holds the SQL foreign-keys that are owned by the "companies"
+// table and are not defined as standalone fields in the schema.
+var ForeignKeys = []string{
+	"company_country_ref",
+	"company_state_ref",
+}
+
 // ValidColumn reports if the column name is valid (part of the table columns).
 func ValidColumn(column string) bool {
 	for i := range Columns {
 		if column == Columns[i] {
+			return true
+		}
+	}
+	for i := range ForeignKeys {
+		if column == ForeignKeys[i] {
 			return true
 		}
 	}
@@ -111,8 +136,6 @@ var (
 	DefaultCurrency string
 	// DefaultTimezone holds the default value on creation for the "timezone" field.
 	DefaultTimezone string
-	// DefaultCountry holds the default value on creation for the "country" field.
-	DefaultCountry string
 	// DefaultActive holds the default value on creation for the "active" field.
 	DefaultActive bool
 	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
@@ -201,16 +224,6 @@ func ByCity(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCity, opts...).ToFunc()
 }
 
-// ByState orders the results by the state field.
-func ByState(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldState, opts...).ToFunc()
-}
-
-// ByCountry orders the results by the country field.
-func ByCountry(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCountry, opts...).ToFunc()
-}
-
 // ByPostalCode orders the results by the postal_code field.
 func ByPostalCode(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPostalCode, opts...).ToFunc()
@@ -229,4 +242,32 @@ func ByCreatedAt(opts ...sql.OrderTermOption) OrderOption {
 // ByUpdatedAt orders the results by the updated_at field.
 func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldUpdatedAt, opts...).ToFunc()
+}
+
+// ByCountryRefField orders the results by country_ref field.
+func ByCountryRefField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newCountryRefStep(), sql.OrderByField(field, opts...))
+	}
+}
+
+// ByStateRefField orders the results by state_ref field.
+func ByStateRefField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newStateRefStep(), sql.OrderByField(field, opts...))
+	}
+}
+func newCountryRefStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(CountryRefInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, false, CountryRefTable, CountryRefColumn),
+	)
+}
+func newStateRefStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(StateRefInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, false, StateRefTable, StateRefColumn),
+	)
 }

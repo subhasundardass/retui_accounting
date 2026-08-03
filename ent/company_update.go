@@ -12,7 +12,9 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/subhasundardass/retui/ent/company"
+	"github.com/subhasundardass/retui/ent/country"
 	"github.com/subhasundardass/retui/ent/predicate"
+	"github.com/subhasundardass/retui/ent/state"
 )
 
 // CompanyUpdate is the builder for updating Company entities.
@@ -284,40 +286,6 @@ func (_u *CompanyUpdate) ClearCity() *CompanyUpdate {
 	return _u
 }
 
-// SetState sets the "state" field.
-func (_u *CompanyUpdate) SetState(v string) *CompanyUpdate {
-	_u.mutation.SetState(v)
-	return _u
-}
-
-// SetNillableState sets the "state" field if the given value is not nil.
-func (_u *CompanyUpdate) SetNillableState(v *string) *CompanyUpdate {
-	if v != nil {
-		_u.SetState(*v)
-	}
-	return _u
-}
-
-// ClearState clears the value of the "state" field.
-func (_u *CompanyUpdate) ClearState() *CompanyUpdate {
-	_u.mutation.ClearState()
-	return _u
-}
-
-// SetCountry sets the "country" field.
-func (_u *CompanyUpdate) SetCountry(v string) *CompanyUpdate {
-	_u.mutation.SetCountry(v)
-	return _u
-}
-
-// SetNillableCountry sets the "country" field if the given value is not nil.
-func (_u *CompanyUpdate) SetNillableCountry(v *string) *CompanyUpdate {
-	if v != nil {
-		_u.SetCountry(*v)
-	}
-	return _u
-}
-
 // SetPostalCode sets the "postal_code" field.
 func (_u *CompanyUpdate) SetPostalCode(v string) *CompanyUpdate {
 	_u.mutation.SetPostalCode(v)
@@ -358,9 +326,59 @@ func (_u *CompanyUpdate) SetUpdatedAt(v time.Time) *CompanyUpdate {
 	return _u
 }
 
+// SetCountryRefID sets the "country_ref" edge to the Country entity by ID.
+func (_u *CompanyUpdate) SetCountryRefID(id int) *CompanyUpdate {
+	_u.mutation.SetCountryRefID(id)
+	return _u
+}
+
+// SetNillableCountryRefID sets the "country_ref" edge to the Country entity by ID if the given value is not nil.
+func (_u *CompanyUpdate) SetNillableCountryRefID(id *int) *CompanyUpdate {
+	if id != nil {
+		_u = _u.SetCountryRefID(*id)
+	}
+	return _u
+}
+
+// SetCountryRef sets the "country_ref" edge to the Country entity.
+func (_u *CompanyUpdate) SetCountryRef(v *Country) *CompanyUpdate {
+	return _u.SetCountryRefID(v.ID)
+}
+
+// SetStateRefID sets the "state_ref" edge to the State entity by ID.
+func (_u *CompanyUpdate) SetStateRefID(id int) *CompanyUpdate {
+	_u.mutation.SetStateRefID(id)
+	return _u
+}
+
+// SetNillableStateRefID sets the "state_ref" edge to the State entity by ID if the given value is not nil.
+func (_u *CompanyUpdate) SetNillableStateRefID(id *int) *CompanyUpdate {
+	if id != nil {
+		_u = _u.SetStateRefID(*id)
+	}
+	return _u
+}
+
+// SetStateRef sets the "state_ref" edge to the State entity.
+func (_u *CompanyUpdate) SetStateRef(v *State) *CompanyUpdate {
+	return _u.SetStateRefID(v.ID)
+}
+
 // Mutation returns the CompanyMutation object of the builder.
 func (_u *CompanyUpdate) Mutation() *CompanyMutation {
 	return _u.mutation
+}
+
+// ClearCountryRef clears the "country_ref" edge to the Country entity.
+func (_u *CompanyUpdate) ClearCountryRef() *CompanyUpdate {
+	_u.mutation.ClearCountryRef()
+	return _u
+}
+
+// ClearStateRef clears the "state_ref" edge to the State entity.
+func (_u *CompanyUpdate) ClearStateRef() *CompanyUpdate {
+	_u.mutation.ClearStateRef()
+	return _u
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -523,15 +541,6 @@ func (_u *CompanyUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	if _u.mutation.CityCleared() {
 		_spec.ClearField(company.FieldCity, field.TypeString)
 	}
-	if value, ok := _u.mutation.State(); ok {
-		_spec.SetField(company.FieldState, field.TypeString, value)
-	}
-	if _u.mutation.StateCleared() {
-		_spec.ClearField(company.FieldState, field.TypeString)
-	}
-	if value, ok := _u.mutation.Country(); ok {
-		_spec.SetField(company.FieldCountry, field.TypeString, value)
-	}
 	if value, ok := _u.mutation.PostalCode(); ok {
 		_spec.SetField(company.FieldPostalCode, field.TypeString, value)
 	}
@@ -543,6 +552,64 @@ func (_u *CompanyUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	}
 	if value, ok := _u.mutation.UpdatedAt(); ok {
 		_spec.SetField(company.FieldUpdatedAt, field.TypeTime, value)
+	}
+	if _u.mutation.CountryRefCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   company.CountryRefTable,
+			Columns: []string{company.CountryRefColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(country.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := _u.mutation.CountryRefIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   company.CountryRefTable,
+			Columns: []string{company.CountryRefColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(country.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if _u.mutation.StateRefCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   company.StateRefTable,
+			Columns: []string{company.StateRefColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(state.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := _u.mutation.StateRefIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   company.StateRefTable,
+			Columns: []string{company.StateRefColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(state.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if _node, err = sqlgraph.UpdateNodes(ctx, _u.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -820,40 +887,6 @@ func (_u *CompanyUpdateOne) ClearCity() *CompanyUpdateOne {
 	return _u
 }
 
-// SetState sets the "state" field.
-func (_u *CompanyUpdateOne) SetState(v string) *CompanyUpdateOne {
-	_u.mutation.SetState(v)
-	return _u
-}
-
-// SetNillableState sets the "state" field if the given value is not nil.
-func (_u *CompanyUpdateOne) SetNillableState(v *string) *CompanyUpdateOne {
-	if v != nil {
-		_u.SetState(*v)
-	}
-	return _u
-}
-
-// ClearState clears the value of the "state" field.
-func (_u *CompanyUpdateOne) ClearState() *CompanyUpdateOne {
-	_u.mutation.ClearState()
-	return _u
-}
-
-// SetCountry sets the "country" field.
-func (_u *CompanyUpdateOne) SetCountry(v string) *CompanyUpdateOne {
-	_u.mutation.SetCountry(v)
-	return _u
-}
-
-// SetNillableCountry sets the "country" field if the given value is not nil.
-func (_u *CompanyUpdateOne) SetNillableCountry(v *string) *CompanyUpdateOne {
-	if v != nil {
-		_u.SetCountry(*v)
-	}
-	return _u
-}
-
 // SetPostalCode sets the "postal_code" field.
 func (_u *CompanyUpdateOne) SetPostalCode(v string) *CompanyUpdateOne {
 	_u.mutation.SetPostalCode(v)
@@ -894,9 +927,59 @@ func (_u *CompanyUpdateOne) SetUpdatedAt(v time.Time) *CompanyUpdateOne {
 	return _u
 }
 
+// SetCountryRefID sets the "country_ref" edge to the Country entity by ID.
+func (_u *CompanyUpdateOne) SetCountryRefID(id int) *CompanyUpdateOne {
+	_u.mutation.SetCountryRefID(id)
+	return _u
+}
+
+// SetNillableCountryRefID sets the "country_ref" edge to the Country entity by ID if the given value is not nil.
+func (_u *CompanyUpdateOne) SetNillableCountryRefID(id *int) *CompanyUpdateOne {
+	if id != nil {
+		_u = _u.SetCountryRefID(*id)
+	}
+	return _u
+}
+
+// SetCountryRef sets the "country_ref" edge to the Country entity.
+func (_u *CompanyUpdateOne) SetCountryRef(v *Country) *CompanyUpdateOne {
+	return _u.SetCountryRefID(v.ID)
+}
+
+// SetStateRefID sets the "state_ref" edge to the State entity by ID.
+func (_u *CompanyUpdateOne) SetStateRefID(id int) *CompanyUpdateOne {
+	_u.mutation.SetStateRefID(id)
+	return _u
+}
+
+// SetNillableStateRefID sets the "state_ref" edge to the State entity by ID if the given value is not nil.
+func (_u *CompanyUpdateOne) SetNillableStateRefID(id *int) *CompanyUpdateOne {
+	if id != nil {
+		_u = _u.SetStateRefID(*id)
+	}
+	return _u
+}
+
+// SetStateRef sets the "state_ref" edge to the State entity.
+func (_u *CompanyUpdateOne) SetStateRef(v *State) *CompanyUpdateOne {
+	return _u.SetStateRefID(v.ID)
+}
+
 // Mutation returns the CompanyMutation object of the builder.
 func (_u *CompanyUpdateOne) Mutation() *CompanyMutation {
 	return _u.mutation
+}
+
+// ClearCountryRef clears the "country_ref" edge to the Country entity.
+func (_u *CompanyUpdateOne) ClearCountryRef() *CompanyUpdateOne {
+	_u.mutation.ClearCountryRef()
+	return _u
+}
+
+// ClearStateRef clears the "state_ref" edge to the State entity.
+func (_u *CompanyUpdateOne) ClearStateRef() *CompanyUpdateOne {
+	_u.mutation.ClearStateRef()
+	return _u
 }
 
 // Where appends a list predicates to the CompanyUpdate builder.
@@ -1089,15 +1172,6 @@ func (_u *CompanyUpdateOne) sqlSave(ctx context.Context) (_node *Company, err er
 	if _u.mutation.CityCleared() {
 		_spec.ClearField(company.FieldCity, field.TypeString)
 	}
-	if value, ok := _u.mutation.State(); ok {
-		_spec.SetField(company.FieldState, field.TypeString, value)
-	}
-	if _u.mutation.StateCleared() {
-		_spec.ClearField(company.FieldState, field.TypeString)
-	}
-	if value, ok := _u.mutation.Country(); ok {
-		_spec.SetField(company.FieldCountry, field.TypeString, value)
-	}
 	if value, ok := _u.mutation.PostalCode(); ok {
 		_spec.SetField(company.FieldPostalCode, field.TypeString, value)
 	}
@@ -1109,6 +1183,64 @@ func (_u *CompanyUpdateOne) sqlSave(ctx context.Context) (_node *Company, err er
 	}
 	if value, ok := _u.mutation.UpdatedAt(); ok {
 		_spec.SetField(company.FieldUpdatedAt, field.TypeTime, value)
+	}
+	if _u.mutation.CountryRefCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   company.CountryRefTable,
+			Columns: []string{company.CountryRefColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(country.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := _u.mutation.CountryRefIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   company.CountryRefTable,
+			Columns: []string{company.CountryRefColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(country.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if _u.mutation.StateRefCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   company.StateRefTable,
+			Columns: []string{company.StateRefColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(state.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := _u.mutation.StateRefIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   company.StateRefTable,
+			Columns: []string{company.StateRefColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(state.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_node = &Company{config: _u.config}
 	_spec.Assign = _node.assignValues

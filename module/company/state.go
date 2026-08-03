@@ -1,16 +1,31 @@
 package company
 
-type State struct {
-	Loading bool
-	Saving  bool
+type FormMode int
 
-	CompanyID int
+const (
+	ModeCreate FormMode = iota
+	ModeUpdate
+)
 
-	Code    string
-	Name    string
-	Email   string
-	Phone   string
-	Address string
+type FormState struct {
+	FocusIndex int
+	Errors     map[string]string
+	Mode       FormMode
 
-	Errors map[string]string
+	//--
+	Code       string
+	Name       string
+	LegalName  string
+	Email      string
+	Phone      string
+	Website    string
+	Country    int
+	State      int
+	City       string
+	PostalCode string
+	Address    string
+	TaxID      string
+	GSTIN      string
+	PAN        string
+	IsActive   bool
 }

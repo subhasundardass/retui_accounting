@@ -16,7 +16,7 @@ import (
 
 // ─── Screen Definition ────────────────────────────────────────────────────
 
-type Screen struct {
+type Screen1 struct {
 	ID     string
 	Title  string
 	Render func(ctx *appctx.AppContext, props retui.Props) retui.Element
@@ -24,13 +24,13 @@ type Screen struct {
 
 // ─── Helper Functions ─────────────────────────────────────────────────────
 
-func GetScreen(id string) (Screen, bool) {
+func GetScreen1(id string) (Screen1, bool) {
 	screen, ok := Routes[id]
 	return screen, ok
 }
 
 // Registry holds all available screens
-var Routes = map[string]Screen{
+var Routes = map[string]Screen1{
 
 	// Add new screens here...
 	"dashboard": {

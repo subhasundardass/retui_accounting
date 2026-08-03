@@ -36,16 +36,18 @@ var sidebarTree = []components.TreeNode{
 			},
 			{
 				ID:    "accounting-process",
-				Label: "accounting",
+				Label: "Accounting",
 				Children: []components.TreeNode{
 					{ID: "journal_entry", Label: "Journal Entry"},
-					// {ID: "receipt", Label: "Receipt"},
-					// {ID: "payment", Label: "Payment"},
-					// {ID: "sale", Label: "Sales"},
-					// {ID: "purchase", Label: "Purchase"},
-					// {ID: "contra", Label: "Contra"},
-					// {ID: "credit_note", Label: "Credit Note"},
-					// {ID: "debit_note", Label: "Debit Note"},
+					{ID: "receipt_entry", Label: "Receipt"},
+					{ID: "payment_entry", Label: "Payment"},
+					{ID: "sale_entry", Label: "Sales"},
+					{ID: "purchase_entry", Label: "Purchase"},
+					{ID: "contra_entry", Label: "Contra"},
+					{ID: "credit_note_entry", Label: "Credit Note"},
+					{ID: "debit_note_entry", Label: "Debit Note"},
+					{ID: "sale_return_entry", Label: "Sale Return"},
+					{ID: "purchase_return_entry", Label: "Purchase Return"},
 				},
 			},
 		},
@@ -54,7 +56,7 @@ var sidebarTree = []components.TreeNode{
 		ID:    "report",
 		Label: "Reports",
 		Children: []components.TreeNode{
-			{ID: "journal_report", Label: "Journals"},
+			{ID: "journal_list", Label: "Journals"},
 			{ID: "cash_book", Label: "Cash Book"},
 			{ID: "bank_book", Label: "Bank Book"},
 			{ID: "trail_balance", Label: "Trail Balance"},
@@ -74,14 +76,6 @@ var sidebarTree = []components.TreeNode{
 			{ID: "companies", Label: "Companies"},
 		},
 	},
-	// {
-	// 	ID:    "gomod",
-	// 	Label: "go.mod",
-	// },
-	// {
-	// 	ID:    "gosum",
-	// 	Label: "go.sum",
-	// },
 }
 
 func SidebarTree(ctx *context.AppContext, props retui.Props) retui.Element {

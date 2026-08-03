@@ -3,26 +3,31 @@
 package ui
 
 import (
+	"fmt"
+
 	appctx "github.com/subhasundardass/retui/internal/context"
 	"github.com/subhasundardass/retui/retui"
 )
 
-type RegisterScreen struct {
+type Screen struct {
 	ID     string
 	Title  string
 	Render func(ctx *appctx.AppContext) retui.Element
 }
 
-var routes = map[string]RegisterScreen{}
+var routes = map[string]Screen{}
 
-func Register(id string, screen RegisterScreen) {
-	if _, exists := routes[id]; exists {
-		panic("screen already registered: " + id)
+func Register(key string, screen Screen) {
+	if _, exists := routes[key]; exists {
+		panic("screen already registered: " + key)
 	}
-	routes[id] = screen
+	if screen.ID != key {
+		panic(fmt.Sprintf("screen ID %q does not match registration key %q", screen.ID, key))
+	}
+	routes[key] = screen
 }
 
-func GetRegisterScreen(id string) (RegisterScreen, bool) {
+func GetScreen(id string) (Screen, bool) {
 	s, ok := routes[id]
 	return s, ok
 }

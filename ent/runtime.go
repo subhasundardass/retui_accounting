@@ -87,20 +87,16 @@ func init() {
 	companyDescTimezone := companyFields[10].Descriptor()
 	// company.DefaultTimezone holds the default value on creation for the timezone field.
 	company.DefaultTimezone = companyDescTimezone.Default.(string)
-	// companyDescCountry is the schema descriptor for country field.
-	companyDescCountry := companyFields[15].Descriptor()
-	// company.DefaultCountry holds the default value on creation for the country field.
-	company.DefaultCountry = companyDescCountry.Default.(string)
 	// companyDescActive is the schema descriptor for active field.
-	companyDescActive := companyFields[17].Descriptor()
+	companyDescActive := companyFields[15].Descriptor()
 	// company.DefaultActive holds the default value on creation for the active field.
 	company.DefaultActive = companyDescActive.Default.(bool)
 	// companyDescCreatedAt is the schema descriptor for created_at field.
-	companyDescCreatedAt := companyFields[18].Descriptor()
+	companyDescCreatedAt := companyFields[16].Descriptor()
 	// company.DefaultCreatedAt holds the default value on creation for the created_at field.
 	company.DefaultCreatedAt = companyDescCreatedAt.Default.(func() time.Time)
 	// companyDescUpdatedAt is the schema descriptor for updated_at field.
-	companyDescUpdatedAt := companyFields[19].Descriptor()
+	companyDescUpdatedAt := companyFields[17].Descriptor()
 	// company.DefaultUpdatedAt holds the default value on creation for the updated_at field.
 	company.DefaultUpdatedAt = companyDescUpdatedAt.Default.(func() time.Time)
 	// company.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.

@@ -6,6 +6,20 @@ The format is based on **Keep a Changelog**, and this project follows **Semantic
 
 ---
 
+## [v0.6.0] - 2026-08-03
+
+### Added
+
+- Add Border Title with Style
+- Added Toast component
+- Added UseRef, UseMemo, UseReducer Hooks in State
+
+### Updates
+
+- Update Responsive UI
+
+---
+
 ## [v0.6.0] - 2026-07-31
 
 ### Added

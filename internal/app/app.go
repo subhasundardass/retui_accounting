@@ -18,27 +18,27 @@ func Root(ctx *appctx.AppContext, props retui.Props) retui.Element {
 	}
 
 	// ── Focus ────────────────────────────────────────────────────────────────
-	// retui.Info("Current Screen → :", retui.CurrentScreen())
-	// retui.Info("Current Focus → :", retui.CurrentFocus())
 	if retui.CurrentFocus() == "" && !window.IsAnyModalOpen() {
 		retui.SetFocus("sidebar")
 	}
 
 	// ── Get screen  ─────────────────────────────────
-
 	currentID := retui.CurrentScreen()
 
 	var content retui.Element
 	screen, ok := ui.GetScreen(currentID)
 
 	if !ok {
+		screen, ok = ui.GetScreen("dashboard")
 
-		// content = retui.Text("404 - Page Not Found", retui.NewStyle().Foreground(retui.Red))
-		screen, _ = ui.GetScreen("dashboard")
-		content = screen.Render(ctx, retui.Props{})
+		if !ok {
+			content = retui.Text("404 - No screen registered", retui.NewStyle().Foreground(retui.Red))
+		} else {
+			content = screen.Render(ctx)
+		}
 		retui.SetFocus("sidebar")
 	} else {
-		content = screen.Render(ctx, retui.Props{})
+		content = screen.Render(ctx)
 	}
 
 	title := "Unknown"

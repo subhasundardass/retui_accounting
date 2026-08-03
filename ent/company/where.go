@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 	"github.com/subhasundardass/retui/ent/predicate"
 )
 
@@ -122,16 +123,6 @@ func Address(v string) predicate.Company {
 // City applies equality check predicate on the "city" field. It's identical to CityEQ.
 func City(v string) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldCity, v))
-}
-
-// State applies equality check predicate on the "state" field. It's identical to StateEQ.
-func State(v string) predicate.Company {
-	return predicate.Company(sql.FieldEQ(FieldState, v))
-}
-
-// Country applies equality check predicate on the "country" field. It's identical to CountryEQ.
-func Country(v string) predicate.Company {
-	return predicate.Company(sql.FieldEQ(FieldCountry, v))
 }
 
 // PostalCode applies equality check predicate on the "postal_code" field. It's identical to PostalCodeEQ.
@@ -1164,146 +1155,6 @@ func CityContainsFold(v string) predicate.Company {
 	return predicate.Company(sql.FieldContainsFold(FieldCity, v))
 }
 
-// StateEQ applies the EQ predicate on the "state" field.
-func StateEQ(v string) predicate.Company {
-	return predicate.Company(sql.FieldEQ(FieldState, v))
-}
-
-// StateNEQ applies the NEQ predicate on the "state" field.
-func StateNEQ(v string) predicate.Company {
-	return predicate.Company(sql.FieldNEQ(FieldState, v))
-}
-
-// StateIn applies the In predicate on the "state" field.
-func StateIn(vs ...string) predicate.Company {
-	return predicate.Company(sql.FieldIn(FieldState, vs...))
-}
-
-// StateNotIn applies the NotIn predicate on the "state" field.
-func StateNotIn(vs ...string) predicate.Company {
-	return predicate.Company(sql.FieldNotIn(FieldState, vs...))
-}
-
-// StateGT applies the GT predicate on the "state" field.
-func StateGT(v string) predicate.Company {
-	return predicate.Company(sql.FieldGT(FieldState, v))
-}
-
-// StateGTE applies the GTE predicate on the "state" field.
-func StateGTE(v string) predicate.Company {
-	return predicate.Company(sql.FieldGTE(FieldState, v))
-}
-
-// StateLT applies the LT predicate on the "state" field.
-func StateLT(v string) predicate.Company {
-	return predicate.Company(sql.FieldLT(FieldState, v))
-}
-
-// StateLTE applies the LTE predicate on the "state" field.
-func StateLTE(v string) predicate.Company {
-	return predicate.Company(sql.FieldLTE(FieldState, v))
-}
-
-// StateContains applies the Contains predicate on the "state" field.
-func StateContains(v string) predicate.Company {
-	return predicate.Company(sql.FieldContains(FieldState, v))
-}
-
-// StateHasPrefix applies the HasPrefix predicate on the "state" field.
-func StateHasPrefix(v string) predicate.Company {
-	return predicate.Company(sql.FieldHasPrefix(FieldState, v))
-}
-
-// StateHasSuffix applies the HasSuffix predicate on the "state" field.
-func StateHasSuffix(v string) predicate.Company {
-	return predicate.Company(sql.FieldHasSuffix(FieldState, v))
-}
-
-// StateIsNil applies the IsNil predicate on the "state" field.
-func StateIsNil() predicate.Company {
-	return predicate.Company(sql.FieldIsNull(FieldState))
-}
-
-// StateNotNil applies the NotNil predicate on the "state" field.
-func StateNotNil() predicate.Company {
-	return predicate.Company(sql.FieldNotNull(FieldState))
-}
-
-// StateEqualFold applies the EqualFold predicate on the "state" field.
-func StateEqualFold(v string) predicate.Company {
-	return predicate.Company(sql.FieldEqualFold(FieldState, v))
-}
-
-// StateContainsFold applies the ContainsFold predicate on the "state" field.
-func StateContainsFold(v string) predicate.Company {
-	return predicate.Company(sql.FieldContainsFold(FieldState, v))
-}
-
-// CountryEQ applies the EQ predicate on the "country" field.
-func CountryEQ(v string) predicate.Company {
-	return predicate.Company(sql.FieldEQ(FieldCountry, v))
-}
-
-// CountryNEQ applies the NEQ predicate on the "country" field.
-func CountryNEQ(v string) predicate.Company {
-	return predicate.Company(sql.FieldNEQ(FieldCountry, v))
-}
-
-// CountryIn applies the In predicate on the "country" field.
-func CountryIn(vs ...string) predicate.Company {
-	return predicate.Company(sql.FieldIn(FieldCountry, vs...))
-}
-
-// CountryNotIn applies the NotIn predicate on the "country" field.
-func CountryNotIn(vs ...string) predicate.Company {
-	return predicate.Company(sql.FieldNotIn(FieldCountry, vs...))
-}
-
-// CountryGT applies the GT predicate on the "country" field.
-func CountryGT(v string) predicate.Company {
-	return predicate.Company(sql.FieldGT(FieldCountry, v))
-}
-
-// CountryGTE applies the GTE predicate on the "country" field.
-func CountryGTE(v string) predicate.Company {
-	return predicate.Company(sql.FieldGTE(FieldCountry, v))
-}
-
-// CountryLT applies the LT predicate on the "country" field.
-func CountryLT(v string) predicate.Company {
-	return predicate.Company(sql.FieldLT(FieldCountry, v))
-}
-
-// CountryLTE applies the LTE predicate on the "country" field.
-func CountryLTE(v string) predicate.Company {
-	return predicate.Company(sql.FieldLTE(FieldCountry, v))
-}
-
-// CountryContains applies the Contains predicate on the "country" field.
-func CountryContains(v string) predicate.Company {
-	return predicate.Company(sql.FieldContains(FieldCountry, v))
-}
-
-// CountryHasPrefix applies the HasPrefix predicate on the "country" field.
-func CountryHasPrefix(v string) predicate.Company {
-	return predicate.Company(sql.FieldHasPrefix(FieldCountry, v))
-}
-
-// CountryHasSuffix applies the HasSuffix predicate on the "country" field.
-func CountryHasSuffix(v string) predicate.Company {
-	return predicate.Company(sql.FieldHasSuffix(FieldCountry, v))
-}
-
-// CountryEqualFold applies the EqualFold predicate on the "country" field.
-func CountryEqualFold(v string) predicate.Company {
-	return predicate.Company(sql.FieldEqualFold(FieldCountry, v))
-}
-
-// CountryContainsFold applies the ContainsFold predicate on the "country" field.
-func CountryContainsFold(v string) predicate.Company {
-	return predicate.Company(sql.FieldContainsFold(FieldCountry, v))
-}
-
 // PostalCodeEQ applies the EQ predicate on the "postal_code" field.
 func PostalCodeEQ(v string) predicate.Company {
 	return predicate.Company(sql.FieldEQ(FieldPostalCode, v))
@@ -1467,6 +1318,52 @@ func UpdatedAtLT(v time.Time) predicate.Company {
 // UpdatedAtLTE applies the LTE predicate on the "updated_at" field.
 func UpdatedAtLTE(v time.Time) predicate.Company {
 	return predicate.Company(sql.FieldLTE(FieldUpdatedAt, v))
+}
+
+// HasCountryRef applies the HasEdge predicate on the "country_ref" edge.
+func HasCountryRef() predicate.Company {
+	return predicate.Company(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, CountryRefTable, CountryRefColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasCountryRefWith applies the HasEdge predicate on the "country_ref" edge with a given conditions (other predicates).
+func HasCountryRefWith(preds ...predicate.Country) predicate.Company {
+	return predicate.Company(func(s *sql.Selector) {
+		step := newCountryRefStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasStateRef applies the HasEdge predicate on the "state_ref" edge.
+func HasStateRef() predicate.Company {
+	return predicate.Company(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, StateRefTable, StateRefColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasStateRefWith applies the HasEdge predicate on the "state_ref" edge with a given conditions (other predicates).
+func HasStateRefWith(preds ...predicate.State) predicate.Company {
+	return predicate.Company(func(s *sql.Selector) {
+		step := newStateRefStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
 }
 
 // And groups predicates with the AND operator between them.

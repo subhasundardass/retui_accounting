@@ -30,10 +30,9 @@ func Load() *Config {
 		config = &Config{
 			AppName:     "retui App",
 			Version:     "1.0.0",
-			DefaultPage: "home",
+			DefaultPage: "dashboard",
 			Theme:       "dark",
 			Debug:       false,
-			APIEndpoint: "http://localhost:8080",
 			LogLevel:    "info",
 			SQLitePath:  "./data/retui.db",
 		}
@@ -46,10 +45,6 @@ func Load() *Config {
 			}
 		}
 
-		// Override with environment variables
-		if endpoint := os.Getenv("API_ENDPOINT"); endpoint != "" {
-			config.APIEndpoint = endpoint
-		}
 		if debug := os.Getenv("DEBUG"); debug != "" {
 			config.Debug = debug == "true"
 		}

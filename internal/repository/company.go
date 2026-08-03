@@ -58,8 +58,8 @@ func (r *CompanyRepository) Create(ctx context.Context, req *ent.Company) (*ent.
 		SetLogo(req.Logo).
 		SetAddress(req.Address).
 		SetCity(req.City).
-		SetState(req.State).
-		SetCountry(req.Country).
+		SetCountryRefID(req.Edges.StateRef.CountryID).
+		SetStateRef(req.Edges.StateRef).
 		SetPostalCode(req.PostalCode).
 		SetActive(req.Active).
 		Save(ctx)
@@ -83,8 +83,8 @@ func (r *CompanyRepository) Update(ctx context.Context, req *ent.Company) (*ent.
 		SetLogo(req.Logo).
 		SetAddress(req.Address).
 		SetCity(req.City).
-		SetState(req.State).
-		SetCountry(req.Country).
+		SetCountryRef(req.Edges.CountryRef).
+		SetStateRef(req.Edges.StateRef).
 		SetPostalCode(req.PostalCode).
 		SetActive(req.Active).
 		Save(ctx)

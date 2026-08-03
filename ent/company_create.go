@@ -11,6 +11,8 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/subhasundardass/retui/ent/company"
+	"github.com/subhasundardass/retui/ent/country"
+	"github.com/subhasundardass/retui/ent/state"
 )
 
 // CompanyCreate is the builder for creating a Company entity.
@@ -200,34 +202,6 @@ func (_c *CompanyCreate) SetNillableCity(v *string) *CompanyCreate {
 	return _c
 }
 
-// SetState sets the "state" field.
-func (_c *CompanyCreate) SetState(v string) *CompanyCreate {
-	_c.mutation.SetState(v)
-	return _c
-}
-
-// SetNillableState sets the "state" field if the given value is not nil.
-func (_c *CompanyCreate) SetNillableState(v *string) *CompanyCreate {
-	if v != nil {
-		_c.SetState(*v)
-	}
-	return _c
-}
-
-// SetCountry sets the "country" field.
-func (_c *CompanyCreate) SetCountry(v string) *CompanyCreate {
-	_c.mutation.SetCountry(v)
-	return _c
-}
-
-// SetNillableCountry sets the "country" field if the given value is not nil.
-func (_c *CompanyCreate) SetNillableCountry(v *string) *CompanyCreate {
-	if v != nil {
-		_c.SetCountry(*v)
-	}
-	return _c
-}
-
 // SetPostalCode sets the "postal_code" field.
 func (_c *CompanyCreate) SetPostalCode(v string) *CompanyCreate {
 	_c.mutation.SetPostalCode(v)
@@ -284,6 +258,44 @@ func (_c *CompanyCreate) SetNillableUpdatedAt(v *time.Time) *CompanyCreate {
 	return _c
 }
 
+// SetCountryRefID sets the "country_ref" edge to the Country entity by ID.
+func (_c *CompanyCreate) SetCountryRefID(id int) *CompanyCreate {
+	_c.mutation.SetCountryRefID(id)
+	return _c
+}
+
+// SetNillableCountryRefID sets the "country_ref" edge to the Country entity by ID if the given value is not nil.
+func (_c *CompanyCreate) SetNillableCountryRefID(id *int) *CompanyCreate {
+	if id != nil {
+		_c = _c.SetCountryRefID(*id)
+	}
+	return _c
+}
+
+// SetCountryRef sets the "country_ref" edge to the Country entity.
+func (_c *CompanyCreate) SetCountryRef(v *Country) *CompanyCreate {
+	return _c.SetCountryRefID(v.ID)
+}
+
+// SetStateRefID sets the "state_ref" edge to the State entity by ID.
+func (_c *CompanyCreate) SetStateRefID(id int) *CompanyCreate {
+	_c.mutation.SetStateRefID(id)
+	return _c
+}
+
+// SetNillableStateRefID sets the "state_ref" edge to the State entity by ID if the given value is not nil.
+func (_c *CompanyCreate) SetNillableStateRefID(id *int) *CompanyCreate {
+	if id != nil {
+		_c = _c.SetStateRefID(*id)
+	}
+	return _c
+}
+
+// SetStateRef sets the "state_ref" edge to the State entity.
+func (_c *CompanyCreate) SetStateRef(v *State) *CompanyCreate {
+	return _c.SetStateRefID(v.ID)
+}
+
 // Mutation returns the CompanyMutation object of the builder.
 func (_c *CompanyCreate) Mutation() *CompanyMutation {
 	return _c.mutation
@@ -326,10 +338,6 @@ func (_c *CompanyCreate) defaults() {
 	if _, ok := _c.mutation.Timezone(); !ok {
 		v := company.DefaultTimezone
 		_c.mutation.SetTimezone(v)
-	}
-	if _, ok := _c.mutation.Country(); !ok {
-		v := company.DefaultCountry
-		_c.mutation.SetCountry(v)
 	}
 	if _, ok := _c.mutation.Active(); !ok {
 		v := company.DefaultActive
@@ -393,9 +401,6 @@ func (_c *CompanyCreate) check() error {
 	}
 	if _, ok := _c.mutation.Timezone(); !ok {
 		return &ValidationError{Name: "timezone", err: errors.New(`ent: missing required field "Company.timezone"`)}
-	}
-	if _, ok := _c.mutation.Country(); !ok {
-		return &ValidationError{Name: "country", err: errors.New(`ent: missing required field "Company.country"`)}
 	}
 	if _, ok := _c.mutation.Active(); !ok {
 		return &ValidationError{Name: "active", err: errors.New(`ent: missing required field "Company.active"`)}
@@ -488,14 +493,6 @@ func (_c *CompanyCreate) createSpec() (*Company, *sqlgraph.CreateSpec) {
 		_spec.SetField(company.FieldCity, field.TypeString, value)
 		_node.City = value
 	}
-	if value, ok := _c.mutation.State(); ok {
-		_spec.SetField(company.FieldState, field.TypeString, value)
-		_node.State = value
-	}
-	if value, ok := _c.mutation.Country(); ok {
-		_spec.SetField(company.FieldCountry, field.TypeString, value)
-		_node.Country = value
-	}
 	if value, ok := _c.mutation.PostalCode(); ok {
 		_spec.SetField(company.FieldPostalCode, field.TypeString, value)
 		_node.PostalCode = value
@@ -511,6 +508,40 @@ func (_c *CompanyCreate) createSpec() (*Company, *sqlgraph.CreateSpec) {
 	if value, ok := _c.mutation.UpdatedAt(); ok {
 		_spec.SetField(company.FieldUpdatedAt, field.TypeTime, value)
 		_node.UpdatedAt = value
+	}
+	if nodes := _c.mutation.CountryRefIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   company.CountryRefTable,
+			Columns: []string{company.CountryRefColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(country.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.company_country_ref = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := _c.mutation.StateRefIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   company.StateRefTable,
+			Columns: []string{company.StateRefColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(state.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.company_state_ref = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
 }

@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 	"os/signal"
+	"runtime/debug"
 	"sync"
 	"syscall"
 
@@ -37,7 +38,22 @@ func dispatch(props retui.Props) retui.Element {
 	return fn(props)
 }
 
+func safeGo(name string, fn func()) {
+	go func() {
+		defer func() {
+			if r := recover(); r != nil {
+				stack := debug.Stack()
+				retui.Errorf("panic in %s: %v\n%s", name, r, stack)
+				retui.Exit()
+				os.Exit(1)
+			}
+		}()
+		fn()
+	}()
+}
+
 func main() {
+
 	retui.Info("🔧 Starting application...")
 	tui := retui.NewApp(0, 0)
 
@@ -48,7 +64,7 @@ func main() {
 
 	shutdown := func() {
 		once.Do(func() {
-			retui.Info("🧹 Cleaning up...")
+			retui.Info("Cleaning up...")
 			if bootstrap != nil {
 				if err := bootstrap.Shutdown(); err != nil {
 					retui.Errorf("Shutdown failed: %v", err)
@@ -60,8 +76,9 @@ func main() {
 
 	defer func() {
 		if r := recover(); r != nil {
+			stack := debug.Stack()
 			shutdown()
-			retui.Errorf("Application panicked: %v", r)
+			retui.Errorf("Application panicked: %v\n%s", r, stack)
 			os.Exit(1)
 		}
 	}()
@@ -70,7 +87,7 @@ func main() {
 
 	// Bootstrap in background.
 	go func() {
-		retui.Info("🔧 Initializing application...")
+		retui.Info("Initializing application...")
 		b, err := app.NewBootstrap()
 		if err != nil {
 			retui.Errorf("Failed to initialize application: %v", err)
@@ -99,12 +116,12 @@ func handleSignals(shutdown func()) {
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
 
-	go func() {
+	safeGo("signal-handler", func() {
 		sig := <-sigChan
 		retui.Infof("Received signal: %v", sig)
 		shutdown()
-		retui.Exit() // App has no Stop(); Exit() signals Run()'s exitCh
-	}()
+		retui.Exit()
+	})
 }
 
 func loadingScreen(props retui.Props) retui.Element {
