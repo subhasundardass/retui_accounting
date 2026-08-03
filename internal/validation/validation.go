@@ -44,7 +44,7 @@ func (v *Validator) Error() error {
 }
 
 func (f *Field) add(msg string) {
-	full := fmt.Sprintf("%s: %s", f.name, msg)
+	full := fmt.Sprintf("%s: %s ", f.name, msg)
 	f.v.errors = append(f.v.errors, full)
 	// Record only the first error per field
 	if _, exists := f.v.errorMap[f.name]; !exists {
@@ -238,5 +238,81 @@ func (f *Field) Custom(fn func(value string) error) *Field {
 	if err := fn(f.value); err != nil {
 		f.add(err.Error())
 	}
+	return f
+}
+
+// =====INT
+type IntField struct {
+	v       *Validator
+	name    string
+	value   int
+	skipped bool // set by When(false) — skips all subsequent rules
+}
+
+// IntField starts a validation chain for an integer value, typically an
+// ID/FK into a lookup table (e.g. country, state, category).
+func (v *Validator) IntField(name string, value int) *IntField {
+	return &IntField{v: v, name: name, value: value}
+}
+
+func (f *IntField) add(msg string) {
+	f.v.errorMap[f.name] = f.name + " " + msg
+
+}
+
+// When conditionally skips all subsequent rules on this field, matching
+// Field.When's semantics.
+func (f *IntField) When(cond bool) *IntField {
+	if !cond {
+		f.skipped = true
+	}
+	return f
+}
+
+// Required fails if value is the zero value (0). Use this for FK/ID
+// fields where 0 means "not selected" — not for fields where 0 is a
+// legitimate value (use Min/Max or a custom rule instead in that case).
+func (f *IntField) Required() *IntField {
+	if f.skipped {
+		return f
+	}
+	if f.value == 0 {
+		f.add("is required")
+	}
+	return f
+}
+
+func (f *IntField) Min(n int) *IntField {
+	if f.skipped {
+		return f
+	}
+	if f.value < n {
+		f.add(fmt.Sprintf("must be at least %d", n))
+	}
+	return f
+}
+
+func (f *IntField) Max(n int) *IntField {
+	if f.skipped {
+		return f
+	}
+	if f.value > n {
+		f.add(fmt.Sprintf("must be at most %d", n))
+	}
+	return f
+}
+
+// OneOf fails if value is not in the given set — useful for validating
+// an FK ID against a known list of valid IDs (e.g. loaded from DB).
+func (f *IntField) OneOf(allowed ...int) *IntField {
+	if f.skipped {
+		return f
+	}
+	for _, a := range allowed {
+		if f.value == a {
+			return f
+		}
+	}
+	f.add("is not a valid selection")
 	return f
 }

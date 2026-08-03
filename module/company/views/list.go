@@ -51,7 +51,7 @@ func (c *Component) List(ctx *appctx.AppContext) retui.Element {
 		// output caused a refetch loop (or at best a guaranteed extra
 		// fetch) every time setCompanies ran. Empty deps means "run
 		// once when this screen mounts."
-	}, []any{})
+	}, []any{companies})
 
 	c.bindKeys()
 

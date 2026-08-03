@@ -39,6 +39,9 @@ func (c *Controller) Save(mode FormMode, id int, data FormState) (*ent.Company, 
 		}
 		return c.repo.Create(c.ctx.Ctx(), data)
 	case ModeUpdate:
+		if err := ValidateUpdate(data); err != nil {
+			return nil, err
+		}
 		return c.repo.Update(c.ctx.Ctx(), id, data)
 	default:
 		return nil, fmt.Errorf("unknown save mode: %v", mode)
