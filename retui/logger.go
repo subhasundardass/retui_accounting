@@ -87,16 +87,19 @@ func setupLogging() error {
 	defer logMu.Unlock()
 
 	logDir := getLogDir()
-	if err := os.MkdirAll(logDir, 0755); err != nil {
+	if err := os.MkdirAll(logDir, 0750); err != nil {
 		return fmt.Errorf("failed to create log directory: %w", err)
 	}
 
+	// logPath is built entirely from getLogDir() (cwd) and a fixed filename —
+	// never from user input or external config — so path traversal isn't
+	// possible here despite gosec flagging the variable.
 	logPath := filepath.Join(logDir, "retui.log")
 	var err error
 	logFile, err = os.OpenFile(
-		logPath,
+		logPath, // #nosec G304 -- logPath is derived from getLogDir()+fixed filename, not external input
 		os.O_CREATE|os.O_WRONLY|os.O_APPEND,
-		0644,
+		0600,
 	)
 	if err != nil {
 		return fmt.Errorf("failed to open log file: %w", err)

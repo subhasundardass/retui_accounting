@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"entgo.io/ent"
+	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 )
 
@@ -63,11 +64,11 @@ func (Company) Fields() []ent.Field {
 		field.String("city").
 			Optional(),
 
-		field.String("state").
-			Optional(),
+		// field.Int("country").
+		// 	Default(0),
 
-		field.String("country").
-			Default("India"),
+		// field.Int("state").
+		// 	Default(0),
 
 		field.String("postal_code").
 			Optional(),
@@ -86,5 +87,12 @@ func (Company) Fields() []ent.Field {
 }
 
 func (Company) Edges() []ent.Edge {
-	return nil
+	return []ent.Edge{
+		edge.To("country_ref", Country.Type).
+			Unique(),
+		// Required(),
+
+		edge.To("state_ref", State.Type).
+			Unique(),
+	}
 }

@@ -12,16 +12,21 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/subhasundardass/retui/ent/company"
+	"github.com/subhasundardass/retui/ent/country"
 	"github.com/subhasundardass/retui/ent/predicate"
+	"github.com/subhasundardass/retui/ent/state"
 )
 
 // CompanyQuery is the builder for querying Company entities.
 type CompanyQuery struct {
 	config
-	ctx        *QueryContext
-	order      []company.OrderOption
-	inters     []Interceptor
-	predicates []predicate.Company
+	ctx            *QueryContext
+	order          []company.OrderOption
+	inters         []Interceptor
+	predicates     []predicate.Company
+	withCountryRef *CountryQuery
+	withStateRef   *StateQuery
+	withFKs        bool
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -56,6 +61,50 @@ func (_q *CompanyQuery) Unique(unique bool) *CompanyQuery {
 func (_q *CompanyQuery) Order(o ...company.OrderOption) *CompanyQuery {
 	_q.order = append(_q.order, o...)
 	return _q
+}
+
+// QueryCountryRef chains the current query on the "country_ref" edge.
+func (_q *CompanyQuery) QueryCountryRef() *CountryQuery {
+	query := (&CountryClient{config: _q.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := _q.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := _q.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(company.Table, company.FieldID, selector),
+			sqlgraph.To(country.Table, country.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, company.CountryRefTable, company.CountryRefColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(_q.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryStateRef chains the current query on the "state_ref" edge.
+func (_q *CompanyQuery) QueryStateRef() *StateQuery {
+	query := (&StateClient{config: _q.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := _q.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := _q.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(company.Table, company.FieldID, selector),
+			sqlgraph.To(state.Table, state.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, company.StateRefTable, company.StateRefColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(_q.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
 }
 
 // First returns the first Company entity from the query.
@@ -245,15 +294,39 @@ func (_q *CompanyQuery) Clone() *CompanyQuery {
 		return nil
 	}
 	return &CompanyQuery{
-		config:     _q.config,
-		ctx:        _q.ctx.Clone(),
-		order:      append([]company.OrderOption{}, _q.order...),
-		inters:     append([]Interceptor{}, _q.inters...),
-		predicates: append([]predicate.Company{}, _q.predicates...),
+		config:         _q.config,
+		ctx:            _q.ctx.Clone(),
+		order:          append([]company.OrderOption{}, _q.order...),
+		inters:         append([]Interceptor{}, _q.inters...),
+		predicates:     append([]predicate.Company{}, _q.predicates...),
+		withCountryRef: _q.withCountryRef.Clone(),
+		withStateRef:   _q.withStateRef.Clone(),
 		// clone intermediate query.
 		sql:  _q.sql.Clone(),
 		path: _q.path,
 	}
+}
+
+// WithCountryRef tells the query-builder to eager-load the nodes that are connected to
+// the "country_ref" edge. The optional arguments are used to configure the query builder of the edge.
+func (_q *CompanyQuery) WithCountryRef(opts ...func(*CountryQuery)) *CompanyQuery {
+	query := (&CountryClient{config: _q.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	_q.withCountryRef = query
+	return _q
+}
+
+// WithStateRef tells the query-builder to eager-load the nodes that are connected to
+// the "state_ref" edge. The optional arguments are used to configure the query builder of the edge.
+func (_q *CompanyQuery) WithStateRef(opts ...func(*StateQuery)) *CompanyQuery {
+	query := (&StateClient{config: _q.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	_q.withStateRef = query
+	return _q
 }
 
 // GroupBy is used to group vertices by one or more fields/columns.
@@ -332,15 +405,27 @@ func (_q *CompanyQuery) prepareQuery(ctx context.Context) error {
 
 func (_q *CompanyQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Company, error) {
 	var (
-		nodes = []*Company{}
-		_spec = _q.querySpec()
+		nodes       = []*Company{}
+		withFKs     = _q.withFKs
+		_spec       = _q.querySpec()
+		loadedTypes = [2]bool{
+			_q.withCountryRef != nil,
+			_q.withStateRef != nil,
+		}
 	)
+	if _q.withCountryRef != nil || _q.withStateRef != nil {
+		withFKs = true
+	}
+	if withFKs {
+		_spec.Node.Columns = append(_spec.Node.Columns, company.ForeignKeys...)
+	}
 	_spec.ScanValues = func(columns []string) ([]any, error) {
 		return (*Company).scanValues(nil, columns)
 	}
 	_spec.Assign = func(columns []string, values []any) error {
 		node := &Company{config: _q.config}
 		nodes = append(nodes, node)
+		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
 	}
 	for i := range hooks {
@@ -352,7 +437,84 @@ func (_q *CompanyQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Comp
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
+	if query := _q.withCountryRef; query != nil {
+		if err := _q.loadCountryRef(ctx, query, nodes, nil,
+			func(n *Company, e *Country) { n.Edges.CountryRef = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := _q.withStateRef; query != nil {
+		if err := _q.loadStateRef(ctx, query, nodes, nil,
+			func(n *Company, e *State) { n.Edges.StateRef = e }); err != nil {
+			return nil, err
+		}
+	}
 	return nodes, nil
+}
+
+func (_q *CompanyQuery) loadCountryRef(ctx context.Context, query *CountryQuery, nodes []*Company, init func(*Company), assign func(*Company, *Country)) error {
+	ids := make([]int, 0, len(nodes))
+	nodeids := make(map[int][]*Company)
+	for i := range nodes {
+		if nodes[i].company_country_ref == nil {
+			continue
+		}
+		fk := *nodes[i].company_country_ref
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(country.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "company_country_ref" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
+}
+func (_q *CompanyQuery) loadStateRef(ctx context.Context, query *StateQuery, nodes []*Company, init func(*Company), assign func(*Company, *State)) error {
+	ids := make([]int, 0, len(nodes))
+	nodeids := make(map[int][]*Company)
+	for i := range nodes {
+		if nodes[i].company_state_ref == nil {
+			continue
+		}
+		fk := *nodes[i].company_state_ref
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(state.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "company_state_ref" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
 }
 
 func (_q *CompanyQuery) sqlCount(ctx context.Context) (int, error) {

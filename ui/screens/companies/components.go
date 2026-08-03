@@ -103,7 +103,7 @@ func (c *Components) buildTable(companies []*ent.Company) retui.Element {
 			company.Code,
 			company.Name,
 			company.City,
-			company.Country,
+			// company.Country,
 			tax,
 			contact,
 			status,

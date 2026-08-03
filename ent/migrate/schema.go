@@ -26,18 +26,32 @@ var (
 		{Name: "logo", Type: field.TypeString, Nullable: true},
 		{Name: "address", Type: field.TypeString, Nullable: true, Size: 2147483647},
 		{Name: "city", Type: field.TypeString, Nullable: true},
-		{Name: "state", Type: field.TypeString, Nullable: true},
-		{Name: "country", Type: field.TypeString, Default: "India"},
 		{Name: "postal_code", Type: field.TypeString, Nullable: true},
 		{Name: "active", Type: field.TypeBool, Default: true},
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
+		{Name: "company_country_ref", Type: field.TypeInt, Nullable: true},
+		{Name: "company_state_ref", Type: field.TypeInt, Nullable: true},
 	}
 	// CompaniesTable holds the schema information for the "companies" table.
 	CompaniesTable = &schema.Table{
 		Name:       "companies",
 		Columns:    CompaniesColumns,
 		PrimaryKey: []*schema.Column{CompaniesColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "companies_countries_country_ref",
+				Columns:    []*schema.Column{CompaniesColumns[19]},
+				RefColumns: []*schema.Column{CountriesColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "companies_states_state_ref",
+				Columns:    []*schema.Column{CompaniesColumns[20]},
+				RefColumns: []*schema.Column{StatesColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
 	}
 	// CountriesColumns holds the columns for the "countries" table.
 	CountriesColumns = []*schema.Column{
@@ -421,6 +435,8 @@ var (
 )
 
 func init() {
+	CompaniesTable.ForeignKeys[0].RefTable = CountriesTable
+	CompaniesTable.ForeignKeys[1].RefTable = StatesTable
 	JournalLinesTable.ForeignKeys[0].RefTable = JournalsTable
 	JournalLinesTable.ForeignKeys[1].RefTable = LedgersTable
 	LedgersTable.ForeignKeys[0].RefTable = LedgerGroupsTable

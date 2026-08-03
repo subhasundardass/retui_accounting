@@ -39,7 +39,7 @@ func (c *Components) RenderScreen() retui.Element {
 			Align:   retui.AlignCenter,
 		},
 		retui.NewStyle().Foreground(retui.BrightCyan).
-			Border(retui.Border{Bottom: true, Left: true, Right: true, Top: true}),
+			Border(retui.Border{Bottom: true, Left: true, Right: true, Top: true, Color: retui.Gray(1)}),
 		retui.Text("Ledger Groups", retui.NewStyle()),
 		retui.Text("F2: Edit   F4: Create New", retui.NewStyle().Bold(true)),
 	)

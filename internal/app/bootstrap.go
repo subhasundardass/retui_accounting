@@ -39,44 +39,33 @@ type Bootstrap struct {
 func NewBootstrap() (*Bootstrap, error) {
 	retui.Debug("Initializing Bootstrap...")
 
-	// ── Load Config ──────────────────────────────────────────────────────────
 	cfg := config.Load()
 	if cfg == nil {
 		return nil, fmt.Errorf("config is nil")
 	}
 
-	// Initialize state
 	b := &Bootstrap{
 		Config:  cfg,
 		cleanup: make([]func() error, 0),
 		state: &appState{
 			darkMode: false,
-			config: &config.Config{
-				AppName: cfg.AppName,
-			},
+			config:   &config.Config{AppName: cfg.AppName},
 		},
 	}
 
-	// Create context with cancellation
 	b.Ctx, b.Cancel = context.WithCancel(context.Background())
 
-	// Initialize database
 	retui.Debug("Initializing database...")
 	client, err := InitDB(cfg)
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize database: %w", err)
 	}
-
 	if client == nil {
 		return nil, fmt.Errorf("database client is nil")
 	}
-
 	b.DB = client
-
-	//COntext
 	b.AppCtx = &appctx.AppContext{}
 
-	// Cleanup
 	b.RegisterCleanup(func() error {
 		retui.Debug("Closing database connection...")
 		if b.DB != nil {
@@ -85,23 +74,19 @@ func NewBootstrap() (*Bootstrap, error) {
 		return nil
 	})
 
-	// Run migrations
 	if err := b.runMigrations(); err != nil {
 		retui.Warnf("Migration warning: %v", err)
 	}
 
-	// Seed initial data (idempotent — safe to run on every startup)
 	if err := b.seedDatabase(); err != nil {
 		retui.Warnf("Seed warning: %v", err)
 	}
 
-	// Set initial context values
 	b.setContext()
-
-	// Store globally
 	SetBootstrap(b)
+	b.registerModules()
 
-	retui.Success("Bootstrap completed successfully ✅")
+	retui.Success("Bootstrap completed successfully")
 	return b, nil
 }
 

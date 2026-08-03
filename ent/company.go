@@ -10,6 +10,8 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	"github.com/subhasundardass/retui/ent/company"
+	"github.com/subhasundardass/retui/ent/country"
+	"github.com/subhasundardass/retui/ent/state"
 )
 
 // Company is the model entity for the Company schema.
@@ -45,10 +47,6 @@ type Company struct {
 	Address string `json:"address,omitempty"`
 	// City holds the value of the "city" field.
 	City string `json:"city,omitempty"`
-	// State holds the value of the "state" field.
-	State string `json:"state,omitempty"`
-	// Country holds the value of the "country" field.
-	Country string `json:"country,omitempty"`
 	// PostalCode holds the value of the "postal_code" field.
 	PostalCode string `json:"postal_code,omitempty"`
 	// Active holds the value of the "active" field.
@@ -56,8 +54,46 @@ type Company struct {
 	// CreatedAt holds the value of the "created_at" field.
 	CreatedAt time.Time `json:"created_at,omitempty"`
 	// UpdatedAt holds the value of the "updated_at" field.
-	UpdatedAt    time.Time `json:"updated_at,omitempty"`
-	selectValues sql.SelectValues
+	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	// Edges holds the relations/edges for other nodes in the graph.
+	// The values are being populated by the CompanyQuery when eager-loading is set.
+	Edges               CompanyEdges `json:"edges"`
+	company_country_ref *int
+	company_state_ref   *int
+	selectValues        sql.SelectValues
+}
+
+// CompanyEdges holds the relations/edges for other nodes in the graph.
+type CompanyEdges struct {
+	// CountryRef holds the value of the country_ref edge.
+	CountryRef *Country `json:"country_ref,omitempty"`
+	// StateRef holds the value of the state_ref edge.
+	StateRef *State `json:"state_ref,omitempty"`
+	// loadedTypes holds the information for reporting if a
+	// type was loaded (or requested) in eager-loading or not.
+	loadedTypes [2]bool
+}
+
+// CountryRefOrErr returns the CountryRef value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e CompanyEdges) CountryRefOrErr() (*Country, error) {
+	if e.CountryRef != nil {
+		return e.CountryRef, nil
+	} else if e.loadedTypes[0] {
+		return nil, &NotFoundError{label: country.Label}
+	}
+	return nil, &NotLoadedError{edge: "country_ref"}
+}
+
+// StateRefOrErr returns the StateRef value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e CompanyEdges) StateRefOrErr() (*State, error) {
+	if e.StateRef != nil {
+		return e.StateRef, nil
+	} else if e.loadedTypes[1] {
+		return nil, &NotFoundError{label: state.Label}
+	}
+	return nil, &NotLoadedError{edge: "state_ref"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -69,10 +105,14 @@ func (*Company) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullBool)
 		case company.FieldID:
 			values[i] = new(sql.NullInt64)
-		case company.FieldName, company.FieldCode, company.FieldLegalName, company.FieldEmail, company.FieldPhone, company.FieldWebsite, company.FieldTaxID, company.FieldGstin, company.FieldPan, company.FieldCurrency, company.FieldTimezone, company.FieldLogo, company.FieldAddress, company.FieldCity, company.FieldState, company.FieldCountry, company.FieldPostalCode:
+		case company.FieldName, company.FieldCode, company.FieldLegalName, company.FieldEmail, company.FieldPhone, company.FieldWebsite, company.FieldTaxID, company.FieldGstin, company.FieldPan, company.FieldCurrency, company.FieldTimezone, company.FieldLogo, company.FieldAddress, company.FieldCity, company.FieldPostalCode:
 			values[i] = new(sql.NullString)
 		case company.FieldCreatedAt, company.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
+		case company.ForeignKeys[0]: // company_country_ref
+			values[i] = new(sql.NullInt64)
+		case company.ForeignKeys[1]: // company_state_ref
+			values[i] = new(sql.NullInt64)
 		default:
 			values[i] = new(sql.UnknownType)
 		}
@@ -178,18 +218,6 @@ func (_m *Company) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				_m.City = value.String
 			}
-		case company.FieldState:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field state", values[i])
-			} else if value.Valid {
-				_m.State = value.String
-			}
-		case company.FieldCountry:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field country", values[i])
-			} else if value.Valid {
-				_m.Country = value.String
-			}
 		case company.FieldPostalCode:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field postal_code", values[i])
@@ -214,6 +242,20 @@ func (_m *Company) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				_m.UpdatedAt = value.Time
 			}
+		case company.ForeignKeys[0]:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for edge-field company_country_ref", value)
+			} else if value.Valid {
+				_m.company_country_ref = new(int)
+				*_m.company_country_ref = int(value.Int64)
+			}
+		case company.ForeignKeys[1]:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for edge-field company_state_ref", value)
+			} else if value.Valid {
+				_m.company_state_ref = new(int)
+				*_m.company_state_ref = int(value.Int64)
+			}
 		default:
 			_m.selectValues.Set(columns[i], values[i])
 		}
@@ -225,6 +267,16 @@ func (_m *Company) assignValues(columns []string, values []any) error {
 // This includes values selected through modifiers, order, etc.
 func (_m *Company) Value(name string) (ent.Value, error) {
 	return _m.selectValues.Get(name)
+}
+
+// QueryCountryRef queries the "country_ref" edge of the Company entity.
+func (_m *Company) QueryCountryRef() *CountryQuery {
+	return NewCompanyClient(_m.config).QueryCountryRef(_m)
+}
+
+// QueryStateRef queries the "state_ref" edge of the Company entity.
+func (_m *Company) QueryStateRef() *StateQuery {
+	return NewCompanyClient(_m.config).QueryStateRef(_m)
 }
 
 // Update returns a builder for updating this Company.
@@ -291,12 +343,6 @@ func (_m *Company) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("city=")
 	builder.WriteString(_m.City)
-	builder.WriteString(", ")
-	builder.WriteString("state=")
-	builder.WriteString(_m.State)
-	builder.WriteString(", ")
-	builder.WriteString("country=")
-	builder.WriteString(_m.Country)
 	builder.WriteString(", ")
 	builder.WriteString("postal_code=")
 	builder.WriteString(_m.PostalCode)

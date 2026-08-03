@@ -46,33 +46,35 @@ const (
 // CompanyMutation represents an operation that mutates the Company nodes in the graph.
 type CompanyMutation struct {
 	config
-	op            Op
-	typ           string
-	id            *int
-	name          *string
-	code          *string
-	legal_name    *string
-	email         *string
-	phone         *string
-	website       *string
-	tax_id        *string
-	gstin         *string
-	pan           *string
-	currency      *string
-	timezone      *string
-	logo          *string
-	address       *string
-	city          *string
-	state         *string
-	country       *string
-	postal_code   *string
-	active        *bool
-	created_at    *time.Time
-	updated_at    *time.Time
-	clearedFields map[string]struct{}
-	done          bool
-	oldValue      func(context.Context) (*Company, error)
-	predicates    []predicate.Company
+	op                 Op
+	typ                string
+	id                 *int
+	name               *string
+	code               *string
+	legal_name         *string
+	email              *string
+	phone              *string
+	website            *string
+	tax_id             *string
+	gstin              *string
+	pan                *string
+	currency           *string
+	timezone           *string
+	logo               *string
+	address            *string
+	city               *string
+	postal_code        *string
+	active             *bool
+	created_at         *time.Time
+	updated_at         *time.Time
+	clearedFields      map[string]struct{}
+	country_ref        *int
+	clearedcountry_ref bool
+	state_ref          *int
+	clearedstate_ref   bool
+	done               bool
+	oldValue           func(context.Context) (*Company, error)
+	predicates         []predicate.Company
 }
 
 var _ ent.Mutation = (*CompanyMutation)(nil)
@@ -807,91 +809,6 @@ func (m *CompanyMutation) ResetCity() {
 	delete(m.clearedFields, company.FieldCity)
 }
 
-// SetState sets the "state" field.
-func (m *CompanyMutation) SetState(s string) {
-	m.state = &s
-}
-
-// State returns the value of the "state" field in the mutation.
-func (m *CompanyMutation) State() (r string, exists bool) {
-	v := m.state
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldState returns the old "state" field's value of the Company entity.
-// If the Company object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CompanyMutation) OldState(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldState is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldState requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldState: %w", err)
-	}
-	return oldValue.State, nil
-}
-
-// ClearState clears the value of the "state" field.
-func (m *CompanyMutation) ClearState() {
-	m.state = nil
-	m.clearedFields[company.FieldState] = struct{}{}
-}
-
-// StateCleared returns if the "state" field was cleared in this mutation.
-func (m *CompanyMutation) StateCleared() bool {
-	_, ok := m.clearedFields[company.FieldState]
-	return ok
-}
-
-// ResetState resets all changes to the "state" field.
-func (m *CompanyMutation) ResetState() {
-	m.state = nil
-	delete(m.clearedFields, company.FieldState)
-}
-
-// SetCountry sets the "country" field.
-func (m *CompanyMutation) SetCountry(s string) {
-	m.country = &s
-}
-
-// Country returns the value of the "country" field in the mutation.
-func (m *CompanyMutation) Country() (r string, exists bool) {
-	v := m.country
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldCountry returns the old "country" field's value of the Company entity.
-// If the Company object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CompanyMutation) OldCountry(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCountry is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCountry requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCountry: %w", err)
-	}
-	return oldValue.Country, nil
-}
-
-// ResetCountry resets all changes to the "country" field.
-func (m *CompanyMutation) ResetCountry() {
-	m.country = nil
-}
-
 // SetPostalCode sets the "postal_code" field.
 func (m *CompanyMutation) SetPostalCode(s string) {
 	m.postal_code = &s
@@ -1049,6 +966,84 @@ func (m *CompanyMutation) ResetUpdatedAt() {
 	m.updated_at = nil
 }
 
+// SetCountryRefID sets the "country_ref" edge to the Country entity by id.
+func (m *CompanyMutation) SetCountryRefID(id int) {
+	m.country_ref = &id
+}
+
+// ClearCountryRef clears the "country_ref" edge to the Country entity.
+func (m *CompanyMutation) ClearCountryRef() {
+	m.clearedcountry_ref = true
+}
+
+// CountryRefCleared reports if the "country_ref" edge to the Country entity was cleared.
+func (m *CompanyMutation) CountryRefCleared() bool {
+	return m.clearedcountry_ref
+}
+
+// CountryRefID returns the "country_ref" edge ID in the mutation.
+func (m *CompanyMutation) CountryRefID() (id int, exists bool) {
+	if m.country_ref != nil {
+		return *m.country_ref, true
+	}
+	return
+}
+
+// CountryRefIDs returns the "country_ref" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// CountryRefID instead. It exists only for internal usage by the builders.
+func (m *CompanyMutation) CountryRefIDs() (ids []int) {
+	if id := m.country_ref; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetCountryRef resets all changes to the "country_ref" edge.
+func (m *CompanyMutation) ResetCountryRef() {
+	m.country_ref = nil
+	m.clearedcountry_ref = false
+}
+
+// SetStateRefID sets the "state_ref" edge to the State entity by id.
+func (m *CompanyMutation) SetStateRefID(id int) {
+	m.state_ref = &id
+}
+
+// ClearStateRef clears the "state_ref" edge to the State entity.
+func (m *CompanyMutation) ClearStateRef() {
+	m.clearedstate_ref = true
+}
+
+// StateRefCleared reports if the "state_ref" edge to the State entity was cleared.
+func (m *CompanyMutation) StateRefCleared() bool {
+	return m.clearedstate_ref
+}
+
+// StateRefID returns the "state_ref" edge ID in the mutation.
+func (m *CompanyMutation) StateRefID() (id int, exists bool) {
+	if m.state_ref != nil {
+		return *m.state_ref, true
+	}
+	return
+}
+
+// StateRefIDs returns the "state_ref" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// StateRefID instead. It exists only for internal usage by the builders.
+func (m *CompanyMutation) StateRefIDs() (ids []int) {
+	if id := m.state_ref; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetStateRef resets all changes to the "state_ref" edge.
+func (m *CompanyMutation) ResetStateRef() {
+	m.state_ref = nil
+	m.clearedstate_ref = false
+}
+
 // Where appends a list predicates to the CompanyMutation builder.
 func (m *CompanyMutation) Where(ps ...predicate.Company) {
 	m.predicates = append(m.predicates, ps...)
@@ -1083,7 +1078,7 @@ func (m *CompanyMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *CompanyMutation) Fields() []string {
-	fields := make([]string, 0, 20)
+	fields := make([]string, 0, 18)
 	if m.name != nil {
 		fields = append(fields, company.FieldName)
 	}
@@ -1125,12 +1120,6 @@ func (m *CompanyMutation) Fields() []string {
 	}
 	if m.city != nil {
 		fields = append(fields, company.FieldCity)
-	}
-	if m.state != nil {
-		fields = append(fields, company.FieldState)
-	}
-	if m.country != nil {
-		fields = append(fields, company.FieldCountry)
 	}
 	if m.postal_code != nil {
 		fields = append(fields, company.FieldPostalCode)
@@ -1180,10 +1169,6 @@ func (m *CompanyMutation) Field(name string) (ent.Value, bool) {
 		return m.Address()
 	case company.FieldCity:
 		return m.City()
-	case company.FieldState:
-		return m.State()
-	case company.FieldCountry:
-		return m.Country()
 	case company.FieldPostalCode:
 		return m.PostalCode()
 	case company.FieldActive:
@@ -1229,10 +1214,6 @@ func (m *CompanyMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldAddress(ctx)
 	case company.FieldCity:
 		return m.OldCity(ctx)
-	case company.FieldState:
-		return m.OldState(ctx)
-	case company.FieldCountry:
-		return m.OldCountry(ctx)
 	case company.FieldPostalCode:
 		return m.OldPostalCode(ctx)
 	case company.FieldActive:
@@ -1348,20 +1329,6 @@ func (m *CompanyMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetCity(v)
 		return nil
-	case company.FieldState:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetState(v)
-		return nil
-	case company.FieldCountry:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetCountry(v)
-		return nil
 	case company.FieldPostalCode:
 		v, ok := value.(string)
 		if !ok {
@@ -1450,9 +1417,6 @@ func (m *CompanyMutation) ClearedFields() []string {
 	if m.FieldCleared(company.FieldCity) {
 		fields = append(fields, company.FieldCity)
 	}
-	if m.FieldCleared(company.FieldState) {
-		fields = append(fields, company.FieldState)
-	}
 	if m.FieldCleared(company.FieldPostalCode) {
 		fields = append(fields, company.FieldPostalCode)
 	}
@@ -1499,9 +1463,6 @@ func (m *CompanyMutation) ClearField(name string) error {
 		return nil
 	case company.FieldCity:
 		m.ClearCity()
-		return nil
-	case company.FieldState:
-		m.ClearState()
 		return nil
 	case company.FieldPostalCode:
 		m.ClearPostalCode()
@@ -1556,12 +1517,6 @@ func (m *CompanyMutation) ResetField(name string) error {
 	case company.FieldCity:
 		m.ResetCity()
 		return nil
-	case company.FieldState:
-		m.ResetState()
-		return nil
-	case company.FieldCountry:
-		m.ResetCountry()
-		return nil
 	case company.FieldPostalCode:
 		m.ResetPostalCode()
 		return nil
@@ -1580,19 +1535,35 @@ func (m *CompanyMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *CompanyMutation) AddedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 2)
+	if m.country_ref != nil {
+		edges = append(edges, company.EdgeCountryRef)
+	}
+	if m.state_ref != nil {
+		edges = append(edges, company.EdgeStateRef)
+	}
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
 func (m *CompanyMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case company.EdgeCountryRef:
+		if id := m.country_ref; id != nil {
+			return []ent.Value{*id}
+		}
+	case company.EdgeStateRef:
+		if id := m.state_ref; id != nil {
+			return []ent.Value{*id}
+		}
+	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *CompanyMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 2)
 	return edges
 }
 
@@ -1604,25 +1575,53 @@ func (m *CompanyMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *CompanyMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 2)
+	if m.clearedcountry_ref {
+		edges = append(edges, company.EdgeCountryRef)
+	}
+	if m.clearedstate_ref {
+		edges = append(edges, company.EdgeStateRef)
+	}
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
 func (m *CompanyMutation) EdgeCleared(name string) bool {
+	switch name {
+	case company.EdgeCountryRef:
+		return m.clearedcountry_ref
+	case company.EdgeStateRef:
+		return m.clearedstate_ref
+	}
 	return false
 }
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
 func (m *CompanyMutation) ClearEdge(name string) error {
+	switch name {
+	case company.EdgeCountryRef:
+		m.ClearCountryRef()
+		return nil
+	case company.EdgeStateRef:
+		m.ClearStateRef()
+		return nil
+	}
 	return fmt.Errorf("unknown Company unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
 func (m *CompanyMutation) ResetEdge(name string) error {
+	switch name {
+	case company.EdgeCountryRef:
+		m.ResetCountryRef()
+		return nil
+	case company.EdgeStateRef:
+		m.ResetStateRef()
+		return nil
+	}
 	return fmt.Errorf("unknown Company edge %s", name)
 }
 
