@@ -180,6 +180,12 @@ func (c *FormComponent) save() {
 }
 
 func (c *FormComponent) buildWindow(ctx *appctx.AppContext) retui.Element {
+
+	form := retui.UseForm(company.FormState{})
+	v := form.Values()
+
+	retui.SetHidden("code", true)
+
 	isFocused := func(index int) bool {
 		return c.state.FocusIndex == index
 	}
@@ -206,7 +212,8 @@ func (c *FormComponent) buildWindow(ctx *appctx.AppContext) retui.Element {
 			components.TextInput().
 				ID("code").
 				Focused(isFocused(0)).
-				Value(c.state.Code).
+				// Hidden(true).
+				Value(v.Code).
 				OnChange(func(id, value string) {
 					var b strings.Builder
 					for _, r := range strings.ToUpper(value) {
@@ -214,9 +221,7 @@ func (c *FormComponent) buildWindow(ctx *appctx.AppContext) retui.Element {
 							b.WriteRune(r)
 						}
 					}
-					s := c.state
-					s.Code = b.String()
-					c.setState(s)
+					form.SetField("Code", b.String())
 				}).
 				Render(),
 		),

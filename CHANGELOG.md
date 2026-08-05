@@ -6,6 +6,17 @@ The format is based on **Keep a Changelog**, and this project follows **Semantic
 
 ---
 
+## [v0.8.0] - 2026-08-07
+
+### Added
+
+- Form
+- Disable, Hidden & Readonly to all Input
+
+### Updates
+
+-
+
 ## [v0.7.0] - 2026-08-03
 
 ### Added

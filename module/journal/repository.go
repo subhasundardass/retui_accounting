@@ -115,7 +115,7 @@ type CreateJournalInput struct {
 func (r *JournalRepository) CreateNew(
 	ctx context.Context,
 	journal *ent.Journal,
-	lines []JournalLineInput,
+	lines []JournalLine,
 ) (*ent.Journal, error) {
 
 	//--Validation
@@ -187,17 +187,17 @@ func (r *JournalRepository) CreateNew(
 			SetCredit(line.Credit).
 			SetLineNo(i + 1)
 
-		if line.Description != "" {
-			builder.SetDescription(line.Description)
+		if line.Remarks != "" {
+			builder.SetDescription(line.Remarks)
 		}
 
-		if line.ReferenceType != "" {
-			builder.SetReferenceType(line.ReferenceType)
-		}
+		// if line.ReferenceType != "" {
+		// 	builder.SetReferenceType(line.ReferenceType)
+		// }
 
-		if line.ReferenceID != nil {
-			builder.SetReferenceID(*line.ReferenceID)
-		}
+		// if line.ReferenceID != nil {
+		// 	builder.SetReferenceID(*line.ReferenceID)
+		// }
 
 		if _, err = builder.Save(ctx); err != nil {
 			return nil, err

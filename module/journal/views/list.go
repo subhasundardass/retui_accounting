@@ -33,9 +33,9 @@ func (c *JournalListComponent) bindKeys() {
 	case retui.KeyEscape:
 		retui.PopScreen()
 	case retui.KeyF2:
-		retui.Debugf("F2 Pressed.......")
-		win := JournalCreateWindow(c.ctx)
-		win.Show()
+		// retui.Debugf("F2 Pressed.......")
+		// win := JournalCreateWindow(c.ctx)
+		// win.Show()
 	}
 }
 

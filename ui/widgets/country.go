@@ -46,7 +46,19 @@ func renderCountryComponent(
 	onChange func(id, value string),
 ) retui.Element {
 
-	options := make([]components.SelectOption, len(countries))
+	// options := make([]components.SelectOption, len(countries))
+	options := retui.UseMemo(func() []components.SelectOption {
+		opts := make([]components.SelectOption, len(countries))
+
+		for i, country := range countries {
+			opts[i] = components.SelectOption{
+				Label: country.Name,
+				Value: strconv.Itoa(country.ID),
+			}
+		}
+
+		return opts
+	}, []any{countries})
 
 	for i, country := range countries {
 		options[i] = components.SelectOption{
@@ -86,4 +98,27 @@ func renderCountryComponent(
 		Focused(focus).
 		OnChange(onChange).
 		Render()
+}
+
+func FilterOptions(
+	options []components.SelectOption,
+	query string,
+) []components.SelectOption {
+
+	if query == "" {
+		return options
+	}
+
+	query = strings.ToLower(query)
+
+	out := make([]components.SelectOption, 0)
+
+	for _, option := range options {
+		if strings.Contains(strings.ToLower(option.Label), query) ||
+			strings.Contains(strings.ToLower(option.Value), query) {
+			out = append(out, option)
+		}
+	}
+
+	return out
 }

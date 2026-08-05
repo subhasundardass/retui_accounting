@@ -12,7 +12,6 @@ type FormState struct {
 	Errors     map[string]string
 	Mode       FormMode
 
-	//--
 	Code       string
 	Name       string
 	LegalName  string
