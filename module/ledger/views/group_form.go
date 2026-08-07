@@ -12,8 +12,7 @@ type GroupFormComponent struct {
 	controller *ledger.LedgerController
 	win        *window.Window
 
-	state    ledger.LedgerGroupState
-	setState func(ledger.LedgerGroupState)
+	state ledger.LedgerGroupState
 
 	editing bool
 	editID  int
@@ -43,27 +42,28 @@ func (c *GroupFormComponent) SetOnSaved(fn func()) {
 	c.onSaved = fn
 }
 
-// func (c *GroupFormComponent) save() {
-// 	mode := ledger.ModeCreate
-// 	id := 0
-// 	if c.editing {
-// 		mode = ledger.ModeUpdate
-// 		id = c.editID
-// 	}
+func (c *GroupFormComponent) save(state ledger.LedgerGroupState) {
 
-// 	_, err := c.controller.CreateOrUpdate(mode, id, c.state)
-// 	if err != nil {
-// 		retui.Debugf("Save failed: %v", err)
-// 		components.ShowError("Save failed: " + err.Error())
-// 		// TODO: surface this error in the UI (e.g. an Errors/status field on state)
-// 		return
-// 	}
+	mode := ledger.ModeCreate
+	id := 0
+	if c.editing {
+		mode = ledger.ModeUpdate
+		id = c.editID
+	}
 
-// 	if c.onSaved != nil {
-// 		c.onSaved()
-// 	}
-// 	c.win.Close()
-// }
+	_, err := c.controller.CreateOrUpdate(mode, id, state)
+	if err != nil {
+		retui.Debugf("Save failed: %v", err)
+		components.ShowError("Save failed: " + err.Error())
+		// TODO: surface this error in the UI (e.g. an Errors/status field on state)
+		return
+	}
+
+	if c.onSaved != nil {
+		c.onSaved()
+	}
+	c.win.Close()
+}
 
 // NOTE: bindKeys is currently called from inside buildWindow, which is the
 // SetRenderFn callback and therefore runs on every render. If
@@ -95,19 +95,10 @@ func (c *GroupFormComponent) bindKeys(form *retui.Form[ledger.LedgerGroupState])
 			c.win.Close()
 			return true
 
-		case retui.KeyF10:
-			// err := c.controller.SaveGroup(form.Values())
-			// if err != nil {
-			// 	components.ShowError(err.Error())
-			// 	return true
-			// }
-			// components.ShowSuccess("Group saved successfully.")
-			// if c.onSaved != nil {
-			// 	c.onSaved()
-			// }
-			c.win.Close()
-			return true
 		}
+
+		// retui.Debugf("===++Create Value: %v", c.state)
+
 		return false
 	})
 }
@@ -118,7 +109,9 @@ func (c *GroupFormComponent) bindKeys(form *retui.Form[ledger.LedgerGroupState])
 func (c *GroupFormComponent) GroupCreateForm(ctx *appctx.AppContext) *window.Window {
 	c.editing = false
 	c.editID = 0
-	c.state = ledger.LedgerGroupState{Mode: ledger.ModeCreate}
+	c.state = ledger.LedgerGroupState{
+		Mode: ledger.ModeCreate,
+	}
 
 	c.win = window.NewWindow().
 		SetTitle("Create Group").
@@ -127,7 +120,7 @@ func (c *GroupFormComponent) GroupCreateForm(ctx *appctx.AppContext) *window.Win
 		SetSize(80, 40)
 
 	c.win.SetRenderFn(func() retui.Element {
-		return c.buildWindow() // bindKeys wired inside buildWindow
+		return c.buildWindow()
 	})
 
 	return c.win
@@ -204,6 +197,7 @@ func (c *GroupFormComponent) buildWindow() retui.Element {
 				if err := form.SetField("Code", value); err != nil {
 					retui.Debugf("SetField error: %v", err)
 				}
+
 			}).
 			Render(),
 	)
@@ -247,9 +241,6 @@ func (c *GroupFormComponent) buildWindow() retui.Element {
 			Value(v.Nature).
 			Focused(v.FocusIndex == 2).
 			Options(natureOptions).
-			// OnFilter(func(id, query string) []components.SelectOption {
-			// 	return FilterOptions(natureOptions, query)
-			// }).
 			OnChange(func(id, value string) {
 				if err := form.SetField("Nature", value); err != nil {
 					retui.Debugf("SetField error: %v", err)
@@ -301,7 +292,7 @@ func (c *GroupFormComponent) buildWindow() retui.Element {
 				Style(retui.NewStyle().Background(retui.Gray(2)).Foreground(retui.BrightWhite)).
 				OnKeyPress(func(id string, key retui.Key) bool {
 					if key.Code == retui.KeyEnter {
-						// c.save()
+						c.save(v)
 						return true
 					}
 					return false

@@ -13,11 +13,13 @@ import (
 type LedgerComponent struct {
 	ctx        *appctx.AppContext
 	controller *ledger.LedgerController
+	formComp   *LedgerFormComponent
 }
 
-func NewLedgerComponent(ctx *appctx.AppContext) *LedgerComponent {
+func NewLedgerComponent(ctx *appctx.AppContext, form *LedgerFormComponent) *LedgerComponent {
 	return &LedgerComponent{
 		controller: ledger.NewController(ctx),
+		formComp:   form,
 	}
 }
 
@@ -138,7 +140,8 @@ func (c *LedgerComponent) buildTable(
 		OnChange(func(i int) {
 			setSelected(ledgers[i])
 			if retui.CurrentKey.Code == retui.KeyEnter {
-				// c.controller.GetJournalsByLedger(ledgers[i].ID)
+				win := c.formComp.LedgerCreateForm()
+				win.Show()
 			}
 		}).
 		Render()

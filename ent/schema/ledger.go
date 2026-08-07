@@ -13,6 +13,14 @@ type Ledger struct {
 	ent.Schema
 }
 
+type BillingType string
+
+const (
+	BillingNone      BillingType = "NONE"       // no bill tracking (e.g. expense/capital ledgers)
+	BillingBillWise  BillingType = "BILL_WISE"  // Tally's "Maintain balances bill-by-bill"
+	BillingOnAccount BillingType = "ON_ACCOUNT" // lump-sum, no bill references
+)
+
 func (Ledger) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		mixin.Time{},
@@ -43,11 +51,27 @@ func (Ledger) Fields() []ent.Field {
 
 		// Accounting
 		field.Float("opening_balance").
+			Optional().
 			Default(0.00),
+
+		field.Time("opening_balance_date").
+			Optional(),
+
+		field.Enum("opening_balance_type").
+			Values("DR", "CR").
+			Optional().
+			Default("DR"),
 
 		field.Float("balance").
 			Default(0.00).
 			Comment("Current balance"),
+
+		// --- Billing / credit control (Tally: "Maintain balances bill-by-bill") ---
+		field.Enum("billing_type").
+			GoType(BillingType("")).
+			Default(string(BillingNone)),
+		field.Int("credit_period_days").Optional().Default(0),
+		field.Float("credit_limit").Optional().Default(0),
 
 		// Status
 		field.Bool("is_system").

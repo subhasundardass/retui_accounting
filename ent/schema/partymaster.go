@@ -43,14 +43,26 @@ func (PartyMaster) Fields() []ent.Field {
 			Optional().
 			Nillable(),
 
-		field.String("gst_no").
-			Optional().
-			Nillable(),
+		// Tax registration (Tally: "Tax Registration Details")
+		field.Enum("gst_registration_type").
+			Values("REGULAR", "COMPOSITION", "UNREGISTERED", "CONSUMER", "SEZ", "OVERSEAS").
+			Default("UNREGISTERED"),
+		field.String("gstin").Optional().Default("").MaxLen(15),
+		field.String("pan").Optional().Default("").MaxLen(10),
 
-		field.String("pan_no").
-			Optional().
-			Nillable(),
+		// needed for the 45-day MSME payment rule — worth adding proactively)
+		field.Bool("is_msme").Default(false),
+		field.String("msme_number").Optional().Default("").MaxLen(30),
 
+		// Bank details for payments/NEFT (optional but common ask)
+		field.String("bank_name").Optional().Default("").MaxLen(255),
+		field.String("bank_account_no").Optional().Default("").MaxLen(30),
+		field.String("bank_ifsc").Optional().Default("").MaxLen(11),
+		field.String("bank_branch").Optional().Default("").MaxLen(255),
+
+		field.String("notes").Optional().Default(""),
+
+		// Communication
 		field.String("contact_person").
 			Optional().
 			Nillable(),
@@ -106,15 +118,9 @@ func (PartyMaster) Indexes() []ent.Index {
 		index.Fields("ledger_id").
 			Unique(),
 
-		index.Fields("type"),
-
-		index.Fields("gst_no"),
-
-		index.Fields("mobile"),
-
-		index.Fields("email"),
-
-		index.Fields("display_name"),
+		index.Fields("gstin"),
+		index.Fields("state_code"),
+		index.Fields("party_type"),
 	}
 }
 
@@ -123,8 +129,6 @@ func (PartyMaster) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.From("ledger", Ledger.Type).
 			Ref("party").
-			Field("ledger_id").
-			Required().
 			Unique(),
 	}
 }

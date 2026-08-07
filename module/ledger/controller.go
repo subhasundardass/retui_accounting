@@ -5,6 +5,8 @@ import (
 
 	"github.com/subhasundardass/retui/ent"
 	appctx "github.com/subhasundardass/retui/internal/context"
+	"github.com/subhasundardass/retui/retui"
+	"github.com/subhasundardass/retui/retui/components"
 )
 
 type LedgerController struct {
@@ -34,7 +36,36 @@ func (c *LedgerController) List(groupID int) ([]*ent.Ledger, error) {
 	return ledgers, err
 }
 
-//==== GROUPS
+func (c *LedgerController) LedgerFilterOptions(query string) []components.SelectOption {
+	ledgers, err := c.repo.Search(c.ctx.Context, query, 10)
+	if err != nil {
+		retui.Debug("LedgerFilterOptions error: " + err.Error())
+		return nil
+	}
+
+	opts := make([]components.SelectOption, len(ledgers))
+	for i, l := range ledgers {
+		opts[i] = components.SelectOption{Label: l.Name, Value: l.Code}
+	}
+
+	return opts
+}
+
+// ==== GROUPS
+func (c *LedgerController) LedgerGroupFilterOptions(query string) []components.SelectOption {
+	groups, err := c.repo.SearchGroup(c.ctx.Context, query, 10)
+	if err != nil {
+		retui.Debug("GroupFilterOptions error: " + err.Error())
+		return nil
+	}
+
+	opts := make([]components.SelectOption, len(groups))
+	for i, l := range groups {
+		opts[i] = components.SelectOption{Label: l.Name, Value: l.Code}
+	}
+
+	return opts
+}
 
 func (c *LedgerController) Groups() ([]*ent.Ledger_Group, error) {
 	var (
@@ -62,9 +93,11 @@ func (c *LedgerController) GetGroup(id int) (*LedgerGroupState, error) {
 }
 
 // -Create or Update
-func (c *LedgerController) CreateOrUpdate(id int, in LedgerGroupState) (*ent.Ledger_Group, error) {
+func (c *LedgerController) CreateOrUpdate(mode FormMode, id int, in LedgerGroupState) (*ent.Ledger_Group, error) {
 
-	if in.Mode == ModeUpdate {
+	// retui.Debugf("value: %v", in)
+
+	if mode == ModeUpdate {
 		return c.repo.GroupUpdate(c.ctx.Ctx(), id, in)
 	}
 	return c.repo.GroupCreate(c.ctx.Ctx(), in)

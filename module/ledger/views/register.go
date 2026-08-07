@@ -8,8 +8,9 @@ import (
 func Register(ctx *context.AppContext) {
 
 	formGroupComp := NewGroupFormComponent(ctx)
+	formLedgerComp := NewLedgerFormComponent(ctx)
 
-	listLedgerComp := NewLedgerComponent(ctx)
+	listLedgerComp := NewLedgerComponent(ctx, formLedgerComp)
 	listLedgerGroupComp := NewLedgerGroupComponent(ctx, formGroupComp)
 
 	ui.Register("ledger_list", ui.Screen{
