@@ -20,12 +20,21 @@ command_exists() {
 # Track overall failure without exiting immediately, so we get a full report
 FAILED=0
 
-# Test 1: Build
-echo "📦 Testing build..."
+# Test 1: Build (native)
+echo "📦 Testing build (native)..."
 if go build ./retui/...; then
-    echo -e "${GREEN}✅ Build passed${NC}"
+    echo -e "${GREEN}✅ Build passed (native)${NC}"
 else
-    echo -e "${RED}❌ Build failed${NC}"
+    echo -e "${RED}❌ Build failed (native)${NC}"
+    exit 1
+fi
+
+# Test 1b: Build (Windows cross-compile check)
+echo "📦 Testing build (windows)..."
+if GOOS=windows GOARCH=amd64 go build ./retui/...; then
+    echo -e "${GREEN}✅ Build passed (windows)${NC}"
+else
+    echo -e "${RED}❌ Build failed (windows)${NC}"
     exit 1
 fi
 
