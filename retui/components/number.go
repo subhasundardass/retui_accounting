@@ -81,7 +81,7 @@ func NumberInput() *NumberInputField {
 			ID:               "",
 			Value:            0,
 			Empty:            true,
-			Placeholder:      "",
+			Placeholder:      "0",
 			Width:            30,
 			Style:            retui.NewStyle(),
 			Prefix:           "",
