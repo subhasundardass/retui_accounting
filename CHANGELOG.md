@@ -15,6 +15,8 @@ The format is based on **Keep a Changelog**, and this project follows **Semantic
 
 ### Updates
 
+- syscall.SIGWINCH (Windows/Linux)
+
 -
 
 ## [v0.7.0] - 2026-08-03
