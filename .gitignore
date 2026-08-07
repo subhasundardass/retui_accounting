@@ -2,3 +2,5 @@ logs.txt
 retui.log
 posts
 .idea
+data/retui.db-shm
+data/retui.db-wal
