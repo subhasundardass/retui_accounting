@@ -7,7 +7,6 @@ import (
 	"github.com/subhasundardass/retui/module/journal"
 	"github.com/subhasundardass/retui/retui"
 	"github.com/subhasundardass/retui/retui/components"
-	"github.com/subhasundardass/retui/retui/window"
 	"github.com/subhasundardass/retui/ui/widgets"
 )
 
@@ -67,12 +66,10 @@ func (c *JournalCreateComponent) bindKeys(form *retui.Form[journal.FormState]) {
 
 	case retui.KeyF4:
 		v := form.Values()
-
 		v.Lines = append(v.Lines, journal.JournalLine{})
 
 		// Move focus to the Ledger field of the new row
 		v.FocusIndex = 4 + (len(v.Lines)-1)*4
-
 		form.SetValues(v)
 
 	case retui.KeyF10:
@@ -90,21 +87,16 @@ func (c *JournalCreateComponent) bindKeys(form *retui.Form[journal.FormState]) {
 
 		jrnl, err := c.controller.SaveJournal(entry)
 		if err != nil {
-			retui.Error(err)
-			window.AlertError("Error!", retui.Text(err.Error(), retui.NewStyle()))
-		} else {
-			window.AlertError(
-				"Success",
-				retui.Text(
-					fmt.Sprintf("Journal %s saved successfully.", jrnl.VoucherNo),
-					retui.NewStyle(),
-				),
-			)
-
-			// Reset lines
-
-			// Reset focus
+			components.ShowError(err.Error())
+			return
 		}
+
+		components.ShowSuccess(fmt.Sprintf("Journal %s saved.", jrnl.VoucherNo))
+		//--Reset
+		form.Reset()
+		v := form.Values() // read AFTER reset
+		v.Lines = []journal.JournalLine{{}, {}}
+		form.SetValues(v) // push back ✗
 
 	default:
 		return
@@ -116,15 +108,11 @@ func (c *JournalCreateComponent) bindKeys(form *retui.Form[journal.FormState]) {
 func (c *JournalCreateComponent) JournalCreateForm(ctx *appctx.AppContext) retui.Element {
 
 	form := retui.UseForm(journal.FormState{
-		Lines: []journal.JournalLine{
-			{},
-			{},
-		},
+		Lines: []journal.JournalLine{{}, {}},
 	})
 
 	panel := components.Panel().
 		// Width(retui.Percent(80)).
-		Height(retui.Fixed(20)).
 		Header(retui.Box(
 			retui.Props{
 				Direction: retui.Row,

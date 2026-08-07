@@ -11,6 +11,7 @@ type FormState struct {
 	FocusIndex int
 	Errors     map[string]string
 	Mode       FormMode
+	//--
 
 	Code       string
 	Name       string

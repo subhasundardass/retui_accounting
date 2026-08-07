@@ -55,24 +55,30 @@ func (d SQLiteDriver) Open(url string) (*ent.Client, error) {
 	}
 	retui.Info("ensureDir succeeded ✓")
 
-	dsn := fmt.Sprintf("file:%s?_pragma=foreign_keys(1)", url)
+	// Add WAL mode + busy timeout + foreign keys
+	dsn := fmt.Sprintf(
+		"file:%s?_pragma=foreign_keys(1)&_pragma=journal_mode(WAL)&_pragma=busy_timeout(5000)",
+		url,
+	)
 	retui.Infof("Opening with DSN: %s", dsn)
 
-	// Step 1: open raw sql.DB with modernc "sqlite" driver
 	db, err := sql.Open("sqlite", dsn)
 	if err != nil {
 		retui.Errorf("sql.Open failed: %v", err)
 		return nil, err
 	}
 
-	// Step 2: ping to force actual file creation
+	// CRITICAL for SQLite — limit to one connection
+	// SQLite is not safe for concurrent writes from multiple connections
+	db.SetMaxOpenConns(1)
+	db.SetMaxIdleConns(1)
+
 	if err := db.Ping(); err != nil {
 		retui.Errorf("db.Ping failed: %v", err)
 		return nil, err
 	}
 	retui.Info("db.Ping succeeded ✓")
 
-	// Step 3: wrap with ent using SQLite dialect for migrations
 	drv := entsql.OpenDB(dialect.SQLite, db)
 	retui.Info("entsql.OpenDB succeeded ✓")
 

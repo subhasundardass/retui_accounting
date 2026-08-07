@@ -3,6 +3,7 @@ package journal
 import (
 	"context"
 	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/subhasundardass/retui/ent"
@@ -41,6 +42,7 @@ func (r *JournalRepository) ListWithPagination(ctx context.Context, offset, limi
 		Query().
 		Limit(limit).
 		Offset(offset).
+		Order(ent.Desc(journal.FieldCreateTime)).
 		All(ctx)
 
 	retui.Infof("Found %d journals", len(journals))
@@ -112,69 +114,79 @@ type CreateJournalInput struct {
 	Lines []JournalLineInput
 }
 
+// Create New
 func (r *JournalRepository) CreateNew(
 	ctx context.Context,
 	journal *ent.Journal,
 	lines []JournalLine,
 ) (*ent.Journal, error) {
 
-	//--Validation
-
 	client := r.client
 	if client == nil {
 		return nil, fmt.Errorf("database client not initialized")
 	}
+
+	ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
 
 	tx, err := client.Tx(ctx)
 	if err != nil {
 		return nil, err
 	}
 
+	// Use committed flag — cleaner than relying on err shadowing
+	committed := false
 	defer func() {
-		if err != nil {
+		if !committed {
 			_ = tx.Rollback()
 		}
 	}()
 
-	// -------------------------
-	// Calculate totals
-	// -------------------------
-	var totalDebit float64
-	var totalCredit float64
-
+	var totalDebit, totalCredit float64
 	for _, line := range lines {
 		totalDebit += line.Debit
 		totalCredit += line.Credit
 	}
 
-	// -------------------------
-	// Create Journal
-	// -------------------------
 	newJournal, err := tx.Journal.
 		Create().
 		SetDate(journal.Date).
 		SetVoucherType(journal.VoucherType).
 		SetVoucherNo(journal.VoucherNo).
 		SetVoucherDate(journal.VoucherDate).
-		SetReferenceNo(*journal.ReferenceNo).
 		SetJournalStatus(journal.JournalStatus).
-		SetNarration(*journal.Narration).
 		SetTotalDebit(totalDebit).
 		SetTotalCredit(totalCredit).
 		Save(ctx)
+
+	// Guard nil pointer dereference
+	if journal.ReferenceNo != nil {
+		newJournal, err = tx.Journal.UpdateOne(newJournal).
+			SetReferenceNo(*journal.ReferenceNo).
+			Save(ctx)
+	}
+	if journal.Narration != nil {
+		newJournal, err = tx.Journal.UpdateOne(newJournal).
+			SetNarration(*journal.Narration).
+			Save(ctx)
+	}
 
 	if err != nil {
 		return nil, err
 	}
 
-	// -------------------------
-	// Create Journal Lines
-	// -------------------------
+	// Declare ledger and lineErr outside loop — no shadowing
+	var ledgerResult *ent.Ledger
 	for i, line := range lines {
 
-		ledger, err := tx.Ledger.Query().
-			Where(ledger.CodeEQ(line.LedgerCode)).
-			Only(ctx)
+		ledgerID, err := strconv.Atoi(line.LedgerCode)
+		if err != nil {
+			return nil, fmt.Errorf("invalid ledger code %q: %w", line.LedgerCode, err)
+		}
+
+		ledgerResult, err = tx.Ledger.Query(). // = not :=
+							Where(ledger.IDEQ(ledgerID)).
+							Only(ctx)
 		if err != nil {
 			return nil, fmt.Errorf("ledger %q not found: %w", line.LedgerCode, err)
 		}
@@ -182,7 +194,7 @@ func (r *JournalRepository) CreateNew(
 		builder := tx.Journal_Line.
 			Create().
 			SetJournalID(newJournal.ID).
-			SetLedgerID(ledger.ID).
+			SetLedgerID(ledgerResult.ID).
 			SetDebit(line.Debit).
 			SetCredit(line.Credit).
 			SetLineNo(i + 1)
@@ -191,15 +203,7 @@ func (r *JournalRepository) CreateNew(
 			builder.SetDescription(line.Remarks)
 		}
 
-		// if line.ReferenceType != "" {
-		// 	builder.SetReferenceType(line.ReferenceType)
-		// }
-
-		// if line.ReferenceID != nil {
-		// 	builder.SetReferenceID(*line.ReferenceID)
-		// }
-
-		if _, err = builder.Save(ctx); err != nil {
+		if _, err = builder.Save(ctx); err != nil { // = not :=
 			return nil, err
 		}
 	}
@@ -208,6 +212,7 @@ func (r *JournalRepository) CreateNew(
 		return nil, err
 	}
 
+	committed = true // rollback skipped from here on
 	return newJournal, nil
 }
 

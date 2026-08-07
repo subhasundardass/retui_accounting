@@ -5,6 +5,7 @@ import (
 
 	"github.com/subhasundardass/retui/ent"
 	"github.com/subhasundardass/retui/ent/ledger"
+	"github.com/subhasundardass/retui/ent/ledger_group"
 )
 
 type Repository struct {
@@ -38,6 +39,35 @@ func (r *Repository) Groups(ctx context.Context) ([]*ent.Ledger_Group, error) {
 
 	return r.client.Ledger_Group.Query().
 		Limit(40).All(ctx)
+}
+
+func (r *Repository) GetGroup(ctx context.Context, id int) (*ent.Ledger_Group, error) {
+	return r.client.Ledger_Group.
+		Query().
+		Where(ledger_group.ID(id)).
+		Only(ctx)
+}
+
+func (r *Repository) GroupCreate(ctx context.Context, in LedgerGroupState) (*ent.Ledger_Group, error) {
+	return r.client.Ledger_Group.
+		Create().
+		SetCode(in.Code).
+		SetName(in.Name).
+		SetNature(ledger_group.Nature(in.Nature)).
+		SetIsSystem(in.IsSystem).
+		SetDescription(in.Description).
+		Save(ctx)
+}
+
+func (r *Repository) GroupUpdate(ctx context.Context, id int, in LedgerGroupState) (*ent.Ledger_Group, error) {
+	return r.client.Ledger_Group.
+		UpdateOneID(id).
+		SetCode(in.Code).
+		SetName(in.Name).
+		SetNature(ledger_group.Nature(in.Nature)).
+		SetIsSystem(in.IsSystem).
+		SetDescription(in.Description).
+		Save(ctx)
 }
 
 // // Default returns the first `limit` ledgers, used to seed the select

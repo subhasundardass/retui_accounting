@@ -101,8 +101,8 @@ func SidebarTree(ctx *context.AppContext, props retui.Props) retui.Element {
 	return retui.Box(
 		retui.Props{Direction: retui.Column, Padding: [4]int{0, 0, 0, 1}, Width: retui.Percent(15), Gap: 0},
 		retui.NewStyle().Border(retui.Border{
-			Top: true, Right: true, Bottom: true, Left: true,
-			Chars: retui.BorderRounded, Color: retui.Gray(1),
+			// Top: true, Right: true, Bottom: true, Left: true,
+			// Chars: retui.BorderRounded, Color: retui.Gray(1),
 			// Title: &retui.BorderTitle{
 			// 	Text: "Navigation",
 			// 	Style: retui.NewStyle().
@@ -110,7 +110,7 @@ func SidebarTree(ctx *context.AppContext, props retui.Props) retui.Element {
 			// 		Bold(true),
 			// 	Align: retui.AlignStart,
 			// },
-		}),
+		}).Bold(true),
 
 		// Sidebar tree panel
 		retui.Box(
@@ -122,7 +122,7 @@ func SidebarTree(ctx *context.AppContext, props retui.Props) retui.Element {
 					Justify: retui.JustifySpaceBetween,
 					Padding: [4]int{0, 0, 1, 0}},
 				retui.NewStyle(),
-				retui.Text("Navigation", retui.NewStyle().Bold(true).Foreground(retui.Cyan)),
+				retui.Text("Navigation", retui.NewStyle().Bold(true).Foreground(retui.Black)),
 				retui.Text("[ F2 ]", retui.NewStyle().Foreground(retui.Cyan)),
 			),
 

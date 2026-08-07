@@ -12,6 +12,7 @@ import (
 
 func CountryComponent(
 	ctx *context.AppContext,
+	id string,
 	value int,
 	width int,
 	focus bool,
@@ -21,104 +22,68 @@ func CountryComponent(
 	countries, setCountries := retui.UseState([]*ent.Country{})
 
 	retui.UseEffect(func() func() {
-		retui.Debug("CountryComponent UseEffect called")
-
-		list, err := ctx.DB.Client.Country.Query().All(ctx.Context)
+		list, err := ctx.DB.Client.Country.Query().
+			Order(ent.Asc("name")).
+			All(ctx.Context)
 		if err != nil {
-			retui.Debugf("Error: %v", err)
+			retui.Debugf("CountryComponent: %v", err)
 			return nil
 		}
-
-		retui.Debugf("Loaded %d countries", len(list))
 		setCountries(list)
-
 		return nil
 	}, []any{})
 
-	return renderCountryComponent(countries, value, width, focus, onChange)
+	options := retui.UseMemo(func() []components.SelectOption {
+		opts := make([]components.SelectOption, len(countries))
+		for i, c := range countries {
+			opts[i] = components.SelectOption{
+				Label: c.Name,
+				Value: strconv.Itoa(c.ID),
+			}
+		}
+		return opts
+	}, []any{countries})
+
+	return renderCountryComponent(id, options, value, width, focus, onChange)
 }
 
 func renderCountryComponent(
-	countries []*ent.Country,
+	id string,
+	options []components.SelectOption,
 	value int,
 	width int,
 	focus bool,
 	onChange func(id, value string),
 ) retui.Element {
 
-	// options := make([]components.SelectOption, len(countries))
-	options := retui.UseMemo(func() []components.SelectOption {
-		opts := make([]components.SelectOption, len(countries))
-
-		for i, country := range countries {
-			opts[i] = components.SelectOption{
-				Label: country.Name,
-				Value: strconv.Itoa(country.ID),
-			}
-		}
-
-		return opts
-	}, []any{countries})
-
-	for i, country := range countries {
-		options[i] = components.SelectOption{
-			Label: country.Name,
-			Value: strconv.Itoa(country.ID),
-		}
-	}
-
-	retui.Debugf("renderComponent: %d countries -> %d options", len(countries), len(options))
-
 	return components.SelectDropdown().
-		ID("country").
+		ID(id).
 		Width(width).
-		OverlayAbsPos(40, 5).
-		Options(options). // <-- explicitly push latest options every render
-		OnFilter(func(id, query string) []components.SelectOption {
-
-			retui.Debugf("OnFilter called, %d options available", len(options))
-
-			if query == "" {
-				return options
-			}
-
-			filtered := make([]components.SelectOption, 0)
-			query = strings.ToLower(query)
-
-			for _, option := range options {
-				if strings.Contains(strings.ToLower(option.Label), query) ||
-					strings.Contains(strings.ToLower(option.Value), query) {
-					filtered = append(filtered, option)
-				}
-			}
-
-			return filtered
-		}).
+		Options(options).
 		Value(strconv.Itoa(value)).
 		Focused(focus).
+		OnFilter(func(filterID, query string) []components.SelectOption {
+			return FilterOptions(options, query)
+		}).
 		OnChange(onChange).
 		Render()
 }
 
+// FilterOptions is reusable across any component
 func FilterOptions(
 	options []components.SelectOption,
 	query string,
 ) []components.SelectOption {
-
 	if query == "" {
 		return options
 	}
-
 	query = strings.ToLower(query)
-
-	out := make([]components.SelectOption, 0)
-
+	filtered := make([]components.SelectOption, 0)
 	for _, option := range options {
 		if strings.Contains(strings.ToLower(option.Label), query) ||
 			strings.Contains(strings.ToLower(option.Value), query) {
-			out = append(out, option)
+			filtered = append(filtered, option)
 		}
 	}
-
-	return out
+	return filtered
 }

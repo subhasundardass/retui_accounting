@@ -11,7 +11,7 @@ import (
 )
 
 type JournalListComponent struct {
-	controller *journal.JournalController
+	controller *journal.Controller
 	ctx        *appctx.AppContext
 	// form       *FormComponent
 }

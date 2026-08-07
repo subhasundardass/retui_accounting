@@ -1,6 +1,8 @@
 package ledger
 
 import (
+	"fmt"
+
 	"github.com/subhasundardass/retui/ent"
 	appctx "github.com/subhasundardass/retui/internal/context"
 )
@@ -44,3 +46,38 @@ func (c *LedgerController) Groups() ([]*ent.Ledger_Group, error) {
 
 	return ledgers, err
 }
+
+func (c *LedgerController) GetGroup(id int) (*LedgerGroupState, error) {
+	group, err := c.repo.GetGroup(c.ctx.Ctx(), id)
+	if err != nil {
+		return nil, fmt.Errorf("failed to load group %d: %w", id, err)
+	}
+
+	return &LedgerGroupState{
+		Code:        group.Code,
+		Name:        group.Name,
+		Nature:      string(group.Nature),
+		Description: group.Description,
+	}, nil
+}
+
+// -Create or Update
+func (c *LedgerController) CreateOrUpdate(id int, in LedgerGroupState) (*ent.Ledger_Group, error) {
+
+	if in.Mode == ModeUpdate {
+		return c.repo.GroupUpdate(c.ctx.Ctx(), id, in)
+	}
+	return c.repo.GroupCreate(c.ctx.Ctx(), in)
+}
+
+// func (c *LedgerController) EditGroup(id int) {
+// 	group, err := c.repo.GetGroup(c.ctx.Ctx(), id)
+// 	if err != nil {
+// 		return nil, fmt.Errorf("failed to load Group %d: %w", id, err)
+// 	}
+// 	// return comp, nil
+
+// 	state:= LedgerGroupState{
+// 		Code: ,
+// 	}
+// }

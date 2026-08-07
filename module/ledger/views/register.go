@@ -7,9 +7,10 @@ import (
 
 func Register(ctx *context.AppContext) {
 
-	// formComp := NewLedgerFormComponent(ctx)
+	formGroupComp := NewGroupFormComponent(ctx)
+
 	listLedgerComp := NewLedgerComponent(ctx)
-	listLedgerGroupComp := NewLedgerGroupComponent(ctx)
+	listLedgerGroupComp := NewLedgerGroupComponent(ctx, formGroupComp)
 
 	ui.Register("ledger_list", ui.Screen{
 		ID:     "ledger_list",
@@ -21,9 +22,5 @@ func Register(ctx *context.AppContext) {
 		Title:  "Groups",
 		Render: listLedgerGroupComp.List,
 	})
-	// ui.Register("company_form", ui.Screen{
-	// 	ID:     "company_form",
-	// 	Title:  "Company Form",
-	// 	Render: formComp.Form,
-	// })
+
 }

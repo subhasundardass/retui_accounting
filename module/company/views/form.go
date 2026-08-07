@@ -184,7 +184,7 @@ func (c *FormComponent) buildWindow(ctx *appctx.AppContext) retui.Element {
 	form := retui.UseForm(company.FormState{})
 	v := form.Values()
 
-	retui.SetHidden("code", true)
+	// retui.SetHidden("code", true)
 
 	isFocused := func(index int) bool {
 		return c.state.FocusIndex == index
@@ -353,6 +353,7 @@ func (c *FormComponent) buildWindow(ctx *appctx.AppContext) retui.Element {
 			),
 			widgets.CountryComponent(
 				ctx,
+				"country",
 				int(c.state.Country),
 				30,
 				isFocused(6),
@@ -377,8 +378,9 @@ func (c *FormComponent) buildWindow(ctx *appctx.AppContext) retui.Element {
 				retui.Text("State", retui.NewStyle()),
 			),
 			widgets.StateComponent(
-				c.state.Country,
 				ctx,
+				"state",
+				c.state.Country,
 				c.state.State,
 				30,
 				isFocused(7),
@@ -606,22 +608,8 @@ func (c *FormComponent) buildWindow(ctx *appctx.AppContext) retui.Element {
 						Render(),
 
 					components.Button().
-						ID("cancel").
-						Label("Cancel").
-						Focused(isFocused(16)).
-						Style(retui.NewStyle().Background(retui.Gray(2)).Foreground(retui.BrightWhite)).
-						OnKeyPress(func(id string, key retui.Key) bool {
-							if key.Code == retui.KeyEnter {
-								c.win.Close()
-								return true
-							}
-							return false
-						}).
-						Render(),
-
-					components.Button().
 						ID("reset").
-						Focused(isFocused(17)).
+						Focused(isFocused(16)).
 						Style(retui.NewStyle().Background(retui.Gray(2)).Foreground(retui.BrightWhite)).
 						OnKeyPress(func(id string, key retui.Key) bool {
 							if key.Code == retui.KeyEnter {
