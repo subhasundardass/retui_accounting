@@ -4,3 +4,6 @@ posts
 .idea
 data/retui.db-shm
 data/retui.db-wal
+data/retui.db
+go.sum
+app-debug
