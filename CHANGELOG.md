@@ -6,6 +6,20 @@ The format is based on **Keep a Changelog**, and this project follows **Semantic
 
 ---
 
+## [v0.8.1] - 2026-08-10
+
+### Added
+
+- Added Preffix, Suffix to Select Option
+- Added overflow, scrollX, scrollY, wrap
+
+### Updates
+
+- Update cached screenWidth/screenHeight
+- Bug Fixed in Window Center
+
+- ***
+
 ## [v0.8.0] - 2026-08-07
 
 ### Added
