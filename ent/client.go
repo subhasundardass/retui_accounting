@@ -21,7 +21,6 @@ import (
 	"github.com/subhasundardass/retui/ent/journal_line"
 	"github.com/subhasundardass/retui/ent/ledger"
 	"github.com/subhasundardass/retui/ent/ledger_group"
-	"github.com/subhasundardass/retui/ent/partymaster"
 	"github.com/subhasundardass/retui/ent/settings"
 	"github.com/subhasundardass/retui/ent/state"
 )
@@ -43,8 +42,6 @@ type Client struct {
 	Ledger *LedgerClient
 	// Ledger_Group is the client for interacting with the Ledger_Group builders.
 	Ledger_Group *LedgerGroupClient
-	// PartyMaster is the client for interacting with the PartyMaster builders.
-	PartyMaster *PartyMasterClient
 	// Settings is the client for interacting with the Settings builders.
 	Settings *SettingsClient
 	// State is the client for interacting with the State builders.
@@ -66,7 +63,6 @@ func (c *Client) init() {
 	c.Journal_Line = NewJournalLineClient(c.config)
 	c.Ledger = NewLedgerClient(c.config)
 	c.Ledger_Group = NewLedgerGroupClient(c.config)
-	c.PartyMaster = NewPartyMasterClient(c.config)
 	c.Settings = NewSettingsClient(c.config)
 	c.State = NewStateClient(c.config)
 }
@@ -167,7 +163,6 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		Journal_Line: NewJournalLineClient(cfg),
 		Ledger:       NewLedgerClient(cfg),
 		Ledger_Group: NewLedgerGroupClient(cfg),
-		PartyMaster:  NewPartyMasterClient(cfg),
 		Settings:     NewSettingsClient(cfg),
 		State:        NewStateClient(cfg),
 	}, nil
@@ -195,7 +190,6 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		Journal_Line: NewJournalLineClient(cfg),
 		Ledger:       NewLedgerClient(cfg),
 		Ledger_Group: NewLedgerGroupClient(cfg),
-		PartyMaster:  NewPartyMasterClient(cfg),
 		Settings:     NewSettingsClient(cfg),
 		State:        NewStateClient(cfg),
 	}, nil
@@ -228,7 +222,7 @@ func (c *Client) Close() error {
 func (c *Client) Use(hooks ...Hook) {
 	for _, n := range []interface{ Use(...Hook) }{
 		c.Company, c.Country, c.Journal, c.Journal_Line, c.Ledger, c.Ledger_Group,
-		c.PartyMaster, c.Settings, c.State,
+		c.Settings, c.State,
 	} {
 		n.Use(hooks...)
 	}
@@ -239,7 +233,7 @@ func (c *Client) Use(hooks ...Hook) {
 func (c *Client) Intercept(interceptors ...Interceptor) {
 	for _, n := range []interface{ Intercept(...Interceptor) }{
 		c.Company, c.Country, c.Journal, c.Journal_Line, c.Ledger, c.Ledger_Group,
-		c.PartyMaster, c.Settings, c.State,
+		c.Settings, c.State,
 	} {
 		n.Intercept(interceptors...)
 	}
@@ -260,8 +254,6 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.Ledger.mutate(ctx, m)
 	case *LedgerGroupMutation:
 		return c.Ledger_Group.mutate(ctx, m)
-	case *PartyMasterMutation:
-		return c.PartyMaster.mutate(ctx, m)
 	case *SettingsMutation:
 		return c.Settings.mutate(ctx, m)
 	case *StateMutation:
@@ -1023,22 +1015,6 @@ func (c *LedgerClient) QueryGroup(_m *Ledger) *LedgerGroupQuery {
 	return query
 }
 
-// QueryParty queries the party edge of a Ledger.
-func (c *LedgerClient) QueryParty(_m *Ledger) *PartyMasterQuery {
-	query := (&PartyMasterClient{config: c.config}).Query()
-	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := _m.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(ledger.Table, ledger.FieldID, id),
-			sqlgraph.To(partymaster.Table, partymaster.FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, false, ledger.PartyTable, ledger.PartyColumn),
-		)
-		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
 // QueryJournalLines queries the journal_lines edge of a Ledger.
 func (c *LedgerClient) QueryJournalLines(_m *Ledger) *JournalLineQuery {
 	query := (&JournalLineClient{config: c.config}).Query()
@@ -1258,155 +1234,6 @@ func (c *LedgerGroupClient) mutate(ctx context.Context, m *LedgerGroupMutation) 
 		return (&LedgerGroupDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
 		return nil, fmt.Errorf("ent: unknown Ledger_Group mutation op: %q", m.Op())
-	}
-}
-
-// PartyMasterClient is a client for the PartyMaster schema.
-type PartyMasterClient struct {
-	config
-}
-
-// NewPartyMasterClient returns a client for the PartyMaster from the given config.
-func NewPartyMasterClient(c config) *PartyMasterClient {
-	return &PartyMasterClient{config: c}
-}
-
-// Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `partymaster.Hooks(f(g(h())))`.
-func (c *PartyMasterClient) Use(hooks ...Hook) {
-	c.hooks.PartyMaster = append(c.hooks.PartyMaster, hooks...)
-}
-
-// Intercept adds a list of query interceptors to the interceptors stack.
-// A call to `Intercept(f, g, h)` equals to `partymaster.Intercept(f(g(h())))`.
-func (c *PartyMasterClient) Intercept(interceptors ...Interceptor) {
-	c.inters.PartyMaster = append(c.inters.PartyMaster, interceptors...)
-}
-
-// Create returns a builder for creating a PartyMaster entity.
-func (c *PartyMasterClient) Create() *PartyMasterCreate {
-	mutation := newPartyMasterMutation(c.config, OpCreate)
-	return &PartyMasterCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// CreateBulk returns a builder for creating a bulk of PartyMaster entities.
-func (c *PartyMasterClient) CreateBulk(builders ...*PartyMasterCreate) *PartyMasterCreateBulk {
-	return &PartyMasterCreateBulk{config: c.config, builders: builders}
-}
-
-// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
-// a builder and applies setFunc on it.
-func (c *PartyMasterClient) MapCreateBulk(slice any, setFunc func(*PartyMasterCreate, int)) *PartyMasterCreateBulk {
-	rv := reflect.ValueOf(slice)
-	if rv.Kind() != reflect.Slice {
-		return &PartyMasterCreateBulk{err: fmt.Errorf("calling to PartyMasterClient.MapCreateBulk with wrong type %T, need slice", slice)}
-	}
-	builders := make([]*PartyMasterCreate, rv.Len())
-	for i := 0; i < rv.Len(); i++ {
-		builders[i] = c.Create()
-		setFunc(builders[i], i)
-	}
-	return &PartyMasterCreateBulk{config: c.config, builders: builders}
-}
-
-// Update returns an update builder for PartyMaster.
-func (c *PartyMasterClient) Update() *PartyMasterUpdate {
-	mutation := newPartyMasterMutation(c.config, OpUpdate)
-	return &PartyMasterUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOne returns an update builder for the given entity.
-func (c *PartyMasterClient) UpdateOne(_m *PartyMaster) *PartyMasterUpdateOne {
-	mutation := newPartyMasterMutation(c.config, OpUpdateOne, withPartyMaster(_m))
-	return &PartyMasterUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOneID returns an update builder for the given id.
-func (c *PartyMasterClient) UpdateOneID(id int) *PartyMasterUpdateOne {
-	mutation := newPartyMasterMutation(c.config, OpUpdateOne, withPartyMasterID(id))
-	return &PartyMasterUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// Delete returns a delete builder for PartyMaster.
-func (c *PartyMasterClient) Delete() *PartyMasterDelete {
-	mutation := newPartyMasterMutation(c.config, OpDelete)
-	return &PartyMasterDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// DeleteOne returns a builder for deleting the given entity.
-func (c *PartyMasterClient) DeleteOne(_m *PartyMaster) *PartyMasterDeleteOne {
-	return c.DeleteOneID(_m.ID)
-}
-
-// DeleteOneID returns a builder for deleting the given entity by its id.
-func (c *PartyMasterClient) DeleteOneID(id int) *PartyMasterDeleteOne {
-	builder := c.Delete().Where(partymaster.ID(id))
-	builder.mutation.id = &id
-	builder.mutation.op = OpDeleteOne
-	return &PartyMasterDeleteOne{builder}
-}
-
-// Query returns a query builder for PartyMaster.
-func (c *PartyMasterClient) Query() *PartyMasterQuery {
-	return &PartyMasterQuery{
-		config: c.config,
-		ctx:    &QueryContext{Type: TypePartyMaster},
-		inters: c.Interceptors(),
-	}
-}
-
-// Get returns a PartyMaster entity by its id.
-func (c *PartyMasterClient) Get(ctx context.Context, id int) (*PartyMaster, error) {
-	return c.Query().Where(partymaster.ID(id)).Only(ctx)
-}
-
-// GetX is like Get, but panics if an error occurs.
-func (c *PartyMasterClient) GetX(ctx context.Context, id int) *PartyMaster {
-	obj, err := c.Get(ctx, id)
-	if err != nil {
-		panic(err)
-	}
-	return obj
-}
-
-// QueryLedger queries the ledger edge of a PartyMaster.
-func (c *PartyMasterClient) QueryLedger(_m *PartyMaster) *LedgerQuery {
-	query := (&LedgerClient{config: c.config}).Query()
-	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
-		id := _m.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(partymaster.Table, partymaster.FieldID, id),
-			sqlgraph.To(ledger.Table, ledger.FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, true, partymaster.LedgerTable, partymaster.LedgerColumn),
-		)
-		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
-// Hooks returns the client hooks.
-func (c *PartyMasterClient) Hooks() []Hook {
-	return c.hooks.PartyMaster
-}
-
-// Interceptors returns the client interceptors.
-func (c *PartyMasterClient) Interceptors() []Interceptor {
-	return c.inters.PartyMaster
-}
-
-func (c *PartyMasterClient) mutate(ctx context.Context, m *PartyMasterMutation) (Value, error) {
-	switch m.Op() {
-	case OpCreate:
-		return (&PartyMasterCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
-	case OpUpdate:
-		return (&PartyMasterUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
-	case OpUpdateOne:
-		return (&PartyMasterUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
-	case OpDelete, OpDeleteOne:
-		return (&PartyMasterDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
-	default:
-		return nil, fmt.Errorf("ent: unknown PartyMaster mutation op: %q", m.Op())
 	}
 }
 
@@ -1695,11 +1522,11 @@ func (c *StateClient) mutate(ctx context.Context, m *StateMutation) (Value, erro
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		Company, Country, Journal, Journal_Line, Ledger, Ledger_Group, PartyMaster,
-		Settings, State []ent.Hook
+		Company, Country, Journal, Journal_Line, Ledger, Ledger_Group, Settings,
+		State []ent.Hook
 	}
 	inters struct {
-		Company, Country, Journal, Journal_Line, Ledger, Ledger_Group, PartyMaster,
-		Settings, State []ent.Interceptor
+		Company, Country, Journal, Journal_Line, Ledger, Ledger_Group, Settings,
+		State []ent.Interceptor
 	}
 )

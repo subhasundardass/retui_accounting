@@ -55,6 +55,11 @@ func Box(props Props, style Style, children ...Element) Element {
 
 			Align:   props.Align,
 			Justify: props.Justify,
+
+			Overflow: props.Overflow,
+			ScrollX:  props.ScrollX,
+			ScrollY:  props.ScrollY,
+			Wrap:     props.Wrap,
 		},
 		Style:    style,
 		Children: children,

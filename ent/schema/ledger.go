@@ -50,28 +50,61 @@ func (Ledger) Fields() []ent.Field {
 			Default(""),
 
 		// Accounting
-		field.Float("opening_balance").
-			Optional().
-			Default(0.00),
+		// field.Float("opening_balance").
+		// 	Optional().
+		// 	Default(0.00),
 
-		field.Time("opening_balance_date").
-			Optional(),
+		// field.Time("opening_balance_date").
+		// 	Optional(),
 
-		field.Enum("opening_balance_type").
-			Values("DR", "CR").
-			Optional().
-			Default("DR"),
+		// field.Enum("opening_balance_type").
+		// 	Values("DR", "CR").
+		// 	Optional().
+		// 	Default("DR"),
 
 		field.Float("balance").
 			Default(0.00).
 			Comment("Current balance"),
 
+		// Party classification
+		field.Enum("party_type").
+			Values("CUSTOMER", "SUPPLIER", "BOTH", "INTERNAL").
+			Default("INTERNAL"),
+
+		// Address (Tally: multi-line mailing address)
+		field.String("address_line1").Optional().Default("").MaxLen(255),
+		field.String("address_line2").Optional().Default("").MaxLen(255),
+		field.String("city").Optional().Default("").MaxLen(100),
+		field.String("state").Optional().Default("").MaxLen(12),
+		// ^ needed to auto-decide CGST+SGST vs IGST (same state vs inter-state)
+		field.String("country").Optional().Default("India").MaxLen(100),
+		field.String("pincode").Optional().Default("").MaxLen(10),
+
+		// Contact
+		field.String("phone").Optional().Default("").MaxLen(20),
+		field.String("mobile").Optional().Default("").MaxLen(20),
+		field.String("email").Optional().Default("").MaxLen(255),
+		field.String("contact_person").Optional().Default("").MaxLen(255),
+
+		// Tax registration (Tally: "Tax Registration Details")
+		field.Enum("gst_registration_type").
+			Values("REGULAR", "COMPOSITION", "UNREGISTERED", "CONSUMER", "SEZ", "OVERSEAS").
+			Default("UNREGISTERED"),
+		field.String("gstin").Optional().Default("").MaxLen(15),
+		field.String("pan").Optional().Default("").MaxLen(10),
+
+		// Bank details for payments/NEFT (optional but common ask)
+		field.String("bank_name").Optional().Default("").MaxLen(255),
+		field.String("bank_account_no").Optional().Default("").MaxLen(30),
+		field.String("bank_ifsc").Optional().Default("").MaxLen(11),
+		field.String("bank_branch").Optional().Default("").MaxLen(255),
+
 		// --- Billing / credit control (Tally: "Maintain balances bill-by-bill") ---
-		field.Enum("billing_type").
-			GoType(BillingType("")).
-			Default(string(BillingNone)),
-		field.Int("credit_period_days").Optional().Default(0),
-		field.Float("credit_limit").Optional().Default(0),
+		// field.Enum("billing_type").
+		// 	GoType(BillingType("")).
+		// 	Default(string(BillingNone)),
+		// field.Int("credit_period_days").Optional().Default(0),
+		// field.Float("credit_limit").Optional().Default(0),
 
 		// Status
 		field.Bool("is_system").
@@ -102,9 +135,9 @@ func (Ledger) Indexes() []ent.Index {
 
 		index.Fields("group_id"),
 
-		index.Fields("is_party"),
-
-		index.Fields("is_bank"),
+		index.Fields("gstin"),
+		index.Fields("state"),
+		index.Fields("party_type"),
 
 		index.Fields("group_id", "name"),
 	}
@@ -117,15 +150,6 @@ func (Ledger) Edges() []ent.Edge {
 			Field("group_id").
 			Required().
 			Unique(),
-
-		edge.To("party", PartyMaster.Type).
-			Unique(),
-
-		// edge.To("bank", BankMaster.Type).
-		// 	Unique(),
-
-		// edge.To("employee", EmployeeMaster.Type).
-		// 	Unique(),
 
 		edge.To("journal_lines", Journal_Line.Type),
 	}

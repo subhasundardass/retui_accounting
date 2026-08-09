@@ -25,7 +25,12 @@ func NewJournalListComponent(ctx *appctx.AppContext) *JournalListComponent {
 }
 
 func (c *JournalListComponent) bindKeys() {
-	if !retui.IsFocused("journal_list") {
+	key := retui.CurrentKey
+
+	if key == (retui.Key{}) || key.Consumed {
+		return
+	}
+	if retui.CapturedFocus() != "" {
 		return
 	}
 

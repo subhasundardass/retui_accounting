@@ -31,8 +31,8 @@ func (c *LedgerComponent) bindKeys() {
 	switch retui.CurrentKey.Code {
 	case retui.KeyEscape:
 		retui.PopScreen()
-	case retui.KeyF2:
-		retui.Debugf("F2 Pressed.......")
+	case retui.KeyAltC:
+		retui.Debugf("Alt+C Pressed.......")
 
 	}
 }
@@ -52,7 +52,7 @@ func (c *LedgerComponent) List(ctx *appctx.AppContext) retui.Element {
 	selected, setSelected := retui.UseState(&ent.Ledger{})
 
 	retui.UseEffect(func() func() {
-		list, err := c.controller.List(groupID)
+		list, err := c.controller.Ledgers(groupID)
 		if err != nil {
 			retui.Errorf("Error fetching data %s", err.Error())
 			return nil
@@ -140,8 +140,10 @@ func (c *LedgerComponent) buildTable(
 		OnChange(func(i int) {
 			setSelected(ledgers[i])
 			if retui.CurrentKey.Code == retui.KeyEnter {
-				win := c.formComp.LedgerCreateForm()
-				win.Show()
+				// win := c.formComp.LedgerCreateForm()
+				// win.Show()
+
+				retui.PushScreen("ledger_edit", retui.ScreenParams{"ledgerID": ledgers[i].ID})
 			}
 		}).
 		Render()

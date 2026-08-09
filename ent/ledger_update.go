@@ -14,7 +14,6 @@ import (
 	"github.com/subhasundardass/retui/ent/journal_line"
 	"github.com/subhasundardass/retui/ent/ledger"
 	"github.com/subhasundardass/retui/ent/ledger_group"
-	"github.com/subhasundardass/retui/ent/partymaster"
 	"github.com/subhasundardass/retui/ent/predicate"
 )
 
@@ -119,27 +118,6 @@ func (_u *LedgerUpdate) ClearDescription() *LedgerUpdate {
 	return _u
 }
 
-// SetOpeningBalance sets the "opening_balance" field.
-func (_u *LedgerUpdate) SetOpeningBalance(v float64) *LedgerUpdate {
-	_u.mutation.ResetOpeningBalance()
-	_u.mutation.SetOpeningBalance(v)
-	return _u
-}
-
-// SetNillableOpeningBalance sets the "opening_balance" field if the given value is not nil.
-func (_u *LedgerUpdate) SetNillableOpeningBalance(v *float64) *LedgerUpdate {
-	if v != nil {
-		_u.SetOpeningBalance(*v)
-	}
-	return _u
-}
-
-// AddOpeningBalance adds value to the "opening_balance" field.
-func (_u *LedgerUpdate) AddOpeningBalance(v float64) *LedgerUpdate {
-	_u.mutation.AddOpeningBalance(v)
-	return _u
-}
-
 // SetBalance sets the "balance" field.
 func (_u *LedgerUpdate) SetBalance(v float64) *LedgerUpdate {
 	_u.mutation.ResetBalance()
@@ -158,6 +136,354 @@ func (_u *LedgerUpdate) SetNillableBalance(v *float64) *LedgerUpdate {
 // AddBalance adds value to the "balance" field.
 func (_u *LedgerUpdate) AddBalance(v float64) *LedgerUpdate {
 	_u.mutation.AddBalance(v)
+	return _u
+}
+
+// SetPartyType sets the "party_type" field.
+func (_u *LedgerUpdate) SetPartyType(v ledger.PartyType) *LedgerUpdate {
+	_u.mutation.SetPartyType(v)
+	return _u
+}
+
+// SetNillablePartyType sets the "party_type" field if the given value is not nil.
+func (_u *LedgerUpdate) SetNillablePartyType(v *ledger.PartyType) *LedgerUpdate {
+	if v != nil {
+		_u.SetPartyType(*v)
+	}
+	return _u
+}
+
+// SetAddressLine1 sets the "address_line1" field.
+func (_u *LedgerUpdate) SetAddressLine1(v string) *LedgerUpdate {
+	_u.mutation.SetAddressLine1(v)
+	return _u
+}
+
+// SetNillableAddressLine1 sets the "address_line1" field if the given value is not nil.
+func (_u *LedgerUpdate) SetNillableAddressLine1(v *string) *LedgerUpdate {
+	if v != nil {
+		_u.SetAddressLine1(*v)
+	}
+	return _u
+}
+
+// ClearAddressLine1 clears the value of the "address_line1" field.
+func (_u *LedgerUpdate) ClearAddressLine1() *LedgerUpdate {
+	_u.mutation.ClearAddressLine1()
+	return _u
+}
+
+// SetAddressLine2 sets the "address_line2" field.
+func (_u *LedgerUpdate) SetAddressLine2(v string) *LedgerUpdate {
+	_u.mutation.SetAddressLine2(v)
+	return _u
+}
+
+// SetNillableAddressLine2 sets the "address_line2" field if the given value is not nil.
+func (_u *LedgerUpdate) SetNillableAddressLine2(v *string) *LedgerUpdate {
+	if v != nil {
+		_u.SetAddressLine2(*v)
+	}
+	return _u
+}
+
+// ClearAddressLine2 clears the value of the "address_line2" field.
+func (_u *LedgerUpdate) ClearAddressLine2() *LedgerUpdate {
+	_u.mutation.ClearAddressLine2()
+	return _u
+}
+
+// SetCity sets the "city" field.
+func (_u *LedgerUpdate) SetCity(v string) *LedgerUpdate {
+	_u.mutation.SetCity(v)
+	return _u
+}
+
+// SetNillableCity sets the "city" field if the given value is not nil.
+func (_u *LedgerUpdate) SetNillableCity(v *string) *LedgerUpdate {
+	if v != nil {
+		_u.SetCity(*v)
+	}
+	return _u
+}
+
+// ClearCity clears the value of the "city" field.
+func (_u *LedgerUpdate) ClearCity() *LedgerUpdate {
+	_u.mutation.ClearCity()
+	return _u
+}
+
+// SetState sets the "state" field.
+func (_u *LedgerUpdate) SetState(v string) *LedgerUpdate {
+	_u.mutation.SetState(v)
+	return _u
+}
+
+// SetNillableState sets the "state" field if the given value is not nil.
+func (_u *LedgerUpdate) SetNillableState(v *string) *LedgerUpdate {
+	if v != nil {
+		_u.SetState(*v)
+	}
+	return _u
+}
+
+// ClearState clears the value of the "state" field.
+func (_u *LedgerUpdate) ClearState() *LedgerUpdate {
+	_u.mutation.ClearState()
+	return _u
+}
+
+// SetCountry sets the "country" field.
+func (_u *LedgerUpdate) SetCountry(v string) *LedgerUpdate {
+	_u.mutation.SetCountry(v)
+	return _u
+}
+
+// SetNillableCountry sets the "country" field if the given value is not nil.
+func (_u *LedgerUpdate) SetNillableCountry(v *string) *LedgerUpdate {
+	if v != nil {
+		_u.SetCountry(*v)
+	}
+	return _u
+}
+
+// ClearCountry clears the value of the "country" field.
+func (_u *LedgerUpdate) ClearCountry() *LedgerUpdate {
+	_u.mutation.ClearCountry()
+	return _u
+}
+
+// SetPincode sets the "pincode" field.
+func (_u *LedgerUpdate) SetPincode(v string) *LedgerUpdate {
+	_u.mutation.SetPincode(v)
+	return _u
+}
+
+// SetNillablePincode sets the "pincode" field if the given value is not nil.
+func (_u *LedgerUpdate) SetNillablePincode(v *string) *LedgerUpdate {
+	if v != nil {
+		_u.SetPincode(*v)
+	}
+	return _u
+}
+
+// ClearPincode clears the value of the "pincode" field.
+func (_u *LedgerUpdate) ClearPincode() *LedgerUpdate {
+	_u.mutation.ClearPincode()
+	return _u
+}
+
+// SetPhone sets the "phone" field.
+func (_u *LedgerUpdate) SetPhone(v string) *LedgerUpdate {
+	_u.mutation.SetPhone(v)
+	return _u
+}
+
+// SetNillablePhone sets the "phone" field if the given value is not nil.
+func (_u *LedgerUpdate) SetNillablePhone(v *string) *LedgerUpdate {
+	if v != nil {
+		_u.SetPhone(*v)
+	}
+	return _u
+}
+
+// ClearPhone clears the value of the "phone" field.
+func (_u *LedgerUpdate) ClearPhone() *LedgerUpdate {
+	_u.mutation.ClearPhone()
+	return _u
+}
+
+// SetMobile sets the "mobile" field.
+func (_u *LedgerUpdate) SetMobile(v string) *LedgerUpdate {
+	_u.mutation.SetMobile(v)
+	return _u
+}
+
+// SetNillableMobile sets the "mobile" field if the given value is not nil.
+func (_u *LedgerUpdate) SetNillableMobile(v *string) *LedgerUpdate {
+	if v != nil {
+		_u.SetMobile(*v)
+	}
+	return _u
+}
+
+// ClearMobile clears the value of the "mobile" field.
+func (_u *LedgerUpdate) ClearMobile() *LedgerUpdate {
+	_u.mutation.ClearMobile()
+	return _u
+}
+
+// SetEmail sets the "email" field.
+func (_u *LedgerUpdate) SetEmail(v string) *LedgerUpdate {
+	_u.mutation.SetEmail(v)
+	return _u
+}
+
+// SetNillableEmail sets the "email" field if the given value is not nil.
+func (_u *LedgerUpdate) SetNillableEmail(v *string) *LedgerUpdate {
+	if v != nil {
+		_u.SetEmail(*v)
+	}
+	return _u
+}
+
+// ClearEmail clears the value of the "email" field.
+func (_u *LedgerUpdate) ClearEmail() *LedgerUpdate {
+	_u.mutation.ClearEmail()
+	return _u
+}
+
+// SetContactPerson sets the "contact_person" field.
+func (_u *LedgerUpdate) SetContactPerson(v string) *LedgerUpdate {
+	_u.mutation.SetContactPerson(v)
+	return _u
+}
+
+// SetNillableContactPerson sets the "contact_person" field if the given value is not nil.
+func (_u *LedgerUpdate) SetNillableContactPerson(v *string) *LedgerUpdate {
+	if v != nil {
+		_u.SetContactPerson(*v)
+	}
+	return _u
+}
+
+// ClearContactPerson clears the value of the "contact_person" field.
+func (_u *LedgerUpdate) ClearContactPerson() *LedgerUpdate {
+	_u.mutation.ClearContactPerson()
+	return _u
+}
+
+// SetGstRegistrationType sets the "gst_registration_type" field.
+func (_u *LedgerUpdate) SetGstRegistrationType(v ledger.GstRegistrationType) *LedgerUpdate {
+	_u.mutation.SetGstRegistrationType(v)
+	return _u
+}
+
+// SetNillableGstRegistrationType sets the "gst_registration_type" field if the given value is not nil.
+func (_u *LedgerUpdate) SetNillableGstRegistrationType(v *ledger.GstRegistrationType) *LedgerUpdate {
+	if v != nil {
+		_u.SetGstRegistrationType(*v)
+	}
+	return _u
+}
+
+// SetGstin sets the "gstin" field.
+func (_u *LedgerUpdate) SetGstin(v string) *LedgerUpdate {
+	_u.mutation.SetGstin(v)
+	return _u
+}
+
+// SetNillableGstin sets the "gstin" field if the given value is not nil.
+func (_u *LedgerUpdate) SetNillableGstin(v *string) *LedgerUpdate {
+	if v != nil {
+		_u.SetGstin(*v)
+	}
+	return _u
+}
+
+// ClearGstin clears the value of the "gstin" field.
+func (_u *LedgerUpdate) ClearGstin() *LedgerUpdate {
+	_u.mutation.ClearGstin()
+	return _u
+}
+
+// SetPan sets the "pan" field.
+func (_u *LedgerUpdate) SetPan(v string) *LedgerUpdate {
+	_u.mutation.SetPan(v)
+	return _u
+}
+
+// SetNillablePan sets the "pan" field if the given value is not nil.
+func (_u *LedgerUpdate) SetNillablePan(v *string) *LedgerUpdate {
+	if v != nil {
+		_u.SetPan(*v)
+	}
+	return _u
+}
+
+// ClearPan clears the value of the "pan" field.
+func (_u *LedgerUpdate) ClearPan() *LedgerUpdate {
+	_u.mutation.ClearPan()
+	return _u
+}
+
+// SetBankName sets the "bank_name" field.
+func (_u *LedgerUpdate) SetBankName(v string) *LedgerUpdate {
+	_u.mutation.SetBankName(v)
+	return _u
+}
+
+// SetNillableBankName sets the "bank_name" field if the given value is not nil.
+func (_u *LedgerUpdate) SetNillableBankName(v *string) *LedgerUpdate {
+	if v != nil {
+		_u.SetBankName(*v)
+	}
+	return _u
+}
+
+// ClearBankName clears the value of the "bank_name" field.
+func (_u *LedgerUpdate) ClearBankName() *LedgerUpdate {
+	_u.mutation.ClearBankName()
+	return _u
+}
+
+// SetBankAccountNo sets the "bank_account_no" field.
+func (_u *LedgerUpdate) SetBankAccountNo(v string) *LedgerUpdate {
+	_u.mutation.SetBankAccountNo(v)
+	return _u
+}
+
+// SetNillableBankAccountNo sets the "bank_account_no" field if the given value is not nil.
+func (_u *LedgerUpdate) SetNillableBankAccountNo(v *string) *LedgerUpdate {
+	if v != nil {
+		_u.SetBankAccountNo(*v)
+	}
+	return _u
+}
+
+// ClearBankAccountNo clears the value of the "bank_account_no" field.
+func (_u *LedgerUpdate) ClearBankAccountNo() *LedgerUpdate {
+	_u.mutation.ClearBankAccountNo()
+	return _u
+}
+
+// SetBankIfsc sets the "bank_ifsc" field.
+func (_u *LedgerUpdate) SetBankIfsc(v string) *LedgerUpdate {
+	_u.mutation.SetBankIfsc(v)
+	return _u
+}
+
+// SetNillableBankIfsc sets the "bank_ifsc" field if the given value is not nil.
+func (_u *LedgerUpdate) SetNillableBankIfsc(v *string) *LedgerUpdate {
+	if v != nil {
+		_u.SetBankIfsc(*v)
+	}
+	return _u
+}
+
+// ClearBankIfsc clears the value of the "bank_ifsc" field.
+func (_u *LedgerUpdate) ClearBankIfsc() *LedgerUpdate {
+	_u.mutation.ClearBankIfsc()
+	return _u
+}
+
+// SetBankBranch sets the "bank_branch" field.
+func (_u *LedgerUpdate) SetBankBranch(v string) *LedgerUpdate {
+	_u.mutation.SetBankBranch(v)
+	return _u
+}
+
+// SetNillableBankBranch sets the "bank_branch" field if the given value is not nil.
+func (_u *LedgerUpdate) SetNillableBankBranch(v *string) *LedgerUpdate {
+	if v != nil {
+		_u.SetBankBranch(*v)
+	}
+	return _u
+}
+
+// ClearBankBranch clears the value of the "bank_branch" field.
+func (_u *LedgerUpdate) ClearBankBranch() *LedgerUpdate {
+	_u.mutation.ClearBankBranch()
 	return _u
 }
 
@@ -236,25 +562,6 @@ func (_u *LedgerUpdate) SetGroup(v *Ledger_Group) *LedgerUpdate {
 	return _u.SetGroupID(v.ID)
 }
 
-// SetPartyID sets the "party" edge to the PartyMaster entity by ID.
-func (_u *LedgerUpdate) SetPartyID(id int) *LedgerUpdate {
-	_u.mutation.SetPartyID(id)
-	return _u
-}
-
-// SetNillablePartyID sets the "party" edge to the PartyMaster entity by ID if the given value is not nil.
-func (_u *LedgerUpdate) SetNillablePartyID(id *int) *LedgerUpdate {
-	if id != nil {
-		_u = _u.SetPartyID(*id)
-	}
-	return _u
-}
-
-// SetParty sets the "party" edge to the PartyMaster entity.
-func (_u *LedgerUpdate) SetParty(v *PartyMaster) *LedgerUpdate {
-	return _u.SetPartyID(v.ID)
-}
-
 // AddJournalLineIDs adds the "journal_lines" edge to the Journal_Line entity by IDs.
 func (_u *LedgerUpdate) AddJournalLineIDs(ids ...int) *LedgerUpdate {
 	_u.mutation.AddJournalLineIDs(ids...)
@@ -278,12 +585,6 @@ func (_u *LedgerUpdate) Mutation() *LedgerMutation {
 // ClearGroup clears the "group" edge to the Ledger_Group entity.
 func (_u *LedgerUpdate) ClearGroup() *LedgerUpdate {
 	_u.mutation.ClearGroup()
-	return _u
-}
-
-// ClearParty clears the "party" edge to the PartyMaster entity.
-func (_u *LedgerUpdate) ClearParty() *LedgerUpdate {
-	_u.mutation.ClearParty()
 	return _u
 }
 
@@ -361,6 +662,96 @@ func (_u *LedgerUpdate) check() error {
 			return &ValidationError{Name: "alias", err: fmt.Errorf(`ent: validator failed for field "Ledger.alias": %w`, err)}
 		}
 	}
+	if v, ok := _u.mutation.PartyType(); ok {
+		if err := ledger.PartyTypeValidator(v); err != nil {
+			return &ValidationError{Name: "party_type", err: fmt.Errorf(`ent: validator failed for field "Ledger.party_type": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.AddressLine1(); ok {
+		if err := ledger.AddressLine1Validator(v); err != nil {
+			return &ValidationError{Name: "address_line1", err: fmt.Errorf(`ent: validator failed for field "Ledger.address_line1": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.AddressLine2(); ok {
+		if err := ledger.AddressLine2Validator(v); err != nil {
+			return &ValidationError{Name: "address_line2", err: fmt.Errorf(`ent: validator failed for field "Ledger.address_line2": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.City(); ok {
+		if err := ledger.CityValidator(v); err != nil {
+			return &ValidationError{Name: "city", err: fmt.Errorf(`ent: validator failed for field "Ledger.city": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.State(); ok {
+		if err := ledger.StateValidator(v); err != nil {
+			return &ValidationError{Name: "state", err: fmt.Errorf(`ent: validator failed for field "Ledger.state": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.Country(); ok {
+		if err := ledger.CountryValidator(v); err != nil {
+			return &ValidationError{Name: "country", err: fmt.Errorf(`ent: validator failed for field "Ledger.country": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.Pincode(); ok {
+		if err := ledger.PincodeValidator(v); err != nil {
+			return &ValidationError{Name: "pincode", err: fmt.Errorf(`ent: validator failed for field "Ledger.pincode": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.Phone(); ok {
+		if err := ledger.PhoneValidator(v); err != nil {
+			return &ValidationError{Name: "phone", err: fmt.Errorf(`ent: validator failed for field "Ledger.phone": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.Mobile(); ok {
+		if err := ledger.MobileValidator(v); err != nil {
+			return &ValidationError{Name: "mobile", err: fmt.Errorf(`ent: validator failed for field "Ledger.mobile": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.Email(); ok {
+		if err := ledger.EmailValidator(v); err != nil {
+			return &ValidationError{Name: "email", err: fmt.Errorf(`ent: validator failed for field "Ledger.email": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.ContactPerson(); ok {
+		if err := ledger.ContactPersonValidator(v); err != nil {
+			return &ValidationError{Name: "contact_person", err: fmt.Errorf(`ent: validator failed for field "Ledger.contact_person": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.GstRegistrationType(); ok {
+		if err := ledger.GstRegistrationTypeValidator(v); err != nil {
+			return &ValidationError{Name: "gst_registration_type", err: fmt.Errorf(`ent: validator failed for field "Ledger.gst_registration_type": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.Gstin(); ok {
+		if err := ledger.GstinValidator(v); err != nil {
+			return &ValidationError{Name: "gstin", err: fmt.Errorf(`ent: validator failed for field "Ledger.gstin": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.Pan(); ok {
+		if err := ledger.PanValidator(v); err != nil {
+			return &ValidationError{Name: "pan", err: fmt.Errorf(`ent: validator failed for field "Ledger.pan": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.BankName(); ok {
+		if err := ledger.BankNameValidator(v); err != nil {
+			return &ValidationError{Name: "bank_name", err: fmt.Errorf(`ent: validator failed for field "Ledger.bank_name": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.BankAccountNo(); ok {
+		if err := ledger.BankAccountNoValidator(v); err != nil {
+			return &ValidationError{Name: "bank_account_no", err: fmt.Errorf(`ent: validator failed for field "Ledger.bank_account_no": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.BankIfsc(); ok {
+		if err := ledger.BankIfscValidator(v); err != nil {
+			return &ValidationError{Name: "bank_ifsc", err: fmt.Errorf(`ent: validator failed for field "Ledger.bank_ifsc": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.BankBranch(); ok {
+		if err := ledger.BankBranchValidator(v); err != nil {
+			return &ValidationError{Name: "bank_branch", err: fmt.Errorf(`ent: validator failed for field "Ledger.bank_branch": %w`, err)}
+		}
+	}
 	if _u.mutation.GroupCleared() && len(_u.mutation.GroupIDs()) > 0 {
 		return errors.New(`ent: clearing a required unique edge "Ledger.group"`)
 	}
@@ -400,17 +791,113 @@ func (_u *LedgerUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	if _u.mutation.DescriptionCleared() {
 		_spec.ClearField(ledger.FieldDescription, field.TypeString)
 	}
-	if value, ok := _u.mutation.OpeningBalance(); ok {
-		_spec.SetField(ledger.FieldOpeningBalance, field.TypeFloat64, value)
-	}
-	if value, ok := _u.mutation.AddedOpeningBalance(); ok {
-		_spec.AddField(ledger.FieldOpeningBalance, field.TypeFloat64, value)
-	}
 	if value, ok := _u.mutation.Balance(); ok {
 		_spec.SetField(ledger.FieldBalance, field.TypeFloat64, value)
 	}
 	if value, ok := _u.mutation.AddedBalance(); ok {
 		_spec.AddField(ledger.FieldBalance, field.TypeFloat64, value)
+	}
+	if value, ok := _u.mutation.PartyType(); ok {
+		_spec.SetField(ledger.FieldPartyType, field.TypeEnum, value)
+	}
+	if value, ok := _u.mutation.AddressLine1(); ok {
+		_spec.SetField(ledger.FieldAddressLine1, field.TypeString, value)
+	}
+	if _u.mutation.AddressLine1Cleared() {
+		_spec.ClearField(ledger.FieldAddressLine1, field.TypeString)
+	}
+	if value, ok := _u.mutation.AddressLine2(); ok {
+		_spec.SetField(ledger.FieldAddressLine2, field.TypeString, value)
+	}
+	if _u.mutation.AddressLine2Cleared() {
+		_spec.ClearField(ledger.FieldAddressLine2, field.TypeString)
+	}
+	if value, ok := _u.mutation.City(); ok {
+		_spec.SetField(ledger.FieldCity, field.TypeString, value)
+	}
+	if _u.mutation.CityCleared() {
+		_spec.ClearField(ledger.FieldCity, field.TypeString)
+	}
+	if value, ok := _u.mutation.State(); ok {
+		_spec.SetField(ledger.FieldState, field.TypeString, value)
+	}
+	if _u.mutation.StateCleared() {
+		_spec.ClearField(ledger.FieldState, field.TypeString)
+	}
+	if value, ok := _u.mutation.Country(); ok {
+		_spec.SetField(ledger.FieldCountry, field.TypeString, value)
+	}
+	if _u.mutation.CountryCleared() {
+		_spec.ClearField(ledger.FieldCountry, field.TypeString)
+	}
+	if value, ok := _u.mutation.Pincode(); ok {
+		_spec.SetField(ledger.FieldPincode, field.TypeString, value)
+	}
+	if _u.mutation.PincodeCleared() {
+		_spec.ClearField(ledger.FieldPincode, field.TypeString)
+	}
+	if value, ok := _u.mutation.Phone(); ok {
+		_spec.SetField(ledger.FieldPhone, field.TypeString, value)
+	}
+	if _u.mutation.PhoneCleared() {
+		_spec.ClearField(ledger.FieldPhone, field.TypeString)
+	}
+	if value, ok := _u.mutation.Mobile(); ok {
+		_spec.SetField(ledger.FieldMobile, field.TypeString, value)
+	}
+	if _u.mutation.MobileCleared() {
+		_spec.ClearField(ledger.FieldMobile, field.TypeString)
+	}
+	if value, ok := _u.mutation.Email(); ok {
+		_spec.SetField(ledger.FieldEmail, field.TypeString, value)
+	}
+	if _u.mutation.EmailCleared() {
+		_spec.ClearField(ledger.FieldEmail, field.TypeString)
+	}
+	if value, ok := _u.mutation.ContactPerson(); ok {
+		_spec.SetField(ledger.FieldContactPerson, field.TypeString, value)
+	}
+	if _u.mutation.ContactPersonCleared() {
+		_spec.ClearField(ledger.FieldContactPerson, field.TypeString)
+	}
+	if value, ok := _u.mutation.GstRegistrationType(); ok {
+		_spec.SetField(ledger.FieldGstRegistrationType, field.TypeEnum, value)
+	}
+	if value, ok := _u.mutation.Gstin(); ok {
+		_spec.SetField(ledger.FieldGstin, field.TypeString, value)
+	}
+	if _u.mutation.GstinCleared() {
+		_spec.ClearField(ledger.FieldGstin, field.TypeString)
+	}
+	if value, ok := _u.mutation.Pan(); ok {
+		_spec.SetField(ledger.FieldPan, field.TypeString, value)
+	}
+	if _u.mutation.PanCleared() {
+		_spec.ClearField(ledger.FieldPan, field.TypeString)
+	}
+	if value, ok := _u.mutation.BankName(); ok {
+		_spec.SetField(ledger.FieldBankName, field.TypeString, value)
+	}
+	if _u.mutation.BankNameCleared() {
+		_spec.ClearField(ledger.FieldBankName, field.TypeString)
+	}
+	if value, ok := _u.mutation.BankAccountNo(); ok {
+		_spec.SetField(ledger.FieldBankAccountNo, field.TypeString, value)
+	}
+	if _u.mutation.BankAccountNoCleared() {
+		_spec.ClearField(ledger.FieldBankAccountNo, field.TypeString)
+	}
+	if value, ok := _u.mutation.BankIfsc(); ok {
+		_spec.SetField(ledger.FieldBankIfsc, field.TypeString, value)
+	}
+	if _u.mutation.BankIfscCleared() {
+		_spec.ClearField(ledger.FieldBankIfsc, field.TypeString)
+	}
+	if value, ok := _u.mutation.BankBranch(); ok {
+		_spec.SetField(ledger.FieldBankBranch, field.TypeString, value)
+	}
+	if _u.mutation.BankBranchCleared() {
+		_spec.ClearField(ledger.FieldBankBranch, field.TypeString)
 	}
 	if value, ok := _u.mutation.IsSystem(); ok {
 		_spec.SetField(ledger.FieldIsSystem, field.TypeBool, value)
@@ -449,35 +936,6 @@ func (_u *LedgerUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(ledger_group.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
-	if _u.mutation.PartyCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
-			Inverse: false,
-			Table:   ledger.PartyTable,
-			Columns: []string{ledger.PartyColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(partymaster.FieldID, field.TypeInt),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := _u.mutation.PartyIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
-			Inverse: false,
-			Table:   ledger.PartyTable,
-			Columns: []string{ledger.PartyColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(partymaster.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -638,27 +1096,6 @@ func (_u *LedgerUpdateOne) ClearDescription() *LedgerUpdateOne {
 	return _u
 }
 
-// SetOpeningBalance sets the "opening_balance" field.
-func (_u *LedgerUpdateOne) SetOpeningBalance(v float64) *LedgerUpdateOne {
-	_u.mutation.ResetOpeningBalance()
-	_u.mutation.SetOpeningBalance(v)
-	return _u
-}
-
-// SetNillableOpeningBalance sets the "opening_balance" field if the given value is not nil.
-func (_u *LedgerUpdateOne) SetNillableOpeningBalance(v *float64) *LedgerUpdateOne {
-	if v != nil {
-		_u.SetOpeningBalance(*v)
-	}
-	return _u
-}
-
-// AddOpeningBalance adds value to the "opening_balance" field.
-func (_u *LedgerUpdateOne) AddOpeningBalance(v float64) *LedgerUpdateOne {
-	_u.mutation.AddOpeningBalance(v)
-	return _u
-}
-
 // SetBalance sets the "balance" field.
 func (_u *LedgerUpdateOne) SetBalance(v float64) *LedgerUpdateOne {
 	_u.mutation.ResetBalance()
@@ -677,6 +1114,354 @@ func (_u *LedgerUpdateOne) SetNillableBalance(v *float64) *LedgerUpdateOne {
 // AddBalance adds value to the "balance" field.
 func (_u *LedgerUpdateOne) AddBalance(v float64) *LedgerUpdateOne {
 	_u.mutation.AddBalance(v)
+	return _u
+}
+
+// SetPartyType sets the "party_type" field.
+func (_u *LedgerUpdateOne) SetPartyType(v ledger.PartyType) *LedgerUpdateOne {
+	_u.mutation.SetPartyType(v)
+	return _u
+}
+
+// SetNillablePartyType sets the "party_type" field if the given value is not nil.
+func (_u *LedgerUpdateOne) SetNillablePartyType(v *ledger.PartyType) *LedgerUpdateOne {
+	if v != nil {
+		_u.SetPartyType(*v)
+	}
+	return _u
+}
+
+// SetAddressLine1 sets the "address_line1" field.
+func (_u *LedgerUpdateOne) SetAddressLine1(v string) *LedgerUpdateOne {
+	_u.mutation.SetAddressLine1(v)
+	return _u
+}
+
+// SetNillableAddressLine1 sets the "address_line1" field if the given value is not nil.
+func (_u *LedgerUpdateOne) SetNillableAddressLine1(v *string) *LedgerUpdateOne {
+	if v != nil {
+		_u.SetAddressLine1(*v)
+	}
+	return _u
+}
+
+// ClearAddressLine1 clears the value of the "address_line1" field.
+func (_u *LedgerUpdateOne) ClearAddressLine1() *LedgerUpdateOne {
+	_u.mutation.ClearAddressLine1()
+	return _u
+}
+
+// SetAddressLine2 sets the "address_line2" field.
+func (_u *LedgerUpdateOne) SetAddressLine2(v string) *LedgerUpdateOne {
+	_u.mutation.SetAddressLine2(v)
+	return _u
+}
+
+// SetNillableAddressLine2 sets the "address_line2" field if the given value is not nil.
+func (_u *LedgerUpdateOne) SetNillableAddressLine2(v *string) *LedgerUpdateOne {
+	if v != nil {
+		_u.SetAddressLine2(*v)
+	}
+	return _u
+}
+
+// ClearAddressLine2 clears the value of the "address_line2" field.
+func (_u *LedgerUpdateOne) ClearAddressLine2() *LedgerUpdateOne {
+	_u.mutation.ClearAddressLine2()
+	return _u
+}
+
+// SetCity sets the "city" field.
+func (_u *LedgerUpdateOne) SetCity(v string) *LedgerUpdateOne {
+	_u.mutation.SetCity(v)
+	return _u
+}
+
+// SetNillableCity sets the "city" field if the given value is not nil.
+func (_u *LedgerUpdateOne) SetNillableCity(v *string) *LedgerUpdateOne {
+	if v != nil {
+		_u.SetCity(*v)
+	}
+	return _u
+}
+
+// ClearCity clears the value of the "city" field.
+func (_u *LedgerUpdateOne) ClearCity() *LedgerUpdateOne {
+	_u.mutation.ClearCity()
+	return _u
+}
+
+// SetState sets the "state" field.
+func (_u *LedgerUpdateOne) SetState(v string) *LedgerUpdateOne {
+	_u.mutation.SetState(v)
+	return _u
+}
+
+// SetNillableState sets the "state" field if the given value is not nil.
+func (_u *LedgerUpdateOne) SetNillableState(v *string) *LedgerUpdateOne {
+	if v != nil {
+		_u.SetState(*v)
+	}
+	return _u
+}
+
+// ClearState clears the value of the "state" field.
+func (_u *LedgerUpdateOne) ClearState() *LedgerUpdateOne {
+	_u.mutation.ClearState()
+	return _u
+}
+
+// SetCountry sets the "country" field.
+func (_u *LedgerUpdateOne) SetCountry(v string) *LedgerUpdateOne {
+	_u.mutation.SetCountry(v)
+	return _u
+}
+
+// SetNillableCountry sets the "country" field if the given value is not nil.
+func (_u *LedgerUpdateOne) SetNillableCountry(v *string) *LedgerUpdateOne {
+	if v != nil {
+		_u.SetCountry(*v)
+	}
+	return _u
+}
+
+// ClearCountry clears the value of the "country" field.
+func (_u *LedgerUpdateOne) ClearCountry() *LedgerUpdateOne {
+	_u.mutation.ClearCountry()
+	return _u
+}
+
+// SetPincode sets the "pincode" field.
+func (_u *LedgerUpdateOne) SetPincode(v string) *LedgerUpdateOne {
+	_u.mutation.SetPincode(v)
+	return _u
+}
+
+// SetNillablePincode sets the "pincode" field if the given value is not nil.
+func (_u *LedgerUpdateOne) SetNillablePincode(v *string) *LedgerUpdateOne {
+	if v != nil {
+		_u.SetPincode(*v)
+	}
+	return _u
+}
+
+// ClearPincode clears the value of the "pincode" field.
+func (_u *LedgerUpdateOne) ClearPincode() *LedgerUpdateOne {
+	_u.mutation.ClearPincode()
+	return _u
+}
+
+// SetPhone sets the "phone" field.
+func (_u *LedgerUpdateOne) SetPhone(v string) *LedgerUpdateOne {
+	_u.mutation.SetPhone(v)
+	return _u
+}
+
+// SetNillablePhone sets the "phone" field if the given value is not nil.
+func (_u *LedgerUpdateOne) SetNillablePhone(v *string) *LedgerUpdateOne {
+	if v != nil {
+		_u.SetPhone(*v)
+	}
+	return _u
+}
+
+// ClearPhone clears the value of the "phone" field.
+func (_u *LedgerUpdateOne) ClearPhone() *LedgerUpdateOne {
+	_u.mutation.ClearPhone()
+	return _u
+}
+
+// SetMobile sets the "mobile" field.
+func (_u *LedgerUpdateOne) SetMobile(v string) *LedgerUpdateOne {
+	_u.mutation.SetMobile(v)
+	return _u
+}
+
+// SetNillableMobile sets the "mobile" field if the given value is not nil.
+func (_u *LedgerUpdateOne) SetNillableMobile(v *string) *LedgerUpdateOne {
+	if v != nil {
+		_u.SetMobile(*v)
+	}
+	return _u
+}
+
+// ClearMobile clears the value of the "mobile" field.
+func (_u *LedgerUpdateOne) ClearMobile() *LedgerUpdateOne {
+	_u.mutation.ClearMobile()
+	return _u
+}
+
+// SetEmail sets the "email" field.
+func (_u *LedgerUpdateOne) SetEmail(v string) *LedgerUpdateOne {
+	_u.mutation.SetEmail(v)
+	return _u
+}
+
+// SetNillableEmail sets the "email" field if the given value is not nil.
+func (_u *LedgerUpdateOne) SetNillableEmail(v *string) *LedgerUpdateOne {
+	if v != nil {
+		_u.SetEmail(*v)
+	}
+	return _u
+}
+
+// ClearEmail clears the value of the "email" field.
+func (_u *LedgerUpdateOne) ClearEmail() *LedgerUpdateOne {
+	_u.mutation.ClearEmail()
+	return _u
+}
+
+// SetContactPerson sets the "contact_person" field.
+func (_u *LedgerUpdateOne) SetContactPerson(v string) *LedgerUpdateOne {
+	_u.mutation.SetContactPerson(v)
+	return _u
+}
+
+// SetNillableContactPerson sets the "contact_person" field if the given value is not nil.
+func (_u *LedgerUpdateOne) SetNillableContactPerson(v *string) *LedgerUpdateOne {
+	if v != nil {
+		_u.SetContactPerson(*v)
+	}
+	return _u
+}
+
+// ClearContactPerson clears the value of the "contact_person" field.
+func (_u *LedgerUpdateOne) ClearContactPerson() *LedgerUpdateOne {
+	_u.mutation.ClearContactPerson()
+	return _u
+}
+
+// SetGstRegistrationType sets the "gst_registration_type" field.
+func (_u *LedgerUpdateOne) SetGstRegistrationType(v ledger.GstRegistrationType) *LedgerUpdateOne {
+	_u.mutation.SetGstRegistrationType(v)
+	return _u
+}
+
+// SetNillableGstRegistrationType sets the "gst_registration_type" field if the given value is not nil.
+func (_u *LedgerUpdateOne) SetNillableGstRegistrationType(v *ledger.GstRegistrationType) *LedgerUpdateOne {
+	if v != nil {
+		_u.SetGstRegistrationType(*v)
+	}
+	return _u
+}
+
+// SetGstin sets the "gstin" field.
+func (_u *LedgerUpdateOne) SetGstin(v string) *LedgerUpdateOne {
+	_u.mutation.SetGstin(v)
+	return _u
+}
+
+// SetNillableGstin sets the "gstin" field if the given value is not nil.
+func (_u *LedgerUpdateOne) SetNillableGstin(v *string) *LedgerUpdateOne {
+	if v != nil {
+		_u.SetGstin(*v)
+	}
+	return _u
+}
+
+// ClearGstin clears the value of the "gstin" field.
+func (_u *LedgerUpdateOne) ClearGstin() *LedgerUpdateOne {
+	_u.mutation.ClearGstin()
+	return _u
+}
+
+// SetPan sets the "pan" field.
+func (_u *LedgerUpdateOne) SetPan(v string) *LedgerUpdateOne {
+	_u.mutation.SetPan(v)
+	return _u
+}
+
+// SetNillablePan sets the "pan" field if the given value is not nil.
+func (_u *LedgerUpdateOne) SetNillablePan(v *string) *LedgerUpdateOne {
+	if v != nil {
+		_u.SetPan(*v)
+	}
+	return _u
+}
+
+// ClearPan clears the value of the "pan" field.
+func (_u *LedgerUpdateOne) ClearPan() *LedgerUpdateOne {
+	_u.mutation.ClearPan()
+	return _u
+}
+
+// SetBankName sets the "bank_name" field.
+func (_u *LedgerUpdateOne) SetBankName(v string) *LedgerUpdateOne {
+	_u.mutation.SetBankName(v)
+	return _u
+}
+
+// SetNillableBankName sets the "bank_name" field if the given value is not nil.
+func (_u *LedgerUpdateOne) SetNillableBankName(v *string) *LedgerUpdateOne {
+	if v != nil {
+		_u.SetBankName(*v)
+	}
+	return _u
+}
+
+// ClearBankName clears the value of the "bank_name" field.
+func (_u *LedgerUpdateOne) ClearBankName() *LedgerUpdateOne {
+	_u.mutation.ClearBankName()
+	return _u
+}
+
+// SetBankAccountNo sets the "bank_account_no" field.
+func (_u *LedgerUpdateOne) SetBankAccountNo(v string) *LedgerUpdateOne {
+	_u.mutation.SetBankAccountNo(v)
+	return _u
+}
+
+// SetNillableBankAccountNo sets the "bank_account_no" field if the given value is not nil.
+func (_u *LedgerUpdateOne) SetNillableBankAccountNo(v *string) *LedgerUpdateOne {
+	if v != nil {
+		_u.SetBankAccountNo(*v)
+	}
+	return _u
+}
+
+// ClearBankAccountNo clears the value of the "bank_account_no" field.
+func (_u *LedgerUpdateOne) ClearBankAccountNo() *LedgerUpdateOne {
+	_u.mutation.ClearBankAccountNo()
+	return _u
+}
+
+// SetBankIfsc sets the "bank_ifsc" field.
+func (_u *LedgerUpdateOne) SetBankIfsc(v string) *LedgerUpdateOne {
+	_u.mutation.SetBankIfsc(v)
+	return _u
+}
+
+// SetNillableBankIfsc sets the "bank_ifsc" field if the given value is not nil.
+func (_u *LedgerUpdateOne) SetNillableBankIfsc(v *string) *LedgerUpdateOne {
+	if v != nil {
+		_u.SetBankIfsc(*v)
+	}
+	return _u
+}
+
+// ClearBankIfsc clears the value of the "bank_ifsc" field.
+func (_u *LedgerUpdateOne) ClearBankIfsc() *LedgerUpdateOne {
+	_u.mutation.ClearBankIfsc()
+	return _u
+}
+
+// SetBankBranch sets the "bank_branch" field.
+func (_u *LedgerUpdateOne) SetBankBranch(v string) *LedgerUpdateOne {
+	_u.mutation.SetBankBranch(v)
+	return _u
+}
+
+// SetNillableBankBranch sets the "bank_branch" field if the given value is not nil.
+func (_u *LedgerUpdateOne) SetNillableBankBranch(v *string) *LedgerUpdateOne {
+	if v != nil {
+		_u.SetBankBranch(*v)
+	}
+	return _u
+}
+
+// ClearBankBranch clears the value of the "bank_branch" field.
+func (_u *LedgerUpdateOne) ClearBankBranch() *LedgerUpdateOne {
+	_u.mutation.ClearBankBranch()
 	return _u
 }
 
@@ -755,25 +1540,6 @@ func (_u *LedgerUpdateOne) SetGroup(v *Ledger_Group) *LedgerUpdateOne {
 	return _u.SetGroupID(v.ID)
 }
 
-// SetPartyID sets the "party" edge to the PartyMaster entity by ID.
-func (_u *LedgerUpdateOne) SetPartyID(id int) *LedgerUpdateOne {
-	_u.mutation.SetPartyID(id)
-	return _u
-}
-
-// SetNillablePartyID sets the "party" edge to the PartyMaster entity by ID if the given value is not nil.
-func (_u *LedgerUpdateOne) SetNillablePartyID(id *int) *LedgerUpdateOne {
-	if id != nil {
-		_u = _u.SetPartyID(*id)
-	}
-	return _u
-}
-
-// SetParty sets the "party" edge to the PartyMaster entity.
-func (_u *LedgerUpdateOne) SetParty(v *PartyMaster) *LedgerUpdateOne {
-	return _u.SetPartyID(v.ID)
-}
-
 // AddJournalLineIDs adds the "journal_lines" edge to the Journal_Line entity by IDs.
 func (_u *LedgerUpdateOne) AddJournalLineIDs(ids ...int) *LedgerUpdateOne {
 	_u.mutation.AddJournalLineIDs(ids...)
@@ -797,12 +1563,6 @@ func (_u *LedgerUpdateOne) Mutation() *LedgerMutation {
 // ClearGroup clears the "group" edge to the Ledger_Group entity.
 func (_u *LedgerUpdateOne) ClearGroup() *LedgerUpdateOne {
 	_u.mutation.ClearGroup()
-	return _u
-}
-
-// ClearParty clears the "party" edge to the PartyMaster entity.
-func (_u *LedgerUpdateOne) ClearParty() *LedgerUpdateOne {
-	_u.mutation.ClearParty()
 	return _u
 }
 
@@ -893,6 +1653,96 @@ func (_u *LedgerUpdateOne) check() error {
 			return &ValidationError{Name: "alias", err: fmt.Errorf(`ent: validator failed for field "Ledger.alias": %w`, err)}
 		}
 	}
+	if v, ok := _u.mutation.PartyType(); ok {
+		if err := ledger.PartyTypeValidator(v); err != nil {
+			return &ValidationError{Name: "party_type", err: fmt.Errorf(`ent: validator failed for field "Ledger.party_type": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.AddressLine1(); ok {
+		if err := ledger.AddressLine1Validator(v); err != nil {
+			return &ValidationError{Name: "address_line1", err: fmt.Errorf(`ent: validator failed for field "Ledger.address_line1": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.AddressLine2(); ok {
+		if err := ledger.AddressLine2Validator(v); err != nil {
+			return &ValidationError{Name: "address_line2", err: fmt.Errorf(`ent: validator failed for field "Ledger.address_line2": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.City(); ok {
+		if err := ledger.CityValidator(v); err != nil {
+			return &ValidationError{Name: "city", err: fmt.Errorf(`ent: validator failed for field "Ledger.city": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.State(); ok {
+		if err := ledger.StateValidator(v); err != nil {
+			return &ValidationError{Name: "state", err: fmt.Errorf(`ent: validator failed for field "Ledger.state": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.Country(); ok {
+		if err := ledger.CountryValidator(v); err != nil {
+			return &ValidationError{Name: "country", err: fmt.Errorf(`ent: validator failed for field "Ledger.country": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.Pincode(); ok {
+		if err := ledger.PincodeValidator(v); err != nil {
+			return &ValidationError{Name: "pincode", err: fmt.Errorf(`ent: validator failed for field "Ledger.pincode": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.Phone(); ok {
+		if err := ledger.PhoneValidator(v); err != nil {
+			return &ValidationError{Name: "phone", err: fmt.Errorf(`ent: validator failed for field "Ledger.phone": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.Mobile(); ok {
+		if err := ledger.MobileValidator(v); err != nil {
+			return &ValidationError{Name: "mobile", err: fmt.Errorf(`ent: validator failed for field "Ledger.mobile": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.Email(); ok {
+		if err := ledger.EmailValidator(v); err != nil {
+			return &ValidationError{Name: "email", err: fmt.Errorf(`ent: validator failed for field "Ledger.email": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.ContactPerson(); ok {
+		if err := ledger.ContactPersonValidator(v); err != nil {
+			return &ValidationError{Name: "contact_person", err: fmt.Errorf(`ent: validator failed for field "Ledger.contact_person": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.GstRegistrationType(); ok {
+		if err := ledger.GstRegistrationTypeValidator(v); err != nil {
+			return &ValidationError{Name: "gst_registration_type", err: fmt.Errorf(`ent: validator failed for field "Ledger.gst_registration_type": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.Gstin(); ok {
+		if err := ledger.GstinValidator(v); err != nil {
+			return &ValidationError{Name: "gstin", err: fmt.Errorf(`ent: validator failed for field "Ledger.gstin": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.Pan(); ok {
+		if err := ledger.PanValidator(v); err != nil {
+			return &ValidationError{Name: "pan", err: fmt.Errorf(`ent: validator failed for field "Ledger.pan": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.BankName(); ok {
+		if err := ledger.BankNameValidator(v); err != nil {
+			return &ValidationError{Name: "bank_name", err: fmt.Errorf(`ent: validator failed for field "Ledger.bank_name": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.BankAccountNo(); ok {
+		if err := ledger.BankAccountNoValidator(v); err != nil {
+			return &ValidationError{Name: "bank_account_no", err: fmt.Errorf(`ent: validator failed for field "Ledger.bank_account_no": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.BankIfsc(); ok {
+		if err := ledger.BankIfscValidator(v); err != nil {
+			return &ValidationError{Name: "bank_ifsc", err: fmt.Errorf(`ent: validator failed for field "Ledger.bank_ifsc": %w`, err)}
+		}
+	}
+	if v, ok := _u.mutation.BankBranch(); ok {
+		if err := ledger.BankBranchValidator(v); err != nil {
+			return &ValidationError{Name: "bank_branch", err: fmt.Errorf(`ent: validator failed for field "Ledger.bank_branch": %w`, err)}
+		}
+	}
 	if _u.mutation.GroupCleared() && len(_u.mutation.GroupIDs()) > 0 {
 		return errors.New(`ent: clearing a required unique edge "Ledger.group"`)
 	}
@@ -949,17 +1799,113 @@ func (_u *LedgerUpdateOne) sqlSave(ctx context.Context) (_node *Ledger, err erro
 	if _u.mutation.DescriptionCleared() {
 		_spec.ClearField(ledger.FieldDescription, field.TypeString)
 	}
-	if value, ok := _u.mutation.OpeningBalance(); ok {
-		_spec.SetField(ledger.FieldOpeningBalance, field.TypeFloat64, value)
-	}
-	if value, ok := _u.mutation.AddedOpeningBalance(); ok {
-		_spec.AddField(ledger.FieldOpeningBalance, field.TypeFloat64, value)
-	}
 	if value, ok := _u.mutation.Balance(); ok {
 		_spec.SetField(ledger.FieldBalance, field.TypeFloat64, value)
 	}
 	if value, ok := _u.mutation.AddedBalance(); ok {
 		_spec.AddField(ledger.FieldBalance, field.TypeFloat64, value)
+	}
+	if value, ok := _u.mutation.PartyType(); ok {
+		_spec.SetField(ledger.FieldPartyType, field.TypeEnum, value)
+	}
+	if value, ok := _u.mutation.AddressLine1(); ok {
+		_spec.SetField(ledger.FieldAddressLine1, field.TypeString, value)
+	}
+	if _u.mutation.AddressLine1Cleared() {
+		_spec.ClearField(ledger.FieldAddressLine1, field.TypeString)
+	}
+	if value, ok := _u.mutation.AddressLine2(); ok {
+		_spec.SetField(ledger.FieldAddressLine2, field.TypeString, value)
+	}
+	if _u.mutation.AddressLine2Cleared() {
+		_spec.ClearField(ledger.FieldAddressLine2, field.TypeString)
+	}
+	if value, ok := _u.mutation.City(); ok {
+		_spec.SetField(ledger.FieldCity, field.TypeString, value)
+	}
+	if _u.mutation.CityCleared() {
+		_spec.ClearField(ledger.FieldCity, field.TypeString)
+	}
+	if value, ok := _u.mutation.State(); ok {
+		_spec.SetField(ledger.FieldState, field.TypeString, value)
+	}
+	if _u.mutation.StateCleared() {
+		_spec.ClearField(ledger.FieldState, field.TypeString)
+	}
+	if value, ok := _u.mutation.Country(); ok {
+		_spec.SetField(ledger.FieldCountry, field.TypeString, value)
+	}
+	if _u.mutation.CountryCleared() {
+		_spec.ClearField(ledger.FieldCountry, field.TypeString)
+	}
+	if value, ok := _u.mutation.Pincode(); ok {
+		_spec.SetField(ledger.FieldPincode, field.TypeString, value)
+	}
+	if _u.mutation.PincodeCleared() {
+		_spec.ClearField(ledger.FieldPincode, field.TypeString)
+	}
+	if value, ok := _u.mutation.Phone(); ok {
+		_spec.SetField(ledger.FieldPhone, field.TypeString, value)
+	}
+	if _u.mutation.PhoneCleared() {
+		_spec.ClearField(ledger.FieldPhone, field.TypeString)
+	}
+	if value, ok := _u.mutation.Mobile(); ok {
+		_spec.SetField(ledger.FieldMobile, field.TypeString, value)
+	}
+	if _u.mutation.MobileCleared() {
+		_spec.ClearField(ledger.FieldMobile, field.TypeString)
+	}
+	if value, ok := _u.mutation.Email(); ok {
+		_spec.SetField(ledger.FieldEmail, field.TypeString, value)
+	}
+	if _u.mutation.EmailCleared() {
+		_spec.ClearField(ledger.FieldEmail, field.TypeString)
+	}
+	if value, ok := _u.mutation.ContactPerson(); ok {
+		_spec.SetField(ledger.FieldContactPerson, field.TypeString, value)
+	}
+	if _u.mutation.ContactPersonCleared() {
+		_spec.ClearField(ledger.FieldContactPerson, field.TypeString)
+	}
+	if value, ok := _u.mutation.GstRegistrationType(); ok {
+		_spec.SetField(ledger.FieldGstRegistrationType, field.TypeEnum, value)
+	}
+	if value, ok := _u.mutation.Gstin(); ok {
+		_spec.SetField(ledger.FieldGstin, field.TypeString, value)
+	}
+	if _u.mutation.GstinCleared() {
+		_spec.ClearField(ledger.FieldGstin, field.TypeString)
+	}
+	if value, ok := _u.mutation.Pan(); ok {
+		_spec.SetField(ledger.FieldPan, field.TypeString, value)
+	}
+	if _u.mutation.PanCleared() {
+		_spec.ClearField(ledger.FieldPan, field.TypeString)
+	}
+	if value, ok := _u.mutation.BankName(); ok {
+		_spec.SetField(ledger.FieldBankName, field.TypeString, value)
+	}
+	if _u.mutation.BankNameCleared() {
+		_spec.ClearField(ledger.FieldBankName, field.TypeString)
+	}
+	if value, ok := _u.mutation.BankAccountNo(); ok {
+		_spec.SetField(ledger.FieldBankAccountNo, field.TypeString, value)
+	}
+	if _u.mutation.BankAccountNoCleared() {
+		_spec.ClearField(ledger.FieldBankAccountNo, field.TypeString)
+	}
+	if value, ok := _u.mutation.BankIfsc(); ok {
+		_spec.SetField(ledger.FieldBankIfsc, field.TypeString, value)
+	}
+	if _u.mutation.BankIfscCleared() {
+		_spec.ClearField(ledger.FieldBankIfsc, field.TypeString)
+	}
+	if value, ok := _u.mutation.BankBranch(); ok {
+		_spec.SetField(ledger.FieldBankBranch, field.TypeString, value)
+	}
+	if _u.mutation.BankBranchCleared() {
+		_spec.ClearField(ledger.FieldBankBranch, field.TypeString)
 	}
 	if value, ok := _u.mutation.IsSystem(); ok {
 		_spec.SetField(ledger.FieldIsSystem, field.TypeBool, value)
@@ -998,35 +1944,6 @@ func (_u *LedgerUpdateOne) sqlSave(ctx context.Context) (_node *Ledger, err erro
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(ledger_group.FieldID, field.TypeInt),
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
-	if _u.mutation.PartyCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
-			Inverse: false,
-			Table:   ledger.PartyTable,
-			Columns: []string{ledger.PartyColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(partymaster.FieldID, field.TypeInt),
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := _u.mutation.PartyIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
-			Inverse: false,
-			Table:   ledger.PartyTable,
-			Columns: []string{ledger.PartyColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(partymaster.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

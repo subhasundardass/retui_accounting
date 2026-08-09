@@ -90,14 +90,89 @@ func Description(v string) predicate.Ledger {
 	return predicate.Ledger(sql.FieldEQ(FieldDescription, v))
 }
 
-// OpeningBalance applies equality check predicate on the "opening_balance" field. It's identical to OpeningBalanceEQ.
-func OpeningBalance(v float64) predicate.Ledger {
-	return predicate.Ledger(sql.FieldEQ(FieldOpeningBalance, v))
-}
-
 // Balance applies equality check predicate on the "balance" field. It's identical to BalanceEQ.
 func Balance(v float64) predicate.Ledger {
 	return predicate.Ledger(sql.FieldEQ(FieldBalance, v))
+}
+
+// AddressLine1 applies equality check predicate on the "address_line1" field. It's identical to AddressLine1EQ.
+func AddressLine1(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldAddressLine1, v))
+}
+
+// AddressLine2 applies equality check predicate on the "address_line2" field. It's identical to AddressLine2EQ.
+func AddressLine2(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldAddressLine2, v))
+}
+
+// City applies equality check predicate on the "city" field. It's identical to CityEQ.
+func City(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldCity, v))
+}
+
+// State applies equality check predicate on the "state" field. It's identical to StateEQ.
+func State(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldState, v))
+}
+
+// Country applies equality check predicate on the "country" field. It's identical to CountryEQ.
+func Country(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldCountry, v))
+}
+
+// Pincode applies equality check predicate on the "pincode" field. It's identical to PincodeEQ.
+func Pincode(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldPincode, v))
+}
+
+// Phone applies equality check predicate on the "phone" field. It's identical to PhoneEQ.
+func Phone(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldPhone, v))
+}
+
+// Mobile applies equality check predicate on the "mobile" field. It's identical to MobileEQ.
+func Mobile(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldMobile, v))
+}
+
+// Email applies equality check predicate on the "email" field. It's identical to EmailEQ.
+func Email(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldEmail, v))
+}
+
+// ContactPerson applies equality check predicate on the "contact_person" field. It's identical to ContactPersonEQ.
+func ContactPerson(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldContactPerson, v))
+}
+
+// Gstin applies equality check predicate on the "gstin" field. It's identical to GstinEQ.
+func Gstin(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldGstin, v))
+}
+
+// Pan applies equality check predicate on the "pan" field. It's identical to PanEQ.
+func Pan(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldPan, v))
+}
+
+// BankName applies equality check predicate on the "bank_name" field. It's identical to BankNameEQ.
+func BankName(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldBankName, v))
+}
+
+// BankAccountNo applies equality check predicate on the "bank_account_no" field. It's identical to BankAccountNoEQ.
+func BankAccountNo(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldBankAccountNo, v))
+}
+
+// BankIfsc applies equality check predicate on the "bank_ifsc" field. It's identical to BankIfscEQ.
+func BankIfsc(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldBankIfsc, v))
+}
+
+// BankBranch applies equality check predicate on the "bank_branch" field. It's identical to BankBranchEQ.
+func BankBranch(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldBankBranch, v))
 }
 
 // IsSystem applies equality check predicate on the "is_system" field. It's identical to IsSystemEQ.
@@ -505,46 +580,6 @@ func DescriptionContainsFold(v string) predicate.Ledger {
 	return predicate.Ledger(sql.FieldContainsFold(FieldDescription, v))
 }
 
-// OpeningBalanceEQ applies the EQ predicate on the "opening_balance" field.
-func OpeningBalanceEQ(v float64) predicate.Ledger {
-	return predicate.Ledger(sql.FieldEQ(FieldOpeningBalance, v))
-}
-
-// OpeningBalanceNEQ applies the NEQ predicate on the "opening_balance" field.
-func OpeningBalanceNEQ(v float64) predicate.Ledger {
-	return predicate.Ledger(sql.FieldNEQ(FieldOpeningBalance, v))
-}
-
-// OpeningBalanceIn applies the In predicate on the "opening_balance" field.
-func OpeningBalanceIn(vs ...float64) predicate.Ledger {
-	return predicate.Ledger(sql.FieldIn(FieldOpeningBalance, vs...))
-}
-
-// OpeningBalanceNotIn applies the NotIn predicate on the "opening_balance" field.
-func OpeningBalanceNotIn(vs ...float64) predicate.Ledger {
-	return predicate.Ledger(sql.FieldNotIn(FieldOpeningBalance, vs...))
-}
-
-// OpeningBalanceGT applies the GT predicate on the "opening_balance" field.
-func OpeningBalanceGT(v float64) predicate.Ledger {
-	return predicate.Ledger(sql.FieldGT(FieldOpeningBalance, v))
-}
-
-// OpeningBalanceGTE applies the GTE predicate on the "opening_balance" field.
-func OpeningBalanceGTE(v float64) predicate.Ledger {
-	return predicate.Ledger(sql.FieldGTE(FieldOpeningBalance, v))
-}
-
-// OpeningBalanceLT applies the LT predicate on the "opening_balance" field.
-func OpeningBalanceLT(v float64) predicate.Ledger {
-	return predicate.Ledger(sql.FieldLT(FieldOpeningBalance, v))
-}
-
-// OpeningBalanceLTE applies the LTE predicate on the "opening_balance" field.
-func OpeningBalanceLTE(v float64) predicate.Ledger {
-	return predicate.Ledger(sql.FieldLTE(FieldOpeningBalance, v))
-}
-
 // BalanceEQ applies the EQ predicate on the "balance" field.
 func BalanceEQ(v float64) predicate.Ledger {
 	return predicate.Ledger(sql.FieldEQ(FieldBalance, v))
@@ -583,6 +618,1246 @@ func BalanceLT(v float64) predicate.Ledger {
 // BalanceLTE applies the LTE predicate on the "balance" field.
 func BalanceLTE(v float64) predicate.Ledger {
 	return predicate.Ledger(sql.FieldLTE(FieldBalance, v))
+}
+
+// PartyTypeEQ applies the EQ predicate on the "party_type" field.
+func PartyTypeEQ(v PartyType) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldPartyType, v))
+}
+
+// PartyTypeNEQ applies the NEQ predicate on the "party_type" field.
+func PartyTypeNEQ(v PartyType) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNEQ(FieldPartyType, v))
+}
+
+// PartyTypeIn applies the In predicate on the "party_type" field.
+func PartyTypeIn(vs ...PartyType) predicate.Ledger {
+	return predicate.Ledger(sql.FieldIn(FieldPartyType, vs...))
+}
+
+// PartyTypeNotIn applies the NotIn predicate on the "party_type" field.
+func PartyTypeNotIn(vs ...PartyType) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotIn(FieldPartyType, vs...))
+}
+
+// AddressLine1EQ applies the EQ predicate on the "address_line1" field.
+func AddressLine1EQ(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldAddressLine1, v))
+}
+
+// AddressLine1NEQ applies the NEQ predicate on the "address_line1" field.
+func AddressLine1NEQ(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNEQ(FieldAddressLine1, v))
+}
+
+// AddressLine1In applies the In predicate on the "address_line1" field.
+func AddressLine1In(vs ...string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldIn(FieldAddressLine1, vs...))
+}
+
+// AddressLine1NotIn applies the NotIn predicate on the "address_line1" field.
+func AddressLine1NotIn(vs ...string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotIn(FieldAddressLine1, vs...))
+}
+
+// AddressLine1GT applies the GT predicate on the "address_line1" field.
+func AddressLine1GT(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldGT(FieldAddressLine1, v))
+}
+
+// AddressLine1GTE applies the GTE predicate on the "address_line1" field.
+func AddressLine1GTE(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldGTE(FieldAddressLine1, v))
+}
+
+// AddressLine1LT applies the LT predicate on the "address_line1" field.
+func AddressLine1LT(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldLT(FieldAddressLine1, v))
+}
+
+// AddressLine1LTE applies the LTE predicate on the "address_line1" field.
+func AddressLine1LTE(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldLTE(FieldAddressLine1, v))
+}
+
+// AddressLine1Contains applies the Contains predicate on the "address_line1" field.
+func AddressLine1Contains(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldContains(FieldAddressLine1, v))
+}
+
+// AddressLine1HasPrefix applies the HasPrefix predicate on the "address_line1" field.
+func AddressLine1HasPrefix(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldHasPrefix(FieldAddressLine1, v))
+}
+
+// AddressLine1HasSuffix applies the HasSuffix predicate on the "address_line1" field.
+func AddressLine1HasSuffix(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldHasSuffix(FieldAddressLine1, v))
+}
+
+// AddressLine1IsNil applies the IsNil predicate on the "address_line1" field.
+func AddressLine1IsNil() predicate.Ledger {
+	return predicate.Ledger(sql.FieldIsNull(FieldAddressLine1))
+}
+
+// AddressLine1NotNil applies the NotNil predicate on the "address_line1" field.
+func AddressLine1NotNil() predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotNull(FieldAddressLine1))
+}
+
+// AddressLine1EqualFold applies the EqualFold predicate on the "address_line1" field.
+func AddressLine1EqualFold(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEqualFold(FieldAddressLine1, v))
+}
+
+// AddressLine1ContainsFold applies the ContainsFold predicate on the "address_line1" field.
+func AddressLine1ContainsFold(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldContainsFold(FieldAddressLine1, v))
+}
+
+// AddressLine2EQ applies the EQ predicate on the "address_line2" field.
+func AddressLine2EQ(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldAddressLine2, v))
+}
+
+// AddressLine2NEQ applies the NEQ predicate on the "address_line2" field.
+func AddressLine2NEQ(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNEQ(FieldAddressLine2, v))
+}
+
+// AddressLine2In applies the In predicate on the "address_line2" field.
+func AddressLine2In(vs ...string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldIn(FieldAddressLine2, vs...))
+}
+
+// AddressLine2NotIn applies the NotIn predicate on the "address_line2" field.
+func AddressLine2NotIn(vs ...string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotIn(FieldAddressLine2, vs...))
+}
+
+// AddressLine2GT applies the GT predicate on the "address_line2" field.
+func AddressLine2GT(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldGT(FieldAddressLine2, v))
+}
+
+// AddressLine2GTE applies the GTE predicate on the "address_line2" field.
+func AddressLine2GTE(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldGTE(FieldAddressLine2, v))
+}
+
+// AddressLine2LT applies the LT predicate on the "address_line2" field.
+func AddressLine2LT(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldLT(FieldAddressLine2, v))
+}
+
+// AddressLine2LTE applies the LTE predicate on the "address_line2" field.
+func AddressLine2LTE(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldLTE(FieldAddressLine2, v))
+}
+
+// AddressLine2Contains applies the Contains predicate on the "address_line2" field.
+func AddressLine2Contains(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldContains(FieldAddressLine2, v))
+}
+
+// AddressLine2HasPrefix applies the HasPrefix predicate on the "address_line2" field.
+func AddressLine2HasPrefix(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldHasPrefix(FieldAddressLine2, v))
+}
+
+// AddressLine2HasSuffix applies the HasSuffix predicate on the "address_line2" field.
+func AddressLine2HasSuffix(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldHasSuffix(FieldAddressLine2, v))
+}
+
+// AddressLine2IsNil applies the IsNil predicate on the "address_line2" field.
+func AddressLine2IsNil() predicate.Ledger {
+	return predicate.Ledger(sql.FieldIsNull(FieldAddressLine2))
+}
+
+// AddressLine2NotNil applies the NotNil predicate on the "address_line2" field.
+func AddressLine2NotNil() predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotNull(FieldAddressLine2))
+}
+
+// AddressLine2EqualFold applies the EqualFold predicate on the "address_line2" field.
+func AddressLine2EqualFold(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEqualFold(FieldAddressLine2, v))
+}
+
+// AddressLine2ContainsFold applies the ContainsFold predicate on the "address_line2" field.
+func AddressLine2ContainsFold(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldContainsFold(FieldAddressLine2, v))
+}
+
+// CityEQ applies the EQ predicate on the "city" field.
+func CityEQ(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldCity, v))
+}
+
+// CityNEQ applies the NEQ predicate on the "city" field.
+func CityNEQ(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNEQ(FieldCity, v))
+}
+
+// CityIn applies the In predicate on the "city" field.
+func CityIn(vs ...string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldIn(FieldCity, vs...))
+}
+
+// CityNotIn applies the NotIn predicate on the "city" field.
+func CityNotIn(vs ...string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotIn(FieldCity, vs...))
+}
+
+// CityGT applies the GT predicate on the "city" field.
+func CityGT(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldGT(FieldCity, v))
+}
+
+// CityGTE applies the GTE predicate on the "city" field.
+func CityGTE(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldGTE(FieldCity, v))
+}
+
+// CityLT applies the LT predicate on the "city" field.
+func CityLT(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldLT(FieldCity, v))
+}
+
+// CityLTE applies the LTE predicate on the "city" field.
+func CityLTE(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldLTE(FieldCity, v))
+}
+
+// CityContains applies the Contains predicate on the "city" field.
+func CityContains(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldContains(FieldCity, v))
+}
+
+// CityHasPrefix applies the HasPrefix predicate on the "city" field.
+func CityHasPrefix(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldHasPrefix(FieldCity, v))
+}
+
+// CityHasSuffix applies the HasSuffix predicate on the "city" field.
+func CityHasSuffix(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldHasSuffix(FieldCity, v))
+}
+
+// CityIsNil applies the IsNil predicate on the "city" field.
+func CityIsNil() predicate.Ledger {
+	return predicate.Ledger(sql.FieldIsNull(FieldCity))
+}
+
+// CityNotNil applies the NotNil predicate on the "city" field.
+func CityNotNil() predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotNull(FieldCity))
+}
+
+// CityEqualFold applies the EqualFold predicate on the "city" field.
+func CityEqualFold(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEqualFold(FieldCity, v))
+}
+
+// CityContainsFold applies the ContainsFold predicate on the "city" field.
+func CityContainsFold(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldContainsFold(FieldCity, v))
+}
+
+// StateEQ applies the EQ predicate on the "state" field.
+func StateEQ(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldState, v))
+}
+
+// StateNEQ applies the NEQ predicate on the "state" field.
+func StateNEQ(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNEQ(FieldState, v))
+}
+
+// StateIn applies the In predicate on the "state" field.
+func StateIn(vs ...string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldIn(FieldState, vs...))
+}
+
+// StateNotIn applies the NotIn predicate on the "state" field.
+func StateNotIn(vs ...string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotIn(FieldState, vs...))
+}
+
+// StateGT applies the GT predicate on the "state" field.
+func StateGT(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldGT(FieldState, v))
+}
+
+// StateGTE applies the GTE predicate on the "state" field.
+func StateGTE(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldGTE(FieldState, v))
+}
+
+// StateLT applies the LT predicate on the "state" field.
+func StateLT(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldLT(FieldState, v))
+}
+
+// StateLTE applies the LTE predicate on the "state" field.
+func StateLTE(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldLTE(FieldState, v))
+}
+
+// StateContains applies the Contains predicate on the "state" field.
+func StateContains(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldContains(FieldState, v))
+}
+
+// StateHasPrefix applies the HasPrefix predicate on the "state" field.
+func StateHasPrefix(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldHasPrefix(FieldState, v))
+}
+
+// StateHasSuffix applies the HasSuffix predicate on the "state" field.
+func StateHasSuffix(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldHasSuffix(FieldState, v))
+}
+
+// StateIsNil applies the IsNil predicate on the "state" field.
+func StateIsNil() predicate.Ledger {
+	return predicate.Ledger(sql.FieldIsNull(FieldState))
+}
+
+// StateNotNil applies the NotNil predicate on the "state" field.
+func StateNotNil() predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotNull(FieldState))
+}
+
+// StateEqualFold applies the EqualFold predicate on the "state" field.
+func StateEqualFold(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEqualFold(FieldState, v))
+}
+
+// StateContainsFold applies the ContainsFold predicate on the "state" field.
+func StateContainsFold(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldContainsFold(FieldState, v))
+}
+
+// CountryEQ applies the EQ predicate on the "country" field.
+func CountryEQ(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldCountry, v))
+}
+
+// CountryNEQ applies the NEQ predicate on the "country" field.
+func CountryNEQ(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNEQ(FieldCountry, v))
+}
+
+// CountryIn applies the In predicate on the "country" field.
+func CountryIn(vs ...string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldIn(FieldCountry, vs...))
+}
+
+// CountryNotIn applies the NotIn predicate on the "country" field.
+func CountryNotIn(vs ...string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotIn(FieldCountry, vs...))
+}
+
+// CountryGT applies the GT predicate on the "country" field.
+func CountryGT(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldGT(FieldCountry, v))
+}
+
+// CountryGTE applies the GTE predicate on the "country" field.
+func CountryGTE(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldGTE(FieldCountry, v))
+}
+
+// CountryLT applies the LT predicate on the "country" field.
+func CountryLT(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldLT(FieldCountry, v))
+}
+
+// CountryLTE applies the LTE predicate on the "country" field.
+func CountryLTE(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldLTE(FieldCountry, v))
+}
+
+// CountryContains applies the Contains predicate on the "country" field.
+func CountryContains(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldContains(FieldCountry, v))
+}
+
+// CountryHasPrefix applies the HasPrefix predicate on the "country" field.
+func CountryHasPrefix(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldHasPrefix(FieldCountry, v))
+}
+
+// CountryHasSuffix applies the HasSuffix predicate on the "country" field.
+func CountryHasSuffix(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldHasSuffix(FieldCountry, v))
+}
+
+// CountryIsNil applies the IsNil predicate on the "country" field.
+func CountryIsNil() predicate.Ledger {
+	return predicate.Ledger(sql.FieldIsNull(FieldCountry))
+}
+
+// CountryNotNil applies the NotNil predicate on the "country" field.
+func CountryNotNil() predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotNull(FieldCountry))
+}
+
+// CountryEqualFold applies the EqualFold predicate on the "country" field.
+func CountryEqualFold(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEqualFold(FieldCountry, v))
+}
+
+// CountryContainsFold applies the ContainsFold predicate on the "country" field.
+func CountryContainsFold(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldContainsFold(FieldCountry, v))
+}
+
+// PincodeEQ applies the EQ predicate on the "pincode" field.
+func PincodeEQ(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldPincode, v))
+}
+
+// PincodeNEQ applies the NEQ predicate on the "pincode" field.
+func PincodeNEQ(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNEQ(FieldPincode, v))
+}
+
+// PincodeIn applies the In predicate on the "pincode" field.
+func PincodeIn(vs ...string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldIn(FieldPincode, vs...))
+}
+
+// PincodeNotIn applies the NotIn predicate on the "pincode" field.
+func PincodeNotIn(vs ...string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotIn(FieldPincode, vs...))
+}
+
+// PincodeGT applies the GT predicate on the "pincode" field.
+func PincodeGT(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldGT(FieldPincode, v))
+}
+
+// PincodeGTE applies the GTE predicate on the "pincode" field.
+func PincodeGTE(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldGTE(FieldPincode, v))
+}
+
+// PincodeLT applies the LT predicate on the "pincode" field.
+func PincodeLT(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldLT(FieldPincode, v))
+}
+
+// PincodeLTE applies the LTE predicate on the "pincode" field.
+func PincodeLTE(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldLTE(FieldPincode, v))
+}
+
+// PincodeContains applies the Contains predicate on the "pincode" field.
+func PincodeContains(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldContains(FieldPincode, v))
+}
+
+// PincodeHasPrefix applies the HasPrefix predicate on the "pincode" field.
+func PincodeHasPrefix(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldHasPrefix(FieldPincode, v))
+}
+
+// PincodeHasSuffix applies the HasSuffix predicate on the "pincode" field.
+func PincodeHasSuffix(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldHasSuffix(FieldPincode, v))
+}
+
+// PincodeIsNil applies the IsNil predicate on the "pincode" field.
+func PincodeIsNil() predicate.Ledger {
+	return predicate.Ledger(sql.FieldIsNull(FieldPincode))
+}
+
+// PincodeNotNil applies the NotNil predicate on the "pincode" field.
+func PincodeNotNil() predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotNull(FieldPincode))
+}
+
+// PincodeEqualFold applies the EqualFold predicate on the "pincode" field.
+func PincodeEqualFold(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEqualFold(FieldPincode, v))
+}
+
+// PincodeContainsFold applies the ContainsFold predicate on the "pincode" field.
+func PincodeContainsFold(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldContainsFold(FieldPincode, v))
+}
+
+// PhoneEQ applies the EQ predicate on the "phone" field.
+func PhoneEQ(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldPhone, v))
+}
+
+// PhoneNEQ applies the NEQ predicate on the "phone" field.
+func PhoneNEQ(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNEQ(FieldPhone, v))
+}
+
+// PhoneIn applies the In predicate on the "phone" field.
+func PhoneIn(vs ...string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldIn(FieldPhone, vs...))
+}
+
+// PhoneNotIn applies the NotIn predicate on the "phone" field.
+func PhoneNotIn(vs ...string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotIn(FieldPhone, vs...))
+}
+
+// PhoneGT applies the GT predicate on the "phone" field.
+func PhoneGT(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldGT(FieldPhone, v))
+}
+
+// PhoneGTE applies the GTE predicate on the "phone" field.
+func PhoneGTE(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldGTE(FieldPhone, v))
+}
+
+// PhoneLT applies the LT predicate on the "phone" field.
+func PhoneLT(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldLT(FieldPhone, v))
+}
+
+// PhoneLTE applies the LTE predicate on the "phone" field.
+func PhoneLTE(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldLTE(FieldPhone, v))
+}
+
+// PhoneContains applies the Contains predicate on the "phone" field.
+func PhoneContains(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldContains(FieldPhone, v))
+}
+
+// PhoneHasPrefix applies the HasPrefix predicate on the "phone" field.
+func PhoneHasPrefix(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldHasPrefix(FieldPhone, v))
+}
+
+// PhoneHasSuffix applies the HasSuffix predicate on the "phone" field.
+func PhoneHasSuffix(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldHasSuffix(FieldPhone, v))
+}
+
+// PhoneIsNil applies the IsNil predicate on the "phone" field.
+func PhoneIsNil() predicate.Ledger {
+	return predicate.Ledger(sql.FieldIsNull(FieldPhone))
+}
+
+// PhoneNotNil applies the NotNil predicate on the "phone" field.
+func PhoneNotNil() predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotNull(FieldPhone))
+}
+
+// PhoneEqualFold applies the EqualFold predicate on the "phone" field.
+func PhoneEqualFold(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEqualFold(FieldPhone, v))
+}
+
+// PhoneContainsFold applies the ContainsFold predicate on the "phone" field.
+func PhoneContainsFold(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldContainsFold(FieldPhone, v))
+}
+
+// MobileEQ applies the EQ predicate on the "mobile" field.
+func MobileEQ(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldMobile, v))
+}
+
+// MobileNEQ applies the NEQ predicate on the "mobile" field.
+func MobileNEQ(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNEQ(FieldMobile, v))
+}
+
+// MobileIn applies the In predicate on the "mobile" field.
+func MobileIn(vs ...string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldIn(FieldMobile, vs...))
+}
+
+// MobileNotIn applies the NotIn predicate on the "mobile" field.
+func MobileNotIn(vs ...string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotIn(FieldMobile, vs...))
+}
+
+// MobileGT applies the GT predicate on the "mobile" field.
+func MobileGT(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldGT(FieldMobile, v))
+}
+
+// MobileGTE applies the GTE predicate on the "mobile" field.
+func MobileGTE(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldGTE(FieldMobile, v))
+}
+
+// MobileLT applies the LT predicate on the "mobile" field.
+func MobileLT(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldLT(FieldMobile, v))
+}
+
+// MobileLTE applies the LTE predicate on the "mobile" field.
+func MobileLTE(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldLTE(FieldMobile, v))
+}
+
+// MobileContains applies the Contains predicate on the "mobile" field.
+func MobileContains(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldContains(FieldMobile, v))
+}
+
+// MobileHasPrefix applies the HasPrefix predicate on the "mobile" field.
+func MobileHasPrefix(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldHasPrefix(FieldMobile, v))
+}
+
+// MobileHasSuffix applies the HasSuffix predicate on the "mobile" field.
+func MobileHasSuffix(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldHasSuffix(FieldMobile, v))
+}
+
+// MobileIsNil applies the IsNil predicate on the "mobile" field.
+func MobileIsNil() predicate.Ledger {
+	return predicate.Ledger(sql.FieldIsNull(FieldMobile))
+}
+
+// MobileNotNil applies the NotNil predicate on the "mobile" field.
+func MobileNotNil() predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotNull(FieldMobile))
+}
+
+// MobileEqualFold applies the EqualFold predicate on the "mobile" field.
+func MobileEqualFold(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEqualFold(FieldMobile, v))
+}
+
+// MobileContainsFold applies the ContainsFold predicate on the "mobile" field.
+func MobileContainsFold(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldContainsFold(FieldMobile, v))
+}
+
+// EmailEQ applies the EQ predicate on the "email" field.
+func EmailEQ(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldEmail, v))
+}
+
+// EmailNEQ applies the NEQ predicate on the "email" field.
+func EmailNEQ(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNEQ(FieldEmail, v))
+}
+
+// EmailIn applies the In predicate on the "email" field.
+func EmailIn(vs ...string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldIn(FieldEmail, vs...))
+}
+
+// EmailNotIn applies the NotIn predicate on the "email" field.
+func EmailNotIn(vs ...string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotIn(FieldEmail, vs...))
+}
+
+// EmailGT applies the GT predicate on the "email" field.
+func EmailGT(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldGT(FieldEmail, v))
+}
+
+// EmailGTE applies the GTE predicate on the "email" field.
+func EmailGTE(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldGTE(FieldEmail, v))
+}
+
+// EmailLT applies the LT predicate on the "email" field.
+func EmailLT(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldLT(FieldEmail, v))
+}
+
+// EmailLTE applies the LTE predicate on the "email" field.
+func EmailLTE(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldLTE(FieldEmail, v))
+}
+
+// EmailContains applies the Contains predicate on the "email" field.
+func EmailContains(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldContains(FieldEmail, v))
+}
+
+// EmailHasPrefix applies the HasPrefix predicate on the "email" field.
+func EmailHasPrefix(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldHasPrefix(FieldEmail, v))
+}
+
+// EmailHasSuffix applies the HasSuffix predicate on the "email" field.
+func EmailHasSuffix(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldHasSuffix(FieldEmail, v))
+}
+
+// EmailIsNil applies the IsNil predicate on the "email" field.
+func EmailIsNil() predicate.Ledger {
+	return predicate.Ledger(sql.FieldIsNull(FieldEmail))
+}
+
+// EmailNotNil applies the NotNil predicate on the "email" field.
+func EmailNotNil() predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotNull(FieldEmail))
+}
+
+// EmailEqualFold applies the EqualFold predicate on the "email" field.
+func EmailEqualFold(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEqualFold(FieldEmail, v))
+}
+
+// EmailContainsFold applies the ContainsFold predicate on the "email" field.
+func EmailContainsFold(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldContainsFold(FieldEmail, v))
+}
+
+// ContactPersonEQ applies the EQ predicate on the "contact_person" field.
+func ContactPersonEQ(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldContactPerson, v))
+}
+
+// ContactPersonNEQ applies the NEQ predicate on the "contact_person" field.
+func ContactPersonNEQ(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNEQ(FieldContactPerson, v))
+}
+
+// ContactPersonIn applies the In predicate on the "contact_person" field.
+func ContactPersonIn(vs ...string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldIn(FieldContactPerson, vs...))
+}
+
+// ContactPersonNotIn applies the NotIn predicate on the "contact_person" field.
+func ContactPersonNotIn(vs ...string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotIn(FieldContactPerson, vs...))
+}
+
+// ContactPersonGT applies the GT predicate on the "contact_person" field.
+func ContactPersonGT(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldGT(FieldContactPerson, v))
+}
+
+// ContactPersonGTE applies the GTE predicate on the "contact_person" field.
+func ContactPersonGTE(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldGTE(FieldContactPerson, v))
+}
+
+// ContactPersonLT applies the LT predicate on the "contact_person" field.
+func ContactPersonLT(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldLT(FieldContactPerson, v))
+}
+
+// ContactPersonLTE applies the LTE predicate on the "contact_person" field.
+func ContactPersonLTE(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldLTE(FieldContactPerson, v))
+}
+
+// ContactPersonContains applies the Contains predicate on the "contact_person" field.
+func ContactPersonContains(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldContains(FieldContactPerson, v))
+}
+
+// ContactPersonHasPrefix applies the HasPrefix predicate on the "contact_person" field.
+func ContactPersonHasPrefix(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldHasPrefix(FieldContactPerson, v))
+}
+
+// ContactPersonHasSuffix applies the HasSuffix predicate on the "contact_person" field.
+func ContactPersonHasSuffix(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldHasSuffix(FieldContactPerson, v))
+}
+
+// ContactPersonIsNil applies the IsNil predicate on the "contact_person" field.
+func ContactPersonIsNil() predicate.Ledger {
+	return predicate.Ledger(sql.FieldIsNull(FieldContactPerson))
+}
+
+// ContactPersonNotNil applies the NotNil predicate on the "contact_person" field.
+func ContactPersonNotNil() predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotNull(FieldContactPerson))
+}
+
+// ContactPersonEqualFold applies the EqualFold predicate on the "contact_person" field.
+func ContactPersonEqualFold(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEqualFold(FieldContactPerson, v))
+}
+
+// ContactPersonContainsFold applies the ContainsFold predicate on the "contact_person" field.
+func ContactPersonContainsFold(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldContainsFold(FieldContactPerson, v))
+}
+
+// GstRegistrationTypeEQ applies the EQ predicate on the "gst_registration_type" field.
+func GstRegistrationTypeEQ(v GstRegistrationType) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldGstRegistrationType, v))
+}
+
+// GstRegistrationTypeNEQ applies the NEQ predicate on the "gst_registration_type" field.
+func GstRegistrationTypeNEQ(v GstRegistrationType) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNEQ(FieldGstRegistrationType, v))
+}
+
+// GstRegistrationTypeIn applies the In predicate on the "gst_registration_type" field.
+func GstRegistrationTypeIn(vs ...GstRegistrationType) predicate.Ledger {
+	return predicate.Ledger(sql.FieldIn(FieldGstRegistrationType, vs...))
+}
+
+// GstRegistrationTypeNotIn applies the NotIn predicate on the "gst_registration_type" field.
+func GstRegistrationTypeNotIn(vs ...GstRegistrationType) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotIn(FieldGstRegistrationType, vs...))
+}
+
+// GstinEQ applies the EQ predicate on the "gstin" field.
+func GstinEQ(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldGstin, v))
+}
+
+// GstinNEQ applies the NEQ predicate on the "gstin" field.
+func GstinNEQ(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNEQ(FieldGstin, v))
+}
+
+// GstinIn applies the In predicate on the "gstin" field.
+func GstinIn(vs ...string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldIn(FieldGstin, vs...))
+}
+
+// GstinNotIn applies the NotIn predicate on the "gstin" field.
+func GstinNotIn(vs ...string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotIn(FieldGstin, vs...))
+}
+
+// GstinGT applies the GT predicate on the "gstin" field.
+func GstinGT(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldGT(FieldGstin, v))
+}
+
+// GstinGTE applies the GTE predicate on the "gstin" field.
+func GstinGTE(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldGTE(FieldGstin, v))
+}
+
+// GstinLT applies the LT predicate on the "gstin" field.
+func GstinLT(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldLT(FieldGstin, v))
+}
+
+// GstinLTE applies the LTE predicate on the "gstin" field.
+func GstinLTE(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldLTE(FieldGstin, v))
+}
+
+// GstinContains applies the Contains predicate on the "gstin" field.
+func GstinContains(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldContains(FieldGstin, v))
+}
+
+// GstinHasPrefix applies the HasPrefix predicate on the "gstin" field.
+func GstinHasPrefix(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldHasPrefix(FieldGstin, v))
+}
+
+// GstinHasSuffix applies the HasSuffix predicate on the "gstin" field.
+func GstinHasSuffix(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldHasSuffix(FieldGstin, v))
+}
+
+// GstinIsNil applies the IsNil predicate on the "gstin" field.
+func GstinIsNil() predicate.Ledger {
+	return predicate.Ledger(sql.FieldIsNull(FieldGstin))
+}
+
+// GstinNotNil applies the NotNil predicate on the "gstin" field.
+func GstinNotNil() predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotNull(FieldGstin))
+}
+
+// GstinEqualFold applies the EqualFold predicate on the "gstin" field.
+func GstinEqualFold(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEqualFold(FieldGstin, v))
+}
+
+// GstinContainsFold applies the ContainsFold predicate on the "gstin" field.
+func GstinContainsFold(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldContainsFold(FieldGstin, v))
+}
+
+// PanEQ applies the EQ predicate on the "pan" field.
+func PanEQ(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldPan, v))
+}
+
+// PanNEQ applies the NEQ predicate on the "pan" field.
+func PanNEQ(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNEQ(FieldPan, v))
+}
+
+// PanIn applies the In predicate on the "pan" field.
+func PanIn(vs ...string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldIn(FieldPan, vs...))
+}
+
+// PanNotIn applies the NotIn predicate on the "pan" field.
+func PanNotIn(vs ...string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotIn(FieldPan, vs...))
+}
+
+// PanGT applies the GT predicate on the "pan" field.
+func PanGT(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldGT(FieldPan, v))
+}
+
+// PanGTE applies the GTE predicate on the "pan" field.
+func PanGTE(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldGTE(FieldPan, v))
+}
+
+// PanLT applies the LT predicate on the "pan" field.
+func PanLT(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldLT(FieldPan, v))
+}
+
+// PanLTE applies the LTE predicate on the "pan" field.
+func PanLTE(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldLTE(FieldPan, v))
+}
+
+// PanContains applies the Contains predicate on the "pan" field.
+func PanContains(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldContains(FieldPan, v))
+}
+
+// PanHasPrefix applies the HasPrefix predicate on the "pan" field.
+func PanHasPrefix(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldHasPrefix(FieldPan, v))
+}
+
+// PanHasSuffix applies the HasSuffix predicate on the "pan" field.
+func PanHasSuffix(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldHasSuffix(FieldPan, v))
+}
+
+// PanIsNil applies the IsNil predicate on the "pan" field.
+func PanIsNil() predicate.Ledger {
+	return predicate.Ledger(sql.FieldIsNull(FieldPan))
+}
+
+// PanNotNil applies the NotNil predicate on the "pan" field.
+func PanNotNil() predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotNull(FieldPan))
+}
+
+// PanEqualFold applies the EqualFold predicate on the "pan" field.
+func PanEqualFold(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEqualFold(FieldPan, v))
+}
+
+// PanContainsFold applies the ContainsFold predicate on the "pan" field.
+func PanContainsFold(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldContainsFold(FieldPan, v))
+}
+
+// BankNameEQ applies the EQ predicate on the "bank_name" field.
+func BankNameEQ(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldBankName, v))
+}
+
+// BankNameNEQ applies the NEQ predicate on the "bank_name" field.
+func BankNameNEQ(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNEQ(FieldBankName, v))
+}
+
+// BankNameIn applies the In predicate on the "bank_name" field.
+func BankNameIn(vs ...string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldIn(FieldBankName, vs...))
+}
+
+// BankNameNotIn applies the NotIn predicate on the "bank_name" field.
+func BankNameNotIn(vs ...string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotIn(FieldBankName, vs...))
+}
+
+// BankNameGT applies the GT predicate on the "bank_name" field.
+func BankNameGT(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldGT(FieldBankName, v))
+}
+
+// BankNameGTE applies the GTE predicate on the "bank_name" field.
+func BankNameGTE(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldGTE(FieldBankName, v))
+}
+
+// BankNameLT applies the LT predicate on the "bank_name" field.
+func BankNameLT(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldLT(FieldBankName, v))
+}
+
+// BankNameLTE applies the LTE predicate on the "bank_name" field.
+func BankNameLTE(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldLTE(FieldBankName, v))
+}
+
+// BankNameContains applies the Contains predicate on the "bank_name" field.
+func BankNameContains(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldContains(FieldBankName, v))
+}
+
+// BankNameHasPrefix applies the HasPrefix predicate on the "bank_name" field.
+func BankNameHasPrefix(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldHasPrefix(FieldBankName, v))
+}
+
+// BankNameHasSuffix applies the HasSuffix predicate on the "bank_name" field.
+func BankNameHasSuffix(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldHasSuffix(FieldBankName, v))
+}
+
+// BankNameIsNil applies the IsNil predicate on the "bank_name" field.
+func BankNameIsNil() predicate.Ledger {
+	return predicate.Ledger(sql.FieldIsNull(FieldBankName))
+}
+
+// BankNameNotNil applies the NotNil predicate on the "bank_name" field.
+func BankNameNotNil() predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotNull(FieldBankName))
+}
+
+// BankNameEqualFold applies the EqualFold predicate on the "bank_name" field.
+func BankNameEqualFold(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEqualFold(FieldBankName, v))
+}
+
+// BankNameContainsFold applies the ContainsFold predicate on the "bank_name" field.
+func BankNameContainsFold(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldContainsFold(FieldBankName, v))
+}
+
+// BankAccountNoEQ applies the EQ predicate on the "bank_account_no" field.
+func BankAccountNoEQ(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldBankAccountNo, v))
+}
+
+// BankAccountNoNEQ applies the NEQ predicate on the "bank_account_no" field.
+func BankAccountNoNEQ(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNEQ(FieldBankAccountNo, v))
+}
+
+// BankAccountNoIn applies the In predicate on the "bank_account_no" field.
+func BankAccountNoIn(vs ...string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldIn(FieldBankAccountNo, vs...))
+}
+
+// BankAccountNoNotIn applies the NotIn predicate on the "bank_account_no" field.
+func BankAccountNoNotIn(vs ...string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotIn(FieldBankAccountNo, vs...))
+}
+
+// BankAccountNoGT applies the GT predicate on the "bank_account_no" field.
+func BankAccountNoGT(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldGT(FieldBankAccountNo, v))
+}
+
+// BankAccountNoGTE applies the GTE predicate on the "bank_account_no" field.
+func BankAccountNoGTE(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldGTE(FieldBankAccountNo, v))
+}
+
+// BankAccountNoLT applies the LT predicate on the "bank_account_no" field.
+func BankAccountNoLT(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldLT(FieldBankAccountNo, v))
+}
+
+// BankAccountNoLTE applies the LTE predicate on the "bank_account_no" field.
+func BankAccountNoLTE(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldLTE(FieldBankAccountNo, v))
+}
+
+// BankAccountNoContains applies the Contains predicate on the "bank_account_no" field.
+func BankAccountNoContains(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldContains(FieldBankAccountNo, v))
+}
+
+// BankAccountNoHasPrefix applies the HasPrefix predicate on the "bank_account_no" field.
+func BankAccountNoHasPrefix(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldHasPrefix(FieldBankAccountNo, v))
+}
+
+// BankAccountNoHasSuffix applies the HasSuffix predicate on the "bank_account_no" field.
+func BankAccountNoHasSuffix(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldHasSuffix(FieldBankAccountNo, v))
+}
+
+// BankAccountNoIsNil applies the IsNil predicate on the "bank_account_no" field.
+func BankAccountNoIsNil() predicate.Ledger {
+	return predicate.Ledger(sql.FieldIsNull(FieldBankAccountNo))
+}
+
+// BankAccountNoNotNil applies the NotNil predicate on the "bank_account_no" field.
+func BankAccountNoNotNil() predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotNull(FieldBankAccountNo))
+}
+
+// BankAccountNoEqualFold applies the EqualFold predicate on the "bank_account_no" field.
+func BankAccountNoEqualFold(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEqualFold(FieldBankAccountNo, v))
+}
+
+// BankAccountNoContainsFold applies the ContainsFold predicate on the "bank_account_no" field.
+func BankAccountNoContainsFold(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldContainsFold(FieldBankAccountNo, v))
+}
+
+// BankIfscEQ applies the EQ predicate on the "bank_ifsc" field.
+func BankIfscEQ(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldBankIfsc, v))
+}
+
+// BankIfscNEQ applies the NEQ predicate on the "bank_ifsc" field.
+func BankIfscNEQ(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNEQ(FieldBankIfsc, v))
+}
+
+// BankIfscIn applies the In predicate on the "bank_ifsc" field.
+func BankIfscIn(vs ...string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldIn(FieldBankIfsc, vs...))
+}
+
+// BankIfscNotIn applies the NotIn predicate on the "bank_ifsc" field.
+func BankIfscNotIn(vs ...string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotIn(FieldBankIfsc, vs...))
+}
+
+// BankIfscGT applies the GT predicate on the "bank_ifsc" field.
+func BankIfscGT(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldGT(FieldBankIfsc, v))
+}
+
+// BankIfscGTE applies the GTE predicate on the "bank_ifsc" field.
+func BankIfscGTE(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldGTE(FieldBankIfsc, v))
+}
+
+// BankIfscLT applies the LT predicate on the "bank_ifsc" field.
+func BankIfscLT(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldLT(FieldBankIfsc, v))
+}
+
+// BankIfscLTE applies the LTE predicate on the "bank_ifsc" field.
+func BankIfscLTE(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldLTE(FieldBankIfsc, v))
+}
+
+// BankIfscContains applies the Contains predicate on the "bank_ifsc" field.
+func BankIfscContains(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldContains(FieldBankIfsc, v))
+}
+
+// BankIfscHasPrefix applies the HasPrefix predicate on the "bank_ifsc" field.
+func BankIfscHasPrefix(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldHasPrefix(FieldBankIfsc, v))
+}
+
+// BankIfscHasSuffix applies the HasSuffix predicate on the "bank_ifsc" field.
+func BankIfscHasSuffix(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldHasSuffix(FieldBankIfsc, v))
+}
+
+// BankIfscIsNil applies the IsNil predicate on the "bank_ifsc" field.
+func BankIfscIsNil() predicate.Ledger {
+	return predicate.Ledger(sql.FieldIsNull(FieldBankIfsc))
+}
+
+// BankIfscNotNil applies the NotNil predicate on the "bank_ifsc" field.
+func BankIfscNotNil() predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotNull(FieldBankIfsc))
+}
+
+// BankIfscEqualFold applies the EqualFold predicate on the "bank_ifsc" field.
+func BankIfscEqualFold(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEqualFold(FieldBankIfsc, v))
+}
+
+// BankIfscContainsFold applies the ContainsFold predicate on the "bank_ifsc" field.
+func BankIfscContainsFold(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldContainsFold(FieldBankIfsc, v))
+}
+
+// BankBranchEQ applies the EQ predicate on the "bank_branch" field.
+func BankBranchEQ(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldBankBranch, v))
+}
+
+// BankBranchNEQ applies the NEQ predicate on the "bank_branch" field.
+func BankBranchNEQ(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNEQ(FieldBankBranch, v))
+}
+
+// BankBranchIn applies the In predicate on the "bank_branch" field.
+func BankBranchIn(vs ...string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldIn(FieldBankBranch, vs...))
+}
+
+// BankBranchNotIn applies the NotIn predicate on the "bank_branch" field.
+func BankBranchNotIn(vs ...string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotIn(FieldBankBranch, vs...))
+}
+
+// BankBranchGT applies the GT predicate on the "bank_branch" field.
+func BankBranchGT(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldGT(FieldBankBranch, v))
+}
+
+// BankBranchGTE applies the GTE predicate on the "bank_branch" field.
+func BankBranchGTE(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldGTE(FieldBankBranch, v))
+}
+
+// BankBranchLT applies the LT predicate on the "bank_branch" field.
+func BankBranchLT(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldLT(FieldBankBranch, v))
+}
+
+// BankBranchLTE applies the LTE predicate on the "bank_branch" field.
+func BankBranchLTE(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldLTE(FieldBankBranch, v))
+}
+
+// BankBranchContains applies the Contains predicate on the "bank_branch" field.
+func BankBranchContains(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldContains(FieldBankBranch, v))
+}
+
+// BankBranchHasPrefix applies the HasPrefix predicate on the "bank_branch" field.
+func BankBranchHasPrefix(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldHasPrefix(FieldBankBranch, v))
+}
+
+// BankBranchHasSuffix applies the HasSuffix predicate on the "bank_branch" field.
+func BankBranchHasSuffix(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldHasSuffix(FieldBankBranch, v))
+}
+
+// BankBranchIsNil applies the IsNil predicate on the "bank_branch" field.
+func BankBranchIsNil() predicate.Ledger {
+	return predicate.Ledger(sql.FieldIsNull(FieldBankBranch))
+}
+
+// BankBranchNotNil applies the NotNil predicate on the "bank_branch" field.
+func BankBranchNotNil() predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotNull(FieldBankBranch))
+}
+
+// BankBranchEqualFold applies the EqualFold predicate on the "bank_branch" field.
+func BankBranchEqualFold(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEqualFold(FieldBankBranch, v))
+}
+
+// BankBranchContainsFold applies the ContainsFold predicate on the "bank_branch" field.
+func BankBranchContainsFold(v string) predicate.Ledger {
+	return predicate.Ledger(sql.FieldContainsFold(FieldBankBranch, v))
 }
 
 // IsSystemEQ applies the EQ predicate on the "is_system" field.
@@ -650,29 +1925,6 @@ func HasGroup() predicate.Ledger {
 func HasGroupWith(preds ...predicate.Ledger_Group) predicate.Ledger {
 	return predicate.Ledger(func(s *sql.Selector) {
 		step := newGroupStep()
-		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
-			for _, p := range preds {
-				p(s)
-			}
-		})
-	})
-}
-
-// HasParty applies the HasEdge predicate on the "party" edge.
-func HasParty() predicate.Ledger {
-	return predicate.Ledger(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, false, PartyTable, PartyColumn),
-		)
-		sqlgraph.HasNeighbors(s, step)
-	})
-}
-
-// HasPartyWith applies the HasEdge predicate on the "party" edge with a given conditions (other predicates).
-func HasPartyWith(preds ...predicate.PartyMaster) predicate.Ledger {
-	return predicate.Ledger(func(s *sql.Selector) {
-		step := newPartyStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

@@ -3,7 +3,6 @@
 package migrate
 
 import (
-	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/dialect/sql/schema"
 	"entgo.io/ent/schema/field"
 )
@@ -186,8 +185,25 @@ var (
 		{Name: "name", Type: field.TypeString, Size: 255},
 		{Name: "alias", Type: field.TypeString, Nullable: true, Size: 255, Default: ""},
 		{Name: "description", Type: field.TypeString, Nullable: true, Default: ""},
-		{Name: "opening_balance", Type: field.TypeFloat64, Default: 0},
 		{Name: "balance", Type: field.TypeFloat64, Default: 0},
+		{Name: "party_type", Type: field.TypeEnum, Enums: []string{"CUSTOMER", "SUPPLIER", "BOTH", "INTERNAL"}, Default: "INTERNAL"},
+		{Name: "address_line1", Type: field.TypeString, Nullable: true, Size: 255, Default: ""},
+		{Name: "address_line2", Type: field.TypeString, Nullable: true, Size: 255, Default: ""},
+		{Name: "city", Type: field.TypeString, Nullable: true, Size: 100, Default: ""},
+		{Name: "state", Type: field.TypeString, Nullable: true, Size: 12, Default: ""},
+		{Name: "country", Type: field.TypeString, Nullable: true, Size: 100, Default: "India"},
+		{Name: "pincode", Type: field.TypeString, Nullable: true, Size: 10, Default: ""},
+		{Name: "phone", Type: field.TypeString, Nullable: true, Size: 20, Default: ""},
+		{Name: "mobile", Type: field.TypeString, Nullable: true, Size: 20, Default: ""},
+		{Name: "email", Type: field.TypeString, Nullable: true, Size: 255, Default: ""},
+		{Name: "contact_person", Type: field.TypeString, Nullable: true, Size: 255, Default: ""},
+		{Name: "gst_registration_type", Type: field.TypeEnum, Enums: []string{"REGULAR", "COMPOSITION", "UNREGISTERED", "CONSUMER", "SEZ", "OVERSEAS"}, Default: "UNREGISTERED"},
+		{Name: "gstin", Type: field.TypeString, Nullable: true, Size: 15, Default: ""},
+		{Name: "pan", Type: field.TypeString, Nullable: true, Size: 10, Default: ""},
+		{Name: "bank_name", Type: field.TypeString, Nullable: true, Size: 255, Default: ""},
+		{Name: "bank_account_no", Type: field.TypeString, Nullable: true, Size: 30, Default: ""},
+		{Name: "bank_ifsc", Type: field.TypeString, Nullable: true, Size: 11, Default: ""},
+		{Name: "bank_branch", Type: field.TypeString, Nullable: true, Size: 255, Default: ""},
 		{Name: "is_system", Type: field.TypeBool, Default: false},
 		{Name: "is_party", Type: field.TypeBool, Default: false},
 		{Name: "is_bank", Type: field.TypeBool, Default: false},
@@ -204,13 +220,13 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "ledgers_ledger_groups_group",
-				Columns:    []*schema.Column{LedgersColumns[14]},
+				Columns:    []*schema.Column{LedgersColumns[31]},
 				RefColumns: []*schema.Column{LedgerGroupsColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
 			{
 				Symbol:     "ledgers_ledger_groups_ledgers",
-				Columns:    []*schema.Column{LedgersColumns[15]},
+				Columns:    []*schema.Column{LedgersColumns[32]},
 				RefColumns: []*schema.Column{LedgerGroupsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -229,22 +245,27 @@ var (
 			{
 				Name:    "ledger_group_id",
 				Unique:  false,
-				Columns: []*schema.Column{LedgersColumns[14]},
+				Columns: []*schema.Column{LedgersColumns[31]},
 			},
 			{
-				Name:    "ledger_is_party",
+				Name:    "ledger_gstin",
 				Unique:  false,
-				Columns: []*schema.Column{LedgersColumns[10]},
+				Columns: []*schema.Column{LedgersColumns[20]},
 			},
 			{
-				Name:    "ledger_is_bank",
+				Name:    "ledger_state",
 				Unique:  false,
-				Columns: []*schema.Column{LedgersColumns[11]},
+				Columns: []*schema.Column{LedgersColumns[12]},
+			},
+			{
+				Name:    "ledger_party_type",
+				Unique:  false,
+				Columns: []*schema.Column{LedgersColumns[8]},
 			},
 			{
 				Name:    "ledger_group_id_name",
 				Unique:  false,
-				Columns: []*schema.Column{LedgersColumns[14], LedgersColumns[4]},
+				Columns: []*schema.Column{LedgersColumns[31], LedgersColumns[4]},
 			},
 		},
 	}
@@ -286,77 +307,6 @@ var (
 				Name:    "ledger_group_nature",
 				Unique:  false,
 				Columns: []*schema.Column{LedgerGroupsColumns[3]},
-			},
-		},
-	}
-	// PartyMasterColumns holds the columns for the "party_master" table.
-	PartyMasterColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "create_time", Type: field.TypeTime},
-		{Name: "update_time", Type: field.TypeTime},
-		{Name: "type", Type: field.TypeEnum, Enums: []string{"CUSTOMER", "SUPPLIER", "BOTH"}},
-		{Name: "display_name", Type: field.TypeString},
-		{Name: "legal_name", Type: field.TypeString, Nullable: true},
-		{Name: "gst_no", Type: field.TypeString, Nullable: true},
-		{Name: "pan_no", Type: field.TypeString, Nullable: true},
-		{Name: "contact_person", Type: field.TypeString, Nullable: true},
-		{Name: "mobile", Type: field.TypeString, Nullable: true},
-		{Name: "phone", Type: field.TypeString, Nullable: true},
-		{Name: "email", Type: field.TypeString, Nullable: true},
-		{Name: "website", Type: field.TypeString, Nullable: true},
-		{Name: "credit_limit", Type: field.TypeFloat64, Default: 0},
-		{Name: "credit_days", Type: field.TypeInt, Default: 0},
-		{Name: "opening_balance", Type: field.TypeFloat64, Default: 0},
-		{Name: "address", Type: field.TypeString, Nullable: true},
-		{Name: "city", Type: field.TypeString, Nullable: true},
-		{Name: "state", Type: field.TypeString, Nullable: true},
-		{Name: "country", Type: field.TypeString, Default: "India"},
-		{Name: "pincode", Type: field.TypeString, Nullable: true},
-		{Name: "ledger_id", Type: field.TypeInt, Unique: true},
-	}
-	// PartyMasterTable holds the schema information for the "party_master" table.
-	PartyMasterTable = &schema.Table{
-		Name:       "party_master",
-		Columns:    PartyMasterColumns,
-		PrimaryKey: []*schema.Column{PartyMasterColumns[0]},
-		ForeignKeys: []*schema.ForeignKey{
-			{
-				Symbol:     "party_master_ledgers_party",
-				Columns:    []*schema.Column{PartyMasterColumns[21]},
-				RefColumns: []*schema.Column{LedgersColumns[0]},
-				OnDelete:   schema.NoAction,
-			},
-		},
-		Indexes: []*schema.Index{
-			{
-				Name:    "partymaster_ledger_id",
-				Unique:  true,
-				Columns: []*schema.Column{PartyMasterColumns[21]},
-			},
-			{
-				Name:    "partymaster_type",
-				Unique:  false,
-				Columns: []*schema.Column{PartyMasterColumns[3]},
-			},
-			{
-				Name:    "partymaster_gst_no",
-				Unique:  false,
-				Columns: []*schema.Column{PartyMasterColumns[6]},
-			},
-			{
-				Name:    "partymaster_mobile",
-				Unique:  false,
-				Columns: []*schema.Column{PartyMasterColumns[9]},
-			},
-			{
-				Name:    "partymaster_email",
-				Unique:  false,
-				Columns: []*schema.Column{PartyMasterColumns[11]},
-			},
-			{
-				Name:    "partymaster_display_name",
-				Unique:  false,
-				Columns: []*schema.Column{PartyMasterColumns[4]},
 			},
 		},
 	}
@@ -428,7 +378,6 @@ var (
 		JournalLinesTable,
 		LedgersTable,
 		LedgerGroupsTable,
-		PartyMasterTable,
 		SettingsTable,
 		StatesTable,
 	}
@@ -442,9 +391,5 @@ func init() {
 	LedgersTable.ForeignKeys[0].RefTable = LedgerGroupsTable
 	LedgersTable.ForeignKeys[1].RefTable = LedgerGroupsTable
 	LedgerGroupsTable.ForeignKeys[0].RefTable = LedgerGroupsTable
-	PartyMasterTable.ForeignKeys[0].RefTable = LedgersTable
-	PartyMasterTable.Annotation = &entsql.Annotation{
-		Table: "party_master",
-	}
 	StatesTable.ForeignKeys[0].RefTable = CountriesTable
 }

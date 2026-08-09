@@ -21,13 +21,55 @@ type LedgerGroupState struct {
 }
 
 type LedgerState struct {
+	// Form state
 	FocusIndex int
 	Errors     map[string]string
 	Mode       FormMode
-	//--
 
+	// Core fields
 	Code        string
 	Name        string
-	Description string
+	Alias       string
 	GroupID     string
+	Description string
+
+	// Accounting fields
+	// OpeningBalance     float64
+	// OpeningBalanceDate string // Using string for form input, can convert to time.Time
+	// Balance float64
+
+	// Party classification
+	PartyType string // CUSTOMER, SUPPLIER, BOTH, INTERNAL
+
+	// Address fields
+	AddressLine1 string
+	AddressLine2 string
+	City         string
+	State        string
+	Country      string
+	Pincode      string
+
+	// Contact fields
+	Phone         string
+	Mobile        string
+	Email         string
+	ContactPerson string
+
+	// Tax registration
+	GSTRegistrationType string // REGULAR, COMPOSITION, UNREGISTERED, CONSUMER, SEZ, OVERSEAS
+	GSTIN               string
+	PAN                 string
+
+	// Bank details
+	BankName      string
+	BankAccountNo string
+	BankIFSC      string
+	BankBranch    string
+
+	// Status fields
+	IsSystem bool
+	IsParty  bool
+	IsBank   bool
+	IsCash   bool
+	IsActive bool
 }

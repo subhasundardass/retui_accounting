@@ -132,8 +132,8 @@ func (c *GroupFormComponent) GroupEditForm(ctx *appctx.AppContext) *window.Windo
 	c.win = window.NewWindow().
 		SetTitle("Edit Group").
 		SetModal(true).
-		Center().
-		SetSize(80, 40)
+		SetSize(80, 10).
+		Center()
 
 	c.win.SetRenderFn(func() retui.Element {
 		return c.buildWindow() // bindKeys wired inside buildWindow

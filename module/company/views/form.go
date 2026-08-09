@@ -98,8 +98,8 @@ func (c *FormComponent) CreateForm(ctx *appctx.AppContext) *window.Window {
 	c.win = window.NewWindow().
 		SetTitle("Create Company").
 		SetModal(true).
-		Center().
-		SetSize(100, 40)
+		SetSize(100, 24).
+		Center()
 
 	c.win.SetRenderFn(func() retui.Element {
 		c.state, c.setState = retui.UseState(company.FormState{})
@@ -115,8 +115,8 @@ func (c *FormComponent) EditForm(ctx *appctx.AppContext) *window.Window {
 	c.win = window.NewWindow().
 		SetTitle("Edit Company").
 		SetModal(true).
-		Center().
-		SetSize(100, 40)
+		SetSize(120, 15).
+		Center()
 
 	c.win.SetRenderFn(func() retui.Element {
 		// Seed UseState with the state already populated by LoadForEdit,

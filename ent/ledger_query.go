@@ -15,7 +15,6 @@ import (
 	"github.com/subhasundardass/retui/ent/journal_line"
 	"github.com/subhasundardass/retui/ent/ledger"
 	"github.com/subhasundardass/retui/ent/ledger_group"
-	"github.com/subhasundardass/retui/ent/partymaster"
 	"github.com/subhasundardass/retui/ent/predicate"
 )
 
@@ -27,7 +26,6 @@ type LedgerQuery struct {
 	inters           []Interceptor
 	predicates       []predicate.Ledger
 	withGroup        *LedgerGroupQuery
-	withParty        *PartyMasterQuery
 	withJournalLines *JournalLineQuery
 	withFKs          bool
 	// intermediate query (i.e. traversal path).
@@ -81,28 +79,6 @@ func (_q *LedgerQuery) QueryGroup() *LedgerGroupQuery {
 			sqlgraph.From(ledger.Table, ledger.FieldID, selector),
 			sqlgraph.To(ledger_group.Table, ledger_group.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, false, ledger.GroupTable, ledger.GroupColumn),
-		)
-		fromU = sqlgraph.SetNeighbors(_q.driver.Dialect(), step)
-		return fromU, nil
-	}
-	return query
-}
-
-// QueryParty chains the current query on the "party" edge.
-func (_q *LedgerQuery) QueryParty() *PartyMasterQuery {
-	query := (&PartyMasterClient{config: _q.config}).Query()
-	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
-		if err := _q.prepareQuery(ctx); err != nil {
-			return nil, err
-		}
-		selector := _q.sqlQuery(ctx)
-		if err := selector.Err(); err != nil {
-			return nil, err
-		}
-		step := sqlgraph.NewStep(
-			sqlgraph.From(ledger.Table, ledger.FieldID, selector),
-			sqlgraph.To(partymaster.Table, partymaster.FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, false, ledger.PartyTable, ledger.PartyColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(_q.driver.Dialect(), step)
 		return fromU, nil
@@ -325,7 +301,6 @@ func (_q *LedgerQuery) Clone() *LedgerQuery {
 		inters:           append([]Interceptor{}, _q.inters...),
 		predicates:       append([]predicate.Ledger{}, _q.predicates...),
 		withGroup:        _q.withGroup.Clone(),
-		withParty:        _q.withParty.Clone(),
 		withJournalLines: _q.withJournalLines.Clone(),
 		// clone intermediate query.
 		sql:  _q.sql.Clone(),
@@ -341,17 +316,6 @@ func (_q *LedgerQuery) WithGroup(opts ...func(*LedgerGroupQuery)) *LedgerQuery {
 		opt(query)
 	}
 	_q.withGroup = query
-	return _q
-}
-
-// WithParty tells the query-builder to eager-load the nodes that are connected to
-// the "party" edge. The optional arguments are used to configure the query builder of the edge.
-func (_q *LedgerQuery) WithParty(opts ...func(*PartyMasterQuery)) *LedgerQuery {
-	query := (&PartyMasterClient{config: _q.config}).Query()
-	for _, opt := range opts {
-		opt(query)
-	}
-	_q.withParty = query
 	return _q
 }
 
@@ -445,9 +409,8 @@ func (_q *LedgerQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Ledge
 		nodes       = []*Ledger{}
 		withFKs     = _q.withFKs
 		_spec       = _q.querySpec()
-		loadedTypes = [3]bool{
+		loadedTypes = [2]bool{
 			_q.withGroup != nil,
-			_q.withParty != nil,
 			_q.withJournalLines != nil,
 		}
 	)
@@ -475,12 +438,6 @@ func (_q *LedgerQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Ledge
 	if query := _q.withGroup; query != nil {
 		if err := _q.loadGroup(ctx, query, nodes, nil,
 			func(n *Ledger, e *Ledger_Group) { n.Edges.Group = e }); err != nil {
-			return nil, err
-		}
-	}
-	if query := _q.withParty; query != nil {
-		if err := _q.loadParty(ctx, query, nodes, nil,
-			func(n *Ledger, e *PartyMaster) { n.Edges.Party = e }); err != nil {
 			return nil, err
 		}
 	}
@@ -520,33 +477,6 @@ func (_q *LedgerQuery) loadGroup(ctx context.Context, query *LedgerGroupQuery, n
 		for i := range nodes {
 			assign(nodes[i], n)
 		}
-	}
-	return nil
-}
-func (_q *LedgerQuery) loadParty(ctx context.Context, query *PartyMasterQuery, nodes []*Ledger, init func(*Ledger), assign func(*Ledger, *PartyMaster)) error {
-	fks := make([]driver.Value, 0, len(nodes))
-	nodeids := make(map[int]*Ledger)
-	for i := range nodes {
-		fks = append(fks, nodes[i].ID)
-		nodeids[nodes[i].ID] = nodes[i]
-	}
-	if len(query.ctx.Fields) > 0 {
-		query.ctx.AppendFieldOnce(partymaster.FieldLedgerID)
-	}
-	query.Where(predicate.PartyMaster(func(s *sql.Selector) {
-		s.Where(sql.InValues(s.C(ledger.PartyColumn), fks...))
-	}))
-	neighbors, err := query.All(ctx)
-	if err != nil {
-		return err
-	}
-	for _, n := range neighbors {
-		fk := n.LedgerID
-		node, ok := nodeids[fk]
-		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "ledger_id" returned %v for node %v`, fk, n.ID)
-		}
-		assign(node, n)
 	}
 	return nil
 }

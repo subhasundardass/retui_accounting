@@ -24,9 +24,6 @@ type Ledger func(*sql.Selector)
 // Ledger_Group is the predicate function for ledger_group builders.
 type Ledger_Group func(*sql.Selector)
 
-// PartyMaster is the predicate function for partymaster builders.
-type PartyMaster func(*sql.Selector)
-
 // Settings is the predicate function for settings builders.
 type Settings func(*sql.Selector)
 

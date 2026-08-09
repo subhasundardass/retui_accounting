@@ -2,6 +2,7 @@ package ledger
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/subhasundardass/retui/ent"
 	appctx "github.com/subhasundardass/retui/internal/context"
@@ -21,7 +22,7 @@ func NewController(ctx *appctx.AppContext) *LedgerController {
 	}
 }
 
-func (c *LedgerController) List(groupID int) ([]*ent.Ledger, error) {
+func (c *LedgerController) Ledgers(groupID int) ([]*ent.Ledger, error) {
 	var (
 		ledgers []*ent.Ledger
 		err     error
@@ -34,6 +35,49 @@ func (c *LedgerController) List(groupID int) ([]*ent.Ledger, error) {
 	}
 
 	return ledgers, err
+}
+
+func (c *LedgerController) GetLedger(id int) (*LedgerState, error) {
+	ledger, err := c.repo.GetLedger(c.ctx.Ctx(), id)
+	if err != nil {
+		return nil, fmt.Errorf("failed to load group %d: %w", id, err)
+	}
+
+	return &LedgerState{
+		Code:        ledger.Code,
+		Name:        ledger.Name,
+		GroupID:     strconv.Itoa(ledger.GroupID),
+		Alias:       ledger.Alias,
+		Description: ledger.Description,
+		IsActive:    ledger.IsActive,
+		//--
+		// OpeningBalance: ledger.OpeningBalance,
+		// OpeningBalanceDate: ledger.OpeningBalanceDate.Format("DD/MM/YYYY"),
+		//--
+		AddressLine1: ledger.AddressLine1,
+		AddressLine2: ledger.AddressLine2,
+		City:         ledger.City,
+		State:        ledger.State,
+		Country:      ledger.Country,
+		Pincode:      ledger.Pincode,
+
+		// Contact fields
+		Phone:         ledger.Phone,
+		Mobile:        ledger.Mobile,
+		Email:         ledger.Email,
+		ContactPerson: ledger.ContactPerson,
+
+		// Tax registration
+		GSTRegistrationType: string(ledger.GstRegistrationType), // REGULAR, COMPOSITION, UNREGISTERED, CONSUMER, SEZ, OVERSEAS
+		GSTIN:               ledger.Gstin,
+		PAN:                 ledger.Pan,
+
+		// Bank details
+		BankName:      ledger.BankName,
+		BankAccountNo: ledger.BankAccountNo,
+		BankIFSC:      ledger.BankIfsc,
+		BankBranch:    ledger.BankName,
+	}, nil
 }
 
 func (c *LedgerController) LedgerFilterOptions(query string) []components.SelectOption {
@@ -102,15 +146,3 @@ func (c *LedgerController) CreateOrUpdate(mode FormMode, id int, in LedgerGroupS
 	}
 	return c.repo.GroupCreate(c.ctx.Ctx(), in)
 }
-
-// func (c *LedgerController) EditGroup(id int) {
-// 	group, err := c.repo.GetGroup(c.ctx.Ctx(), id)
-// 	if err != nil {
-// 		return nil, fmt.Errorf("failed to load Group %d: %w", id, err)
-// 	}
-// 	// return comp, nil
-
-// 	state:= LedgerGroupState{
-// 		Code: ,
-// 	}
-// }

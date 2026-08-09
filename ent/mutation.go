@@ -17,7 +17,6 @@ import (
 	"github.com/subhasundardass/retui/ent/journal_line"
 	"github.com/subhasundardass/retui/ent/ledger"
 	"github.com/subhasundardass/retui/ent/ledger_group"
-	"github.com/subhasundardass/retui/ent/partymaster"
 	"github.com/subhasundardass/retui/ent/predicate"
 	"github.com/subhasundardass/retui/ent/settings"
 	"github.com/subhasundardass/retui/ent/state"
@@ -38,7 +37,6 @@ const (
 	TypeJournalLine = "Journal_Line"
 	TypeLedger      = "Ledger"
 	TypeLedgerGroup = "Ledger_Group"
-	TypePartyMaster = "PartyMaster"
 	TypeSettings    = "Settings"
 	TypeState       = "State"
 )
@@ -4818,35 +4816,49 @@ func (m *JournalLineMutation) ResetEdge(name string) error {
 // LedgerMutation represents an operation that mutates the Ledger nodes in the graph.
 type LedgerMutation struct {
 	config
-	op                   Op
-	typ                  string
-	id                   *int
-	create_time          *time.Time
-	update_time          *time.Time
-	code                 *string
-	name                 *string
-	alias                *string
-	description          *string
-	opening_balance      *float64
-	addopening_balance   *float64
-	balance              *float64
-	addbalance           *float64
-	is_system            *bool
-	is_party             *bool
-	is_bank              *bool
-	is_cash              *bool
-	is_active            *bool
-	clearedFields        map[string]struct{}
-	group                *int
-	clearedgroup         bool
-	party                *int
-	clearedparty         bool
-	journal_lines        map[int]struct{}
-	removedjournal_lines map[int]struct{}
-	clearedjournal_lines bool
-	done                 bool
-	oldValue             func(context.Context) (*Ledger, error)
-	predicates           []predicate.Ledger
+	op                    Op
+	typ                   string
+	id                    *int
+	create_time           *time.Time
+	update_time           *time.Time
+	code                  *string
+	name                  *string
+	alias                 *string
+	description           *string
+	balance               *float64
+	addbalance            *float64
+	party_type            *ledger.PartyType
+	address_line1         *string
+	address_line2         *string
+	city                  *string
+	state                 *string
+	country               *string
+	pincode               *string
+	phone                 *string
+	mobile                *string
+	email                 *string
+	contact_person        *string
+	gst_registration_type *ledger.GstRegistrationType
+	gstin                 *string
+	pan                   *string
+	bank_name             *string
+	bank_account_no       *string
+	bank_ifsc             *string
+	bank_branch           *string
+	is_system             *bool
+	is_party              *bool
+	is_bank               *bool
+	is_cash               *bool
+	is_active             *bool
+	clearedFields         map[string]struct{}
+	group                 *int
+	clearedgroup          bool
+	journal_lines         map[int]struct{}
+	removedjournal_lines  map[int]struct{}
+	clearedjournal_lines  bool
+	done                  bool
+	oldValue              func(context.Context) (*Ledger, error)
+	predicates            []predicate.Ledger
 }
 
 var _ ent.Mutation = (*LedgerMutation)(nil)
@@ -5225,62 +5237,6 @@ func (m *LedgerMutation) ResetDescription() {
 	delete(m.clearedFields, ledger.FieldDescription)
 }
 
-// SetOpeningBalance sets the "opening_balance" field.
-func (m *LedgerMutation) SetOpeningBalance(f float64) {
-	m.opening_balance = &f
-	m.addopening_balance = nil
-}
-
-// OpeningBalance returns the value of the "opening_balance" field in the mutation.
-func (m *LedgerMutation) OpeningBalance() (r float64, exists bool) {
-	v := m.opening_balance
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldOpeningBalance returns the old "opening_balance" field's value of the Ledger entity.
-// If the Ledger object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *LedgerMutation) OldOpeningBalance(ctx context.Context) (v float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldOpeningBalance is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldOpeningBalance requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldOpeningBalance: %w", err)
-	}
-	return oldValue.OpeningBalance, nil
-}
-
-// AddOpeningBalance adds f to the "opening_balance" field.
-func (m *LedgerMutation) AddOpeningBalance(f float64) {
-	if m.addopening_balance != nil {
-		*m.addopening_balance += f
-	} else {
-		m.addopening_balance = &f
-	}
-}
-
-// AddedOpeningBalance returns the value that was added to the "opening_balance" field in this mutation.
-func (m *LedgerMutation) AddedOpeningBalance() (r float64, exists bool) {
-	v := m.addopening_balance
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetOpeningBalance resets all changes to the "opening_balance" field.
-func (m *LedgerMutation) ResetOpeningBalance() {
-	m.opening_balance = nil
-	m.addopening_balance = nil
-}
-
 // SetBalance sets the "balance" field.
 func (m *LedgerMutation) SetBalance(f float64) {
 	m.balance = &f
@@ -5335,6 +5291,862 @@ func (m *LedgerMutation) AddedBalance() (r float64, exists bool) {
 func (m *LedgerMutation) ResetBalance() {
 	m.balance = nil
 	m.addbalance = nil
+}
+
+// SetPartyType sets the "party_type" field.
+func (m *LedgerMutation) SetPartyType(lt ledger.PartyType) {
+	m.party_type = &lt
+}
+
+// PartyType returns the value of the "party_type" field in the mutation.
+func (m *LedgerMutation) PartyType() (r ledger.PartyType, exists bool) {
+	v := m.party_type
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPartyType returns the old "party_type" field's value of the Ledger entity.
+// If the Ledger object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LedgerMutation) OldPartyType(ctx context.Context) (v ledger.PartyType, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPartyType is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPartyType requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPartyType: %w", err)
+	}
+	return oldValue.PartyType, nil
+}
+
+// ResetPartyType resets all changes to the "party_type" field.
+func (m *LedgerMutation) ResetPartyType() {
+	m.party_type = nil
+}
+
+// SetAddressLine1 sets the "address_line1" field.
+func (m *LedgerMutation) SetAddressLine1(s string) {
+	m.address_line1 = &s
+}
+
+// AddressLine1 returns the value of the "address_line1" field in the mutation.
+func (m *LedgerMutation) AddressLine1() (r string, exists bool) {
+	v := m.address_line1
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAddressLine1 returns the old "address_line1" field's value of the Ledger entity.
+// If the Ledger object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LedgerMutation) OldAddressLine1(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAddressLine1 is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAddressLine1 requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAddressLine1: %w", err)
+	}
+	return oldValue.AddressLine1, nil
+}
+
+// ClearAddressLine1 clears the value of the "address_line1" field.
+func (m *LedgerMutation) ClearAddressLine1() {
+	m.address_line1 = nil
+	m.clearedFields[ledger.FieldAddressLine1] = struct{}{}
+}
+
+// AddressLine1Cleared returns if the "address_line1" field was cleared in this mutation.
+func (m *LedgerMutation) AddressLine1Cleared() bool {
+	_, ok := m.clearedFields[ledger.FieldAddressLine1]
+	return ok
+}
+
+// ResetAddressLine1 resets all changes to the "address_line1" field.
+func (m *LedgerMutation) ResetAddressLine1() {
+	m.address_line1 = nil
+	delete(m.clearedFields, ledger.FieldAddressLine1)
+}
+
+// SetAddressLine2 sets the "address_line2" field.
+func (m *LedgerMutation) SetAddressLine2(s string) {
+	m.address_line2 = &s
+}
+
+// AddressLine2 returns the value of the "address_line2" field in the mutation.
+func (m *LedgerMutation) AddressLine2() (r string, exists bool) {
+	v := m.address_line2
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAddressLine2 returns the old "address_line2" field's value of the Ledger entity.
+// If the Ledger object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LedgerMutation) OldAddressLine2(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAddressLine2 is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAddressLine2 requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAddressLine2: %w", err)
+	}
+	return oldValue.AddressLine2, nil
+}
+
+// ClearAddressLine2 clears the value of the "address_line2" field.
+func (m *LedgerMutation) ClearAddressLine2() {
+	m.address_line2 = nil
+	m.clearedFields[ledger.FieldAddressLine2] = struct{}{}
+}
+
+// AddressLine2Cleared returns if the "address_line2" field was cleared in this mutation.
+func (m *LedgerMutation) AddressLine2Cleared() bool {
+	_, ok := m.clearedFields[ledger.FieldAddressLine2]
+	return ok
+}
+
+// ResetAddressLine2 resets all changes to the "address_line2" field.
+func (m *LedgerMutation) ResetAddressLine2() {
+	m.address_line2 = nil
+	delete(m.clearedFields, ledger.FieldAddressLine2)
+}
+
+// SetCity sets the "city" field.
+func (m *LedgerMutation) SetCity(s string) {
+	m.city = &s
+}
+
+// City returns the value of the "city" field in the mutation.
+func (m *LedgerMutation) City() (r string, exists bool) {
+	v := m.city
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCity returns the old "city" field's value of the Ledger entity.
+// If the Ledger object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LedgerMutation) OldCity(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCity is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCity requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCity: %w", err)
+	}
+	return oldValue.City, nil
+}
+
+// ClearCity clears the value of the "city" field.
+func (m *LedgerMutation) ClearCity() {
+	m.city = nil
+	m.clearedFields[ledger.FieldCity] = struct{}{}
+}
+
+// CityCleared returns if the "city" field was cleared in this mutation.
+func (m *LedgerMutation) CityCleared() bool {
+	_, ok := m.clearedFields[ledger.FieldCity]
+	return ok
+}
+
+// ResetCity resets all changes to the "city" field.
+func (m *LedgerMutation) ResetCity() {
+	m.city = nil
+	delete(m.clearedFields, ledger.FieldCity)
+}
+
+// SetState sets the "state" field.
+func (m *LedgerMutation) SetState(s string) {
+	m.state = &s
+}
+
+// State returns the value of the "state" field in the mutation.
+func (m *LedgerMutation) State() (r string, exists bool) {
+	v := m.state
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldState returns the old "state" field's value of the Ledger entity.
+// If the Ledger object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LedgerMutation) OldState(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldState is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldState requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldState: %w", err)
+	}
+	return oldValue.State, nil
+}
+
+// ClearState clears the value of the "state" field.
+func (m *LedgerMutation) ClearState() {
+	m.state = nil
+	m.clearedFields[ledger.FieldState] = struct{}{}
+}
+
+// StateCleared returns if the "state" field was cleared in this mutation.
+func (m *LedgerMutation) StateCleared() bool {
+	_, ok := m.clearedFields[ledger.FieldState]
+	return ok
+}
+
+// ResetState resets all changes to the "state" field.
+func (m *LedgerMutation) ResetState() {
+	m.state = nil
+	delete(m.clearedFields, ledger.FieldState)
+}
+
+// SetCountry sets the "country" field.
+func (m *LedgerMutation) SetCountry(s string) {
+	m.country = &s
+}
+
+// Country returns the value of the "country" field in the mutation.
+func (m *LedgerMutation) Country() (r string, exists bool) {
+	v := m.country
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCountry returns the old "country" field's value of the Ledger entity.
+// If the Ledger object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LedgerMutation) OldCountry(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCountry is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCountry requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCountry: %w", err)
+	}
+	return oldValue.Country, nil
+}
+
+// ClearCountry clears the value of the "country" field.
+func (m *LedgerMutation) ClearCountry() {
+	m.country = nil
+	m.clearedFields[ledger.FieldCountry] = struct{}{}
+}
+
+// CountryCleared returns if the "country" field was cleared in this mutation.
+func (m *LedgerMutation) CountryCleared() bool {
+	_, ok := m.clearedFields[ledger.FieldCountry]
+	return ok
+}
+
+// ResetCountry resets all changes to the "country" field.
+func (m *LedgerMutation) ResetCountry() {
+	m.country = nil
+	delete(m.clearedFields, ledger.FieldCountry)
+}
+
+// SetPincode sets the "pincode" field.
+func (m *LedgerMutation) SetPincode(s string) {
+	m.pincode = &s
+}
+
+// Pincode returns the value of the "pincode" field in the mutation.
+func (m *LedgerMutation) Pincode() (r string, exists bool) {
+	v := m.pincode
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPincode returns the old "pincode" field's value of the Ledger entity.
+// If the Ledger object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LedgerMutation) OldPincode(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPincode is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPincode requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPincode: %w", err)
+	}
+	return oldValue.Pincode, nil
+}
+
+// ClearPincode clears the value of the "pincode" field.
+func (m *LedgerMutation) ClearPincode() {
+	m.pincode = nil
+	m.clearedFields[ledger.FieldPincode] = struct{}{}
+}
+
+// PincodeCleared returns if the "pincode" field was cleared in this mutation.
+func (m *LedgerMutation) PincodeCleared() bool {
+	_, ok := m.clearedFields[ledger.FieldPincode]
+	return ok
+}
+
+// ResetPincode resets all changes to the "pincode" field.
+func (m *LedgerMutation) ResetPincode() {
+	m.pincode = nil
+	delete(m.clearedFields, ledger.FieldPincode)
+}
+
+// SetPhone sets the "phone" field.
+func (m *LedgerMutation) SetPhone(s string) {
+	m.phone = &s
+}
+
+// Phone returns the value of the "phone" field in the mutation.
+func (m *LedgerMutation) Phone() (r string, exists bool) {
+	v := m.phone
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPhone returns the old "phone" field's value of the Ledger entity.
+// If the Ledger object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LedgerMutation) OldPhone(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPhone is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPhone requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPhone: %w", err)
+	}
+	return oldValue.Phone, nil
+}
+
+// ClearPhone clears the value of the "phone" field.
+func (m *LedgerMutation) ClearPhone() {
+	m.phone = nil
+	m.clearedFields[ledger.FieldPhone] = struct{}{}
+}
+
+// PhoneCleared returns if the "phone" field was cleared in this mutation.
+func (m *LedgerMutation) PhoneCleared() bool {
+	_, ok := m.clearedFields[ledger.FieldPhone]
+	return ok
+}
+
+// ResetPhone resets all changes to the "phone" field.
+func (m *LedgerMutation) ResetPhone() {
+	m.phone = nil
+	delete(m.clearedFields, ledger.FieldPhone)
+}
+
+// SetMobile sets the "mobile" field.
+func (m *LedgerMutation) SetMobile(s string) {
+	m.mobile = &s
+}
+
+// Mobile returns the value of the "mobile" field in the mutation.
+func (m *LedgerMutation) Mobile() (r string, exists bool) {
+	v := m.mobile
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldMobile returns the old "mobile" field's value of the Ledger entity.
+// If the Ledger object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LedgerMutation) OldMobile(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldMobile is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldMobile requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldMobile: %w", err)
+	}
+	return oldValue.Mobile, nil
+}
+
+// ClearMobile clears the value of the "mobile" field.
+func (m *LedgerMutation) ClearMobile() {
+	m.mobile = nil
+	m.clearedFields[ledger.FieldMobile] = struct{}{}
+}
+
+// MobileCleared returns if the "mobile" field was cleared in this mutation.
+func (m *LedgerMutation) MobileCleared() bool {
+	_, ok := m.clearedFields[ledger.FieldMobile]
+	return ok
+}
+
+// ResetMobile resets all changes to the "mobile" field.
+func (m *LedgerMutation) ResetMobile() {
+	m.mobile = nil
+	delete(m.clearedFields, ledger.FieldMobile)
+}
+
+// SetEmail sets the "email" field.
+func (m *LedgerMutation) SetEmail(s string) {
+	m.email = &s
+}
+
+// Email returns the value of the "email" field in the mutation.
+func (m *LedgerMutation) Email() (r string, exists bool) {
+	v := m.email
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldEmail returns the old "email" field's value of the Ledger entity.
+// If the Ledger object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LedgerMutation) OldEmail(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldEmail is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldEmail requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldEmail: %w", err)
+	}
+	return oldValue.Email, nil
+}
+
+// ClearEmail clears the value of the "email" field.
+func (m *LedgerMutation) ClearEmail() {
+	m.email = nil
+	m.clearedFields[ledger.FieldEmail] = struct{}{}
+}
+
+// EmailCleared returns if the "email" field was cleared in this mutation.
+func (m *LedgerMutation) EmailCleared() bool {
+	_, ok := m.clearedFields[ledger.FieldEmail]
+	return ok
+}
+
+// ResetEmail resets all changes to the "email" field.
+func (m *LedgerMutation) ResetEmail() {
+	m.email = nil
+	delete(m.clearedFields, ledger.FieldEmail)
+}
+
+// SetContactPerson sets the "contact_person" field.
+func (m *LedgerMutation) SetContactPerson(s string) {
+	m.contact_person = &s
+}
+
+// ContactPerson returns the value of the "contact_person" field in the mutation.
+func (m *LedgerMutation) ContactPerson() (r string, exists bool) {
+	v := m.contact_person
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldContactPerson returns the old "contact_person" field's value of the Ledger entity.
+// If the Ledger object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LedgerMutation) OldContactPerson(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldContactPerson is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldContactPerson requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldContactPerson: %w", err)
+	}
+	return oldValue.ContactPerson, nil
+}
+
+// ClearContactPerson clears the value of the "contact_person" field.
+func (m *LedgerMutation) ClearContactPerson() {
+	m.contact_person = nil
+	m.clearedFields[ledger.FieldContactPerson] = struct{}{}
+}
+
+// ContactPersonCleared returns if the "contact_person" field was cleared in this mutation.
+func (m *LedgerMutation) ContactPersonCleared() bool {
+	_, ok := m.clearedFields[ledger.FieldContactPerson]
+	return ok
+}
+
+// ResetContactPerson resets all changes to the "contact_person" field.
+func (m *LedgerMutation) ResetContactPerson() {
+	m.contact_person = nil
+	delete(m.clearedFields, ledger.FieldContactPerson)
+}
+
+// SetGstRegistrationType sets the "gst_registration_type" field.
+func (m *LedgerMutation) SetGstRegistrationType(lrt ledger.GstRegistrationType) {
+	m.gst_registration_type = &lrt
+}
+
+// GstRegistrationType returns the value of the "gst_registration_type" field in the mutation.
+func (m *LedgerMutation) GstRegistrationType() (r ledger.GstRegistrationType, exists bool) {
+	v := m.gst_registration_type
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldGstRegistrationType returns the old "gst_registration_type" field's value of the Ledger entity.
+// If the Ledger object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LedgerMutation) OldGstRegistrationType(ctx context.Context) (v ledger.GstRegistrationType, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldGstRegistrationType is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldGstRegistrationType requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldGstRegistrationType: %w", err)
+	}
+	return oldValue.GstRegistrationType, nil
+}
+
+// ResetGstRegistrationType resets all changes to the "gst_registration_type" field.
+func (m *LedgerMutation) ResetGstRegistrationType() {
+	m.gst_registration_type = nil
+}
+
+// SetGstin sets the "gstin" field.
+func (m *LedgerMutation) SetGstin(s string) {
+	m.gstin = &s
+}
+
+// Gstin returns the value of the "gstin" field in the mutation.
+func (m *LedgerMutation) Gstin() (r string, exists bool) {
+	v := m.gstin
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldGstin returns the old "gstin" field's value of the Ledger entity.
+// If the Ledger object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LedgerMutation) OldGstin(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldGstin is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldGstin requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldGstin: %w", err)
+	}
+	return oldValue.Gstin, nil
+}
+
+// ClearGstin clears the value of the "gstin" field.
+func (m *LedgerMutation) ClearGstin() {
+	m.gstin = nil
+	m.clearedFields[ledger.FieldGstin] = struct{}{}
+}
+
+// GstinCleared returns if the "gstin" field was cleared in this mutation.
+func (m *LedgerMutation) GstinCleared() bool {
+	_, ok := m.clearedFields[ledger.FieldGstin]
+	return ok
+}
+
+// ResetGstin resets all changes to the "gstin" field.
+func (m *LedgerMutation) ResetGstin() {
+	m.gstin = nil
+	delete(m.clearedFields, ledger.FieldGstin)
+}
+
+// SetPan sets the "pan" field.
+func (m *LedgerMutation) SetPan(s string) {
+	m.pan = &s
+}
+
+// Pan returns the value of the "pan" field in the mutation.
+func (m *LedgerMutation) Pan() (r string, exists bool) {
+	v := m.pan
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPan returns the old "pan" field's value of the Ledger entity.
+// If the Ledger object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LedgerMutation) OldPan(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPan is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPan requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPan: %w", err)
+	}
+	return oldValue.Pan, nil
+}
+
+// ClearPan clears the value of the "pan" field.
+func (m *LedgerMutation) ClearPan() {
+	m.pan = nil
+	m.clearedFields[ledger.FieldPan] = struct{}{}
+}
+
+// PanCleared returns if the "pan" field was cleared in this mutation.
+func (m *LedgerMutation) PanCleared() bool {
+	_, ok := m.clearedFields[ledger.FieldPan]
+	return ok
+}
+
+// ResetPan resets all changes to the "pan" field.
+func (m *LedgerMutation) ResetPan() {
+	m.pan = nil
+	delete(m.clearedFields, ledger.FieldPan)
+}
+
+// SetBankName sets the "bank_name" field.
+func (m *LedgerMutation) SetBankName(s string) {
+	m.bank_name = &s
+}
+
+// BankName returns the value of the "bank_name" field in the mutation.
+func (m *LedgerMutation) BankName() (r string, exists bool) {
+	v := m.bank_name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldBankName returns the old "bank_name" field's value of the Ledger entity.
+// If the Ledger object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LedgerMutation) OldBankName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldBankName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldBankName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldBankName: %w", err)
+	}
+	return oldValue.BankName, nil
+}
+
+// ClearBankName clears the value of the "bank_name" field.
+func (m *LedgerMutation) ClearBankName() {
+	m.bank_name = nil
+	m.clearedFields[ledger.FieldBankName] = struct{}{}
+}
+
+// BankNameCleared returns if the "bank_name" field was cleared in this mutation.
+func (m *LedgerMutation) BankNameCleared() bool {
+	_, ok := m.clearedFields[ledger.FieldBankName]
+	return ok
+}
+
+// ResetBankName resets all changes to the "bank_name" field.
+func (m *LedgerMutation) ResetBankName() {
+	m.bank_name = nil
+	delete(m.clearedFields, ledger.FieldBankName)
+}
+
+// SetBankAccountNo sets the "bank_account_no" field.
+func (m *LedgerMutation) SetBankAccountNo(s string) {
+	m.bank_account_no = &s
+}
+
+// BankAccountNo returns the value of the "bank_account_no" field in the mutation.
+func (m *LedgerMutation) BankAccountNo() (r string, exists bool) {
+	v := m.bank_account_no
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldBankAccountNo returns the old "bank_account_no" field's value of the Ledger entity.
+// If the Ledger object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LedgerMutation) OldBankAccountNo(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldBankAccountNo is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldBankAccountNo requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldBankAccountNo: %w", err)
+	}
+	return oldValue.BankAccountNo, nil
+}
+
+// ClearBankAccountNo clears the value of the "bank_account_no" field.
+func (m *LedgerMutation) ClearBankAccountNo() {
+	m.bank_account_no = nil
+	m.clearedFields[ledger.FieldBankAccountNo] = struct{}{}
+}
+
+// BankAccountNoCleared returns if the "bank_account_no" field was cleared in this mutation.
+func (m *LedgerMutation) BankAccountNoCleared() bool {
+	_, ok := m.clearedFields[ledger.FieldBankAccountNo]
+	return ok
+}
+
+// ResetBankAccountNo resets all changes to the "bank_account_no" field.
+func (m *LedgerMutation) ResetBankAccountNo() {
+	m.bank_account_no = nil
+	delete(m.clearedFields, ledger.FieldBankAccountNo)
+}
+
+// SetBankIfsc sets the "bank_ifsc" field.
+func (m *LedgerMutation) SetBankIfsc(s string) {
+	m.bank_ifsc = &s
+}
+
+// BankIfsc returns the value of the "bank_ifsc" field in the mutation.
+func (m *LedgerMutation) BankIfsc() (r string, exists bool) {
+	v := m.bank_ifsc
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldBankIfsc returns the old "bank_ifsc" field's value of the Ledger entity.
+// If the Ledger object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LedgerMutation) OldBankIfsc(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldBankIfsc is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldBankIfsc requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldBankIfsc: %w", err)
+	}
+	return oldValue.BankIfsc, nil
+}
+
+// ClearBankIfsc clears the value of the "bank_ifsc" field.
+func (m *LedgerMutation) ClearBankIfsc() {
+	m.bank_ifsc = nil
+	m.clearedFields[ledger.FieldBankIfsc] = struct{}{}
+}
+
+// BankIfscCleared returns if the "bank_ifsc" field was cleared in this mutation.
+func (m *LedgerMutation) BankIfscCleared() bool {
+	_, ok := m.clearedFields[ledger.FieldBankIfsc]
+	return ok
+}
+
+// ResetBankIfsc resets all changes to the "bank_ifsc" field.
+func (m *LedgerMutation) ResetBankIfsc() {
+	m.bank_ifsc = nil
+	delete(m.clearedFields, ledger.FieldBankIfsc)
+}
+
+// SetBankBranch sets the "bank_branch" field.
+func (m *LedgerMutation) SetBankBranch(s string) {
+	m.bank_branch = &s
+}
+
+// BankBranch returns the value of the "bank_branch" field in the mutation.
+func (m *LedgerMutation) BankBranch() (r string, exists bool) {
+	v := m.bank_branch
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldBankBranch returns the old "bank_branch" field's value of the Ledger entity.
+// If the Ledger object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LedgerMutation) OldBankBranch(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldBankBranch is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldBankBranch requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldBankBranch: %w", err)
+	}
+	return oldValue.BankBranch, nil
+}
+
+// ClearBankBranch clears the value of the "bank_branch" field.
+func (m *LedgerMutation) ClearBankBranch() {
+	m.bank_branch = nil
+	m.clearedFields[ledger.FieldBankBranch] = struct{}{}
+}
+
+// BankBranchCleared returns if the "bank_branch" field was cleared in this mutation.
+func (m *LedgerMutation) BankBranchCleared() bool {
+	_, ok := m.clearedFields[ledger.FieldBankBranch]
+	return ok
+}
+
+// ResetBankBranch resets all changes to the "bank_branch" field.
+func (m *LedgerMutation) ResetBankBranch() {
+	m.bank_branch = nil
+	delete(m.clearedFields, ledger.FieldBankBranch)
 }
 
 // SetIsSystem sets the "is_system" field.
@@ -5544,45 +6356,6 @@ func (m *LedgerMutation) ResetGroup() {
 	m.clearedgroup = false
 }
 
-// SetPartyID sets the "party" edge to the PartyMaster entity by id.
-func (m *LedgerMutation) SetPartyID(id int) {
-	m.party = &id
-}
-
-// ClearParty clears the "party" edge to the PartyMaster entity.
-func (m *LedgerMutation) ClearParty() {
-	m.clearedparty = true
-}
-
-// PartyCleared reports if the "party" edge to the PartyMaster entity was cleared.
-func (m *LedgerMutation) PartyCleared() bool {
-	return m.clearedparty
-}
-
-// PartyID returns the "party" edge ID in the mutation.
-func (m *LedgerMutation) PartyID() (id int, exists bool) {
-	if m.party != nil {
-		return *m.party, true
-	}
-	return
-}
-
-// PartyIDs returns the "party" edge IDs in the mutation.
-// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
-// PartyID instead. It exists only for internal usage by the builders.
-func (m *LedgerMutation) PartyIDs() (ids []int) {
-	if id := m.party; id != nil {
-		ids = append(ids, *id)
-	}
-	return
-}
-
-// ResetParty resets all changes to the "party" edge.
-func (m *LedgerMutation) ResetParty() {
-	m.party = nil
-	m.clearedparty = false
-}
-
 // AddJournalLineIDs adds the "journal_lines" edge to the Journal_Line entity by ids.
 func (m *LedgerMutation) AddJournalLineIDs(ids ...int) {
 	if m.journal_lines == nil {
@@ -5671,7 +6444,7 @@ func (m *LedgerMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *LedgerMutation) Fields() []string {
-	fields := make([]string, 0, 14)
+	fields := make([]string, 0, 31)
 	if m.create_time != nil {
 		fields = append(fields, ledger.FieldCreateTime)
 	}
@@ -5693,11 +6466,62 @@ func (m *LedgerMutation) Fields() []string {
 	if m.description != nil {
 		fields = append(fields, ledger.FieldDescription)
 	}
-	if m.opening_balance != nil {
-		fields = append(fields, ledger.FieldOpeningBalance)
-	}
 	if m.balance != nil {
 		fields = append(fields, ledger.FieldBalance)
+	}
+	if m.party_type != nil {
+		fields = append(fields, ledger.FieldPartyType)
+	}
+	if m.address_line1 != nil {
+		fields = append(fields, ledger.FieldAddressLine1)
+	}
+	if m.address_line2 != nil {
+		fields = append(fields, ledger.FieldAddressLine2)
+	}
+	if m.city != nil {
+		fields = append(fields, ledger.FieldCity)
+	}
+	if m.state != nil {
+		fields = append(fields, ledger.FieldState)
+	}
+	if m.country != nil {
+		fields = append(fields, ledger.FieldCountry)
+	}
+	if m.pincode != nil {
+		fields = append(fields, ledger.FieldPincode)
+	}
+	if m.phone != nil {
+		fields = append(fields, ledger.FieldPhone)
+	}
+	if m.mobile != nil {
+		fields = append(fields, ledger.FieldMobile)
+	}
+	if m.email != nil {
+		fields = append(fields, ledger.FieldEmail)
+	}
+	if m.contact_person != nil {
+		fields = append(fields, ledger.FieldContactPerson)
+	}
+	if m.gst_registration_type != nil {
+		fields = append(fields, ledger.FieldGstRegistrationType)
+	}
+	if m.gstin != nil {
+		fields = append(fields, ledger.FieldGstin)
+	}
+	if m.pan != nil {
+		fields = append(fields, ledger.FieldPan)
+	}
+	if m.bank_name != nil {
+		fields = append(fields, ledger.FieldBankName)
+	}
+	if m.bank_account_no != nil {
+		fields = append(fields, ledger.FieldBankAccountNo)
+	}
+	if m.bank_ifsc != nil {
+		fields = append(fields, ledger.FieldBankIfsc)
+	}
+	if m.bank_branch != nil {
+		fields = append(fields, ledger.FieldBankBranch)
 	}
 	if m.is_system != nil {
 		fields = append(fields, ledger.FieldIsSystem)
@@ -5736,10 +6560,44 @@ func (m *LedgerMutation) Field(name string) (ent.Value, bool) {
 		return m.Alias()
 	case ledger.FieldDescription:
 		return m.Description()
-	case ledger.FieldOpeningBalance:
-		return m.OpeningBalance()
 	case ledger.FieldBalance:
 		return m.Balance()
+	case ledger.FieldPartyType:
+		return m.PartyType()
+	case ledger.FieldAddressLine1:
+		return m.AddressLine1()
+	case ledger.FieldAddressLine2:
+		return m.AddressLine2()
+	case ledger.FieldCity:
+		return m.City()
+	case ledger.FieldState:
+		return m.State()
+	case ledger.FieldCountry:
+		return m.Country()
+	case ledger.FieldPincode:
+		return m.Pincode()
+	case ledger.FieldPhone:
+		return m.Phone()
+	case ledger.FieldMobile:
+		return m.Mobile()
+	case ledger.FieldEmail:
+		return m.Email()
+	case ledger.FieldContactPerson:
+		return m.ContactPerson()
+	case ledger.FieldGstRegistrationType:
+		return m.GstRegistrationType()
+	case ledger.FieldGstin:
+		return m.Gstin()
+	case ledger.FieldPan:
+		return m.Pan()
+	case ledger.FieldBankName:
+		return m.BankName()
+	case ledger.FieldBankAccountNo:
+		return m.BankAccountNo()
+	case ledger.FieldBankIfsc:
+		return m.BankIfsc()
+	case ledger.FieldBankBranch:
+		return m.BankBranch()
 	case ledger.FieldIsSystem:
 		return m.IsSystem()
 	case ledger.FieldIsParty:
@@ -5773,10 +6631,44 @@ func (m *LedgerMutation) OldField(ctx context.Context, name string) (ent.Value, 
 		return m.OldAlias(ctx)
 	case ledger.FieldDescription:
 		return m.OldDescription(ctx)
-	case ledger.FieldOpeningBalance:
-		return m.OldOpeningBalance(ctx)
 	case ledger.FieldBalance:
 		return m.OldBalance(ctx)
+	case ledger.FieldPartyType:
+		return m.OldPartyType(ctx)
+	case ledger.FieldAddressLine1:
+		return m.OldAddressLine1(ctx)
+	case ledger.FieldAddressLine2:
+		return m.OldAddressLine2(ctx)
+	case ledger.FieldCity:
+		return m.OldCity(ctx)
+	case ledger.FieldState:
+		return m.OldState(ctx)
+	case ledger.FieldCountry:
+		return m.OldCountry(ctx)
+	case ledger.FieldPincode:
+		return m.OldPincode(ctx)
+	case ledger.FieldPhone:
+		return m.OldPhone(ctx)
+	case ledger.FieldMobile:
+		return m.OldMobile(ctx)
+	case ledger.FieldEmail:
+		return m.OldEmail(ctx)
+	case ledger.FieldContactPerson:
+		return m.OldContactPerson(ctx)
+	case ledger.FieldGstRegistrationType:
+		return m.OldGstRegistrationType(ctx)
+	case ledger.FieldGstin:
+		return m.OldGstin(ctx)
+	case ledger.FieldPan:
+		return m.OldPan(ctx)
+	case ledger.FieldBankName:
+		return m.OldBankName(ctx)
+	case ledger.FieldBankAccountNo:
+		return m.OldBankAccountNo(ctx)
+	case ledger.FieldBankIfsc:
+		return m.OldBankIfsc(ctx)
+	case ledger.FieldBankBranch:
+		return m.OldBankBranch(ctx)
 	case ledger.FieldIsSystem:
 		return m.OldIsSystem(ctx)
 	case ledger.FieldIsParty:
@@ -5845,19 +6737,138 @@ func (m *LedgerMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetDescription(v)
 		return nil
-	case ledger.FieldOpeningBalance:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetOpeningBalance(v)
-		return nil
 	case ledger.FieldBalance:
 		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetBalance(v)
+		return nil
+	case ledger.FieldPartyType:
+		v, ok := value.(ledger.PartyType)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPartyType(v)
+		return nil
+	case ledger.FieldAddressLine1:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAddressLine1(v)
+		return nil
+	case ledger.FieldAddressLine2:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAddressLine2(v)
+		return nil
+	case ledger.FieldCity:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCity(v)
+		return nil
+	case ledger.FieldState:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetState(v)
+		return nil
+	case ledger.FieldCountry:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCountry(v)
+		return nil
+	case ledger.FieldPincode:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPincode(v)
+		return nil
+	case ledger.FieldPhone:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPhone(v)
+		return nil
+	case ledger.FieldMobile:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetMobile(v)
+		return nil
+	case ledger.FieldEmail:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetEmail(v)
+		return nil
+	case ledger.FieldContactPerson:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetContactPerson(v)
+		return nil
+	case ledger.FieldGstRegistrationType:
+		v, ok := value.(ledger.GstRegistrationType)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetGstRegistrationType(v)
+		return nil
+	case ledger.FieldGstin:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetGstin(v)
+		return nil
+	case ledger.FieldPan:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPan(v)
+		return nil
+	case ledger.FieldBankName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetBankName(v)
+		return nil
+	case ledger.FieldBankAccountNo:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetBankAccountNo(v)
+		return nil
+	case ledger.FieldBankIfsc:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetBankIfsc(v)
+		return nil
+	case ledger.FieldBankBranch:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetBankBranch(v)
 		return nil
 	case ledger.FieldIsSystem:
 		v, ok := value.(bool)
@@ -5902,9 +6913,6 @@ func (m *LedgerMutation) SetField(name string, value ent.Value) error {
 // this mutation.
 func (m *LedgerMutation) AddedFields() []string {
 	var fields []string
-	if m.addopening_balance != nil {
-		fields = append(fields, ledger.FieldOpeningBalance)
-	}
 	if m.addbalance != nil {
 		fields = append(fields, ledger.FieldBalance)
 	}
@@ -5916,8 +6924,6 @@ func (m *LedgerMutation) AddedFields() []string {
 // was not set, or was not defined in the schema.
 func (m *LedgerMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
-	case ledger.FieldOpeningBalance:
-		return m.AddedOpeningBalance()
 	case ledger.FieldBalance:
 		return m.AddedBalance()
 	}
@@ -5929,13 +6935,6 @@ func (m *LedgerMutation) AddedField(name string) (ent.Value, bool) {
 // type.
 func (m *LedgerMutation) AddField(name string, value ent.Value) error {
 	switch name {
-	case ledger.FieldOpeningBalance:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddOpeningBalance(v)
-		return nil
 	case ledger.FieldBalance:
 		v, ok := value.(float64)
 		if !ok {
@@ -5957,6 +6956,54 @@ func (m *LedgerMutation) ClearedFields() []string {
 	if m.FieldCleared(ledger.FieldDescription) {
 		fields = append(fields, ledger.FieldDescription)
 	}
+	if m.FieldCleared(ledger.FieldAddressLine1) {
+		fields = append(fields, ledger.FieldAddressLine1)
+	}
+	if m.FieldCleared(ledger.FieldAddressLine2) {
+		fields = append(fields, ledger.FieldAddressLine2)
+	}
+	if m.FieldCleared(ledger.FieldCity) {
+		fields = append(fields, ledger.FieldCity)
+	}
+	if m.FieldCleared(ledger.FieldState) {
+		fields = append(fields, ledger.FieldState)
+	}
+	if m.FieldCleared(ledger.FieldCountry) {
+		fields = append(fields, ledger.FieldCountry)
+	}
+	if m.FieldCleared(ledger.FieldPincode) {
+		fields = append(fields, ledger.FieldPincode)
+	}
+	if m.FieldCleared(ledger.FieldPhone) {
+		fields = append(fields, ledger.FieldPhone)
+	}
+	if m.FieldCleared(ledger.FieldMobile) {
+		fields = append(fields, ledger.FieldMobile)
+	}
+	if m.FieldCleared(ledger.FieldEmail) {
+		fields = append(fields, ledger.FieldEmail)
+	}
+	if m.FieldCleared(ledger.FieldContactPerson) {
+		fields = append(fields, ledger.FieldContactPerson)
+	}
+	if m.FieldCleared(ledger.FieldGstin) {
+		fields = append(fields, ledger.FieldGstin)
+	}
+	if m.FieldCleared(ledger.FieldPan) {
+		fields = append(fields, ledger.FieldPan)
+	}
+	if m.FieldCleared(ledger.FieldBankName) {
+		fields = append(fields, ledger.FieldBankName)
+	}
+	if m.FieldCleared(ledger.FieldBankAccountNo) {
+		fields = append(fields, ledger.FieldBankAccountNo)
+	}
+	if m.FieldCleared(ledger.FieldBankIfsc) {
+		fields = append(fields, ledger.FieldBankIfsc)
+	}
+	if m.FieldCleared(ledger.FieldBankBranch) {
+		fields = append(fields, ledger.FieldBankBranch)
+	}
 	return fields
 }
 
@@ -5976,6 +7023,54 @@ func (m *LedgerMutation) ClearField(name string) error {
 		return nil
 	case ledger.FieldDescription:
 		m.ClearDescription()
+		return nil
+	case ledger.FieldAddressLine1:
+		m.ClearAddressLine1()
+		return nil
+	case ledger.FieldAddressLine2:
+		m.ClearAddressLine2()
+		return nil
+	case ledger.FieldCity:
+		m.ClearCity()
+		return nil
+	case ledger.FieldState:
+		m.ClearState()
+		return nil
+	case ledger.FieldCountry:
+		m.ClearCountry()
+		return nil
+	case ledger.FieldPincode:
+		m.ClearPincode()
+		return nil
+	case ledger.FieldPhone:
+		m.ClearPhone()
+		return nil
+	case ledger.FieldMobile:
+		m.ClearMobile()
+		return nil
+	case ledger.FieldEmail:
+		m.ClearEmail()
+		return nil
+	case ledger.FieldContactPerson:
+		m.ClearContactPerson()
+		return nil
+	case ledger.FieldGstin:
+		m.ClearGstin()
+		return nil
+	case ledger.FieldPan:
+		m.ClearPan()
+		return nil
+	case ledger.FieldBankName:
+		m.ClearBankName()
+		return nil
+	case ledger.FieldBankAccountNo:
+		m.ClearBankAccountNo()
+		return nil
+	case ledger.FieldBankIfsc:
+		m.ClearBankIfsc()
+		return nil
+	case ledger.FieldBankBranch:
+		m.ClearBankBranch()
 		return nil
 	}
 	return fmt.Errorf("unknown Ledger nullable field %s", name)
@@ -6006,11 +7101,62 @@ func (m *LedgerMutation) ResetField(name string) error {
 	case ledger.FieldDescription:
 		m.ResetDescription()
 		return nil
-	case ledger.FieldOpeningBalance:
-		m.ResetOpeningBalance()
-		return nil
 	case ledger.FieldBalance:
 		m.ResetBalance()
+		return nil
+	case ledger.FieldPartyType:
+		m.ResetPartyType()
+		return nil
+	case ledger.FieldAddressLine1:
+		m.ResetAddressLine1()
+		return nil
+	case ledger.FieldAddressLine2:
+		m.ResetAddressLine2()
+		return nil
+	case ledger.FieldCity:
+		m.ResetCity()
+		return nil
+	case ledger.FieldState:
+		m.ResetState()
+		return nil
+	case ledger.FieldCountry:
+		m.ResetCountry()
+		return nil
+	case ledger.FieldPincode:
+		m.ResetPincode()
+		return nil
+	case ledger.FieldPhone:
+		m.ResetPhone()
+		return nil
+	case ledger.FieldMobile:
+		m.ResetMobile()
+		return nil
+	case ledger.FieldEmail:
+		m.ResetEmail()
+		return nil
+	case ledger.FieldContactPerson:
+		m.ResetContactPerson()
+		return nil
+	case ledger.FieldGstRegistrationType:
+		m.ResetGstRegistrationType()
+		return nil
+	case ledger.FieldGstin:
+		m.ResetGstin()
+		return nil
+	case ledger.FieldPan:
+		m.ResetPan()
+		return nil
+	case ledger.FieldBankName:
+		m.ResetBankName()
+		return nil
+	case ledger.FieldBankAccountNo:
+		m.ResetBankAccountNo()
+		return nil
+	case ledger.FieldBankIfsc:
+		m.ResetBankIfsc()
+		return nil
+	case ledger.FieldBankBranch:
+		m.ResetBankBranch()
 		return nil
 	case ledger.FieldIsSystem:
 		m.ResetIsSystem()
@@ -6033,12 +7179,9 @@ func (m *LedgerMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *LedgerMutation) AddedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 2)
 	if m.group != nil {
 		edges = append(edges, ledger.EdgeGroup)
-	}
-	if m.party != nil {
-		edges = append(edges, ledger.EdgeParty)
 	}
 	if m.journal_lines != nil {
 		edges = append(edges, ledger.EdgeJournalLines)
@@ -6054,10 +7197,6 @@ func (m *LedgerMutation) AddedIDs(name string) []ent.Value {
 		if id := m.group; id != nil {
 			return []ent.Value{*id}
 		}
-	case ledger.EdgeParty:
-		if id := m.party; id != nil {
-			return []ent.Value{*id}
-		}
 	case ledger.EdgeJournalLines:
 		ids := make([]ent.Value, 0, len(m.journal_lines))
 		for id := range m.journal_lines {
@@ -6070,7 +7209,7 @@ func (m *LedgerMutation) AddedIDs(name string) []ent.Value {
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *LedgerMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 2)
 	if m.removedjournal_lines != nil {
 		edges = append(edges, ledger.EdgeJournalLines)
 	}
@@ -6093,12 +7232,9 @@ func (m *LedgerMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *LedgerMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 3)
+	edges := make([]string, 0, 2)
 	if m.clearedgroup {
 		edges = append(edges, ledger.EdgeGroup)
-	}
-	if m.clearedparty {
-		edges = append(edges, ledger.EdgeParty)
 	}
 	if m.clearedjournal_lines {
 		edges = append(edges, ledger.EdgeJournalLines)
@@ -6112,8 +7248,6 @@ func (m *LedgerMutation) EdgeCleared(name string) bool {
 	switch name {
 	case ledger.EdgeGroup:
 		return m.clearedgroup
-	case ledger.EdgeParty:
-		return m.clearedparty
 	case ledger.EdgeJournalLines:
 		return m.clearedjournal_lines
 	}
@@ -6127,9 +7261,6 @@ func (m *LedgerMutation) ClearEdge(name string) error {
 	case ledger.EdgeGroup:
 		m.ClearGroup()
 		return nil
-	case ledger.EdgeParty:
-		m.ClearParty()
-		return nil
 	}
 	return fmt.Errorf("unknown Ledger unique edge %s", name)
 }
@@ -6140,9 +7271,6 @@ func (m *LedgerMutation) ResetEdge(name string) error {
 	switch name {
 	case ledger.EdgeGroup:
 		m.ResetGroup()
-		return nil
-	case ledger.EdgeParty:
-		m.ResetParty()
 		return nil
 	case ledger.EdgeJournalLines:
 		m.ResetJournalLines()
@@ -6948,1799 +8076,6 @@ func (m *LedgerGroupMutation) ResetEdge(name string) error {
 		return nil
 	}
 	return fmt.Errorf("unknown Ledger_Group edge %s", name)
-}
-
-// PartyMasterMutation represents an operation that mutates the PartyMaster nodes in the graph.
-type PartyMasterMutation struct {
-	config
-	op                 Op
-	typ                string
-	id                 *int
-	create_time        *time.Time
-	update_time        *time.Time
-	_type              *partymaster.Type
-	display_name       *string
-	legal_name         *string
-	gst_no             *string
-	pan_no             *string
-	contact_person     *string
-	mobile             *string
-	phone              *string
-	email              *string
-	website            *string
-	credit_limit       *float64
-	addcredit_limit    *float64
-	credit_days        *int
-	addcredit_days     *int
-	opening_balance    *float64
-	addopening_balance *float64
-	address            *string
-	city               *string
-	state              *string
-	country            *string
-	pincode            *string
-	clearedFields      map[string]struct{}
-	ledger             *int
-	clearedledger      bool
-	done               bool
-	oldValue           func(context.Context) (*PartyMaster, error)
-	predicates         []predicate.PartyMaster
-}
-
-var _ ent.Mutation = (*PartyMasterMutation)(nil)
-
-// partymasterOption allows management of the mutation configuration using functional options.
-type partymasterOption func(*PartyMasterMutation)
-
-// newPartyMasterMutation creates new mutation for the PartyMaster entity.
-func newPartyMasterMutation(c config, op Op, opts ...partymasterOption) *PartyMasterMutation {
-	m := &PartyMasterMutation{
-		config:        c,
-		op:            op,
-		typ:           TypePartyMaster,
-		clearedFields: make(map[string]struct{}),
-	}
-	for _, opt := range opts {
-		opt(m)
-	}
-	return m
-}
-
-// withPartyMasterID sets the ID field of the mutation.
-func withPartyMasterID(id int) partymasterOption {
-	return func(m *PartyMasterMutation) {
-		var (
-			err   error
-			once  sync.Once
-			value *PartyMaster
-		)
-		m.oldValue = func(ctx context.Context) (*PartyMaster, error) {
-			once.Do(func() {
-				if m.done {
-					err = errors.New("querying old values post mutation is not allowed")
-				} else {
-					value, err = m.Client().PartyMaster.Get(ctx, id)
-				}
-			})
-			return value, err
-		}
-		m.id = &id
-	}
-}
-
-// withPartyMaster sets the old PartyMaster of the mutation.
-func withPartyMaster(node *PartyMaster) partymasterOption {
-	return func(m *PartyMasterMutation) {
-		m.oldValue = func(context.Context) (*PartyMaster, error) {
-			return node, nil
-		}
-		m.id = &node.ID
-	}
-}
-
-// Client returns a new `ent.Client` from the mutation. If the mutation was
-// executed in a transaction (ent.Tx), a transactional client is returned.
-func (m PartyMasterMutation) Client() *Client {
-	client := &Client{config: m.config}
-	client.init()
-	return client
-}
-
-// Tx returns an `ent.Tx` for mutations that were executed in transactions;
-// it returns an error otherwise.
-func (m PartyMasterMutation) Tx() (*Tx, error) {
-	if _, ok := m.driver.(*txDriver); !ok {
-		return nil, errors.New("ent: mutation is not running in a transaction")
-	}
-	tx := &Tx{config: m.config}
-	tx.init()
-	return tx, nil
-}
-
-// ID returns the ID value in the mutation. Note that the ID is only available
-// if it was provided to the builder or after it was returned from the database.
-func (m *PartyMasterMutation) ID() (id int, exists bool) {
-	if m.id == nil {
-		return
-	}
-	return *m.id, true
-}
-
-// IDs queries the database and returns the entity ids that match the mutation's predicate.
-// That means, if the mutation is applied within a transaction with an isolation level such
-// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
-// or updated by the mutation.
-func (m *PartyMasterMutation) IDs(ctx context.Context) ([]int, error) {
-	switch {
-	case m.op.Is(OpUpdateOne | OpDeleteOne):
-		id, exists := m.ID()
-		if exists {
-			return []int{id}, nil
-		}
-		fallthrough
-	case m.op.Is(OpUpdate | OpDelete):
-		return m.Client().PartyMaster.Query().Where(m.predicates...).IDs(ctx)
-	default:
-		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
-	}
-}
-
-// SetCreateTime sets the "create_time" field.
-func (m *PartyMasterMutation) SetCreateTime(t time.Time) {
-	m.create_time = &t
-}
-
-// CreateTime returns the value of the "create_time" field in the mutation.
-func (m *PartyMasterMutation) CreateTime() (r time.Time, exists bool) {
-	v := m.create_time
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldCreateTime returns the old "create_time" field's value of the PartyMaster entity.
-// If the PartyMaster object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PartyMasterMutation) OldCreateTime(ctx context.Context) (v time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCreateTime is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCreateTime requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCreateTime: %w", err)
-	}
-	return oldValue.CreateTime, nil
-}
-
-// ResetCreateTime resets all changes to the "create_time" field.
-func (m *PartyMasterMutation) ResetCreateTime() {
-	m.create_time = nil
-}
-
-// SetUpdateTime sets the "update_time" field.
-func (m *PartyMasterMutation) SetUpdateTime(t time.Time) {
-	m.update_time = &t
-}
-
-// UpdateTime returns the value of the "update_time" field in the mutation.
-func (m *PartyMasterMutation) UpdateTime() (r time.Time, exists bool) {
-	v := m.update_time
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldUpdateTime returns the old "update_time" field's value of the PartyMaster entity.
-// If the PartyMaster object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PartyMasterMutation) OldUpdateTime(ctx context.Context) (v time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldUpdateTime is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldUpdateTime requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldUpdateTime: %w", err)
-	}
-	return oldValue.UpdateTime, nil
-}
-
-// ResetUpdateTime resets all changes to the "update_time" field.
-func (m *PartyMasterMutation) ResetUpdateTime() {
-	m.update_time = nil
-}
-
-// SetLedgerID sets the "ledger_id" field.
-func (m *PartyMasterMutation) SetLedgerID(i int) {
-	m.ledger = &i
-}
-
-// LedgerID returns the value of the "ledger_id" field in the mutation.
-func (m *PartyMasterMutation) LedgerID() (r int, exists bool) {
-	v := m.ledger
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldLedgerID returns the old "ledger_id" field's value of the PartyMaster entity.
-// If the PartyMaster object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PartyMasterMutation) OldLedgerID(ctx context.Context) (v int, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldLedgerID is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldLedgerID requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldLedgerID: %w", err)
-	}
-	return oldValue.LedgerID, nil
-}
-
-// ResetLedgerID resets all changes to the "ledger_id" field.
-func (m *PartyMasterMutation) ResetLedgerID() {
-	m.ledger = nil
-}
-
-// SetType sets the "type" field.
-func (m *PartyMasterMutation) SetType(pa partymaster.Type) {
-	m._type = &pa
-}
-
-// GetType returns the value of the "type" field in the mutation.
-func (m *PartyMasterMutation) GetType() (r partymaster.Type, exists bool) {
-	v := m._type
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldType returns the old "type" field's value of the PartyMaster entity.
-// If the PartyMaster object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PartyMasterMutation) OldType(ctx context.Context) (v partymaster.Type, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldType is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldType requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldType: %w", err)
-	}
-	return oldValue.Type, nil
-}
-
-// ResetType resets all changes to the "type" field.
-func (m *PartyMasterMutation) ResetType() {
-	m._type = nil
-}
-
-// SetDisplayName sets the "display_name" field.
-func (m *PartyMasterMutation) SetDisplayName(s string) {
-	m.display_name = &s
-}
-
-// DisplayName returns the value of the "display_name" field in the mutation.
-func (m *PartyMasterMutation) DisplayName() (r string, exists bool) {
-	v := m.display_name
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldDisplayName returns the old "display_name" field's value of the PartyMaster entity.
-// If the PartyMaster object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PartyMasterMutation) OldDisplayName(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldDisplayName is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldDisplayName requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldDisplayName: %w", err)
-	}
-	return oldValue.DisplayName, nil
-}
-
-// ResetDisplayName resets all changes to the "display_name" field.
-func (m *PartyMasterMutation) ResetDisplayName() {
-	m.display_name = nil
-}
-
-// SetLegalName sets the "legal_name" field.
-func (m *PartyMasterMutation) SetLegalName(s string) {
-	m.legal_name = &s
-}
-
-// LegalName returns the value of the "legal_name" field in the mutation.
-func (m *PartyMasterMutation) LegalName() (r string, exists bool) {
-	v := m.legal_name
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldLegalName returns the old "legal_name" field's value of the PartyMaster entity.
-// If the PartyMaster object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PartyMasterMutation) OldLegalName(ctx context.Context) (v *string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldLegalName is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldLegalName requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldLegalName: %w", err)
-	}
-	return oldValue.LegalName, nil
-}
-
-// ClearLegalName clears the value of the "legal_name" field.
-func (m *PartyMasterMutation) ClearLegalName() {
-	m.legal_name = nil
-	m.clearedFields[partymaster.FieldLegalName] = struct{}{}
-}
-
-// LegalNameCleared returns if the "legal_name" field was cleared in this mutation.
-func (m *PartyMasterMutation) LegalNameCleared() bool {
-	_, ok := m.clearedFields[partymaster.FieldLegalName]
-	return ok
-}
-
-// ResetLegalName resets all changes to the "legal_name" field.
-func (m *PartyMasterMutation) ResetLegalName() {
-	m.legal_name = nil
-	delete(m.clearedFields, partymaster.FieldLegalName)
-}
-
-// SetGstNo sets the "gst_no" field.
-func (m *PartyMasterMutation) SetGstNo(s string) {
-	m.gst_no = &s
-}
-
-// GstNo returns the value of the "gst_no" field in the mutation.
-func (m *PartyMasterMutation) GstNo() (r string, exists bool) {
-	v := m.gst_no
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldGstNo returns the old "gst_no" field's value of the PartyMaster entity.
-// If the PartyMaster object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PartyMasterMutation) OldGstNo(ctx context.Context) (v *string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldGstNo is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldGstNo requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldGstNo: %w", err)
-	}
-	return oldValue.GstNo, nil
-}
-
-// ClearGstNo clears the value of the "gst_no" field.
-func (m *PartyMasterMutation) ClearGstNo() {
-	m.gst_no = nil
-	m.clearedFields[partymaster.FieldGstNo] = struct{}{}
-}
-
-// GstNoCleared returns if the "gst_no" field was cleared in this mutation.
-func (m *PartyMasterMutation) GstNoCleared() bool {
-	_, ok := m.clearedFields[partymaster.FieldGstNo]
-	return ok
-}
-
-// ResetGstNo resets all changes to the "gst_no" field.
-func (m *PartyMasterMutation) ResetGstNo() {
-	m.gst_no = nil
-	delete(m.clearedFields, partymaster.FieldGstNo)
-}
-
-// SetPanNo sets the "pan_no" field.
-func (m *PartyMasterMutation) SetPanNo(s string) {
-	m.pan_no = &s
-}
-
-// PanNo returns the value of the "pan_no" field in the mutation.
-func (m *PartyMasterMutation) PanNo() (r string, exists bool) {
-	v := m.pan_no
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldPanNo returns the old "pan_no" field's value of the PartyMaster entity.
-// If the PartyMaster object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PartyMasterMutation) OldPanNo(ctx context.Context) (v *string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldPanNo is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldPanNo requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldPanNo: %w", err)
-	}
-	return oldValue.PanNo, nil
-}
-
-// ClearPanNo clears the value of the "pan_no" field.
-func (m *PartyMasterMutation) ClearPanNo() {
-	m.pan_no = nil
-	m.clearedFields[partymaster.FieldPanNo] = struct{}{}
-}
-
-// PanNoCleared returns if the "pan_no" field was cleared in this mutation.
-func (m *PartyMasterMutation) PanNoCleared() bool {
-	_, ok := m.clearedFields[partymaster.FieldPanNo]
-	return ok
-}
-
-// ResetPanNo resets all changes to the "pan_no" field.
-func (m *PartyMasterMutation) ResetPanNo() {
-	m.pan_no = nil
-	delete(m.clearedFields, partymaster.FieldPanNo)
-}
-
-// SetContactPerson sets the "contact_person" field.
-func (m *PartyMasterMutation) SetContactPerson(s string) {
-	m.contact_person = &s
-}
-
-// ContactPerson returns the value of the "contact_person" field in the mutation.
-func (m *PartyMasterMutation) ContactPerson() (r string, exists bool) {
-	v := m.contact_person
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldContactPerson returns the old "contact_person" field's value of the PartyMaster entity.
-// If the PartyMaster object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PartyMasterMutation) OldContactPerson(ctx context.Context) (v *string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldContactPerson is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldContactPerson requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldContactPerson: %w", err)
-	}
-	return oldValue.ContactPerson, nil
-}
-
-// ClearContactPerson clears the value of the "contact_person" field.
-func (m *PartyMasterMutation) ClearContactPerson() {
-	m.contact_person = nil
-	m.clearedFields[partymaster.FieldContactPerson] = struct{}{}
-}
-
-// ContactPersonCleared returns if the "contact_person" field was cleared in this mutation.
-func (m *PartyMasterMutation) ContactPersonCleared() bool {
-	_, ok := m.clearedFields[partymaster.FieldContactPerson]
-	return ok
-}
-
-// ResetContactPerson resets all changes to the "contact_person" field.
-func (m *PartyMasterMutation) ResetContactPerson() {
-	m.contact_person = nil
-	delete(m.clearedFields, partymaster.FieldContactPerson)
-}
-
-// SetMobile sets the "mobile" field.
-func (m *PartyMasterMutation) SetMobile(s string) {
-	m.mobile = &s
-}
-
-// Mobile returns the value of the "mobile" field in the mutation.
-func (m *PartyMasterMutation) Mobile() (r string, exists bool) {
-	v := m.mobile
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldMobile returns the old "mobile" field's value of the PartyMaster entity.
-// If the PartyMaster object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PartyMasterMutation) OldMobile(ctx context.Context) (v *string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldMobile is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldMobile requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldMobile: %w", err)
-	}
-	return oldValue.Mobile, nil
-}
-
-// ClearMobile clears the value of the "mobile" field.
-func (m *PartyMasterMutation) ClearMobile() {
-	m.mobile = nil
-	m.clearedFields[partymaster.FieldMobile] = struct{}{}
-}
-
-// MobileCleared returns if the "mobile" field was cleared in this mutation.
-func (m *PartyMasterMutation) MobileCleared() bool {
-	_, ok := m.clearedFields[partymaster.FieldMobile]
-	return ok
-}
-
-// ResetMobile resets all changes to the "mobile" field.
-func (m *PartyMasterMutation) ResetMobile() {
-	m.mobile = nil
-	delete(m.clearedFields, partymaster.FieldMobile)
-}
-
-// SetPhone sets the "phone" field.
-func (m *PartyMasterMutation) SetPhone(s string) {
-	m.phone = &s
-}
-
-// Phone returns the value of the "phone" field in the mutation.
-func (m *PartyMasterMutation) Phone() (r string, exists bool) {
-	v := m.phone
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldPhone returns the old "phone" field's value of the PartyMaster entity.
-// If the PartyMaster object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PartyMasterMutation) OldPhone(ctx context.Context) (v *string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldPhone is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldPhone requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldPhone: %w", err)
-	}
-	return oldValue.Phone, nil
-}
-
-// ClearPhone clears the value of the "phone" field.
-func (m *PartyMasterMutation) ClearPhone() {
-	m.phone = nil
-	m.clearedFields[partymaster.FieldPhone] = struct{}{}
-}
-
-// PhoneCleared returns if the "phone" field was cleared in this mutation.
-func (m *PartyMasterMutation) PhoneCleared() bool {
-	_, ok := m.clearedFields[partymaster.FieldPhone]
-	return ok
-}
-
-// ResetPhone resets all changes to the "phone" field.
-func (m *PartyMasterMutation) ResetPhone() {
-	m.phone = nil
-	delete(m.clearedFields, partymaster.FieldPhone)
-}
-
-// SetEmail sets the "email" field.
-func (m *PartyMasterMutation) SetEmail(s string) {
-	m.email = &s
-}
-
-// Email returns the value of the "email" field in the mutation.
-func (m *PartyMasterMutation) Email() (r string, exists bool) {
-	v := m.email
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldEmail returns the old "email" field's value of the PartyMaster entity.
-// If the PartyMaster object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PartyMasterMutation) OldEmail(ctx context.Context) (v *string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldEmail is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldEmail requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldEmail: %w", err)
-	}
-	return oldValue.Email, nil
-}
-
-// ClearEmail clears the value of the "email" field.
-func (m *PartyMasterMutation) ClearEmail() {
-	m.email = nil
-	m.clearedFields[partymaster.FieldEmail] = struct{}{}
-}
-
-// EmailCleared returns if the "email" field was cleared in this mutation.
-func (m *PartyMasterMutation) EmailCleared() bool {
-	_, ok := m.clearedFields[partymaster.FieldEmail]
-	return ok
-}
-
-// ResetEmail resets all changes to the "email" field.
-func (m *PartyMasterMutation) ResetEmail() {
-	m.email = nil
-	delete(m.clearedFields, partymaster.FieldEmail)
-}
-
-// SetWebsite sets the "website" field.
-func (m *PartyMasterMutation) SetWebsite(s string) {
-	m.website = &s
-}
-
-// Website returns the value of the "website" field in the mutation.
-func (m *PartyMasterMutation) Website() (r string, exists bool) {
-	v := m.website
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldWebsite returns the old "website" field's value of the PartyMaster entity.
-// If the PartyMaster object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PartyMasterMutation) OldWebsite(ctx context.Context) (v *string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldWebsite is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldWebsite requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldWebsite: %w", err)
-	}
-	return oldValue.Website, nil
-}
-
-// ClearWebsite clears the value of the "website" field.
-func (m *PartyMasterMutation) ClearWebsite() {
-	m.website = nil
-	m.clearedFields[partymaster.FieldWebsite] = struct{}{}
-}
-
-// WebsiteCleared returns if the "website" field was cleared in this mutation.
-func (m *PartyMasterMutation) WebsiteCleared() bool {
-	_, ok := m.clearedFields[partymaster.FieldWebsite]
-	return ok
-}
-
-// ResetWebsite resets all changes to the "website" field.
-func (m *PartyMasterMutation) ResetWebsite() {
-	m.website = nil
-	delete(m.clearedFields, partymaster.FieldWebsite)
-}
-
-// SetCreditLimit sets the "credit_limit" field.
-func (m *PartyMasterMutation) SetCreditLimit(f float64) {
-	m.credit_limit = &f
-	m.addcredit_limit = nil
-}
-
-// CreditLimit returns the value of the "credit_limit" field in the mutation.
-func (m *PartyMasterMutation) CreditLimit() (r float64, exists bool) {
-	v := m.credit_limit
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldCreditLimit returns the old "credit_limit" field's value of the PartyMaster entity.
-// If the PartyMaster object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PartyMasterMutation) OldCreditLimit(ctx context.Context) (v float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCreditLimit is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCreditLimit requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCreditLimit: %w", err)
-	}
-	return oldValue.CreditLimit, nil
-}
-
-// AddCreditLimit adds f to the "credit_limit" field.
-func (m *PartyMasterMutation) AddCreditLimit(f float64) {
-	if m.addcredit_limit != nil {
-		*m.addcredit_limit += f
-	} else {
-		m.addcredit_limit = &f
-	}
-}
-
-// AddedCreditLimit returns the value that was added to the "credit_limit" field in this mutation.
-func (m *PartyMasterMutation) AddedCreditLimit() (r float64, exists bool) {
-	v := m.addcredit_limit
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetCreditLimit resets all changes to the "credit_limit" field.
-func (m *PartyMasterMutation) ResetCreditLimit() {
-	m.credit_limit = nil
-	m.addcredit_limit = nil
-}
-
-// SetCreditDays sets the "credit_days" field.
-func (m *PartyMasterMutation) SetCreditDays(i int) {
-	m.credit_days = &i
-	m.addcredit_days = nil
-}
-
-// CreditDays returns the value of the "credit_days" field in the mutation.
-func (m *PartyMasterMutation) CreditDays() (r int, exists bool) {
-	v := m.credit_days
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldCreditDays returns the old "credit_days" field's value of the PartyMaster entity.
-// If the PartyMaster object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PartyMasterMutation) OldCreditDays(ctx context.Context) (v int, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCreditDays is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCreditDays requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCreditDays: %w", err)
-	}
-	return oldValue.CreditDays, nil
-}
-
-// AddCreditDays adds i to the "credit_days" field.
-func (m *PartyMasterMutation) AddCreditDays(i int) {
-	if m.addcredit_days != nil {
-		*m.addcredit_days += i
-	} else {
-		m.addcredit_days = &i
-	}
-}
-
-// AddedCreditDays returns the value that was added to the "credit_days" field in this mutation.
-func (m *PartyMasterMutation) AddedCreditDays() (r int, exists bool) {
-	v := m.addcredit_days
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetCreditDays resets all changes to the "credit_days" field.
-func (m *PartyMasterMutation) ResetCreditDays() {
-	m.credit_days = nil
-	m.addcredit_days = nil
-}
-
-// SetOpeningBalance sets the "opening_balance" field.
-func (m *PartyMasterMutation) SetOpeningBalance(f float64) {
-	m.opening_balance = &f
-	m.addopening_balance = nil
-}
-
-// OpeningBalance returns the value of the "opening_balance" field in the mutation.
-func (m *PartyMasterMutation) OpeningBalance() (r float64, exists bool) {
-	v := m.opening_balance
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldOpeningBalance returns the old "opening_balance" field's value of the PartyMaster entity.
-// If the PartyMaster object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PartyMasterMutation) OldOpeningBalance(ctx context.Context) (v float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldOpeningBalance is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldOpeningBalance requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldOpeningBalance: %w", err)
-	}
-	return oldValue.OpeningBalance, nil
-}
-
-// AddOpeningBalance adds f to the "opening_balance" field.
-func (m *PartyMasterMutation) AddOpeningBalance(f float64) {
-	if m.addopening_balance != nil {
-		*m.addopening_balance += f
-	} else {
-		m.addopening_balance = &f
-	}
-}
-
-// AddedOpeningBalance returns the value that was added to the "opening_balance" field in this mutation.
-func (m *PartyMasterMutation) AddedOpeningBalance() (r float64, exists bool) {
-	v := m.addopening_balance
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetOpeningBalance resets all changes to the "opening_balance" field.
-func (m *PartyMasterMutation) ResetOpeningBalance() {
-	m.opening_balance = nil
-	m.addopening_balance = nil
-}
-
-// SetAddress sets the "address" field.
-func (m *PartyMasterMutation) SetAddress(s string) {
-	m.address = &s
-}
-
-// Address returns the value of the "address" field in the mutation.
-func (m *PartyMasterMutation) Address() (r string, exists bool) {
-	v := m.address
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldAddress returns the old "address" field's value of the PartyMaster entity.
-// If the PartyMaster object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PartyMasterMutation) OldAddress(ctx context.Context) (v *string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldAddress is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldAddress requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldAddress: %w", err)
-	}
-	return oldValue.Address, nil
-}
-
-// ClearAddress clears the value of the "address" field.
-func (m *PartyMasterMutation) ClearAddress() {
-	m.address = nil
-	m.clearedFields[partymaster.FieldAddress] = struct{}{}
-}
-
-// AddressCleared returns if the "address" field was cleared in this mutation.
-func (m *PartyMasterMutation) AddressCleared() bool {
-	_, ok := m.clearedFields[partymaster.FieldAddress]
-	return ok
-}
-
-// ResetAddress resets all changes to the "address" field.
-func (m *PartyMasterMutation) ResetAddress() {
-	m.address = nil
-	delete(m.clearedFields, partymaster.FieldAddress)
-}
-
-// SetCity sets the "city" field.
-func (m *PartyMasterMutation) SetCity(s string) {
-	m.city = &s
-}
-
-// City returns the value of the "city" field in the mutation.
-func (m *PartyMasterMutation) City() (r string, exists bool) {
-	v := m.city
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldCity returns the old "city" field's value of the PartyMaster entity.
-// If the PartyMaster object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PartyMasterMutation) OldCity(ctx context.Context) (v *string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCity is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCity requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCity: %w", err)
-	}
-	return oldValue.City, nil
-}
-
-// ClearCity clears the value of the "city" field.
-func (m *PartyMasterMutation) ClearCity() {
-	m.city = nil
-	m.clearedFields[partymaster.FieldCity] = struct{}{}
-}
-
-// CityCleared returns if the "city" field was cleared in this mutation.
-func (m *PartyMasterMutation) CityCleared() bool {
-	_, ok := m.clearedFields[partymaster.FieldCity]
-	return ok
-}
-
-// ResetCity resets all changes to the "city" field.
-func (m *PartyMasterMutation) ResetCity() {
-	m.city = nil
-	delete(m.clearedFields, partymaster.FieldCity)
-}
-
-// SetState sets the "state" field.
-func (m *PartyMasterMutation) SetState(s string) {
-	m.state = &s
-}
-
-// State returns the value of the "state" field in the mutation.
-func (m *PartyMasterMutation) State() (r string, exists bool) {
-	v := m.state
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldState returns the old "state" field's value of the PartyMaster entity.
-// If the PartyMaster object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PartyMasterMutation) OldState(ctx context.Context) (v *string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldState is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldState requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldState: %w", err)
-	}
-	return oldValue.State, nil
-}
-
-// ClearState clears the value of the "state" field.
-func (m *PartyMasterMutation) ClearState() {
-	m.state = nil
-	m.clearedFields[partymaster.FieldState] = struct{}{}
-}
-
-// StateCleared returns if the "state" field was cleared in this mutation.
-func (m *PartyMasterMutation) StateCleared() bool {
-	_, ok := m.clearedFields[partymaster.FieldState]
-	return ok
-}
-
-// ResetState resets all changes to the "state" field.
-func (m *PartyMasterMutation) ResetState() {
-	m.state = nil
-	delete(m.clearedFields, partymaster.FieldState)
-}
-
-// SetCountry sets the "country" field.
-func (m *PartyMasterMutation) SetCountry(s string) {
-	m.country = &s
-}
-
-// Country returns the value of the "country" field in the mutation.
-func (m *PartyMasterMutation) Country() (r string, exists bool) {
-	v := m.country
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldCountry returns the old "country" field's value of the PartyMaster entity.
-// If the PartyMaster object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PartyMasterMutation) OldCountry(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCountry is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCountry requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCountry: %w", err)
-	}
-	return oldValue.Country, nil
-}
-
-// ResetCountry resets all changes to the "country" field.
-func (m *PartyMasterMutation) ResetCountry() {
-	m.country = nil
-}
-
-// SetPincode sets the "pincode" field.
-func (m *PartyMasterMutation) SetPincode(s string) {
-	m.pincode = &s
-}
-
-// Pincode returns the value of the "pincode" field in the mutation.
-func (m *PartyMasterMutation) Pincode() (r string, exists bool) {
-	v := m.pincode
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldPincode returns the old "pincode" field's value of the PartyMaster entity.
-// If the PartyMaster object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PartyMasterMutation) OldPincode(ctx context.Context) (v *string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldPincode is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldPincode requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldPincode: %w", err)
-	}
-	return oldValue.Pincode, nil
-}
-
-// ClearPincode clears the value of the "pincode" field.
-func (m *PartyMasterMutation) ClearPincode() {
-	m.pincode = nil
-	m.clearedFields[partymaster.FieldPincode] = struct{}{}
-}
-
-// PincodeCleared returns if the "pincode" field was cleared in this mutation.
-func (m *PartyMasterMutation) PincodeCleared() bool {
-	_, ok := m.clearedFields[partymaster.FieldPincode]
-	return ok
-}
-
-// ResetPincode resets all changes to the "pincode" field.
-func (m *PartyMasterMutation) ResetPincode() {
-	m.pincode = nil
-	delete(m.clearedFields, partymaster.FieldPincode)
-}
-
-// ClearLedger clears the "ledger" edge to the Ledger entity.
-func (m *PartyMasterMutation) ClearLedger() {
-	m.clearedledger = true
-	m.clearedFields[partymaster.FieldLedgerID] = struct{}{}
-}
-
-// LedgerCleared reports if the "ledger" edge to the Ledger entity was cleared.
-func (m *PartyMasterMutation) LedgerCleared() bool {
-	return m.clearedledger
-}
-
-// LedgerIDs returns the "ledger" edge IDs in the mutation.
-// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
-// LedgerID instead. It exists only for internal usage by the builders.
-func (m *PartyMasterMutation) LedgerIDs() (ids []int) {
-	if id := m.ledger; id != nil {
-		ids = append(ids, *id)
-	}
-	return
-}
-
-// ResetLedger resets all changes to the "ledger" edge.
-func (m *PartyMasterMutation) ResetLedger() {
-	m.ledger = nil
-	m.clearedledger = false
-}
-
-// Where appends a list predicates to the PartyMasterMutation builder.
-func (m *PartyMasterMutation) Where(ps ...predicate.PartyMaster) {
-	m.predicates = append(m.predicates, ps...)
-}
-
-// WhereP appends storage-level predicates to the PartyMasterMutation builder. Using this method,
-// users can use type-assertion to append predicates that do not depend on any generated package.
-func (m *PartyMasterMutation) WhereP(ps ...func(*sql.Selector)) {
-	p := make([]predicate.PartyMaster, len(ps))
-	for i := range ps {
-		p[i] = ps[i]
-	}
-	m.Where(p...)
-}
-
-// Op returns the operation name.
-func (m *PartyMasterMutation) Op() Op {
-	return m.op
-}
-
-// SetOp allows setting the mutation operation.
-func (m *PartyMasterMutation) SetOp(op Op) {
-	m.op = op
-}
-
-// Type returns the node type of this mutation (PartyMaster).
-func (m *PartyMasterMutation) Type() string {
-	return m.typ
-}
-
-// Fields returns all fields that were changed during this mutation. Note that in
-// order to get all numeric fields that were incremented/decremented, call
-// AddedFields().
-func (m *PartyMasterMutation) Fields() []string {
-	fields := make([]string, 0, 21)
-	if m.create_time != nil {
-		fields = append(fields, partymaster.FieldCreateTime)
-	}
-	if m.update_time != nil {
-		fields = append(fields, partymaster.FieldUpdateTime)
-	}
-	if m.ledger != nil {
-		fields = append(fields, partymaster.FieldLedgerID)
-	}
-	if m._type != nil {
-		fields = append(fields, partymaster.FieldType)
-	}
-	if m.display_name != nil {
-		fields = append(fields, partymaster.FieldDisplayName)
-	}
-	if m.legal_name != nil {
-		fields = append(fields, partymaster.FieldLegalName)
-	}
-	if m.gst_no != nil {
-		fields = append(fields, partymaster.FieldGstNo)
-	}
-	if m.pan_no != nil {
-		fields = append(fields, partymaster.FieldPanNo)
-	}
-	if m.contact_person != nil {
-		fields = append(fields, partymaster.FieldContactPerson)
-	}
-	if m.mobile != nil {
-		fields = append(fields, partymaster.FieldMobile)
-	}
-	if m.phone != nil {
-		fields = append(fields, partymaster.FieldPhone)
-	}
-	if m.email != nil {
-		fields = append(fields, partymaster.FieldEmail)
-	}
-	if m.website != nil {
-		fields = append(fields, partymaster.FieldWebsite)
-	}
-	if m.credit_limit != nil {
-		fields = append(fields, partymaster.FieldCreditLimit)
-	}
-	if m.credit_days != nil {
-		fields = append(fields, partymaster.FieldCreditDays)
-	}
-	if m.opening_balance != nil {
-		fields = append(fields, partymaster.FieldOpeningBalance)
-	}
-	if m.address != nil {
-		fields = append(fields, partymaster.FieldAddress)
-	}
-	if m.city != nil {
-		fields = append(fields, partymaster.FieldCity)
-	}
-	if m.state != nil {
-		fields = append(fields, partymaster.FieldState)
-	}
-	if m.country != nil {
-		fields = append(fields, partymaster.FieldCountry)
-	}
-	if m.pincode != nil {
-		fields = append(fields, partymaster.FieldPincode)
-	}
-	return fields
-}
-
-// Field returns the value of a field with the given name. The second boolean
-// return value indicates that this field was not set, or was not defined in the
-// schema.
-func (m *PartyMasterMutation) Field(name string) (ent.Value, bool) {
-	switch name {
-	case partymaster.FieldCreateTime:
-		return m.CreateTime()
-	case partymaster.FieldUpdateTime:
-		return m.UpdateTime()
-	case partymaster.FieldLedgerID:
-		return m.LedgerID()
-	case partymaster.FieldType:
-		return m.GetType()
-	case partymaster.FieldDisplayName:
-		return m.DisplayName()
-	case partymaster.FieldLegalName:
-		return m.LegalName()
-	case partymaster.FieldGstNo:
-		return m.GstNo()
-	case partymaster.FieldPanNo:
-		return m.PanNo()
-	case partymaster.FieldContactPerson:
-		return m.ContactPerson()
-	case partymaster.FieldMobile:
-		return m.Mobile()
-	case partymaster.FieldPhone:
-		return m.Phone()
-	case partymaster.FieldEmail:
-		return m.Email()
-	case partymaster.FieldWebsite:
-		return m.Website()
-	case partymaster.FieldCreditLimit:
-		return m.CreditLimit()
-	case partymaster.FieldCreditDays:
-		return m.CreditDays()
-	case partymaster.FieldOpeningBalance:
-		return m.OpeningBalance()
-	case partymaster.FieldAddress:
-		return m.Address()
-	case partymaster.FieldCity:
-		return m.City()
-	case partymaster.FieldState:
-		return m.State()
-	case partymaster.FieldCountry:
-		return m.Country()
-	case partymaster.FieldPincode:
-		return m.Pincode()
-	}
-	return nil, false
-}
-
-// OldField returns the old value of the field from the database. An error is
-// returned if the mutation operation is not UpdateOne, or the query to the
-// database failed.
-func (m *PartyMasterMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
-	switch name {
-	case partymaster.FieldCreateTime:
-		return m.OldCreateTime(ctx)
-	case partymaster.FieldUpdateTime:
-		return m.OldUpdateTime(ctx)
-	case partymaster.FieldLedgerID:
-		return m.OldLedgerID(ctx)
-	case partymaster.FieldType:
-		return m.OldType(ctx)
-	case partymaster.FieldDisplayName:
-		return m.OldDisplayName(ctx)
-	case partymaster.FieldLegalName:
-		return m.OldLegalName(ctx)
-	case partymaster.FieldGstNo:
-		return m.OldGstNo(ctx)
-	case partymaster.FieldPanNo:
-		return m.OldPanNo(ctx)
-	case partymaster.FieldContactPerson:
-		return m.OldContactPerson(ctx)
-	case partymaster.FieldMobile:
-		return m.OldMobile(ctx)
-	case partymaster.FieldPhone:
-		return m.OldPhone(ctx)
-	case partymaster.FieldEmail:
-		return m.OldEmail(ctx)
-	case partymaster.FieldWebsite:
-		return m.OldWebsite(ctx)
-	case partymaster.FieldCreditLimit:
-		return m.OldCreditLimit(ctx)
-	case partymaster.FieldCreditDays:
-		return m.OldCreditDays(ctx)
-	case partymaster.FieldOpeningBalance:
-		return m.OldOpeningBalance(ctx)
-	case partymaster.FieldAddress:
-		return m.OldAddress(ctx)
-	case partymaster.FieldCity:
-		return m.OldCity(ctx)
-	case partymaster.FieldState:
-		return m.OldState(ctx)
-	case partymaster.FieldCountry:
-		return m.OldCountry(ctx)
-	case partymaster.FieldPincode:
-		return m.OldPincode(ctx)
-	}
-	return nil, fmt.Errorf("unknown PartyMaster field %s", name)
-}
-
-// SetField sets the value of a field with the given name. It returns an error if
-// the field is not defined in the schema, or if the type mismatched the field
-// type.
-func (m *PartyMasterMutation) SetField(name string, value ent.Value) error {
-	switch name {
-	case partymaster.FieldCreateTime:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetCreateTime(v)
-		return nil
-	case partymaster.FieldUpdateTime:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetUpdateTime(v)
-		return nil
-	case partymaster.FieldLedgerID:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetLedgerID(v)
-		return nil
-	case partymaster.FieldType:
-		v, ok := value.(partymaster.Type)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetType(v)
-		return nil
-	case partymaster.FieldDisplayName:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetDisplayName(v)
-		return nil
-	case partymaster.FieldLegalName:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetLegalName(v)
-		return nil
-	case partymaster.FieldGstNo:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetGstNo(v)
-		return nil
-	case partymaster.FieldPanNo:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetPanNo(v)
-		return nil
-	case partymaster.FieldContactPerson:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetContactPerson(v)
-		return nil
-	case partymaster.FieldMobile:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetMobile(v)
-		return nil
-	case partymaster.FieldPhone:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetPhone(v)
-		return nil
-	case partymaster.FieldEmail:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetEmail(v)
-		return nil
-	case partymaster.FieldWebsite:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetWebsite(v)
-		return nil
-	case partymaster.FieldCreditLimit:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetCreditLimit(v)
-		return nil
-	case partymaster.FieldCreditDays:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetCreditDays(v)
-		return nil
-	case partymaster.FieldOpeningBalance:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetOpeningBalance(v)
-		return nil
-	case partymaster.FieldAddress:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetAddress(v)
-		return nil
-	case partymaster.FieldCity:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetCity(v)
-		return nil
-	case partymaster.FieldState:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetState(v)
-		return nil
-	case partymaster.FieldCountry:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetCountry(v)
-		return nil
-	case partymaster.FieldPincode:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetPincode(v)
-		return nil
-	}
-	return fmt.Errorf("unknown PartyMaster field %s", name)
-}
-
-// AddedFields returns all numeric fields that were incremented/decremented during
-// this mutation.
-func (m *PartyMasterMutation) AddedFields() []string {
-	var fields []string
-	if m.addcredit_limit != nil {
-		fields = append(fields, partymaster.FieldCreditLimit)
-	}
-	if m.addcredit_days != nil {
-		fields = append(fields, partymaster.FieldCreditDays)
-	}
-	if m.addopening_balance != nil {
-		fields = append(fields, partymaster.FieldOpeningBalance)
-	}
-	return fields
-}
-
-// AddedField returns the numeric value that was incremented/decremented on a field
-// with the given name. The second boolean return value indicates that this field
-// was not set, or was not defined in the schema.
-func (m *PartyMasterMutation) AddedField(name string) (ent.Value, bool) {
-	switch name {
-	case partymaster.FieldCreditLimit:
-		return m.AddedCreditLimit()
-	case partymaster.FieldCreditDays:
-		return m.AddedCreditDays()
-	case partymaster.FieldOpeningBalance:
-		return m.AddedOpeningBalance()
-	}
-	return nil, false
-}
-
-// AddField adds the value to the field with the given name. It returns an error if
-// the field is not defined in the schema, or if the type mismatched the field
-// type.
-func (m *PartyMasterMutation) AddField(name string, value ent.Value) error {
-	switch name {
-	case partymaster.FieldCreditLimit:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddCreditLimit(v)
-		return nil
-	case partymaster.FieldCreditDays:
-		v, ok := value.(int)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddCreditDays(v)
-		return nil
-	case partymaster.FieldOpeningBalance:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddOpeningBalance(v)
-		return nil
-	}
-	return fmt.Errorf("unknown PartyMaster numeric field %s", name)
-}
-
-// ClearedFields returns all nullable fields that were cleared during this
-// mutation.
-func (m *PartyMasterMutation) ClearedFields() []string {
-	var fields []string
-	if m.FieldCleared(partymaster.FieldLegalName) {
-		fields = append(fields, partymaster.FieldLegalName)
-	}
-	if m.FieldCleared(partymaster.FieldGstNo) {
-		fields = append(fields, partymaster.FieldGstNo)
-	}
-	if m.FieldCleared(partymaster.FieldPanNo) {
-		fields = append(fields, partymaster.FieldPanNo)
-	}
-	if m.FieldCleared(partymaster.FieldContactPerson) {
-		fields = append(fields, partymaster.FieldContactPerson)
-	}
-	if m.FieldCleared(partymaster.FieldMobile) {
-		fields = append(fields, partymaster.FieldMobile)
-	}
-	if m.FieldCleared(partymaster.FieldPhone) {
-		fields = append(fields, partymaster.FieldPhone)
-	}
-	if m.FieldCleared(partymaster.FieldEmail) {
-		fields = append(fields, partymaster.FieldEmail)
-	}
-	if m.FieldCleared(partymaster.FieldWebsite) {
-		fields = append(fields, partymaster.FieldWebsite)
-	}
-	if m.FieldCleared(partymaster.FieldAddress) {
-		fields = append(fields, partymaster.FieldAddress)
-	}
-	if m.FieldCleared(partymaster.FieldCity) {
-		fields = append(fields, partymaster.FieldCity)
-	}
-	if m.FieldCleared(partymaster.FieldState) {
-		fields = append(fields, partymaster.FieldState)
-	}
-	if m.FieldCleared(partymaster.FieldPincode) {
-		fields = append(fields, partymaster.FieldPincode)
-	}
-	return fields
-}
-
-// FieldCleared returns a boolean indicating if a field with the given name was
-// cleared in this mutation.
-func (m *PartyMasterMutation) FieldCleared(name string) bool {
-	_, ok := m.clearedFields[name]
-	return ok
-}
-
-// ClearField clears the value of the field with the given name. It returns an
-// error if the field is not defined in the schema.
-func (m *PartyMasterMutation) ClearField(name string) error {
-	switch name {
-	case partymaster.FieldLegalName:
-		m.ClearLegalName()
-		return nil
-	case partymaster.FieldGstNo:
-		m.ClearGstNo()
-		return nil
-	case partymaster.FieldPanNo:
-		m.ClearPanNo()
-		return nil
-	case partymaster.FieldContactPerson:
-		m.ClearContactPerson()
-		return nil
-	case partymaster.FieldMobile:
-		m.ClearMobile()
-		return nil
-	case partymaster.FieldPhone:
-		m.ClearPhone()
-		return nil
-	case partymaster.FieldEmail:
-		m.ClearEmail()
-		return nil
-	case partymaster.FieldWebsite:
-		m.ClearWebsite()
-		return nil
-	case partymaster.FieldAddress:
-		m.ClearAddress()
-		return nil
-	case partymaster.FieldCity:
-		m.ClearCity()
-		return nil
-	case partymaster.FieldState:
-		m.ClearState()
-		return nil
-	case partymaster.FieldPincode:
-		m.ClearPincode()
-		return nil
-	}
-	return fmt.Errorf("unknown PartyMaster nullable field %s", name)
-}
-
-// ResetField resets all changes in the mutation for the field with the given name.
-// It returns an error if the field is not defined in the schema.
-func (m *PartyMasterMutation) ResetField(name string) error {
-	switch name {
-	case partymaster.FieldCreateTime:
-		m.ResetCreateTime()
-		return nil
-	case partymaster.FieldUpdateTime:
-		m.ResetUpdateTime()
-		return nil
-	case partymaster.FieldLedgerID:
-		m.ResetLedgerID()
-		return nil
-	case partymaster.FieldType:
-		m.ResetType()
-		return nil
-	case partymaster.FieldDisplayName:
-		m.ResetDisplayName()
-		return nil
-	case partymaster.FieldLegalName:
-		m.ResetLegalName()
-		return nil
-	case partymaster.FieldGstNo:
-		m.ResetGstNo()
-		return nil
-	case partymaster.FieldPanNo:
-		m.ResetPanNo()
-		return nil
-	case partymaster.FieldContactPerson:
-		m.ResetContactPerson()
-		return nil
-	case partymaster.FieldMobile:
-		m.ResetMobile()
-		return nil
-	case partymaster.FieldPhone:
-		m.ResetPhone()
-		return nil
-	case partymaster.FieldEmail:
-		m.ResetEmail()
-		return nil
-	case partymaster.FieldWebsite:
-		m.ResetWebsite()
-		return nil
-	case partymaster.FieldCreditLimit:
-		m.ResetCreditLimit()
-		return nil
-	case partymaster.FieldCreditDays:
-		m.ResetCreditDays()
-		return nil
-	case partymaster.FieldOpeningBalance:
-		m.ResetOpeningBalance()
-		return nil
-	case partymaster.FieldAddress:
-		m.ResetAddress()
-		return nil
-	case partymaster.FieldCity:
-		m.ResetCity()
-		return nil
-	case partymaster.FieldState:
-		m.ResetState()
-		return nil
-	case partymaster.FieldCountry:
-		m.ResetCountry()
-		return nil
-	case partymaster.FieldPincode:
-		m.ResetPincode()
-		return nil
-	}
-	return fmt.Errorf("unknown PartyMaster field %s", name)
-}
-
-// AddedEdges returns all edge names that were set/added in this mutation.
-func (m *PartyMasterMutation) AddedEdges() []string {
-	edges := make([]string, 0, 1)
-	if m.ledger != nil {
-		edges = append(edges, partymaster.EdgeLedger)
-	}
-	return edges
-}
-
-// AddedIDs returns all IDs (to other nodes) that were added for the given edge
-// name in this mutation.
-func (m *PartyMasterMutation) AddedIDs(name string) []ent.Value {
-	switch name {
-	case partymaster.EdgeLedger:
-		if id := m.ledger; id != nil {
-			return []ent.Value{*id}
-		}
-	}
-	return nil
-}
-
-// RemovedEdges returns all edge names that were removed in this mutation.
-func (m *PartyMasterMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 1)
-	return edges
-}
-
-// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
-// the given name in this mutation.
-func (m *PartyMasterMutation) RemovedIDs(name string) []ent.Value {
-	return nil
-}
-
-// ClearedEdges returns all edge names that were cleared in this mutation.
-func (m *PartyMasterMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 1)
-	if m.clearedledger {
-		edges = append(edges, partymaster.EdgeLedger)
-	}
-	return edges
-}
-
-// EdgeCleared returns a boolean which indicates if the edge with the given name
-// was cleared in this mutation.
-func (m *PartyMasterMutation) EdgeCleared(name string) bool {
-	switch name {
-	case partymaster.EdgeLedger:
-		return m.clearedledger
-	}
-	return false
-}
-
-// ClearEdge clears the value of the edge with the given name. It returns an error
-// if that edge is not defined in the schema.
-func (m *PartyMasterMutation) ClearEdge(name string) error {
-	switch name {
-	case partymaster.EdgeLedger:
-		m.ClearLedger()
-		return nil
-	}
-	return fmt.Errorf("unknown PartyMaster unique edge %s", name)
-}
-
-// ResetEdge resets all changes to the edge with the given name in this mutation.
-// It returns an error if the edge is not defined in the schema.
-func (m *PartyMasterMutation) ResetEdge(name string) error {
-	switch name {
-	case partymaster.EdgeLedger:
-		m.ResetLedger()
-		return nil
-	}
-	return fmt.Errorf("unknown PartyMaster edge %s", name)
 }
 
 // SettingsMutation represents an operation that mutates the Settings nodes in the graph.
