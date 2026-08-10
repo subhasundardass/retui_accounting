@@ -9,7 +9,7 @@ Build terminal apps in Go the same way you'd build a modern web app — with com
 If you've ever used React (or something like it), retui will feel familiar:
 
 - Your UI is built from small **functions that return `Element`** — components.
-- **Hooks** (`UseState`, `UseEffect`, `UseContext`) let components remember things between renders.
+- **Hooks** (`UseState`, `UseEffect`, `UseContext`, `UseMemo`, `UseReducer`, `UseRef`) let components remember things between renders.
 - A **flexbox-style layout system** (`Box`, `Row`, `Column`) handles positioning, so you never calculate coordinates by hand.
 - RetUI automatically figures out what changed and only redraws that — your terminal app stays fast even as it grows.
 

@@ -322,6 +322,7 @@ func NewProps() Props {
 	return Props{
 		Width:  Fit(),
 		Height: Fit(),
+		Wrap:   true,
 		Values: make(map[string]any),
 	}
 }

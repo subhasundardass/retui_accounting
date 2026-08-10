@@ -194,6 +194,7 @@ func (c *FormComponent) buildWindow(ctx *appctx.AppContext) retui.Element {
 		retui.Props{
 			Gap:     1,
 			Padding: [4]int{0, 1, 0, 1},
+			Wrap:    true,
 		},
 		retui.NewStyle(),
 		retui.Box(
