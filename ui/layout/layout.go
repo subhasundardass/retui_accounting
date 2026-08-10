@@ -21,7 +21,7 @@ func MasterLayout(ctx *appctx.AppContext, props LayoutProps) retui.Element {
 	}
 
 	mainContent := retui.Box(
-		retui.Props{Direction: retui.Column, Width: retui.Grow(1), Gap: 1},
+		retui.Props{Direction: retui.Column, Width: retui.Grow(1), Gap: 0},
 		retui.NewStyle().Border(retui.Border{Color: retui.Gray(1)}).Background(retui.Black),
 		props.Content,
 	)
@@ -31,6 +31,7 @@ func MasterLayout(ctx *appctx.AppContext, props LayoutProps) retui.Element {
 		retui.NewStyle(),
 		SidebarTree(ctx, retui.Props{}),
 		mainContent,
+		// ShortcutPanel(ctx, retui.Props{}),
 	)
 
 	final := retui.Box(

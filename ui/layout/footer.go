@@ -23,7 +23,7 @@ func Footer(props retui.Props) retui.Element {
 		retui.Box(
 			retui.Props{},
 			retui.NewStyle(),
-			retui.Text(fmt.Sprintf("v%s", "0.6.0"), retui.Style{}),
+			retui.Text(fmt.Sprintf("v%s", "0.8.0"), retui.Style{}),
 		),
 	)
 

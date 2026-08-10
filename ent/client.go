@@ -1015,6 +1015,38 @@ func (c *LedgerClient) QueryGroup(_m *Ledger) *LedgerGroupQuery {
 	return query
 }
 
+// QueryState queries the state edge of a Ledger.
+func (c *LedgerClient) QueryState(_m *Ledger) *StateQuery {
+	query := (&StateClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := _m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(ledger.Table, ledger.FieldID, id),
+			sqlgraph.To(state.Table, state.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, ledger.StateTable, ledger.StateColumn),
+		)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryCountry queries the country edge of a Ledger.
+func (c *LedgerClient) QueryCountry(_m *Ledger) *CountryQuery {
+	query := (&CountryClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := _m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(ledger.Table, ledger.FieldID, id),
+			sqlgraph.To(country.Table, country.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, ledger.CountryTable, ledger.CountryColumn),
+		)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // QueryJournalLines queries the journal_lines edge of a Ledger.
 func (c *LedgerClient) QueryJournalLines(_m *Ledger) *JournalLineQuery {
 	query := (&JournalLineClient{config: c.config}).Query()

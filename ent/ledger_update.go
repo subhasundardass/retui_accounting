@@ -11,10 +11,12 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/subhasundardass/retui/ent/country"
 	"github.com/subhasundardass/retui/ent/journal_line"
 	"github.com/subhasundardass/retui/ent/ledger"
 	"github.com/subhasundardass/retui/ent/ledger_group"
 	"github.com/subhasundardass/retui/ent/predicate"
+	"github.com/subhasundardass/retui/ent/state"
 )
 
 // LedgerUpdate is the builder for updating Ledger entities.
@@ -213,43 +215,43 @@ func (_u *LedgerUpdate) ClearCity() *LedgerUpdate {
 	return _u
 }
 
-// SetState sets the "state" field.
-func (_u *LedgerUpdate) SetState(v string) *LedgerUpdate {
-	_u.mutation.SetState(v)
+// SetStateID sets the "state_id" field.
+func (_u *LedgerUpdate) SetStateID(v int) *LedgerUpdate {
+	_u.mutation.SetStateID(v)
 	return _u
 }
 
-// SetNillableState sets the "state" field if the given value is not nil.
-func (_u *LedgerUpdate) SetNillableState(v *string) *LedgerUpdate {
+// SetNillableStateID sets the "state_id" field if the given value is not nil.
+func (_u *LedgerUpdate) SetNillableStateID(v *int) *LedgerUpdate {
 	if v != nil {
-		_u.SetState(*v)
+		_u.SetStateID(*v)
 	}
 	return _u
 }
 
-// ClearState clears the value of the "state" field.
-func (_u *LedgerUpdate) ClearState() *LedgerUpdate {
-	_u.mutation.ClearState()
+// ClearStateID clears the value of the "state_id" field.
+func (_u *LedgerUpdate) ClearStateID() *LedgerUpdate {
+	_u.mutation.ClearStateID()
 	return _u
 }
 
-// SetCountry sets the "country" field.
-func (_u *LedgerUpdate) SetCountry(v string) *LedgerUpdate {
-	_u.mutation.SetCountry(v)
+// SetCountryID sets the "country_id" field.
+func (_u *LedgerUpdate) SetCountryID(v int) *LedgerUpdate {
+	_u.mutation.SetCountryID(v)
 	return _u
 }
 
-// SetNillableCountry sets the "country" field if the given value is not nil.
-func (_u *LedgerUpdate) SetNillableCountry(v *string) *LedgerUpdate {
+// SetNillableCountryID sets the "country_id" field if the given value is not nil.
+func (_u *LedgerUpdate) SetNillableCountryID(v *int) *LedgerUpdate {
 	if v != nil {
-		_u.SetCountry(*v)
+		_u.SetCountryID(*v)
 	}
 	return _u
 }
 
-// ClearCountry clears the value of the "country" field.
-func (_u *LedgerUpdate) ClearCountry() *LedgerUpdate {
-	_u.mutation.ClearCountry()
+// ClearCountryID clears the value of the "country_id" field.
+func (_u *LedgerUpdate) ClearCountryID() *LedgerUpdate {
+	_u.mutation.ClearCountryID()
 	return _u
 }
 
@@ -562,6 +564,16 @@ func (_u *LedgerUpdate) SetGroup(v *Ledger_Group) *LedgerUpdate {
 	return _u.SetGroupID(v.ID)
 }
 
+// SetState sets the "state" edge to the State entity.
+func (_u *LedgerUpdate) SetState(v *State) *LedgerUpdate {
+	return _u.SetStateID(v.ID)
+}
+
+// SetCountry sets the "country" edge to the Country entity.
+func (_u *LedgerUpdate) SetCountry(v *Country) *LedgerUpdate {
+	return _u.SetCountryID(v.ID)
+}
+
 // AddJournalLineIDs adds the "journal_lines" edge to the Journal_Line entity by IDs.
 func (_u *LedgerUpdate) AddJournalLineIDs(ids ...int) *LedgerUpdate {
 	_u.mutation.AddJournalLineIDs(ids...)
@@ -585,6 +597,18 @@ func (_u *LedgerUpdate) Mutation() *LedgerMutation {
 // ClearGroup clears the "group" edge to the Ledger_Group entity.
 func (_u *LedgerUpdate) ClearGroup() *LedgerUpdate {
 	_u.mutation.ClearGroup()
+	return _u
+}
+
+// ClearState clears the "state" edge to the State entity.
+func (_u *LedgerUpdate) ClearState() *LedgerUpdate {
+	_u.mutation.ClearState()
+	return _u
+}
+
+// ClearCountry clears the "country" edge to the Country entity.
+func (_u *LedgerUpdate) ClearCountry() *LedgerUpdate {
+	_u.mutation.ClearCountry()
 	return _u
 }
 
@@ -680,16 +704,6 @@ func (_u *LedgerUpdate) check() error {
 	if v, ok := _u.mutation.City(); ok {
 		if err := ledger.CityValidator(v); err != nil {
 			return &ValidationError{Name: "city", err: fmt.Errorf(`ent: validator failed for field "Ledger.city": %w`, err)}
-		}
-	}
-	if v, ok := _u.mutation.State(); ok {
-		if err := ledger.StateValidator(v); err != nil {
-			return &ValidationError{Name: "state", err: fmt.Errorf(`ent: validator failed for field "Ledger.state": %w`, err)}
-		}
-	}
-	if v, ok := _u.mutation.Country(); ok {
-		if err := ledger.CountryValidator(v); err != nil {
-			return &ValidationError{Name: "country", err: fmt.Errorf(`ent: validator failed for field "Ledger.country": %w`, err)}
 		}
 	}
 	if v, ok := _u.mutation.Pincode(); ok {
@@ -818,18 +832,6 @@ func (_u *LedgerUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	if _u.mutation.CityCleared() {
 		_spec.ClearField(ledger.FieldCity, field.TypeString)
 	}
-	if value, ok := _u.mutation.State(); ok {
-		_spec.SetField(ledger.FieldState, field.TypeString, value)
-	}
-	if _u.mutation.StateCleared() {
-		_spec.ClearField(ledger.FieldState, field.TypeString)
-	}
-	if value, ok := _u.mutation.Country(); ok {
-		_spec.SetField(ledger.FieldCountry, field.TypeString, value)
-	}
-	if _u.mutation.CountryCleared() {
-		_spec.ClearField(ledger.FieldCountry, field.TypeString)
-	}
 	if value, ok := _u.mutation.Pincode(); ok {
 		_spec.SetField(ledger.FieldPincode, field.TypeString, value)
 	}
@@ -936,6 +938,64 @@ func (_u *LedgerUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(ledger_group.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if _u.mutation.StateCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   ledger.StateTable,
+			Columns: []string{ledger.StateColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(state.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := _u.mutation.StateIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   ledger.StateTable,
+			Columns: []string{ledger.StateColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(state.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if _u.mutation.CountryCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   ledger.CountryTable,
+			Columns: []string{ledger.CountryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(country.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := _u.mutation.CountryIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   ledger.CountryTable,
+			Columns: []string{ledger.CountryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(country.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -1191,43 +1251,43 @@ func (_u *LedgerUpdateOne) ClearCity() *LedgerUpdateOne {
 	return _u
 }
 
-// SetState sets the "state" field.
-func (_u *LedgerUpdateOne) SetState(v string) *LedgerUpdateOne {
-	_u.mutation.SetState(v)
+// SetStateID sets the "state_id" field.
+func (_u *LedgerUpdateOne) SetStateID(v int) *LedgerUpdateOne {
+	_u.mutation.SetStateID(v)
 	return _u
 }
 
-// SetNillableState sets the "state" field if the given value is not nil.
-func (_u *LedgerUpdateOne) SetNillableState(v *string) *LedgerUpdateOne {
+// SetNillableStateID sets the "state_id" field if the given value is not nil.
+func (_u *LedgerUpdateOne) SetNillableStateID(v *int) *LedgerUpdateOne {
 	if v != nil {
-		_u.SetState(*v)
+		_u.SetStateID(*v)
 	}
 	return _u
 }
 
-// ClearState clears the value of the "state" field.
-func (_u *LedgerUpdateOne) ClearState() *LedgerUpdateOne {
-	_u.mutation.ClearState()
+// ClearStateID clears the value of the "state_id" field.
+func (_u *LedgerUpdateOne) ClearStateID() *LedgerUpdateOne {
+	_u.mutation.ClearStateID()
 	return _u
 }
 
-// SetCountry sets the "country" field.
-func (_u *LedgerUpdateOne) SetCountry(v string) *LedgerUpdateOne {
-	_u.mutation.SetCountry(v)
+// SetCountryID sets the "country_id" field.
+func (_u *LedgerUpdateOne) SetCountryID(v int) *LedgerUpdateOne {
+	_u.mutation.SetCountryID(v)
 	return _u
 }
 
-// SetNillableCountry sets the "country" field if the given value is not nil.
-func (_u *LedgerUpdateOne) SetNillableCountry(v *string) *LedgerUpdateOne {
+// SetNillableCountryID sets the "country_id" field if the given value is not nil.
+func (_u *LedgerUpdateOne) SetNillableCountryID(v *int) *LedgerUpdateOne {
 	if v != nil {
-		_u.SetCountry(*v)
+		_u.SetCountryID(*v)
 	}
 	return _u
 }
 
-// ClearCountry clears the value of the "country" field.
-func (_u *LedgerUpdateOne) ClearCountry() *LedgerUpdateOne {
-	_u.mutation.ClearCountry()
+// ClearCountryID clears the value of the "country_id" field.
+func (_u *LedgerUpdateOne) ClearCountryID() *LedgerUpdateOne {
+	_u.mutation.ClearCountryID()
 	return _u
 }
 
@@ -1540,6 +1600,16 @@ func (_u *LedgerUpdateOne) SetGroup(v *Ledger_Group) *LedgerUpdateOne {
 	return _u.SetGroupID(v.ID)
 }
 
+// SetState sets the "state" edge to the State entity.
+func (_u *LedgerUpdateOne) SetState(v *State) *LedgerUpdateOne {
+	return _u.SetStateID(v.ID)
+}
+
+// SetCountry sets the "country" edge to the Country entity.
+func (_u *LedgerUpdateOne) SetCountry(v *Country) *LedgerUpdateOne {
+	return _u.SetCountryID(v.ID)
+}
+
 // AddJournalLineIDs adds the "journal_lines" edge to the Journal_Line entity by IDs.
 func (_u *LedgerUpdateOne) AddJournalLineIDs(ids ...int) *LedgerUpdateOne {
 	_u.mutation.AddJournalLineIDs(ids...)
@@ -1563,6 +1633,18 @@ func (_u *LedgerUpdateOne) Mutation() *LedgerMutation {
 // ClearGroup clears the "group" edge to the Ledger_Group entity.
 func (_u *LedgerUpdateOne) ClearGroup() *LedgerUpdateOne {
 	_u.mutation.ClearGroup()
+	return _u
+}
+
+// ClearState clears the "state" edge to the State entity.
+func (_u *LedgerUpdateOne) ClearState() *LedgerUpdateOne {
+	_u.mutation.ClearState()
+	return _u
+}
+
+// ClearCountry clears the "country" edge to the Country entity.
+func (_u *LedgerUpdateOne) ClearCountry() *LedgerUpdateOne {
+	_u.mutation.ClearCountry()
 	return _u
 }
 
@@ -1671,16 +1753,6 @@ func (_u *LedgerUpdateOne) check() error {
 	if v, ok := _u.mutation.City(); ok {
 		if err := ledger.CityValidator(v); err != nil {
 			return &ValidationError{Name: "city", err: fmt.Errorf(`ent: validator failed for field "Ledger.city": %w`, err)}
-		}
-	}
-	if v, ok := _u.mutation.State(); ok {
-		if err := ledger.StateValidator(v); err != nil {
-			return &ValidationError{Name: "state", err: fmt.Errorf(`ent: validator failed for field "Ledger.state": %w`, err)}
-		}
-	}
-	if v, ok := _u.mutation.Country(); ok {
-		if err := ledger.CountryValidator(v); err != nil {
-			return &ValidationError{Name: "country", err: fmt.Errorf(`ent: validator failed for field "Ledger.country": %w`, err)}
 		}
 	}
 	if v, ok := _u.mutation.Pincode(); ok {
@@ -1826,18 +1898,6 @@ func (_u *LedgerUpdateOne) sqlSave(ctx context.Context) (_node *Ledger, err erro
 	if _u.mutation.CityCleared() {
 		_spec.ClearField(ledger.FieldCity, field.TypeString)
 	}
-	if value, ok := _u.mutation.State(); ok {
-		_spec.SetField(ledger.FieldState, field.TypeString, value)
-	}
-	if _u.mutation.StateCleared() {
-		_spec.ClearField(ledger.FieldState, field.TypeString)
-	}
-	if value, ok := _u.mutation.Country(); ok {
-		_spec.SetField(ledger.FieldCountry, field.TypeString, value)
-	}
-	if _u.mutation.CountryCleared() {
-		_spec.ClearField(ledger.FieldCountry, field.TypeString)
-	}
 	if value, ok := _u.mutation.Pincode(); ok {
 		_spec.SetField(ledger.FieldPincode, field.TypeString, value)
 	}
@@ -1944,6 +2004,64 @@ func (_u *LedgerUpdateOne) sqlSave(ctx context.Context) (_node *Ledger, err erro
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(ledger_group.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if _u.mutation.StateCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   ledger.StateTable,
+			Columns: []string{ledger.StateColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(state.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := _u.mutation.StateIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   ledger.StateTable,
+			Columns: []string{ledger.StateColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(state.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if _u.mutation.CountryCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   ledger.CountryTable,
+			Columns: []string{ledger.CountryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(country.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := _u.mutation.CountryIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   ledger.CountryTable,
+			Columns: []string{ledger.CountryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(country.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {

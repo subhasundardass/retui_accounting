@@ -9,8 +9,10 @@ import (
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
+	"github.com/subhasundardass/retui/ent/country"
 	"github.com/subhasundardass/retui/ent/ledger"
 	"github.com/subhasundardass/retui/ent/ledger_group"
+	"github.com/subhasundardass/retui/ent/state"
 )
 
 // Ledger is the model entity for the Ledger schema.
@@ -42,10 +44,10 @@ type Ledger struct {
 	AddressLine2 string `json:"address_line2,omitempty"`
 	// City holds the value of the "city" field.
 	City string `json:"city,omitempty"`
-	// State holds the value of the "state" field.
-	State string `json:"state,omitempty"`
-	// Country holds the value of the "country" field.
-	Country string `json:"country,omitempty"`
+	// StateID holds the value of the "state_id" field.
+	StateID int `json:"state_id,omitempty"`
+	// CountryID holds the value of the "country_id" field.
+	CountryID int `json:"country_id,omitempty"`
 	// Pincode holds the value of the "pincode" field.
 	Pincode string `json:"pincode,omitempty"`
 	// Phone holds the value of the "phone" field.
@@ -91,11 +93,15 @@ type Ledger struct {
 type LedgerEdges struct {
 	// Group holds the value of the group edge.
 	Group *Ledger_Group `json:"group,omitempty"`
+	// State holds the value of the state edge.
+	State *State `json:"state,omitempty"`
+	// Country holds the value of the country edge.
+	Country *Country `json:"country,omitempty"`
 	// JournalLines holds the value of the journal_lines edge.
 	JournalLines []*Journal_Line `json:"journal_lines,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [2]bool
+	loadedTypes [4]bool
 }
 
 // GroupOrErr returns the Group value or an error if the edge
@@ -109,10 +115,32 @@ func (e LedgerEdges) GroupOrErr() (*Ledger_Group, error) {
 	return nil, &NotLoadedError{edge: "group"}
 }
 
+// StateOrErr returns the State value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e LedgerEdges) StateOrErr() (*State, error) {
+	if e.State != nil {
+		return e.State, nil
+	} else if e.loadedTypes[1] {
+		return nil, &NotFoundError{label: state.Label}
+	}
+	return nil, &NotLoadedError{edge: "state"}
+}
+
+// CountryOrErr returns the Country value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e LedgerEdges) CountryOrErr() (*Country, error) {
+	if e.Country != nil {
+		return e.Country, nil
+	} else if e.loadedTypes[2] {
+		return nil, &NotFoundError{label: country.Label}
+	}
+	return nil, &NotLoadedError{edge: "country"}
+}
+
 // JournalLinesOrErr returns the JournalLines value or an error if the edge
 // was not loaded in eager-loading.
 func (e LedgerEdges) JournalLinesOrErr() ([]*Journal_Line, error) {
-	if e.loadedTypes[1] {
+	if e.loadedTypes[3] {
 		return e.JournalLines, nil
 	}
 	return nil, &NotLoadedError{edge: "journal_lines"}
@@ -127,9 +155,9 @@ func (*Ledger) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullBool)
 		case ledger.FieldBalance:
 			values[i] = new(sql.NullFloat64)
-		case ledger.FieldID, ledger.FieldGroupID:
+		case ledger.FieldID, ledger.FieldGroupID, ledger.FieldStateID, ledger.FieldCountryID:
 			values[i] = new(sql.NullInt64)
-		case ledger.FieldCode, ledger.FieldName, ledger.FieldAlias, ledger.FieldDescription, ledger.FieldPartyType, ledger.FieldAddressLine1, ledger.FieldAddressLine2, ledger.FieldCity, ledger.FieldState, ledger.FieldCountry, ledger.FieldPincode, ledger.FieldPhone, ledger.FieldMobile, ledger.FieldEmail, ledger.FieldContactPerson, ledger.FieldGstRegistrationType, ledger.FieldGstin, ledger.FieldPan, ledger.FieldBankName, ledger.FieldBankAccountNo, ledger.FieldBankIfsc, ledger.FieldBankBranch:
+		case ledger.FieldCode, ledger.FieldName, ledger.FieldAlias, ledger.FieldDescription, ledger.FieldPartyType, ledger.FieldAddressLine1, ledger.FieldAddressLine2, ledger.FieldCity, ledger.FieldPincode, ledger.FieldPhone, ledger.FieldMobile, ledger.FieldEmail, ledger.FieldContactPerson, ledger.FieldGstRegistrationType, ledger.FieldGstin, ledger.FieldPan, ledger.FieldBankName, ledger.FieldBankAccountNo, ledger.FieldBankIfsc, ledger.FieldBankBranch:
 			values[i] = new(sql.NullString)
 		case ledger.FieldCreateTime, ledger.FieldUpdateTime:
 			values[i] = new(sql.NullTime)
@@ -228,17 +256,17 @@ func (_m *Ledger) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				_m.City = value.String
 			}
-		case ledger.FieldState:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field state", values[i])
+		case ledger.FieldStateID:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field state_id", values[i])
 			} else if value.Valid {
-				_m.State = value.String
+				_m.StateID = int(value.Int64)
 			}
-		case ledger.FieldCountry:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field country", values[i])
+		case ledger.FieldCountryID:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field country_id", values[i])
 			} else if value.Valid {
-				_m.Country = value.String
+				_m.CountryID = int(value.Int64)
 			}
 		case ledger.FieldPincode:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -367,6 +395,16 @@ func (_m *Ledger) QueryGroup() *LedgerGroupQuery {
 	return NewLedgerClient(_m.config).QueryGroup(_m)
 }
 
+// QueryState queries the "state" edge of the Ledger entity.
+func (_m *Ledger) QueryState() *StateQuery {
+	return NewLedgerClient(_m.config).QueryState(_m)
+}
+
+// QueryCountry queries the "country" edge of the Ledger entity.
+func (_m *Ledger) QueryCountry() *CountryQuery {
+	return NewLedgerClient(_m.config).QueryCountry(_m)
+}
+
 // QueryJournalLines queries the "journal_lines" edge of the Ledger entity.
 func (_m *Ledger) QueryJournalLines() *JournalLineQuery {
 	return NewLedgerClient(_m.config).QueryJournalLines(_m)
@@ -431,11 +469,11 @@ func (_m *Ledger) String() string {
 	builder.WriteString("city=")
 	builder.WriteString(_m.City)
 	builder.WriteString(", ")
-	builder.WriteString("state=")
-	builder.WriteString(_m.State)
+	builder.WriteString("state_id=")
+	builder.WriteString(fmt.Sprintf("%v", _m.StateID))
 	builder.WriteString(", ")
-	builder.WriteString("country=")
-	builder.WriteString(_m.Country)
+	builder.WriteString("country_id=")
+	builder.WriteString(fmt.Sprintf("%v", _m.CountryID))
 	builder.WriteString(", ")
 	builder.WriteString("pincode=")
 	builder.WriteString(_m.Pincode)

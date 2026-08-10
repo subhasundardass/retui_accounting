@@ -60,6 +60,12 @@ func (_c *StateCreate) SetCountryID(v int) *StateCreate {
 	return _c
 }
 
+// SetID sets the "id" field.
+func (_c *StateCreate) SetID(v int) *StateCreate {
+	_c.mutation.SetID(v)
+	return _c
+}
+
 // SetCountry sets the "country" edge to the Country entity.
 func (_c *StateCreate) SetCountry(v *Country) *StateCreate {
 	return _c.SetCountryID(v.ID)
@@ -137,8 +143,10 @@ func (_c *StateCreate) sqlSave(ctx context.Context) (*State, error) {
 		}
 		return nil, err
 	}
-	id := _spec.ID.Value.(int64)
-	_node.ID = int(id)
+	if _spec.ID.Value != _node.ID {
+		id := _spec.ID.Value.(int64)
+		_node.ID = int(id)
+	}
 	_c.mutation.id = &_node.ID
 	_c.mutation.done = true
 	return _node, nil
@@ -149,6 +157,10 @@ func (_c *StateCreate) createSpec() (*State, *sqlgraph.CreateSpec) {
 		_node = &State{config: _c.config}
 		_spec = sqlgraph.NewCreateSpec(state.Table, sqlgraph.NewFieldSpec(state.FieldID, field.TypeInt))
 	)
+	if id, ok := _c.mutation.ID(); ok {
+		_node.ID = id
+		_spec.ID.Value = id
+	}
 	if value, ok := _c.mutation.Name(); ok {
 		_spec.SetField(state.FieldName, field.TypeString, value)
 		_node.Name = value
@@ -225,7 +237,7 @@ func (_c *StateCreateBulk) Save(ctx context.Context) ([]*State, error) {
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
-				if specs[i].ID.Value != nil {
+				if specs[i].ID.Value != nil && nodes[i].ID == 0 {
 					id := specs[i].ID.Value.(int64)
 					nodes[i].ID = int(id)
 				}

@@ -1,11 +1,15 @@
 package views
 
 import (
+	"strconv"
+
 	appctx "github.com/subhasundardass/retui/internal/context"
+	"github.com/subhasundardass/retui/internal/util"
 	"github.com/subhasundardass/retui/module/ledger"
 	"github.com/subhasundardass/retui/retui"
 	"github.com/subhasundardass/retui/retui/components"
 	"github.com/subhasundardass/retui/retui/window"
+	"github.com/subhasundardass/retui/ui/widgets"
 )
 
 type LedgerFormComponent struct {
@@ -48,6 +52,26 @@ func (c *LedgerFormComponent) bindKeys(form *retui.Form[ledger.LedgerState]) {
 	}
 }
 
+func (c *LedgerFormComponent) save(state ledger.LedgerState) {
+
+	mode := ledger.ModeCreate
+	id := 0
+	if c.editing {
+		mode = ledger.ModeUpdate
+		id = c.editID
+	}
+
+	_, err := c.controller.LedgerSave(mode, id, state)
+	if err != nil {
+		retui.Debugf("Save failed: %v", err)
+		components.ShowError("Save failed: " + err.Error())
+		// TODO: surface this error in the UI (e.g. an Errors/status field on state)
+		return
+	}
+
+	components.ShowSuccess("Ladger Saved ")
+}
+
 func (c *LedgerFormComponent) LedgerEditForm(ctx *appctx.AppContext) retui.Element {
 	ledgerID := 0
 	params := retui.CurrentScreenParams()
@@ -82,8 +106,8 @@ func (c *LedgerFormComponent) LedgerEditForm(ctx *appctx.AppContext) retui.Eleme
 		GSTIN:               state.GSTIN,
 		PAN:                 state.PAN,
 		City:                state.City,
-		State:               state.State,
-		Country:             state.Country,
+		StateID:             state.StateID,
+		CountryID:           state.CountryID,
 		Pincode:             state.Pincode,
 		Phone:               state.Phone,
 		Mobile:              state.Mobile,
@@ -95,10 +119,22 @@ func (c *LedgerFormComponent) LedgerEditForm(ctx *appctx.AppContext) retui.Eleme
 		BankBranch:          state.BankBranch,
 	}
 
-	return c.buildForm()
+	return c.buildForm(ctx)
 }
 
-func (c *LedgerFormComponent) buildForm() retui.Element {
+func (c *LedgerFormComponent) LedgerCreateForm(ctx *appctx.AppContext) retui.Element {
+
+	c.editing = false
+	c.editID = 0
+
+	c.state = ledger.LedgerState{
+		Mode: ledger.ModeUpdate,
+	}
+
+	return c.buildForm(ctx)
+}
+
+func (c *LedgerFormComponent) buildForm(ctx *appctx.AppContext) retui.Element {
 	form := retui.UseForm(c.state)
 	v := form.Values()
 
@@ -177,20 +213,22 @@ func (c *LedgerFormComponent) buildForm() retui.Element {
 			retui.NewStyle(),
 			retui.Text("Group", retui.NewStyle()),
 		),
-		components.SelectDropdown().
-			ID("group").
-			Focused(v.FocusIndex == 3).
-			Prefix(" : ").
-			Width(50).
-			OverlayAbsPos(80, 5).
-			OnFilter(func(id, query string) []components.SelectOption {
-				return c.controller.LedgerGroupFilterOptions(query)
-			}).
-			Value(v.GroupID).
-			OnChange(func(id, value string) {
-				form.SetField("GroupID", value)
-			}).
-			Render(),
+		widgets.GroupComponent(
+			ctx,
+			"group",
+			util.IntToString(form.Values().GroupID),
+			30,
+			v.FocusIndex == 3,
+			" : ",
+			func(id, value string) {
+				i, err := strconv.Atoi(value)
+				if err != nil {
+					retui.Debugf("Invalid Group ID: %v", err)
+					return
+				}
+				form.SetField("GroupID", i)
+			},
+		),
 	)
 
 	// Party Type - Focus Index 4
@@ -250,7 +288,7 @@ func (c *LedgerFormComponent) buildForm() retui.Element {
 		retui.Box(
 			retui.Props{Width: retui.Fixed(20)},
 			retui.NewStyle(),
-			retui.Text("Line 1", retui.NewStyle()),
+			retui.Text("Address 1", retui.NewStyle()),
 		),
 		components.TextInput().
 			ID("addressLine1").
@@ -270,7 +308,7 @@ func (c *LedgerFormComponent) buildForm() retui.Element {
 		retui.Box(
 			retui.Props{Width: retui.Fixed(20)},
 			retui.NewStyle(),
-			retui.Text("Line 2", retui.NewStyle()),
+			retui.Text("Address 2", retui.NewStyle()),
 		),
 		components.TextInput().
 			ID("addressLine2").
@@ -283,7 +321,63 @@ func (c *LedgerFormComponent) buildForm() retui.Element {
 			Render(),
 	)
 
-	// City - Focus Index 8
+	// Country - Focus Index 8
+	country := retui.Box(
+		retui.Props{Gap: 1, Width: retui.Grow(1)},
+		retui.NewStyle(),
+		retui.Box(
+			retui.Props{Width: retui.Fixed(20)},
+			retui.NewStyle(),
+			retui.Text("Country", retui.NewStyle()),
+		),
+
+		widgets.CountryComponent(
+			ctx,
+			"country",
+			form.Values().CountryID,
+			30,
+			v.FocusIndex == 8,
+			" : ",
+			func(id, value string) {
+				i, err := strconv.Atoi(value)
+				if err != nil {
+					retui.Debugf("Invalid Country ID: %v", err)
+					return
+				}
+				form.SetField("CountryID", i)
+			},
+		),
+	)
+
+	// State - Focus Index 9
+	state := retui.Box(
+		retui.Props{Gap: 1, Width: retui.Grow(1)},
+		retui.NewStyle(),
+		retui.Box(
+			retui.Props{Width: retui.Fixed(20)},
+			retui.NewStyle(),
+			retui.Text("State", retui.NewStyle()),
+		),
+		widgets.StateComponent(
+			ctx,
+			"state",
+			form.Values().CountryID,
+			form.Values().StateID,
+			30,
+			v.FocusIndex == 9,
+			" : ",
+			func(id, value string) {
+				i, err := strconv.Atoi(value)
+				if err != nil {
+					retui.Debugf("Invalid State ID: %v", err)
+					return
+				}
+				form.SetField("StateID", i)
+			},
+		),
+	)
+
+	// City - Focus Index 10
 	city := retui.Box(
 		retui.Props{Gap: 1, Width: retui.Grow(1)},
 		retui.NewStyle(),
@@ -296,49 +390,9 @@ func (c *LedgerFormComponent) buildForm() retui.Element {
 			ID("city").
 			Value(v.City).
 			Prefix(" : ").
-			Focused(v.FocusIndex == 8).
-			OnChange(func(id, value string) {
-				form.SetField("City", value)
-			}).
-			Render(),
-	)
-
-	// State - Focus Index 9
-	state := retui.Box(
-		retui.Props{Gap: 1, Width: retui.Grow(1)},
-		retui.NewStyle(),
-		retui.Box(
-			retui.Props{Width: retui.Fixed(20)},
-			retui.NewStyle(),
-			retui.Text("State", retui.NewStyle()),
-		),
-		components.TextInput().
-			ID("state").
-			Prefix(" : ").
-			Value(v.State).
-			Focused(v.FocusIndex == 9).
-			OnChange(func(id, value string) {
-				form.SetField("State", value)
-			}).
-			Render(),
-	)
-
-	// Country - Focus Index 10
-	country := retui.Box(
-		retui.Props{Gap: 1, Width: retui.Grow(1)},
-		retui.NewStyle(),
-		retui.Box(
-			retui.Props{Width: retui.Fixed(20)},
-			retui.NewStyle(),
-			retui.Text("Country", retui.NewStyle()),
-		),
-		components.TextInput().
-			ID("country").
-			Value(v.Country).
-			Prefix(" : ").
 			Focused(v.FocusIndex == 10).
 			OnChange(func(id, value string) {
-				form.SetField("Country", value)
+				form.SetField("City", value)
 			}).
 			Render(),
 	)
@@ -352,6 +406,7 @@ func (c *LedgerFormComponent) buildForm() retui.Element {
 			retui.NewStyle(),
 			retui.Text("Pincode", retui.NewStyle()),
 		),
+
 		components.TextInput().
 			ID("pincode").
 			Value(v.Pincode).
@@ -619,8 +674,17 @@ func (c *LedgerFormComponent) buildForm() retui.Element {
 		retui.NewStyle().Background(retui.Gray(2)),
 
 		components.Button().
+			ID("save").
 			Label("Save").
 			Focused(v.FocusIndex == 24).
+			OnKeyPress(func(id string, key retui.Key) bool {
+				if key.Code == retui.KeyEnter {
+					retui.Debugf("value: %v", v)
+					c.save(v)
+					return true
+				}
+				return false
+			}).
 			Render(),
 	)
 
@@ -631,8 +695,16 @@ func (c *LedgerFormComponent) buildForm() retui.Element {
 			Background(retui.Gray(2)).
 			Foreground(retui.White),
 		components.Button().
+			ID("reset").
 			Label("Reset").
 			Focused(v.FocusIndex == 25).
+			OnKeyPress(func(id string, key retui.Key) bool {
+				if key.Code == retui.KeyEnter {
+					form.Reset()
+					return true
+				}
+				return false
+			}).
 			Render(),
 	)
 
@@ -652,6 +724,7 @@ func (c *LedgerFormComponent) buildForm() retui.Element {
 	// ==================== MAIN PANEL ====================
 	panel := components.Panel().
 		Header(retui.Text("Ledger Create", retui.NewStyle().Bold(true))).
+		FixedWidth(retui.CurrentScreenWidth - 70).
 		Children(
 			retui.Box(
 				retui.Props{
@@ -697,9 +770,9 @@ func (c *LedgerFormComponent) buildForm() retui.Element {
 					retui.NewStyle(),
 					addressLine1,
 					addressLine2,
-					city,
-					state,
 					country,
+					state,
+					city,
 					pincode,
 				),
 				retui.Box(
@@ -740,6 +813,7 @@ func (c *LedgerFormComponent) buildForm() retui.Element {
 	return retui.Box(
 		retui.Props{
 			Direction: retui.Column,
+			Width:     retui.Grow(1),
 		},
 		retui.NewStyle(),
 		panel,

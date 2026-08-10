@@ -57,6 +57,7 @@ var sidebarTree = []components.TreeNode{
 		Label: "Reports",
 		Children: []components.TreeNode{
 			{ID: "journal_list", Label: "Journals"},
+			{ID: "receipt_book", Label: "Receipt Book"},
 			{ID: "cash_book", Label: "Cash Book"},
 			{ID: "bank_book", Label: "Bank Book"},
 			{ID: "trail_balance", Label: "Trail Balance"},

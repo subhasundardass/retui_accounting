@@ -15,6 +15,9 @@ type State struct {
 // Fields of the State.
 func (State) Fields() []ent.Field {
 	return []ent.Field{
+		// Explicitly define ID as int (optional since it's the default)
+		field.Int("id"),
+
 		field.String("name").
 			NotEmpty().
 			MaxLen(100),
@@ -44,14 +47,8 @@ func (State) Edges() []ent.Edge {
 
 func (State) Indexes() []ent.Index {
 	return []ent.Index{
-		// Equivalent to GORM: index on country_id
 		index.Fields("country_id"),
-
-		// Prevent duplicate state names within same country
-		index.Fields("country_id", "name").
-			Unique(),
-
-		// Optional: quick lookup by GST code
+		index.Fields("country_id", "name").Unique(),
 		index.Fields("gst_code"),
 	}
 }

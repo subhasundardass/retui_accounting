@@ -39,10 +39,10 @@ const (
 	FieldAddressLine2 = "address_line2"
 	// FieldCity holds the string denoting the city field in the database.
 	FieldCity = "city"
-	// FieldState holds the string denoting the state field in the database.
-	FieldState = "state"
-	// FieldCountry holds the string denoting the country field in the database.
-	FieldCountry = "country"
+	// FieldStateID holds the string denoting the state_id field in the database.
+	FieldStateID = "state_id"
+	// FieldCountryID holds the string denoting the country_id field in the database.
+	FieldCountryID = "country_id"
 	// FieldPincode holds the string denoting the pincode field in the database.
 	FieldPincode = "pincode"
 	// FieldPhone holds the string denoting the phone field in the database.
@@ -79,6 +79,10 @@ const (
 	FieldIsActive = "is_active"
 	// EdgeGroup holds the string denoting the group edge name in mutations.
 	EdgeGroup = "group"
+	// EdgeState holds the string denoting the state edge name in mutations.
+	EdgeState = "state"
+	// EdgeCountry holds the string denoting the country edge name in mutations.
+	EdgeCountry = "country"
 	// EdgeJournalLines holds the string denoting the journal_lines edge name in mutations.
 	EdgeJournalLines = "journal_lines"
 	// Table holds the table name of the ledger in the database.
@@ -90,6 +94,20 @@ const (
 	GroupInverseTable = "ledger_groups"
 	// GroupColumn is the table column denoting the group relation/edge.
 	GroupColumn = "group_id"
+	// StateTable is the table that holds the state relation/edge.
+	StateTable = "ledgers"
+	// StateInverseTable is the table name for the State entity.
+	// It exists in this package in order to avoid circular dependency with the "state" package.
+	StateInverseTable = "states"
+	// StateColumn is the table column denoting the state relation/edge.
+	StateColumn = "state_id"
+	// CountryTable is the table that holds the country relation/edge.
+	CountryTable = "ledgers"
+	// CountryInverseTable is the table name for the Country entity.
+	// It exists in this package in order to avoid circular dependency with the "country" package.
+	CountryInverseTable = "countries"
+	// CountryColumn is the table column denoting the country relation/edge.
+	CountryColumn = "country_id"
 	// JournalLinesTable is the table that holds the journal_lines relation/edge.
 	JournalLinesTable = "journal_lines"
 	// JournalLinesInverseTable is the table name for the Journal_Line entity.
@@ -114,8 +132,8 @@ var Columns = []string{
 	FieldAddressLine1,
 	FieldAddressLine2,
 	FieldCity,
-	FieldState,
-	FieldCountry,
+	FieldStateID,
+	FieldCountryID,
 	FieldPincode,
 	FieldPhone,
 	FieldMobile,
@@ -187,14 +205,6 @@ var (
 	DefaultCity string
 	// CityValidator is a validator for the "city" field. It is called by the builders before save.
 	CityValidator func(string) error
-	// DefaultState holds the default value on creation for the "state" field.
-	DefaultState string
-	// StateValidator is a validator for the "state" field. It is called by the builders before save.
-	StateValidator func(string) error
-	// DefaultCountry holds the default value on creation for the "country" field.
-	DefaultCountry string
-	// CountryValidator is a validator for the "country" field. It is called by the builders before save.
-	CountryValidator func(string) error
 	// DefaultPincode holds the default value on creation for the "pincode" field.
 	DefaultPincode string
 	// PincodeValidator is a validator for the "pincode" field. It is called by the builders before save.
@@ -377,14 +387,14 @@ func ByCity(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCity, opts...).ToFunc()
 }
 
-// ByState orders the results by the state field.
-func ByState(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldState, opts...).ToFunc()
+// ByStateID orders the results by the state_id field.
+func ByStateID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldStateID, opts...).ToFunc()
 }
 
-// ByCountry orders the results by the country field.
-func ByCountry(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCountry, opts...).ToFunc()
+// ByCountryID orders the results by the country_id field.
+func ByCountryID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCountryID, opts...).ToFunc()
 }
 
 // ByPincode orders the results by the pincode field.
@@ -479,6 +489,20 @@ func ByGroupField(field string, opts ...sql.OrderTermOption) OrderOption {
 	}
 }
 
+// ByStateField orders the results by state field.
+func ByStateField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newStateStep(), sql.OrderByField(field, opts...))
+	}
+}
+
+// ByCountryField orders the results by country field.
+func ByCountryField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newCountryStep(), sql.OrderByField(field, opts...))
+	}
+}
+
 // ByJournalLinesCount orders the results by journal_lines count.
 func ByJournalLinesCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
@@ -497,6 +521,20 @@ func newGroupStep() *sqlgraph.Step {
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(GroupInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.M2O, false, GroupTable, GroupColumn),
+	)
+}
+func newStateStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(StateInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, false, StateTable, StateColumn),
+	)
+}
+func newCountryStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(CountryInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, false, CountryTable, CountryColumn),
 	)
 }
 func newJournalLinesStep() *sqlgraph.Step {

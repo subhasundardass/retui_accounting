@@ -103,7 +103,7 @@ func init() {
 	countryFields := schema.Country{}.Fields()
 	_ = countryFields
 	// countryDescName is the schema descriptor for name field.
-	countryDescName := countryFields[0].Descriptor()
+	countryDescName := countryFields[1].Descriptor()
 	// country.NameValidator is a validator for the "name" field. It is called by the builders before save.
 	country.NameValidator = func() func(string) error {
 		validators := countryDescName.Validators
@@ -121,7 +121,7 @@ func init() {
 		}
 	}()
 	// countryDescCode is the schema descriptor for code field.
-	countryDescCode := countryFields[1].Descriptor()
+	countryDescCode := countryFields[2].Descriptor()
 	// country.CodeValidator is a validator for the "code" field. It is called by the builders before save.
 	country.CodeValidator = func() func(string) error {
 		validators := countryDescCode.Validators
@@ -212,11 +212,11 @@ func init() {
 	// ledger.UpdateDefaultUpdateTime holds the default value on update for the update_time field.
 	ledger.UpdateDefaultUpdateTime = ledgerDescUpdateTime.UpdateDefault.(func() time.Time)
 	// ledgerDescCode is the schema descriptor for code field.
-	ledgerDescCode := ledgerFields[1].Descriptor()
+	ledgerDescCode := ledgerFields[2].Descriptor()
 	// ledger.CodeValidator is a validator for the "code" field. It is called by the builders before save.
 	ledger.CodeValidator = ledgerDescCode.Validators[0].(func(string) error)
 	// ledgerDescName is the schema descriptor for name field.
-	ledgerDescName := ledgerFields[2].Descriptor()
+	ledgerDescName := ledgerFields[3].Descriptor()
 	// ledger.NameValidator is a validator for the "name" field. It is called by the builders before save.
 	ledger.NameValidator = func() func(string) error {
 		validators := ledgerDescName.Validators
@@ -234,133 +234,121 @@ func init() {
 		}
 	}()
 	// ledgerDescAlias is the schema descriptor for alias field.
-	ledgerDescAlias := ledgerFields[3].Descriptor()
+	ledgerDescAlias := ledgerFields[4].Descriptor()
 	// ledger.DefaultAlias holds the default value on creation for the alias field.
 	ledger.DefaultAlias = ledgerDescAlias.Default.(string)
 	// ledger.AliasValidator is a validator for the "alias" field. It is called by the builders before save.
 	ledger.AliasValidator = ledgerDescAlias.Validators[0].(func(string) error)
 	// ledgerDescDescription is the schema descriptor for description field.
-	ledgerDescDescription := ledgerFields[4].Descriptor()
+	ledgerDescDescription := ledgerFields[5].Descriptor()
 	// ledger.DefaultDescription holds the default value on creation for the description field.
 	ledger.DefaultDescription = ledgerDescDescription.Default.(string)
 	// ledgerDescBalance is the schema descriptor for balance field.
-	ledgerDescBalance := ledgerFields[5].Descriptor()
+	ledgerDescBalance := ledgerFields[6].Descriptor()
 	// ledger.DefaultBalance holds the default value on creation for the balance field.
 	ledger.DefaultBalance = ledgerDescBalance.Default.(float64)
 	// ledgerDescAddressLine1 is the schema descriptor for address_line1 field.
-	ledgerDescAddressLine1 := ledgerFields[7].Descriptor()
+	ledgerDescAddressLine1 := ledgerFields[8].Descriptor()
 	// ledger.DefaultAddressLine1 holds the default value on creation for the address_line1 field.
 	ledger.DefaultAddressLine1 = ledgerDescAddressLine1.Default.(string)
 	// ledger.AddressLine1Validator is a validator for the "address_line1" field. It is called by the builders before save.
 	ledger.AddressLine1Validator = ledgerDescAddressLine1.Validators[0].(func(string) error)
 	// ledgerDescAddressLine2 is the schema descriptor for address_line2 field.
-	ledgerDescAddressLine2 := ledgerFields[8].Descriptor()
+	ledgerDescAddressLine2 := ledgerFields[9].Descriptor()
 	// ledger.DefaultAddressLine2 holds the default value on creation for the address_line2 field.
 	ledger.DefaultAddressLine2 = ledgerDescAddressLine2.Default.(string)
 	// ledger.AddressLine2Validator is a validator for the "address_line2" field. It is called by the builders before save.
 	ledger.AddressLine2Validator = ledgerDescAddressLine2.Validators[0].(func(string) error)
 	// ledgerDescCity is the schema descriptor for city field.
-	ledgerDescCity := ledgerFields[9].Descriptor()
+	ledgerDescCity := ledgerFields[10].Descriptor()
 	// ledger.DefaultCity holds the default value on creation for the city field.
 	ledger.DefaultCity = ledgerDescCity.Default.(string)
 	// ledger.CityValidator is a validator for the "city" field. It is called by the builders before save.
 	ledger.CityValidator = ledgerDescCity.Validators[0].(func(string) error)
-	// ledgerDescState is the schema descriptor for state field.
-	ledgerDescState := ledgerFields[10].Descriptor()
-	// ledger.DefaultState holds the default value on creation for the state field.
-	ledger.DefaultState = ledgerDescState.Default.(string)
-	// ledger.StateValidator is a validator for the "state" field. It is called by the builders before save.
-	ledger.StateValidator = ledgerDescState.Validators[0].(func(string) error)
-	// ledgerDescCountry is the schema descriptor for country field.
-	ledgerDescCountry := ledgerFields[11].Descriptor()
-	// ledger.DefaultCountry holds the default value on creation for the country field.
-	ledger.DefaultCountry = ledgerDescCountry.Default.(string)
-	// ledger.CountryValidator is a validator for the "country" field. It is called by the builders before save.
-	ledger.CountryValidator = ledgerDescCountry.Validators[0].(func(string) error)
 	// ledgerDescPincode is the schema descriptor for pincode field.
-	ledgerDescPincode := ledgerFields[12].Descriptor()
+	ledgerDescPincode := ledgerFields[13].Descriptor()
 	// ledger.DefaultPincode holds the default value on creation for the pincode field.
 	ledger.DefaultPincode = ledgerDescPincode.Default.(string)
 	// ledger.PincodeValidator is a validator for the "pincode" field. It is called by the builders before save.
 	ledger.PincodeValidator = ledgerDescPincode.Validators[0].(func(string) error)
 	// ledgerDescPhone is the schema descriptor for phone field.
-	ledgerDescPhone := ledgerFields[13].Descriptor()
+	ledgerDescPhone := ledgerFields[14].Descriptor()
 	// ledger.DefaultPhone holds the default value on creation for the phone field.
 	ledger.DefaultPhone = ledgerDescPhone.Default.(string)
 	// ledger.PhoneValidator is a validator for the "phone" field. It is called by the builders before save.
 	ledger.PhoneValidator = ledgerDescPhone.Validators[0].(func(string) error)
 	// ledgerDescMobile is the schema descriptor for mobile field.
-	ledgerDescMobile := ledgerFields[14].Descriptor()
+	ledgerDescMobile := ledgerFields[15].Descriptor()
 	// ledger.DefaultMobile holds the default value on creation for the mobile field.
 	ledger.DefaultMobile = ledgerDescMobile.Default.(string)
 	// ledger.MobileValidator is a validator for the "mobile" field. It is called by the builders before save.
 	ledger.MobileValidator = ledgerDescMobile.Validators[0].(func(string) error)
 	// ledgerDescEmail is the schema descriptor for email field.
-	ledgerDescEmail := ledgerFields[15].Descriptor()
+	ledgerDescEmail := ledgerFields[16].Descriptor()
 	// ledger.DefaultEmail holds the default value on creation for the email field.
 	ledger.DefaultEmail = ledgerDescEmail.Default.(string)
 	// ledger.EmailValidator is a validator for the "email" field. It is called by the builders before save.
 	ledger.EmailValidator = ledgerDescEmail.Validators[0].(func(string) error)
 	// ledgerDescContactPerson is the schema descriptor for contact_person field.
-	ledgerDescContactPerson := ledgerFields[16].Descriptor()
+	ledgerDescContactPerson := ledgerFields[17].Descriptor()
 	// ledger.DefaultContactPerson holds the default value on creation for the contact_person field.
 	ledger.DefaultContactPerson = ledgerDescContactPerson.Default.(string)
 	// ledger.ContactPersonValidator is a validator for the "contact_person" field. It is called by the builders before save.
 	ledger.ContactPersonValidator = ledgerDescContactPerson.Validators[0].(func(string) error)
 	// ledgerDescGstin is the schema descriptor for gstin field.
-	ledgerDescGstin := ledgerFields[18].Descriptor()
+	ledgerDescGstin := ledgerFields[19].Descriptor()
 	// ledger.DefaultGstin holds the default value on creation for the gstin field.
 	ledger.DefaultGstin = ledgerDescGstin.Default.(string)
 	// ledger.GstinValidator is a validator for the "gstin" field. It is called by the builders before save.
 	ledger.GstinValidator = ledgerDescGstin.Validators[0].(func(string) error)
 	// ledgerDescPan is the schema descriptor for pan field.
-	ledgerDescPan := ledgerFields[19].Descriptor()
+	ledgerDescPan := ledgerFields[20].Descriptor()
 	// ledger.DefaultPan holds the default value on creation for the pan field.
 	ledger.DefaultPan = ledgerDescPan.Default.(string)
 	// ledger.PanValidator is a validator for the "pan" field. It is called by the builders before save.
 	ledger.PanValidator = ledgerDescPan.Validators[0].(func(string) error)
 	// ledgerDescBankName is the schema descriptor for bank_name field.
-	ledgerDescBankName := ledgerFields[20].Descriptor()
+	ledgerDescBankName := ledgerFields[21].Descriptor()
 	// ledger.DefaultBankName holds the default value on creation for the bank_name field.
 	ledger.DefaultBankName = ledgerDescBankName.Default.(string)
 	// ledger.BankNameValidator is a validator for the "bank_name" field. It is called by the builders before save.
 	ledger.BankNameValidator = ledgerDescBankName.Validators[0].(func(string) error)
 	// ledgerDescBankAccountNo is the schema descriptor for bank_account_no field.
-	ledgerDescBankAccountNo := ledgerFields[21].Descriptor()
+	ledgerDescBankAccountNo := ledgerFields[22].Descriptor()
 	// ledger.DefaultBankAccountNo holds the default value on creation for the bank_account_no field.
 	ledger.DefaultBankAccountNo = ledgerDescBankAccountNo.Default.(string)
 	// ledger.BankAccountNoValidator is a validator for the "bank_account_no" field. It is called by the builders before save.
 	ledger.BankAccountNoValidator = ledgerDescBankAccountNo.Validators[0].(func(string) error)
 	// ledgerDescBankIfsc is the schema descriptor for bank_ifsc field.
-	ledgerDescBankIfsc := ledgerFields[22].Descriptor()
+	ledgerDescBankIfsc := ledgerFields[23].Descriptor()
 	// ledger.DefaultBankIfsc holds the default value on creation for the bank_ifsc field.
 	ledger.DefaultBankIfsc = ledgerDescBankIfsc.Default.(string)
 	// ledger.BankIfscValidator is a validator for the "bank_ifsc" field. It is called by the builders before save.
 	ledger.BankIfscValidator = ledgerDescBankIfsc.Validators[0].(func(string) error)
 	// ledgerDescBankBranch is the schema descriptor for bank_branch field.
-	ledgerDescBankBranch := ledgerFields[23].Descriptor()
+	ledgerDescBankBranch := ledgerFields[24].Descriptor()
 	// ledger.DefaultBankBranch holds the default value on creation for the bank_branch field.
 	ledger.DefaultBankBranch = ledgerDescBankBranch.Default.(string)
 	// ledger.BankBranchValidator is a validator for the "bank_branch" field. It is called by the builders before save.
 	ledger.BankBranchValidator = ledgerDescBankBranch.Validators[0].(func(string) error)
 	// ledgerDescIsSystem is the schema descriptor for is_system field.
-	ledgerDescIsSystem := ledgerFields[24].Descriptor()
+	ledgerDescIsSystem := ledgerFields[25].Descriptor()
 	// ledger.DefaultIsSystem holds the default value on creation for the is_system field.
 	ledger.DefaultIsSystem = ledgerDescIsSystem.Default.(bool)
 	// ledgerDescIsParty is the schema descriptor for is_party field.
-	ledgerDescIsParty := ledgerFields[25].Descriptor()
+	ledgerDescIsParty := ledgerFields[26].Descriptor()
 	// ledger.DefaultIsParty holds the default value on creation for the is_party field.
 	ledger.DefaultIsParty = ledgerDescIsParty.Default.(bool)
 	// ledgerDescIsBank is the schema descriptor for is_bank field.
-	ledgerDescIsBank := ledgerFields[26].Descriptor()
+	ledgerDescIsBank := ledgerFields[27].Descriptor()
 	// ledger.DefaultIsBank holds the default value on creation for the is_bank field.
 	ledger.DefaultIsBank = ledgerDescIsBank.Default.(bool)
 	// ledgerDescIsCash is the schema descriptor for is_cash field.
-	ledgerDescIsCash := ledgerFields[27].Descriptor()
+	ledgerDescIsCash := ledgerFields[28].Descriptor()
 	// ledger.DefaultIsCash holds the default value on creation for the is_cash field.
 	ledger.DefaultIsCash = ledgerDescIsCash.Default.(bool)
 	// ledgerDescIsActive is the schema descriptor for is_active field.
-	ledgerDescIsActive := ledgerFields[28].Descriptor()
+	ledgerDescIsActive := ledgerFields[29].Descriptor()
 	// ledger.DefaultIsActive holds the default value on creation for the is_active field.
 	ledger.DefaultIsActive = ledgerDescIsActive.Default.(bool)
 	ledger_groupFields := schema.Ledger_Group{}.Fields()
@@ -436,7 +424,7 @@ func init() {
 	stateFields := schema.State{}.Fields()
 	_ = stateFields
 	// stateDescName is the schema descriptor for name field.
-	stateDescName := stateFields[0].Descriptor()
+	stateDescName := stateFields[1].Descriptor()
 	// state.NameValidator is a validator for the "name" field. It is called by the builders before save.
 	state.NameValidator = func() func(string) error {
 		validators := stateDescName.Validators
@@ -454,11 +442,11 @@ func init() {
 		}
 	}()
 	// stateDescCode is the schema descriptor for code field.
-	stateDescCode := stateFields[1].Descriptor()
+	stateDescCode := stateFields[2].Descriptor()
 	// state.CodeValidator is a validator for the "code" field. It is called by the builders before save.
 	state.CodeValidator = stateDescCode.Validators[0].(func(string) error)
 	// stateDescGstCode is the schema descriptor for gst_code field.
-	stateDescGstCode := stateFields[2].Descriptor()
+	stateDescGstCode := stateFields[3].Descriptor()
 	// state.GstCodeValidator is a validator for the "gst_code" field. It is called by the builders before save.
 	state.GstCodeValidator = stateDescGstCode.Validators[0].(func(string) error)
 }

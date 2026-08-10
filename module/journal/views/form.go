@@ -61,8 +61,6 @@ func (c *JournalCreateComponent) bindKeys(form *retui.Form[journal.FormState]) {
 		moveFocus(-1)
 	case retui.KeyEscape:
 		retui.PopScreen()
-	case retui.KeyF2:
-		retui.Debugf("F2 Pressed.......")
 
 	case retui.KeyF4:
 		v := form.Values()
@@ -476,6 +474,17 @@ func (c *JournalCreateComponent) remarksField(
 			c.updateLine(form, index, func(l *journal.JournalLine) {
 				l.Remarks = value
 			})
+		}).
+		OnKeyPress(func(s string, k retui.Key) bool {
+			if k.Code == retui.KeyEnter {
+				v := form.Values()
+				v.Lines = append(v.Lines, journal.JournalLine{})
+
+				v.FocusIndex = 4 + (len(v.Lines)-1)*4
+				form.SetValues(v)
+				return true // Consume the event
+			}
+			return false // Allow other key events to pass through
 		}).
 		Render()
 }

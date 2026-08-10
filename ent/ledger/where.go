@@ -110,14 +110,14 @@ func City(v string) predicate.Ledger {
 	return predicate.Ledger(sql.FieldEQ(FieldCity, v))
 }
 
-// State applies equality check predicate on the "state" field. It's identical to StateEQ.
-func State(v string) predicate.Ledger {
-	return predicate.Ledger(sql.FieldEQ(FieldState, v))
+// StateID applies equality check predicate on the "state_id" field. It's identical to StateIDEQ.
+func StateID(v int) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldStateID, v))
 }
 
-// Country applies equality check predicate on the "country" field. It's identical to CountryEQ.
-func Country(v string) predicate.Ledger {
-	return predicate.Ledger(sql.FieldEQ(FieldCountry, v))
+// CountryID applies equality check predicate on the "country_id" field. It's identical to CountryIDEQ.
+func CountryID(v int) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldCountryID, v))
 }
 
 // Pincode applies equality check predicate on the "pincode" field. It's identical to PincodeEQ.
@@ -865,154 +865,64 @@ func CityContainsFold(v string) predicate.Ledger {
 	return predicate.Ledger(sql.FieldContainsFold(FieldCity, v))
 }
 
-// StateEQ applies the EQ predicate on the "state" field.
-func StateEQ(v string) predicate.Ledger {
-	return predicate.Ledger(sql.FieldEQ(FieldState, v))
+// StateIDEQ applies the EQ predicate on the "state_id" field.
+func StateIDEQ(v int) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldStateID, v))
 }
 
-// StateNEQ applies the NEQ predicate on the "state" field.
-func StateNEQ(v string) predicate.Ledger {
-	return predicate.Ledger(sql.FieldNEQ(FieldState, v))
+// StateIDNEQ applies the NEQ predicate on the "state_id" field.
+func StateIDNEQ(v int) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNEQ(FieldStateID, v))
 }
 
-// StateIn applies the In predicate on the "state" field.
-func StateIn(vs ...string) predicate.Ledger {
-	return predicate.Ledger(sql.FieldIn(FieldState, vs...))
+// StateIDIn applies the In predicate on the "state_id" field.
+func StateIDIn(vs ...int) predicate.Ledger {
+	return predicate.Ledger(sql.FieldIn(FieldStateID, vs...))
 }
 
-// StateNotIn applies the NotIn predicate on the "state" field.
-func StateNotIn(vs ...string) predicate.Ledger {
-	return predicate.Ledger(sql.FieldNotIn(FieldState, vs...))
+// StateIDNotIn applies the NotIn predicate on the "state_id" field.
+func StateIDNotIn(vs ...int) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotIn(FieldStateID, vs...))
 }
 
-// StateGT applies the GT predicate on the "state" field.
-func StateGT(v string) predicate.Ledger {
-	return predicate.Ledger(sql.FieldGT(FieldState, v))
+// StateIDIsNil applies the IsNil predicate on the "state_id" field.
+func StateIDIsNil() predicate.Ledger {
+	return predicate.Ledger(sql.FieldIsNull(FieldStateID))
 }
 
-// StateGTE applies the GTE predicate on the "state" field.
-func StateGTE(v string) predicate.Ledger {
-	return predicate.Ledger(sql.FieldGTE(FieldState, v))
+// StateIDNotNil applies the NotNil predicate on the "state_id" field.
+func StateIDNotNil() predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotNull(FieldStateID))
 }
 
-// StateLT applies the LT predicate on the "state" field.
-func StateLT(v string) predicate.Ledger {
-	return predicate.Ledger(sql.FieldLT(FieldState, v))
+// CountryIDEQ applies the EQ predicate on the "country_id" field.
+func CountryIDEQ(v int) predicate.Ledger {
+	return predicate.Ledger(sql.FieldEQ(FieldCountryID, v))
 }
 
-// StateLTE applies the LTE predicate on the "state" field.
-func StateLTE(v string) predicate.Ledger {
-	return predicate.Ledger(sql.FieldLTE(FieldState, v))
+// CountryIDNEQ applies the NEQ predicate on the "country_id" field.
+func CountryIDNEQ(v int) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNEQ(FieldCountryID, v))
 }
 
-// StateContains applies the Contains predicate on the "state" field.
-func StateContains(v string) predicate.Ledger {
-	return predicate.Ledger(sql.FieldContains(FieldState, v))
+// CountryIDIn applies the In predicate on the "country_id" field.
+func CountryIDIn(vs ...int) predicate.Ledger {
+	return predicate.Ledger(sql.FieldIn(FieldCountryID, vs...))
 }
 
-// StateHasPrefix applies the HasPrefix predicate on the "state" field.
-func StateHasPrefix(v string) predicate.Ledger {
-	return predicate.Ledger(sql.FieldHasPrefix(FieldState, v))
+// CountryIDNotIn applies the NotIn predicate on the "country_id" field.
+func CountryIDNotIn(vs ...int) predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotIn(FieldCountryID, vs...))
 }
 
-// StateHasSuffix applies the HasSuffix predicate on the "state" field.
-func StateHasSuffix(v string) predicate.Ledger {
-	return predicate.Ledger(sql.FieldHasSuffix(FieldState, v))
+// CountryIDIsNil applies the IsNil predicate on the "country_id" field.
+func CountryIDIsNil() predicate.Ledger {
+	return predicate.Ledger(sql.FieldIsNull(FieldCountryID))
 }
 
-// StateIsNil applies the IsNil predicate on the "state" field.
-func StateIsNil() predicate.Ledger {
-	return predicate.Ledger(sql.FieldIsNull(FieldState))
-}
-
-// StateNotNil applies the NotNil predicate on the "state" field.
-func StateNotNil() predicate.Ledger {
-	return predicate.Ledger(sql.FieldNotNull(FieldState))
-}
-
-// StateEqualFold applies the EqualFold predicate on the "state" field.
-func StateEqualFold(v string) predicate.Ledger {
-	return predicate.Ledger(sql.FieldEqualFold(FieldState, v))
-}
-
-// StateContainsFold applies the ContainsFold predicate on the "state" field.
-func StateContainsFold(v string) predicate.Ledger {
-	return predicate.Ledger(sql.FieldContainsFold(FieldState, v))
-}
-
-// CountryEQ applies the EQ predicate on the "country" field.
-func CountryEQ(v string) predicate.Ledger {
-	return predicate.Ledger(sql.FieldEQ(FieldCountry, v))
-}
-
-// CountryNEQ applies the NEQ predicate on the "country" field.
-func CountryNEQ(v string) predicate.Ledger {
-	return predicate.Ledger(sql.FieldNEQ(FieldCountry, v))
-}
-
-// CountryIn applies the In predicate on the "country" field.
-func CountryIn(vs ...string) predicate.Ledger {
-	return predicate.Ledger(sql.FieldIn(FieldCountry, vs...))
-}
-
-// CountryNotIn applies the NotIn predicate on the "country" field.
-func CountryNotIn(vs ...string) predicate.Ledger {
-	return predicate.Ledger(sql.FieldNotIn(FieldCountry, vs...))
-}
-
-// CountryGT applies the GT predicate on the "country" field.
-func CountryGT(v string) predicate.Ledger {
-	return predicate.Ledger(sql.FieldGT(FieldCountry, v))
-}
-
-// CountryGTE applies the GTE predicate on the "country" field.
-func CountryGTE(v string) predicate.Ledger {
-	return predicate.Ledger(sql.FieldGTE(FieldCountry, v))
-}
-
-// CountryLT applies the LT predicate on the "country" field.
-func CountryLT(v string) predicate.Ledger {
-	return predicate.Ledger(sql.FieldLT(FieldCountry, v))
-}
-
-// CountryLTE applies the LTE predicate on the "country" field.
-func CountryLTE(v string) predicate.Ledger {
-	return predicate.Ledger(sql.FieldLTE(FieldCountry, v))
-}
-
-// CountryContains applies the Contains predicate on the "country" field.
-func CountryContains(v string) predicate.Ledger {
-	return predicate.Ledger(sql.FieldContains(FieldCountry, v))
-}
-
-// CountryHasPrefix applies the HasPrefix predicate on the "country" field.
-func CountryHasPrefix(v string) predicate.Ledger {
-	return predicate.Ledger(sql.FieldHasPrefix(FieldCountry, v))
-}
-
-// CountryHasSuffix applies the HasSuffix predicate on the "country" field.
-func CountryHasSuffix(v string) predicate.Ledger {
-	return predicate.Ledger(sql.FieldHasSuffix(FieldCountry, v))
-}
-
-// CountryIsNil applies the IsNil predicate on the "country" field.
-func CountryIsNil() predicate.Ledger {
-	return predicate.Ledger(sql.FieldIsNull(FieldCountry))
-}
-
-// CountryNotNil applies the NotNil predicate on the "country" field.
-func CountryNotNil() predicate.Ledger {
-	return predicate.Ledger(sql.FieldNotNull(FieldCountry))
-}
-
-// CountryEqualFold applies the EqualFold predicate on the "country" field.
-func CountryEqualFold(v string) predicate.Ledger {
-	return predicate.Ledger(sql.FieldEqualFold(FieldCountry, v))
-}
-
-// CountryContainsFold applies the ContainsFold predicate on the "country" field.
-func CountryContainsFold(v string) predicate.Ledger {
-	return predicate.Ledger(sql.FieldContainsFold(FieldCountry, v))
+// CountryIDNotNil applies the NotNil predicate on the "country_id" field.
+func CountryIDNotNil() predicate.Ledger {
+	return predicate.Ledger(sql.FieldNotNull(FieldCountryID))
 }
 
 // PincodeEQ applies the EQ predicate on the "pincode" field.
@@ -1925,6 +1835,52 @@ func HasGroup() predicate.Ledger {
 func HasGroupWith(preds ...predicate.Ledger_Group) predicate.Ledger {
 	return predicate.Ledger(func(s *sql.Selector) {
 		step := newGroupStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasState applies the HasEdge predicate on the "state" edge.
+func HasState() predicate.Ledger {
+	return predicate.Ledger(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, StateTable, StateColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasStateWith applies the HasEdge predicate on the "state" edge with a given conditions (other predicates).
+func HasStateWith(preds ...predicate.State) predicate.Ledger {
+	return predicate.Ledger(func(s *sql.Selector) {
+		step := newStateStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasCountry applies the HasEdge predicate on the "country" edge.
+func HasCountry() predicate.Ledger {
+	return predicate.Ledger(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, CountryTable, CountryColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasCountryWith applies the HasEdge predicate on the "country" edge with a given conditions (other predicates).
+func HasCountryWith(preds ...predicate.Country) predicate.Ledger {
+	return predicate.Ledger(func(s *sql.Selector) {
+		step := newCountryStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

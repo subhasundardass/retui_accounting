@@ -190,8 +190,6 @@ var (
 		{Name: "address_line1", Type: field.TypeString, Nullable: true, Size: 255, Default: ""},
 		{Name: "address_line2", Type: field.TypeString, Nullable: true, Size: 255, Default: ""},
 		{Name: "city", Type: field.TypeString, Nullable: true, Size: 100, Default: ""},
-		{Name: "state", Type: field.TypeString, Nullable: true, Size: 12, Default: ""},
-		{Name: "country", Type: field.TypeString, Nullable: true, Size: 100, Default: "India"},
 		{Name: "pincode", Type: field.TypeString, Nullable: true, Size: 10, Default: ""},
 		{Name: "phone", Type: field.TypeString, Nullable: true, Size: 20, Default: ""},
 		{Name: "mobile", Type: field.TypeString, Nullable: true, Size: 20, Default: ""},
@@ -210,6 +208,8 @@ var (
 		{Name: "is_cash", Type: field.TypeBool, Default: false},
 		{Name: "is_active", Type: field.TypeBool, Default: true},
 		{Name: "group_id", Type: field.TypeInt},
+		{Name: "state_id", Type: field.TypeInt, Nullable: true},
+		{Name: "country_id", Type: field.TypeInt, Nullable: true},
 		{Name: "ledger_group_ledgers", Type: field.TypeInt, Nullable: true},
 	}
 	// LedgersTable holds the schema information for the "ledgers" table.
@@ -220,9 +220,21 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "ledgers_ledger_groups_group",
-				Columns:    []*schema.Column{LedgersColumns[31]},
+				Columns:    []*schema.Column{LedgersColumns[29]},
 				RefColumns: []*schema.Column{LedgerGroupsColumns[0]},
 				OnDelete:   schema.NoAction,
+			},
+			{
+				Symbol:     "ledgers_states_state",
+				Columns:    []*schema.Column{LedgersColumns[30]},
+				RefColumns: []*schema.Column{StatesColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "ledgers_countries_country",
+				Columns:    []*schema.Column{LedgersColumns[31]},
+				RefColumns: []*schema.Column{CountriesColumns[0]},
+				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "ledgers_ledger_groups_ledgers",
@@ -245,17 +257,17 @@ var (
 			{
 				Name:    "ledger_group_id",
 				Unique:  false,
-				Columns: []*schema.Column{LedgersColumns[31]},
+				Columns: []*schema.Column{LedgersColumns[29]},
 			},
 			{
 				Name:    "ledger_gstin",
 				Unique:  false,
-				Columns: []*schema.Column{LedgersColumns[20]},
+				Columns: []*schema.Column{LedgersColumns[18]},
 			},
 			{
-				Name:    "ledger_state",
+				Name:    "ledger_state_id",
 				Unique:  false,
-				Columns: []*schema.Column{LedgersColumns[12]},
+				Columns: []*schema.Column{LedgersColumns[30]},
 			},
 			{
 				Name:    "ledger_party_type",
@@ -265,7 +277,17 @@ var (
 			{
 				Name:    "ledger_group_id_name",
 				Unique:  false,
-				Columns: []*schema.Column{LedgersColumns[31], LedgersColumns[4]},
+				Columns: []*schema.Column{LedgersColumns[29], LedgersColumns[4]},
+			},
+			{
+				Name:    "ledger_country_id",
+				Unique:  false,
+				Columns: []*schema.Column{LedgersColumns[31]},
+			},
+			{
+				Name:    "ledger_state_id_country_id",
+				Unique:  false,
+				Columns: []*schema.Column{LedgersColumns[30], LedgersColumns[31]},
 			},
 		},
 	}
@@ -389,7 +411,9 @@ func init() {
 	JournalLinesTable.ForeignKeys[0].RefTable = JournalsTable
 	JournalLinesTable.ForeignKeys[1].RefTable = LedgersTable
 	LedgersTable.ForeignKeys[0].RefTable = LedgerGroupsTable
-	LedgersTable.ForeignKeys[1].RefTable = LedgerGroupsTable
+	LedgersTable.ForeignKeys[1].RefTable = StatesTable
+	LedgersTable.ForeignKeys[2].RefTable = CountriesTable
+	LedgersTable.ForeignKeys[3].RefTable = LedgerGroupsTable
 	LedgerGroupsTable.ForeignKeys[0].RefTable = LedgerGroupsTable
 	StatesTable.ForeignKeys[0].RefTable = CountriesTable
 }

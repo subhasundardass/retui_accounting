@@ -33,6 +33,7 @@ func (c *LedgerComponent) bindKeys() {
 		retui.PopScreen()
 	case retui.KeyAltC:
 		retui.Debugf("Alt+C Pressed.......")
+		retui.PushScreen("ledger_create")
 
 	}
 }

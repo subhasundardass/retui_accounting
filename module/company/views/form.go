@@ -98,7 +98,7 @@ func (c *FormComponent) CreateForm(ctx *appctx.AppContext) *window.Window {
 	c.win = window.NewWindow().
 		SetTitle("Create Company").
 		SetModal(true).
-		SetSize(100, 24).
+		SetSize(100, 17).
 		Center()
 
 	c.win.SetRenderFn(func() retui.Element {
@@ -115,7 +115,7 @@ func (c *FormComponent) EditForm(ctx *appctx.AppContext) *window.Window {
 	c.win = window.NewWindow().
 		SetTitle("Edit Company").
 		SetModal(true).
-		SetSize(120, 15).
+		SetSize(120, 17).
 		Center()
 
 	c.win.SetRenderFn(func() retui.Element {
@@ -358,6 +358,7 @@ func (c *FormComponent) buildWindow(ctx *appctx.AppContext) retui.Element {
 				int(c.state.Country),
 				30,
 				isFocused(6),
+				"",
 				func(id, value string) {
 					s := c.state
 					i, err := strconv.Atoi(value)
@@ -385,6 +386,7 @@ func (c *FormComponent) buildWindow(ctx *appctx.AppContext) retui.Element {
 				c.state.State,
 				30,
 				isFocused(7),
+				"",
 				func(id, value string) {
 					s := c.state
 					i, err := strconv.Atoi(value)

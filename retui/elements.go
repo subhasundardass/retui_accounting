@@ -147,3 +147,15 @@ func Overlay(x, y int, children ...Element) Element {
 		Children: children,
 	}
 }
+
+// Spacer creates an empty flexible element that expands to consume
+// available space along the parent's main axis.
+func Spacer() Element {
+	return Box(
+		Props{
+			Width:  Grow(1),
+			Height: Grow(1),
+		},
+		Style{},
+	)
+}

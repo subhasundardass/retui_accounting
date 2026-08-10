@@ -518,7 +518,8 @@ func buildSelectElement(
 	overlayY := config.OverlayAbsY + 1
 
 	return retui.Box(
-		retui.Props{Direction: retui.Column},
+		// retui.Props{Direction: retui.Column},
+		retui.Props{Direction: retui.Column, Width: retui.Fixed(config.Width)},
 		retui.NewStyle(),
 		inputRow,
 		retui.Overlay(overlayX, overlayY, dropdownBox),

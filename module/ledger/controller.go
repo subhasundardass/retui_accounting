@@ -2,7 +2,6 @@ package ledger
 
 import (
 	"fmt"
-	"strconv"
 
 	"github.com/subhasundardass/retui/ent"
 	appctx "github.com/subhasundardass/retui/internal/context"
@@ -46,7 +45,7 @@ func (c *LedgerController) GetLedger(id int) (*LedgerState, error) {
 	return &LedgerState{
 		Code:        ledger.Code,
 		Name:        ledger.Name,
-		GroupID:     strconv.Itoa(ledger.GroupID),
+		GroupID:     ledger.GroupID,
 		Alias:       ledger.Alias,
 		Description: ledger.Description,
 		IsActive:    ledger.IsActive,
@@ -57,8 +56,8 @@ func (c *LedgerController) GetLedger(id int) (*LedgerState, error) {
 		AddressLine1: ledger.AddressLine1,
 		AddressLine2: ledger.AddressLine2,
 		City:         ledger.City,
-		State:        ledger.State,
-		Country:      ledger.Country,
+		StateID:      ledger.StateID,
+		CountryID:    ledger.CountryID,
 		Pincode:      ledger.Pincode,
 
 		// Contact fields
@@ -78,6 +77,24 @@ func (c *LedgerController) GetLedger(id int) (*LedgerState, error) {
 		BankIFSC:      ledger.BankIfsc,
 		BankBranch:    ledger.BankName,
 	}, nil
+}
+
+// LedgerNew?Update creates a new ledger entry form
+func (c *LedgerController) LedgerSave(mode FormMode, id int, in LedgerState) (*ent.Ledger, error) {
+	switch mode {
+	case ModeCreate:
+		if err := ValidateForm(in); err != nil {
+			return nil, err
+		}
+		return c.repo.LedgerCreate(c.ctx.Ctx(), in)
+	case ModeUpdate:
+		if err := ValidateForm(in); err != nil {
+			return nil, err
+		}
+		return c.repo.LedgerUpdate(c.ctx.Ctx(), id, in)
+	default:
+		return nil, fmt.Errorf("unknown save mode: %v", mode)
+	}
 }
 
 func (c *LedgerController) LedgerFilterOptions(query string) []components.SelectOption {

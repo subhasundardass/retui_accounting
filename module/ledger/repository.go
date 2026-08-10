@@ -117,6 +117,58 @@ func (r *Repository) ListByGroup(ctx context.Context, groupID int) ([]*ent.Ledge
 		Limit(40).All(ctx)
 }
 
+func (r *Repository) LedgerCreate(ctx context.Context, in LedgerState) (*ent.Ledger, error) {
+	return r.client.Ledger.
+		Create().
+		SetCode(in.Code).
+		SetName(in.Name).
+		SetDescription(in.Description).
+		Save(ctx)
+}
+
+func (r *Repository) LedgerUpdate(ctx context.Context, id int, in LedgerState) (*ent.Ledger, error) {
+	update := r.client.Ledger.
+		UpdateOneID(id).
+		SetCode(in.Code).
+		SetName(in.Name).
+		SetAlias(in.Alias).
+		SetGroupID(in.GroupID).
+		SetDescription(in.Description).
+		// SetPartyType(in.PartyType).
+		SetAddressLine1(in.AddressLine1).
+		SetAddressLine2(in.AddressLine2).
+		SetCity(in.City).
+		// SetState(in.StateID).
+		// SetCountry(in.CountryID).
+		SetPincode(in.Pincode).
+		SetPhone(in.Phone).
+		SetMobile(in.Mobile).
+		SetEmail(in.Email).
+		SetContactPerson(in.ContactPerson).
+		SetGstRegistrationType(ledger.GstRegistrationType(in.GSTRegistrationType)).
+		SetGstin(in.GSTIN).
+		SetPan(in.PAN).
+		SetBankName(in.BankName).
+		SetBankAccountNo(in.BankAccountNo).
+		SetBankIfsc(in.BankIFSC).
+		SetBankBranch(in.BankBranch).
+		// SetIsSystem(in.IsSystem).
+		// SetIsParty(in.IsParty).
+		// SetIsBank(in.IsBank).
+		// SetIsCash(in.IsCash).
+		SetIsActive(in.IsActive)
+
+	// Set state and country if provided
+	if in.StateID > 0 {
+		update.SetStateID(in.StateID)
+	}
+	if in.CountryID > 0 {
+		update.SetCountryID(in.CountryID)
+	}
+
+	return update.Save(ctx)
+}
+
 // -- Groups
 func (r *Repository) Groups(ctx context.Context) ([]*ent.Ledger_Group, error) {
 

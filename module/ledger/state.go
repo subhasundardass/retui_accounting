@@ -30,7 +30,7 @@ type LedgerState struct {
 	Code        string
 	Name        string
 	Alias       string
-	GroupID     string
+	GroupID     int
 	Description string
 
 	// Accounting fields
@@ -45,8 +45,8 @@ type LedgerState struct {
 	AddressLine1 string
 	AddressLine2 string
 	City         string
-	State        string
-	Country      string
+	StateID      int
+	CountryID    int
 	Pincode      string
 
 	// Contact fields

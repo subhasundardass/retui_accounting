@@ -16,6 +16,7 @@ func CountryComponent(
 	value int,
 	width int,
 	focus bool,
+	prefix string,
 	onChange func(id, value string),
 ) retui.Element {
 
@@ -44,7 +45,7 @@ func CountryComponent(
 		return opts
 	}, []any{countries})
 
-	return renderCountryComponent(id, options, value, width, focus, onChange)
+	return renderCountryComponent(id, options, value, width, focus, prefix, onChange)
 }
 
 func renderCountryComponent(
@@ -53,6 +54,7 @@ func renderCountryComponent(
 	value int,
 	width int,
 	focus bool,
+	prefix string,
 	onChange func(id, value string),
 ) retui.Element {
 
@@ -60,6 +62,7 @@ func renderCountryComponent(
 		ID(id).
 		Width(width).
 		Options(options).
+		Prefix(prefix).
 		Value(strconv.Itoa(value)).
 		Focused(focus).
 		OnFilter(func(filterID, query string) []components.SelectOption {

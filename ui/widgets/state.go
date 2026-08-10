@@ -17,6 +17,7 @@ func StateComponent(
 	value int,
 	width int,
 	focus bool,
+	prefix string,
 	onChange func(id, value string),
 ) retui.Element {
 
@@ -47,7 +48,7 @@ func StateComponent(
 		return opts
 	}, []any{states})
 
-	return renderStateComponent(id, options, value, width, focus, onChange)
+	return renderStateComponent(id, options, value, width, focus, prefix, onChange)
 }
 
 func renderStateComponent(
@@ -56,6 +57,7 @@ func renderStateComponent(
 	value int,
 	width int,
 	focus bool,
+	prefix string,
 	onChange func(id, value string),
 ) retui.Element {
 
@@ -64,6 +66,7 @@ func renderStateComponent(
 		Width(width).
 		Options(options).
 		Value(strconv.Itoa(value)).
+		Prefix(prefix).
 		Focused(focus).
 		OnFilter(func(filterID, query string) []components.SelectOption {
 			return FilterOptions(options, query)

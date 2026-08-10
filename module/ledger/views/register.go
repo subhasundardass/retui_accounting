@@ -25,8 +25,13 @@ func Register(ctx *context.AppContext) {
 	})
 	ui.Register("ledger_edit", ui.Screen{
 		ID:     "ledger_edit",
-		Title:  "Ledger",
+		Title:  "Ledger Edit",
 		Render: formLedgerComp.LedgerEditForm,
+	})
+	ui.Register("ledger_create", ui.Screen{
+		ID:     "ledger_create",
+		Title:  "Ledger Create",
+		Render: formLedgerComp.LedgerCreateForm,
 	})
 
 }

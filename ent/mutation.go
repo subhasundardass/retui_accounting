@@ -1710,6 +1710,12 @@ func (m CountryMutation) Tx() (*Tx, error) {
 	return tx, nil
 }
 
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of Country entities.
+func (m *CountryMutation) SetID(id int) {
+	m.id = &id
+}
+
 // ID returns the ID value in the mutation. Note that the ID is only available
 // if it was provided to the builder or after it was returned from the database.
 func (m *CountryMutation) ID() (id int, exists bool) {
@@ -4831,8 +4837,6 @@ type LedgerMutation struct {
 	address_line1         *string
 	address_line2         *string
 	city                  *string
-	state                 *string
-	country               *string
 	pincode               *string
 	phone                 *string
 	mobile                *string
@@ -4853,6 +4857,10 @@ type LedgerMutation struct {
 	clearedFields         map[string]struct{}
 	group                 *int
 	clearedgroup          bool
+	state                 *int
+	clearedstate          bool
+	country               *int
+	clearedcountry        bool
 	journal_lines         map[int]struct{}
 	removedjournal_lines  map[int]struct{}
 	clearedjournal_lines  bool
@@ -4929,6 +4937,12 @@ func (m LedgerMutation) Tx() (*Tx, error) {
 	tx := &Tx{config: m.config}
 	tx.init()
 	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of Ledger entities.
+func (m *LedgerMutation) SetID(id int) {
+	m.id = &id
 }
 
 // ID returns the ID value in the mutation. Note that the ID is only available
@@ -5476,13 +5490,13 @@ func (m *LedgerMutation) ResetCity() {
 	delete(m.clearedFields, ledger.FieldCity)
 }
 
-// SetState sets the "state" field.
-func (m *LedgerMutation) SetState(s string) {
-	m.state = &s
+// SetStateID sets the "state_id" field.
+func (m *LedgerMutation) SetStateID(i int) {
+	m.state = &i
 }
 
-// State returns the value of the "state" field in the mutation.
-func (m *LedgerMutation) State() (r string, exists bool) {
+// StateID returns the value of the "state_id" field in the mutation.
+func (m *LedgerMutation) StateID() (r int, exists bool) {
 	v := m.state
 	if v == nil {
 		return
@@ -5490,48 +5504,48 @@ func (m *LedgerMutation) State() (r string, exists bool) {
 	return *v, true
 }
 
-// OldState returns the old "state" field's value of the Ledger entity.
+// OldStateID returns the old "state_id" field's value of the Ledger entity.
 // If the Ledger object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *LedgerMutation) OldState(ctx context.Context) (v string, err error) {
+func (m *LedgerMutation) OldStateID(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldState is only allowed on UpdateOne operations")
+		return v, errors.New("OldStateID is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldState requires an ID field in the mutation")
+		return v, errors.New("OldStateID requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldState: %w", err)
+		return v, fmt.Errorf("querying old value for OldStateID: %w", err)
 	}
-	return oldValue.State, nil
+	return oldValue.StateID, nil
 }
 
-// ClearState clears the value of the "state" field.
-func (m *LedgerMutation) ClearState() {
+// ClearStateID clears the value of the "state_id" field.
+func (m *LedgerMutation) ClearStateID() {
 	m.state = nil
-	m.clearedFields[ledger.FieldState] = struct{}{}
+	m.clearedFields[ledger.FieldStateID] = struct{}{}
 }
 
-// StateCleared returns if the "state" field was cleared in this mutation.
-func (m *LedgerMutation) StateCleared() bool {
-	_, ok := m.clearedFields[ledger.FieldState]
+// StateIDCleared returns if the "state_id" field was cleared in this mutation.
+func (m *LedgerMutation) StateIDCleared() bool {
+	_, ok := m.clearedFields[ledger.FieldStateID]
 	return ok
 }
 
-// ResetState resets all changes to the "state" field.
-func (m *LedgerMutation) ResetState() {
+// ResetStateID resets all changes to the "state_id" field.
+func (m *LedgerMutation) ResetStateID() {
 	m.state = nil
-	delete(m.clearedFields, ledger.FieldState)
+	delete(m.clearedFields, ledger.FieldStateID)
 }
 
-// SetCountry sets the "country" field.
-func (m *LedgerMutation) SetCountry(s string) {
-	m.country = &s
+// SetCountryID sets the "country_id" field.
+func (m *LedgerMutation) SetCountryID(i int) {
+	m.country = &i
 }
 
-// Country returns the value of the "country" field in the mutation.
-func (m *LedgerMutation) Country() (r string, exists bool) {
+// CountryID returns the value of the "country_id" field in the mutation.
+func (m *LedgerMutation) CountryID() (r int, exists bool) {
 	v := m.country
 	if v == nil {
 		return
@@ -5539,39 +5553,39 @@ func (m *LedgerMutation) Country() (r string, exists bool) {
 	return *v, true
 }
 
-// OldCountry returns the old "country" field's value of the Ledger entity.
+// OldCountryID returns the old "country_id" field's value of the Ledger entity.
 // If the Ledger object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *LedgerMutation) OldCountry(ctx context.Context) (v string, err error) {
+func (m *LedgerMutation) OldCountryID(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCountry is only allowed on UpdateOne operations")
+		return v, errors.New("OldCountryID is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCountry requires an ID field in the mutation")
+		return v, errors.New("OldCountryID requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCountry: %w", err)
+		return v, fmt.Errorf("querying old value for OldCountryID: %w", err)
 	}
-	return oldValue.Country, nil
+	return oldValue.CountryID, nil
 }
 
-// ClearCountry clears the value of the "country" field.
-func (m *LedgerMutation) ClearCountry() {
+// ClearCountryID clears the value of the "country_id" field.
+func (m *LedgerMutation) ClearCountryID() {
 	m.country = nil
-	m.clearedFields[ledger.FieldCountry] = struct{}{}
+	m.clearedFields[ledger.FieldCountryID] = struct{}{}
 }
 
-// CountryCleared returns if the "country" field was cleared in this mutation.
-func (m *LedgerMutation) CountryCleared() bool {
-	_, ok := m.clearedFields[ledger.FieldCountry]
+// CountryIDCleared returns if the "country_id" field was cleared in this mutation.
+func (m *LedgerMutation) CountryIDCleared() bool {
+	_, ok := m.clearedFields[ledger.FieldCountryID]
 	return ok
 }
 
-// ResetCountry resets all changes to the "country" field.
-func (m *LedgerMutation) ResetCountry() {
+// ResetCountryID resets all changes to the "country_id" field.
+func (m *LedgerMutation) ResetCountryID() {
 	m.country = nil
-	delete(m.clearedFields, ledger.FieldCountry)
+	delete(m.clearedFields, ledger.FieldCountryID)
 }
 
 // SetPincode sets the "pincode" field.
@@ -6356,6 +6370,60 @@ func (m *LedgerMutation) ResetGroup() {
 	m.clearedgroup = false
 }
 
+// ClearState clears the "state" edge to the State entity.
+func (m *LedgerMutation) ClearState() {
+	m.clearedstate = true
+	m.clearedFields[ledger.FieldStateID] = struct{}{}
+}
+
+// StateCleared reports if the "state" edge to the State entity was cleared.
+func (m *LedgerMutation) StateCleared() bool {
+	return m.StateIDCleared() || m.clearedstate
+}
+
+// StateIDs returns the "state" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// StateID instead. It exists only for internal usage by the builders.
+func (m *LedgerMutation) StateIDs() (ids []int) {
+	if id := m.state; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetState resets all changes to the "state" edge.
+func (m *LedgerMutation) ResetState() {
+	m.state = nil
+	m.clearedstate = false
+}
+
+// ClearCountry clears the "country" edge to the Country entity.
+func (m *LedgerMutation) ClearCountry() {
+	m.clearedcountry = true
+	m.clearedFields[ledger.FieldCountryID] = struct{}{}
+}
+
+// CountryCleared reports if the "country" edge to the Country entity was cleared.
+func (m *LedgerMutation) CountryCleared() bool {
+	return m.CountryIDCleared() || m.clearedcountry
+}
+
+// CountryIDs returns the "country" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// CountryID instead. It exists only for internal usage by the builders.
+func (m *LedgerMutation) CountryIDs() (ids []int) {
+	if id := m.country; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetCountry resets all changes to the "country" edge.
+func (m *LedgerMutation) ResetCountry() {
+	m.country = nil
+	m.clearedcountry = false
+}
+
 // AddJournalLineIDs adds the "journal_lines" edge to the Journal_Line entity by ids.
 func (m *LedgerMutation) AddJournalLineIDs(ids ...int) {
 	if m.journal_lines == nil {
@@ -6482,10 +6550,10 @@ func (m *LedgerMutation) Fields() []string {
 		fields = append(fields, ledger.FieldCity)
 	}
 	if m.state != nil {
-		fields = append(fields, ledger.FieldState)
+		fields = append(fields, ledger.FieldStateID)
 	}
 	if m.country != nil {
-		fields = append(fields, ledger.FieldCountry)
+		fields = append(fields, ledger.FieldCountryID)
 	}
 	if m.pincode != nil {
 		fields = append(fields, ledger.FieldPincode)
@@ -6570,10 +6638,10 @@ func (m *LedgerMutation) Field(name string) (ent.Value, bool) {
 		return m.AddressLine2()
 	case ledger.FieldCity:
 		return m.City()
-	case ledger.FieldState:
-		return m.State()
-	case ledger.FieldCountry:
-		return m.Country()
+	case ledger.FieldStateID:
+		return m.StateID()
+	case ledger.FieldCountryID:
+		return m.CountryID()
 	case ledger.FieldPincode:
 		return m.Pincode()
 	case ledger.FieldPhone:
@@ -6641,10 +6709,10 @@ func (m *LedgerMutation) OldField(ctx context.Context, name string) (ent.Value, 
 		return m.OldAddressLine2(ctx)
 	case ledger.FieldCity:
 		return m.OldCity(ctx)
-	case ledger.FieldState:
-		return m.OldState(ctx)
-	case ledger.FieldCountry:
-		return m.OldCountry(ctx)
+	case ledger.FieldStateID:
+		return m.OldStateID(ctx)
+	case ledger.FieldCountryID:
+		return m.OldCountryID(ctx)
 	case ledger.FieldPincode:
 		return m.OldPincode(ctx)
 	case ledger.FieldPhone:
@@ -6772,19 +6840,19 @@ func (m *LedgerMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetCity(v)
 		return nil
-	case ledger.FieldState:
-		v, ok := value.(string)
+	case ledger.FieldStateID:
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetState(v)
+		m.SetStateID(v)
 		return nil
-	case ledger.FieldCountry:
-		v, ok := value.(string)
+	case ledger.FieldCountryID:
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetCountry(v)
+		m.SetCountryID(v)
 		return nil
 	case ledger.FieldPincode:
 		v, ok := value.(string)
@@ -6965,11 +7033,11 @@ func (m *LedgerMutation) ClearedFields() []string {
 	if m.FieldCleared(ledger.FieldCity) {
 		fields = append(fields, ledger.FieldCity)
 	}
-	if m.FieldCleared(ledger.FieldState) {
-		fields = append(fields, ledger.FieldState)
+	if m.FieldCleared(ledger.FieldStateID) {
+		fields = append(fields, ledger.FieldStateID)
 	}
-	if m.FieldCleared(ledger.FieldCountry) {
-		fields = append(fields, ledger.FieldCountry)
+	if m.FieldCleared(ledger.FieldCountryID) {
+		fields = append(fields, ledger.FieldCountryID)
 	}
 	if m.FieldCleared(ledger.FieldPincode) {
 		fields = append(fields, ledger.FieldPincode)
@@ -7033,11 +7101,11 @@ func (m *LedgerMutation) ClearField(name string) error {
 	case ledger.FieldCity:
 		m.ClearCity()
 		return nil
-	case ledger.FieldState:
-		m.ClearState()
+	case ledger.FieldStateID:
+		m.ClearStateID()
 		return nil
-	case ledger.FieldCountry:
-		m.ClearCountry()
+	case ledger.FieldCountryID:
+		m.ClearCountryID()
 		return nil
 	case ledger.FieldPincode:
 		m.ClearPincode()
@@ -7116,11 +7184,11 @@ func (m *LedgerMutation) ResetField(name string) error {
 	case ledger.FieldCity:
 		m.ResetCity()
 		return nil
-	case ledger.FieldState:
-		m.ResetState()
+	case ledger.FieldStateID:
+		m.ResetStateID()
 		return nil
-	case ledger.FieldCountry:
-		m.ResetCountry()
+	case ledger.FieldCountryID:
+		m.ResetCountryID()
 		return nil
 	case ledger.FieldPincode:
 		m.ResetPincode()
@@ -7179,9 +7247,15 @@ func (m *LedgerMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *LedgerMutation) AddedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 4)
 	if m.group != nil {
 		edges = append(edges, ledger.EdgeGroup)
+	}
+	if m.state != nil {
+		edges = append(edges, ledger.EdgeState)
+	}
+	if m.country != nil {
+		edges = append(edges, ledger.EdgeCountry)
 	}
 	if m.journal_lines != nil {
 		edges = append(edges, ledger.EdgeJournalLines)
@@ -7197,6 +7271,14 @@ func (m *LedgerMutation) AddedIDs(name string) []ent.Value {
 		if id := m.group; id != nil {
 			return []ent.Value{*id}
 		}
+	case ledger.EdgeState:
+		if id := m.state; id != nil {
+			return []ent.Value{*id}
+		}
+	case ledger.EdgeCountry:
+		if id := m.country; id != nil {
+			return []ent.Value{*id}
+		}
 	case ledger.EdgeJournalLines:
 		ids := make([]ent.Value, 0, len(m.journal_lines))
 		for id := range m.journal_lines {
@@ -7209,7 +7291,7 @@ func (m *LedgerMutation) AddedIDs(name string) []ent.Value {
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *LedgerMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 4)
 	if m.removedjournal_lines != nil {
 		edges = append(edges, ledger.EdgeJournalLines)
 	}
@@ -7232,9 +7314,15 @@ func (m *LedgerMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *LedgerMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 4)
 	if m.clearedgroup {
 		edges = append(edges, ledger.EdgeGroup)
+	}
+	if m.clearedstate {
+		edges = append(edges, ledger.EdgeState)
+	}
+	if m.clearedcountry {
+		edges = append(edges, ledger.EdgeCountry)
 	}
 	if m.clearedjournal_lines {
 		edges = append(edges, ledger.EdgeJournalLines)
@@ -7248,6 +7336,10 @@ func (m *LedgerMutation) EdgeCleared(name string) bool {
 	switch name {
 	case ledger.EdgeGroup:
 		return m.clearedgroup
+	case ledger.EdgeState:
+		return m.clearedstate
+	case ledger.EdgeCountry:
+		return m.clearedcountry
 	case ledger.EdgeJournalLines:
 		return m.clearedjournal_lines
 	}
@@ -7261,6 +7353,12 @@ func (m *LedgerMutation) ClearEdge(name string) error {
 	case ledger.EdgeGroup:
 		m.ClearGroup()
 		return nil
+	case ledger.EdgeState:
+		m.ClearState()
+		return nil
+	case ledger.EdgeCountry:
+		m.ClearCountry()
+		return nil
 	}
 	return fmt.Errorf("unknown Ledger unique edge %s", name)
 }
@@ -7271,6 +7369,12 @@ func (m *LedgerMutation) ResetEdge(name string) error {
 	switch name {
 	case ledger.EdgeGroup:
 		m.ResetGroup()
+		return nil
+	case ledger.EdgeState:
+		m.ResetState()
+		return nil
+	case ledger.EdgeCountry:
+		m.ResetCountry()
 		return nil
 	case ledger.EdgeJournalLines:
 		m.ResetJournalLines()
@@ -8657,6 +8761,12 @@ func (m StateMutation) Tx() (*Tx, error) {
 	tx := &Tx{config: m.config}
 	tx.init()
 	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of State entities.
+func (m *StateMutation) SetID(id int) {
+	m.id = &id
 }
 
 // ID returns the ID value in the mutation. Note that the ID is only available

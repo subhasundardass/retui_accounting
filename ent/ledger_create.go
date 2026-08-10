@@ -10,9 +10,11 @@ import (
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/subhasundardass/retui/ent/country"
 	"github.com/subhasundardass/retui/ent/journal_line"
 	"github.com/subhasundardass/retui/ent/ledger"
 	"github.com/subhasundardass/retui/ent/ledger_group"
+	"github.com/subhasundardass/retui/ent/state"
 )
 
 // LedgerCreate is the builder for creating a Ledger entity.
@@ -166,30 +168,30 @@ func (_c *LedgerCreate) SetNillableCity(v *string) *LedgerCreate {
 	return _c
 }
 
-// SetState sets the "state" field.
-func (_c *LedgerCreate) SetState(v string) *LedgerCreate {
-	_c.mutation.SetState(v)
+// SetStateID sets the "state_id" field.
+func (_c *LedgerCreate) SetStateID(v int) *LedgerCreate {
+	_c.mutation.SetStateID(v)
 	return _c
 }
 
-// SetNillableState sets the "state" field if the given value is not nil.
-func (_c *LedgerCreate) SetNillableState(v *string) *LedgerCreate {
+// SetNillableStateID sets the "state_id" field if the given value is not nil.
+func (_c *LedgerCreate) SetNillableStateID(v *int) *LedgerCreate {
 	if v != nil {
-		_c.SetState(*v)
+		_c.SetStateID(*v)
 	}
 	return _c
 }
 
-// SetCountry sets the "country" field.
-func (_c *LedgerCreate) SetCountry(v string) *LedgerCreate {
-	_c.mutation.SetCountry(v)
+// SetCountryID sets the "country_id" field.
+func (_c *LedgerCreate) SetCountryID(v int) *LedgerCreate {
+	_c.mutation.SetCountryID(v)
 	return _c
 }
 
-// SetNillableCountry sets the "country" field if the given value is not nil.
-func (_c *LedgerCreate) SetNillableCountry(v *string) *LedgerCreate {
+// SetNillableCountryID sets the "country_id" field if the given value is not nil.
+func (_c *LedgerCreate) SetNillableCountryID(v *int) *LedgerCreate {
 	if v != nil {
-		_c.SetCountry(*v)
+		_c.SetCountryID(*v)
 	}
 	return _c
 }
@@ -432,9 +434,25 @@ func (_c *LedgerCreate) SetNillableIsActive(v *bool) *LedgerCreate {
 	return _c
 }
 
+// SetID sets the "id" field.
+func (_c *LedgerCreate) SetID(v int) *LedgerCreate {
+	_c.mutation.SetID(v)
+	return _c
+}
+
 // SetGroup sets the "group" edge to the Ledger_Group entity.
 func (_c *LedgerCreate) SetGroup(v *Ledger_Group) *LedgerCreate {
 	return _c.SetGroupID(v.ID)
+}
+
+// SetState sets the "state" edge to the State entity.
+func (_c *LedgerCreate) SetState(v *State) *LedgerCreate {
+	return _c.SetStateID(v.ID)
+}
+
+// SetCountry sets the "country" edge to the Country entity.
+func (_c *LedgerCreate) SetCountry(v *Country) *LedgerCreate {
+	return _c.SetCountryID(v.ID)
 }
 
 // AddJournalLineIDs adds the "journal_lines" edge to the Journal_Line entity by IDs.
@@ -522,14 +540,6 @@ func (_c *LedgerCreate) defaults() {
 	if _, ok := _c.mutation.City(); !ok {
 		v := ledger.DefaultCity
 		_c.mutation.SetCity(v)
-	}
-	if _, ok := _c.mutation.State(); !ok {
-		v := ledger.DefaultState
-		_c.mutation.SetState(v)
-	}
-	if _, ok := _c.mutation.Country(); !ok {
-		v := ledger.DefaultCountry
-		_c.mutation.SetCountry(v)
 	}
 	if _, ok := _c.mutation.Pincode(); !ok {
 		v := ledger.DefaultPincode
@@ -659,16 +669,6 @@ func (_c *LedgerCreate) check() error {
 			return &ValidationError{Name: "city", err: fmt.Errorf(`ent: validator failed for field "Ledger.city": %w`, err)}
 		}
 	}
-	if v, ok := _c.mutation.State(); ok {
-		if err := ledger.StateValidator(v); err != nil {
-			return &ValidationError{Name: "state", err: fmt.Errorf(`ent: validator failed for field "Ledger.state": %w`, err)}
-		}
-	}
-	if v, ok := _c.mutation.Country(); ok {
-		if err := ledger.CountryValidator(v); err != nil {
-			return &ValidationError{Name: "country", err: fmt.Errorf(`ent: validator failed for field "Ledger.country": %w`, err)}
-		}
-	}
 	if v, ok := _c.mutation.Pincode(); ok {
 		if err := ledger.PincodeValidator(v); err != nil {
 			return &ValidationError{Name: "pincode", err: fmt.Errorf(`ent: validator failed for field "Ledger.pincode": %w`, err)}
@@ -764,8 +764,10 @@ func (_c *LedgerCreate) sqlSave(ctx context.Context) (*Ledger, error) {
 		}
 		return nil, err
 	}
-	id := _spec.ID.Value.(int64)
-	_node.ID = int(id)
+	if _spec.ID.Value != _node.ID {
+		id := _spec.ID.Value.(int64)
+		_node.ID = int(id)
+	}
 	_c.mutation.id = &_node.ID
 	_c.mutation.done = true
 	return _node, nil
@@ -776,6 +778,10 @@ func (_c *LedgerCreate) createSpec() (*Ledger, *sqlgraph.CreateSpec) {
 		_node = &Ledger{config: _c.config}
 		_spec = sqlgraph.NewCreateSpec(ledger.Table, sqlgraph.NewFieldSpec(ledger.FieldID, field.TypeInt))
 	)
+	if id, ok := _c.mutation.ID(); ok {
+		_node.ID = id
+		_spec.ID.Value = id
+	}
 	if value, ok := _c.mutation.CreateTime(); ok {
 		_spec.SetField(ledger.FieldCreateTime, field.TypeTime, value)
 		_node.CreateTime = value
@@ -819,14 +825,6 @@ func (_c *LedgerCreate) createSpec() (*Ledger, *sqlgraph.CreateSpec) {
 	if value, ok := _c.mutation.City(); ok {
 		_spec.SetField(ledger.FieldCity, field.TypeString, value)
 		_node.City = value
-	}
-	if value, ok := _c.mutation.State(); ok {
-		_spec.SetField(ledger.FieldState, field.TypeString, value)
-		_node.State = value
-	}
-	if value, ok := _c.mutation.Country(); ok {
-		_spec.SetField(ledger.FieldCountry, field.TypeString, value)
-		_node.Country = value
 	}
 	if value, ok := _c.mutation.Pincode(); ok {
 		_spec.SetField(ledger.FieldPincode, field.TypeString, value)
@@ -913,6 +911,40 @@ func (_c *LedgerCreate) createSpec() (*Ledger, *sqlgraph.CreateSpec) {
 		_node.GroupID = nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
+	if nodes := _c.mutation.StateIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   ledger.StateTable,
+			Columns: []string{ledger.StateColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(state.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.StateID = nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := _c.mutation.CountryIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   ledger.CountryTable,
+			Columns: []string{ledger.CountryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(country.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.CountryID = nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
 	if nodes := _c.mutation.JournalLinesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
@@ -977,7 +1009,7 @@ func (_c *LedgerCreateBulk) Save(ctx context.Context) ([]*Ledger, error) {
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
-				if specs[i].ID.Value != nil {
+				if specs[i].ID.Value != nil && nodes[i].ID == 0 {
 					id := specs[i].ID.Value.(int64)
 					nodes[i].ID = int(id)
 				}
