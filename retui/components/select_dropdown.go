@@ -388,9 +388,13 @@ func buildSelectElement(
 		}
 	}
 
-	arrow := "▼"
+	// arrow := "▼"
+	// if isOpen {
+	// 	arrow = "▲"
+	// }
+	arrow := ""
 	if isOpen {
-		arrow = "▲"
+		arrow = ""
 	}
 
 	// Focused-background applies whenever the field is the active one,

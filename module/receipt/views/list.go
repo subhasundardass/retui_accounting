@@ -36,8 +36,8 @@ func (c *Component) bindKeys() {
 		retui.PopScreen()
 
 	case retui.KeyF6:
-		win := OpenReceiptForm(c.ctx, func() {})
-		win.Show()
+		// win := OpenReceiptForm(c.ctx, func() {})
+		// win.Show()
 	}
 }
 

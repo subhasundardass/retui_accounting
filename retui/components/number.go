@@ -770,7 +770,8 @@ render:
 	displayLen := len([]rune(paddedDisplay))
 	if displayLen < config.Width {
 		padding := strings.Repeat(" ", config.Width-displayLen)
-		paddedDisplay = paddedDisplay + padding
+		// paddedDisplay = paddedDisplay + padding
+		paddedDisplay = padding + paddedDisplay
 	}
 
 	// Build elements

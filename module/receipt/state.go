@@ -7,14 +7,25 @@ const (
 	ModeUpdate
 )
 
+type PartyLine struct {
+	Ledger  int
+	Remarks string
+	Amount  float32
+}
+
 type FormState struct {
 	FocusIndex int
 	Errors     map[string]string
 	Mode       FormMode
 	//--
 
-	SlNo      int
-	Date      string
-	Reference string
-	Narration string
+	SlNo        int
+	Reference   string
+	Date        string
+	Narration   string
+	Amount      float32
+	RcptAccount int
+
+	//--
+	Lines []PartyLine
 }

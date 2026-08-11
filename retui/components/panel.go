@@ -541,6 +541,14 @@ func measureHeight(el retui.Element) int {
 func measureBoxHeight(el retui.Element) int {
 	pad := el.Layout.PaddingTop + el.Layout.PaddingBottom
 
+	// Respect an explicit Fixed height instead of deriving it from
+	// children — the layout engine enforces Fixed height at paint time
+	// (see LayoutNode.HeightSizing / SizingFixed), so measurement must
+	// agree or the border columns built from this value end up too short.
+	if el.Layout.HeightSizing.Mode == retui.SizingFixed {
+		return el.Layout.HeightSizing.Value
+	}
+
 	if len(el.Children) == 0 {
 		return 1 + pad
 	}
