@@ -185,7 +185,6 @@ func UseState[T any](initial T) (T, func(T)) {
 	idx := StateCursor
 	StateCursor++
 
-	// FIX Bug 1: lock only for the State slice access, not for the entire
 	// function. The original held stateMu across the return including the
 	// setter closure — any component that calls a setter during render
 	// (e.g. a clamping correction like "if pos > len { setPos(len) }")
@@ -506,7 +505,6 @@ func RunEffects() {
 		Effects = Effects[:EffectCursor]
 	}
 
-	// FIX Bug 4: State tail cleanup moved here from inside RunEffects body
 	// in original. But it must happen BEFORE the next render's BeginRender
 	// resets StateCursor to 0 — otherwise there's a window where
 	// StateCursor=0 and State still has stale entries from the previous
@@ -617,7 +615,6 @@ func ResetComponentState() {
 // ─────────────────────────────────────────────────────────────────────────────
 
 // depsEqual compares two dependency slices using recover-wrapped DeepEqual.
-// FIX Bug 3: original used raw reflect.DeepEqual which panics if deps
 // contain channels or func values. We treat a panic as "deps changed"
 // so the effect re-runs safely instead of crashing.
 func depsEqual(a, b []any) bool {
@@ -641,18 +638,33 @@ func safeDeepEqual(a, b any) (equal bool) {
 	return reflect.DeepEqual(a, b)
 }
 
+// safeCall runs fn (an effect cleanup) and recovers any panic so a bug in
+// user code can't crash the render loop. The recovered value is logged,
+// not silently discarded — a swallowed panic with no trace is far harder
+// to debug than a logged one.
 func safeCall(fn func()) {
 	if fn == nil {
 		return
 	}
-	defer func() { recover() }()
+	defer func() {
+		if r := recover(); r != nil {
+			Errorf("retui: recovered panic in effect cleanup: %v", r)
+		}
+	}()
 	fn()
 }
 
+// safeCallFn runs fn (an effect body) and recovers any panic so a bug in
+// user code can't crash the render loop. See safeCall for why the
+// recovered value is logged rather than discarded.
 func safeCallFn(fn func() func()) (result func()) {
 	if fn == nil {
 		return nil
 	}
-	defer func() { recover() }()
+	defer func() {
+		if r := recover(); r != nil {
+			Errorf("retui: recovered panic in effect: %v", r)
+		}
+	}()
 	return fn()
 }

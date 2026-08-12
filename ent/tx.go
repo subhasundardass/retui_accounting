@@ -24,8 +24,6 @@ type Tx struct {
 	Ledger *LedgerClient
 	// Ledger_Group is the client for interacting with the Ledger_Group builders.
 	Ledger_Group *LedgerGroupClient
-	// PartyMaster is the client for interacting with the PartyMaster builders.
-	PartyMaster *PartyMasterClient
 	// Settings is the client for interacting with the Settings builders.
 	Settings *SettingsClient
 	// State is the client for interacting with the State builders.
@@ -167,7 +165,6 @@ func (tx *Tx) init() {
 	tx.Journal_Line = NewJournalLineClient(tx.config)
 	tx.Ledger = NewLedgerClient(tx.config)
 	tx.Ledger_Group = NewLedgerGroupClient(tx.config)
-	tx.PartyMaster = NewPartyMasterClient(tx.config)
 	tx.Settings = NewSettingsClient(tx.config)
 	tx.State = NewStateClient(tx.config)
 }

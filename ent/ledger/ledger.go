@@ -3,6 +3,7 @@
 package ledger
 
 import (
+	"fmt"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
@@ -28,10 +29,44 @@ const (
 	FieldAlias = "alias"
 	// FieldDescription holds the string denoting the description field in the database.
 	FieldDescription = "description"
-	// FieldOpeningBalance holds the string denoting the opening_balance field in the database.
-	FieldOpeningBalance = "opening_balance"
 	// FieldBalance holds the string denoting the balance field in the database.
 	FieldBalance = "balance"
+	// FieldPartyType holds the string denoting the party_type field in the database.
+	FieldPartyType = "party_type"
+	// FieldAddressLine1 holds the string denoting the address_line1 field in the database.
+	FieldAddressLine1 = "address_line1"
+	// FieldAddressLine2 holds the string denoting the address_line2 field in the database.
+	FieldAddressLine2 = "address_line2"
+	// FieldCity holds the string denoting the city field in the database.
+	FieldCity = "city"
+	// FieldStateID holds the string denoting the state_id field in the database.
+	FieldStateID = "state_id"
+	// FieldCountryID holds the string denoting the country_id field in the database.
+	FieldCountryID = "country_id"
+	// FieldPincode holds the string denoting the pincode field in the database.
+	FieldPincode = "pincode"
+	// FieldPhone holds the string denoting the phone field in the database.
+	FieldPhone = "phone"
+	// FieldMobile holds the string denoting the mobile field in the database.
+	FieldMobile = "mobile"
+	// FieldEmail holds the string denoting the email field in the database.
+	FieldEmail = "email"
+	// FieldContactPerson holds the string denoting the contact_person field in the database.
+	FieldContactPerson = "contact_person"
+	// FieldGstRegistrationType holds the string denoting the gst_registration_type field in the database.
+	FieldGstRegistrationType = "gst_registration_type"
+	// FieldGstin holds the string denoting the gstin field in the database.
+	FieldGstin = "gstin"
+	// FieldPan holds the string denoting the pan field in the database.
+	FieldPan = "pan"
+	// FieldBankName holds the string denoting the bank_name field in the database.
+	FieldBankName = "bank_name"
+	// FieldBankAccountNo holds the string denoting the bank_account_no field in the database.
+	FieldBankAccountNo = "bank_account_no"
+	// FieldBankIfsc holds the string denoting the bank_ifsc field in the database.
+	FieldBankIfsc = "bank_ifsc"
+	// FieldBankBranch holds the string denoting the bank_branch field in the database.
+	FieldBankBranch = "bank_branch"
 	// FieldIsSystem holds the string denoting the is_system field in the database.
 	FieldIsSystem = "is_system"
 	// FieldIsParty holds the string denoting the is_party field in the database.
@@ -44,8 +79,10 @@ const (
 	FieldIsActive = "is_active"
 	// EdgeGroup holds the string denoting the group edge name in mutations.
 	EdgeGroup = "group"
-	// EdgeParty holds the string denoting the party edge name in mutations.
-	EdgeParty = "party"
+	// EdgeState holds the string denoting the state edge name in mutations.
+	EdgeState = "state"
+	// EdgeCountry holds the string denoting the country edge name in mutations.
+	EdgeCountry = "country"
 	// EdgeJournalLines holds the string denoting the journal_lines edge name in mutations.
 	EdgeJournalLines = "journal_lines"
 	// Table holds the table name of the ledger in the database.
@@ -57,13 +94,20 @@ const (
 	GroupInverseTable = "ledger_groups"
 	// GroupColumn is the table column denoting the group relation/edge.
 	GroupColumn = "group_id"
-	// PartyTable is the table that holds the party relation/edge.
-	PartyTable = "party_master"
-	// PartyInverseTable is the table name for the PartyMaster entity.
-	// It exists in this package in order to avoid circular dependency with the "partymaster" package.
-	PartyInverseTable = "party_master"
-	// PartyColumn is the table column denoting the party relation/edge.
-	PartyColumn = "ledger_id"
+	// StateTable is the table that holds the state relation/edge.
+	StateTable = "ledgers"
+	// StateInverseTable is the table name for the State entity.
+	// It exists in this package in order to avoid circular dependency with the "state" package.
+	StateInverseTable = "states"
+	// StateColumn is the table column denoting the state relation/edge.
+	StateColumn = "state_id"
+	// CountryTable is the table that holds the country relation/edge.
+	CountryTable = "ledgers"
+	// CountryInverseTable is the table name for the Country entity.
+	// It exists in this package in order to avoid circular dependency with the "country" package.
+	CountryInverseTable = "countries"
+	// CountryColumn is the table column denoting the country relation/edge.
+	CountryColumn = "country_id"
 	// JournalLinesTable is the table that holds the journal_lines relation/edge.
 	JournalLinesTable = "journal_lines"
 	// JournalLinesInverseTable is the table name for the Journal_Line entity.
@@ -83,8 +127,25 @@ var Columns = []string{
 	FieldName,
 	FieldAlias,
 	FieldDescription,
-	FieldOpeningBalance,
 	FieldBalance,
+	FieldPartyType,
+	FieldAddressLine1,
+	FieldAddressLine2,
+	FieldCity,
+	FieldStateID,
+	FieldCountryID,
+	FieldPincode,
+	FieldPhone,
+	FieldMobile,
+	FieldEmail,
+	FieldContactPerson,
+	FieldGstRegistrationType,
+	FieldGstin,
+	FieldPan,
+	FieldBankName,
+	FieldBankAccountNo,
+	FieldBankIfsc,
+	FieldBankBranch,
 	FieldIsSystem,
 	FieldIsParty,
 	FieldIsBank,
@@ -130,10 +191,64 @@ var (
 	AliasValidator func(string) error
 	// DefaultDescription holds the default value on creation for the "description" field.
 	DefaultDescription string
-	// DefaultOpeningBalance holds the default value on creation for the "opening_balance" field.
-	DefaultOpeningBalance float64
 	// DefaultBalance holds the default value on creation for the "balance" field.
 	DefaultBalance float64
+	// DefaultAddressLine1 holds the default value on creation for the "address_line1" field.
+	DefaultAddressLine1 string
+	// AddressLine1Validator is a validator for the "address_line1" field. It is called by the builders before save.
+	AddressLine1Validator func(string) error
+	// DefaultAddressLine2 holds the default value on creation for the "address_line2" field.
+	DefaultAddressLine2 string
+	// AddressLine2Validator is a validator for the "address_line2" field. It is called by the builders before save.
+	AddressLine2Validator func(string) error
+	// DefaultCity holds the default value on creation for the "city" field.
+	DefaultCity string
+	// CityValidator is a validator for the "city" field. It is called by the builders before save.
+	CityValidator func(string) error
+	// DefaultPincode holds the default value on creation for the "pincode" field.
+	DefaultPincode string
+	// PincodeValidator is a validator for the "pincode" field. It is called by the builders before save.
+	PincodeValidator func(string) error
+	// DefaultPhone holds the default value on creation for the "phone" field.
+	DefaultPhone string
+	// PhoneValidator is a validator for the "phone" field. It is called by the builders before save.
+	PhoneValidator func(string) error
+	// DefaultMobile holds the default value on creation for the "mobile" field.
+	DefaultMobile string
+	// MobileValidator is a validator for the "mobile" field. It is called by the builders before save.
+	MobileValidator func(string) error
+	// DefaultEmail holds the default value on creation for the "email" field.
+	DefaultEmail string
+	// EmailValidator is a validator for the "email" field. It is called by the builders before save.
+	EmailValidator func(string) error
+	// DefaultContactPerson holds the default value on creation for the "contact_person" field.
+	DefaultContactPerson string
+	// ContactPersonValidator is a validator for the "contact_person" field. It is called by the builders before save.
+	ContactPersonValidator func(string) error
+	// DefaultGstin holds the default value on creation for the "gstin" field.
+	DefaultGstin string
+	// GstinValidator is a validator for the "gstin" field. It is called by the builders before save.
+	GstinValidator func(string) error
+	// DefaultPan holds the default value on creation for the "pan" field.
+	DefaultPan string
+	// PanValidator is a validator for the "pan" field. It is called by the builders before save.
+	PanValidator func(string) error
+	// DefaultBankName holds the default value on creation for the "bank_name" field.
+	DefaultBankName string
+	// BankNameValidator is a validator for the "bank_name" field. It is called by the builders before save.
+	BankNameValidator func(string) error
+	// DefaultBankAccountNo holds the default value on creation for the "bank_account_no" field.
+	DefaultBankAccountNo string
+	// BankAccountNoValidator is a validator for the "bank_account_no" field. It is called by the builders before save.
+	BankAccountNoValidator func(string) error
+	// DefaultBankIfsc holds the default value on creation for the "bank_ifsc" field.
+	DefaultBankIfsc string
+	// BankIfscValidator is a validator for the "bank_ifsc" field. It is called by the builders before save.
+	BankIfscValidator func(string) error
+	// DefaultBankBranch holds the default value on creation for the "bank_branch" field.
+	DefaultBankBranch string
+	// BankBranchValidator is a validator for the "bank_branch" field. It is called by the builders before save.
+	BankBranchValidator func(string) error
 	// DefaultIsSystem holds the default value on creation for the "is_system" field.
 	DefaultIsSystem bool
 	// DefaultIsParty holds the default value on creation for the "is_party" field.
@@ -145,6 +260,64 @@ var (
 	// DefaultIsActive holds the default value on creation for the "is_active" field.
 	DefaultIsActive bool
 )
+
+// PartyType defines the type for the "party_type" enum field.
+type PartyType string
+
+// PartyTypeINTERNAL is the default value of the PartyType enum.
+const DefaultPartyType = PartyTypeINTERNAL
+
+// PartyType values.
+const (
+	PartyTypeCUSTOMER PartyType = "CUSTOMER"
+	PartyTypeSUPPLIER PartyType = "SUPPLIER"
+	PartyTypeBOTH     PartyType = "BOTH"
+	PartyTypeINTERNAL PartyType = "INTERNAL"
+)
+
+func (pt PartyType) String() string {
+	return string(pt)
+}
+
+// PartyTypeValidator is a validator for the "party_type" field enum values. It is called by the builders before save.
+func PartyTypeValidator(pt PartyType) error {
+	switch pt {
+	case PartyTypeCUSTOMER, PartyTypeSUPPLIER, PartyTypeBOTH, PartyTypeINTERNAL:
+		return nil
+	default:
+		return fmt.Errorf("ledger: invalid enum value for party_type field: %q", pt)
+	}
+}
+
+// GstRegistrationType defines the type for the "gst_registration_type" enum field.
+type GstRegistrationType string
+
+// GstRegistrationTypeUNREGISTERED is the default value of the GstRegistrationType enum.
+const DefaultGstRegistrationType = GstRegistrationTypeUNREGISTERED
+
+// GstRegistrationType values.
+const (
+	GstRegistrationTypeREGULAR      GstRegistrationType = "REGULAR"
+	GstRegistrationTypeCOMPOSITION  GstRegistrationType = "COMPOSITION"
+	GstRegistrationTypeUNREGISTERED GstRegistrationType = "UNREGISTERED"
+	GstRegistrationTypeCONSUMER     GstRegistrationType = "CONSUMER"
+	GstRegistrationTypeSEZ          GstRegistrationType = "SEZ"
+	GstRegistrationTypeOVERSEAS     GstRegistrationType = "OVERSEAS"
+)
+
+func (grt GstRegistrationType) String() string {
+	return string(grt)
+}
+
+// GstRegistrationTypeValidator is a validator for the "gst_registration_type" field enum values. It is called by the builders before save.
+func GstRegistrationTypeValidator(grt GstRegistrationType) error {
+	switch grt {
+	case GstRegistrationTypeREGULAR, GstRegistrationTypeCOMPOSITION, GstRegistrationTypeUNREGISTERED, GstRegistrationTypeCONSUMER, GstRegistrationTypeSEZ, GstRegistrationTypeOVERSEAS:
+		return nil
+	default:
+		return fmt.Errorf("ledger: invalid enum value for gst_registration_type field: %q", grt)
+	}
+}
 
 // OrderOption defines the ordering options for the Ledger queries.
 type OrderOption func(*sql.Selector)
@@ -189,14 +362,99 @@ func ByDescription(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDescription, opts...).ToFunc()
 }
 
-// ByOpeningBalance orders the results by the opening_balance field.
-func ByOpeningBalance(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldOpeningBalance, opts...).ToFunc()
-}
-
 // ByBalance orders the results by the balance field.
 func ByBalance(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldBalance, opts...).ToFunc()
+}
+
+// ByPartyType orders the results by the party_type field.
+func ByPartyType(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPartyType, opts...).ToFunc()
+}
+
+// ByAddressLine1 orders the results by the address_line1 field.
+func ByAddressLine1(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAddressLine1, opts...).ToFunc()
+}
+
+// ByAddressLine2 orders the results by the address_line2 field.
+func ByAddressLine2(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAddressLine2, opts...).ToFunc()
+}
+
+// ByCity orders the results by the city field.
+func ByCity(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCity, opts...).ToFunc()
+}
+
+// ByStateID orders the results by the state_id field.
+func ByStateID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldStateID, opts...).ToFunc()
+}
+
+// ByCountryID orders the results by the country_id field.
+func ByCountryID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCountryID, opts...).ToFunc()
+}
+
+// ByPincode orders the results by the pincode field.
+func ByPincode(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPincode, opts...).ToFunc()
+}
+
+// ByPhone orders the results by the phone field.
+func ByPhone(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPhone, opts...).ToFunc()
+}
+
+// ByMobile orders the results by the mobile field.
+func ByMobile(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldMobile, opts...).ToFunc()
+}
+
+// ByEmail orders the results by the email field.
+func ByEmail(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldEmail, opts...).ToFunc()
+}
+
+// ByContactPerson orders the results by the contact_person field.
+func ByContactPerson(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldContactPerson, opts...).ToFunc()
+}
+
+// ByGstRegistrationType orders the results by the gst_registration_type field.
+func ByGstRegistrationType(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldGstRegistrationType, opts...).ToFunc()
+}
+
+// ByGstin orders the results by the gstin field.
+func ByGstin(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldGstin, opts...).ToFunc()
+}
+
+// ByPan orders the results by the pan field.
+func ByPan(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldPan, opts...).ToFunc()
+}
+
+// ByBankName orders the results by the bank_name field.
+func ByBankName(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldBankName, opts...).ToFunc()
+}
+
+// ByBankAccountNo orders the results by the bank_account_no field.
+func ByBankAccountNo(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldBankAccountNo, opts...).ToFunc()
+}
+
+// ByBankIfsc orders the results by the bank_ifsc field.
+func ByBankIfsc(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldBankIfsc, opts...).ToFunc()
+}
+
+// ByBankBranch orders the results by the bank_branch field.
+func ByBankBranch(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldBankBranch, opts...).ToFunc()
 }
 
 // ByIsSystem orders the results by the is_system field.
@@ -231,10 +489,17 @@ func ByGroupField(field string, opts ...sql.OrderTermOption) OrderOption {
 	}
 }
 
-// ByPartyField orders the results by party field.
-func ByPartyField(field string, opts ...sql.OrderTermOption) OrderOption {
+// ByStateField orders the results by state field.
+func ByStateField(field string, opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newPartyStep(), sql.OrderByField(field, opts...))
+		sqlgraph.OrderByNeighborTerms(s, newStateStep(), sql.OrderByField(field, opts...))
+	}
+}
+
+// ByCountryField orders the results by country field.
+func ByCountryField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newCountryStep(), sql.OrderByField(field, opts...))
 	}
 }
 
@@ -258,11 +523,18 @@ func newGroupStep() *sqlgraph.Step {
 		sqlgraph.Edge(sqlgraph.M2O, false, GroupTable, GroupColumn),
 	)
 }
-func newPartyStep() *sqlgraph.Step {
+func newStateStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(PartyInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.O2O, false, PartyTable, PartyColumn),
+		sqlgraph.To(StateInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, false, StateTable, StateColumn),
+	)
+}
+func newCountryStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(CountryInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2O, false, CountryTable, CountryColumn),
 	)
 }
 func newJournalLinesStep() *sqlgraph.Step {

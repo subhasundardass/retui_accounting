@@ -15,6 +15,9 @@ type Country struct {
 // Fields of the Country.
 func (Country) Fields() []ent.Field {
 	return []ent.Field{
+		// Explicitly define ID as int (optional since it's the default)
+		field.Int("id"),
+
 		field.String("name").
 			NotEmpty().
 			MaxLen(100).

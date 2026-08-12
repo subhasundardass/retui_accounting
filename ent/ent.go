@@ -18,7 +18,6 @@ import (
 	"github.com/subhasundardass/retui/ent/journal_line"
 	"github.com/subhasundardass/retui/ent/ledger"
 	"github.com/subhasundardass/retui/ent/ledger_group"
-	"github.com/subhasundardass/retui/ent/partymaster"
 	"github.com/subhasundardass/retui/ent/settings"
 	"github.com/subhasundardass/retui/ent/state"
 )
@@ -87,7 +86,6 @@ func checkColumn(t, c string) error {
 			journal_line.Table: journal_line.ValidColumn,
 			ledger.Table:       ledger.ValidColumn,
 			ledger_group.Table: ledger_group.ValidColumn,
-			partymaster.Table:  partymaster.ValidColumn,
 			settings.Table:     settings.ValidColumn,
 			state.Table:        state.ValidColumn,
 		})

@@ -9,9 +9,10 @@ import (
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
+	"github.com/subhasundardass/retui/ent/country"
 	"github.com/subhasundardass/retui/ent/ledger"
 	"github.com/subhasundardass/retui/ent/ledger_group"
-	"github.com/subhasundardass/retui/ent/partymaster"
+	"github.com/subhasundardass/retui/ent/state"
 )
 
 // Ledger is the model entity for the Ledger schema.
@@ -33,10 +34,44 @@ type Ledger struct {
 	Alias string `json:"alias,omitempty"`
 	// Description holds the value of the "description" field.
 	Description string `json:"description,omitempty"`
-	// OpeningBalance holds the value of the "opening_balance" field.
-	OpeningBalance float64 `json:"opening_balance,omitempty"`
 	// Current balance
 	Balance float64 `json:"balance,omitempty"`
+	// PartyType holds the value of the "party_type" field.
+	PartyType ledger.PartyType `json:"party_type,omitempty"`
+	// AddressLine1 holds the value of the "address_line1" field.
+	AddressLine1 string `json:"address_line1,omitempty"`
+	// AddressLine2 holds the value of the "address_line2" field.
+	AddressLine2 string `json:"address_line2,omitempty"`
+	// City holds the value of the "city" field.
+	City string `json:"city,omitempty"`
+	// StateID holds the value of the "state_id" field.
+	StateID int `json:"state_id,omitempty"`
+	// CountryID holds the value of the "country_id" field.
+	CountryID int `json:"country_id,omitempty"`
+	// Pincode holds the value of the "pincode" field.
+	Pincode string `json:"pincode,omitempty"`
+	// Phone holds the value of the "phone" field.
+	Phone string `json:"phone,omitempty"`
+	// Mobile holds the value of the "mobile" field.
+	Mobile string `json:"mobile,omitempty"`
+	// Email holds the value of the "email" field.
+	Email string `json:"email,omitempty"`
+	// ContactPerson holds the value of the "contact_person" field.
+	ContactPerson string `json:"contact_person,omitempty"`
+	// GstRegistrationType holds the value of the "gst_registration_type" field.
+	GstRegistrationType ledger.GstRegistrationType `json:"gst_registration_type,omitempty"`
+	// Gstin holds the value of the "gstin" field.
+	Gstin string `json:"gstin,omitempty"`
+	// Pan holds the value of the "pan" field.
+	Pan string `json:"pan,omitempty"`
+	// BankName holds the value of the "bank_name" field.
+	BankName string `json:"bank_name,omitempty"`
+	// BankAccountNo holds the value of the "bank_account_no" field.
+	BankAccountNo string `json:"bank_account_no,omitempty"`
+	// BankIfsc holds the value of the "bank_ifsc" field.
+	BankIfsc string `json:"bank_ifsc,omitempty"`
+	// BankBranch holds the value of the "bank_branch" field.
+	BankBranch string `json:"bank_branch,omitempty"`
 	// Built-in system ledger
 	IsSystem bool `json:"is_system,omitempty"`
 	// IsParty holds the value of the "is_party" field.
@@ -58,13 +93,15 @@ type Ledger struct {
 type LedgerEdges struct {
 	// Group holds the value of the group edge.
 	Group *Ledger_Group `json:"group,omitempty"`
-	// Party holds the value of the party edge.
-	Party *PartyMaster `json:"party,omitempty"`
+	// State holds the value of the state edge.
+	State *State `json:"state,omitempty"`
+	// Country holds the value of the country edge.
+	Country *Country `json:"country,omitempty"`
 	// JournalLines holds the value of the journal_lines edge.
 	JournalLines []*Journal_Line `json:"journal_lines,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [3]bool
+	loadedTypes [4]bool
 }
 
 // GroupOrErr returns the Group value or an error if the edge
@@ -78,21 +115,32 @@ func (e LedgerEdges) GroupOrErr() (*Ledger_Group, error) {
 	return nil, &NotLoadedError{edge: "group"}
 }
 
-// PartyOrErr returns the Party value or an error if the edge
+// StateOrErr returns the State value or an error if the edge
 // was not loaded in eager-loading, or loaded but was not found.
-func (e LedgerEdges) PartyOrErr() (*PartyMaster, error) {
-	if e.Party != nil {
-		return e.Party, nil
+func (e LedgerEdges) StateOrErr() (*State, error) {
+	if e.State != nil {
+		return e.State, nil
 	} else if e.loadedTypes[1] {
-		return nil, &NotFoundError{label: partymaster.Label}
+		return nil, &NotFoundError{label: state.Label}
 	}
-	return nil, &NotLoadedError{edge: "party"}
+	return nil, &NotLoadedError{edge: "state"}
+}
+
+// CountryOrErr returns the Country value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e LedgerEdges) CountryOrErr() (*Country, error) {
+	if e.Country != nil {
+		return e.Country, nil
+	} else if e.loadedTypes[2] {
+		return nil, &NotFoundError{label: country.Label}
+	}
+	return nil, &NotLoadedError{edge: "country"}
 }
 
 // JournalLinesOrErr returns the JournalLines value or an error if the edge
 // was not loaded in eager-loading.
 func (e LedgerEdges) JournalLinesOrErr() ([]*Journal_Line, error) {
-	if e.loadedTypes[2] {
+	if e.loadedTypes[3] {
 		return e.JournalLines, nil
 	}
 	return nil, &NotLoadedError{edge: "journal_lines"}
@@ -105,11 +153,11 @@ func (*Ledger) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case ledger.FieldIsSystem, ledger.FieldIsParty, ledger.FieldIsBank, ledger.FieldIsCash, ledger.FieldIsActive:
 			values[i] = new(sql.NullBool)
-		case ledger.FieldOpeningBalance, ledger.FieldBalance:
+		case ledger.FieldBalance:
 			values[i] = new(sql.NullFloat64)
-		case ledger.FieldID, ledger.FieldGroupID:
+		case ledger.FieldID, ledger.FieldGroupID, ledger.FieldStateID, ledger.FieldCountryID:
 			values[i] = new(sql.NullInt64)
-		case ledger.FieldCode, ledger.FieldName, ledger.FieldAlias, ledger.FieldDescription:
+		case ledger.FieldCode, ledger.FieldName, ledger.FieldAlias, ledger.FieldDescription, ledger.FieldPartyType, ledger.FieldAddressLine1, ledger.FieldAddressLine2, ledger.FieldCity, ledger.FieldPincode, ledger.FieldPhone, ledger.FieldMobile, ledger.FieldEmail, ledger.FieldContactPerson, ledger.FieldGstRegistrationType, ledger.FieldGstin, ledger.FieldPan, ledger.FieldBankName, ledger.FieldBankAccountNo, ledger.FieldBankIfsc, ledger.FieldBankBranch:
 			values[i] = new(sql.NullString)
 		case ledger.FieldCreateTime, ledger.FieldUpdateTime:
 			values[i] = new(sql.NullTime)
@@ -178,17 +226,119 @@ func (_m *Ledger) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				_m.Description = value.String
 			}
-		case ledger.FieldOpeningBalance:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field opening_balance", values[i])
-			} else if value.Valid {
-				_m.OpeningBalance = value.Float64
-			}
 		case ledger.FieldBalance:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
 				return fmt.Errorf("unexpected type %T for field balance", values[i])
 			} else if value.Valid {
 				_m.Balance = value.Float64
+			}
+		case ledger.FieldPartyType:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field party_type", values[i])
+			} else if value.Valid {
+				_m.PartyType = ledger.PartyType(value.String)
+			}
+		case ledger.FieldAddressLine1:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field address_line1", values[i])
+			} else if value.Valid {
+				_m.AddressLine1 = value.String
+			}
+		case ledger.FieldAddressLine2:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field address_line2", values[i])
+			} else if value.Valid {
+				_m.AddressLine2 = value.String
+			}
+		case ledger.FieldCity:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field city", values[i])
+			} else if value.Valid {
+				_m.City = value.String
+			}
+		case ledger.FieldStateID:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field state_id", values[i])
+			} else if value.Valid {
+				_m.StateID = int(value.Int64)
+			}
+		case ledger.FieldCountryID:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field country_id", values[i])
+			} else if value.Valid {
+				_m.CountryID = int(value.Int64)
+			}
+		case ledger.FieldPincode:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field pincode", values[i])
+			} else if value.Valid {
+				_m.Pincode = value.String
+			}
+		case ledger.FieldPhone:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field phone", values[i])
+			} else if value.Valid {
+				_m.Phone = value.String
+			}
+		case ledger.FieldMobile:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field mobile", values[i])
+			} else if value.Valid {
+				_m.Mobile = value.String
+			}
+		case ledger.FieldEmail:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field email", values[i])
+			} else if value.Valid {
+				_m.Email = value.String
+			}
+		case ledger.FieldContactPerson:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field contact_person", values[i])
+			} else if value.Valid {
+				_m.ContactPerson = value.String
+			}
+		case ledger.FieldGstRegistrationType:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field gst_registration_type", values[i])
+			} else if value.Valid {
+				_m.GstRegistrationType = ledger.GstRegistrationType(value.String)
+			}
+		case ledger.FieldGstin:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field gstin", values[i])
+			} else if value.Valid {
+				_m.Gstin = value.String
+			}
+		case ledger.FieldPan:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field pan", values[i])
+			} else if value.Valid {
+				_m.Pan = value.String
+			}
+		case ledger.FieldBankName:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field bank_name", values[i])
+			} else if value.Valid {
+				_m.BankName = value.String
+			}
+		case ledger.FieldBankAccountNo:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field bank_account_no", values[i])
+			} else if value.Valid {
+				_m.BankAccountNo = value.String
+			}
+		case ledger.FieldBankIfsc:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field bank_ifsc", values[i])
+			} else if value.Valid {
+				_m.BankIfsc = value.String
+			}
+		case ledger.FieldBankBranch:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field bank_branch", values[i])
+			} else if value.Valid {
+				_m.BankBranch = value.String
 			}
 		case ledger.FieldIsSystem:
 			if value, ok := values[i].(*sql.NullBool); !ok {
@@ -245,9 +395,14 @@ func (_m *Ledger) QueryGroup() *LedgerGroupQuery {
 	return NewLedgerClient(_m.config).QueryGroup(_m)
 }
 
-// QueryParty queries the "party" edge of the Ledger entity.
-func (_m *Ledger) QueryParty() *PartyMasterQuery {
-	return NewLedgerClient(_m.config).QueryParty(_m)
+// QueryState queries the "state" edge of the Ledger entity.
+func (_m *Ledger) QueryState() *StateQuery {
+	return NewLedgerClient(_m.config).QueryState(_m)
+}
+
+// QueryCountry queries the "country" edge of the Ledger entity.
+func (_m *Ledger) QueryCountry() *CountryQuery {
+	return NewLedgerClient(_m.config).QueryCountry(_m)
 }
 
 // QueryJournalLines queries the "journal_lines" edge of the Ledger entity.
@@ -299,11 +454,62 @@ func (_m *Ledger) String() string {
 	builder.WriteString("description=")
 	builder.WriteString(_m.Description)
 	builder.WriteString(", ")
-	builder.WriteString("opening_balance=")
-	builder.WriteString(fmt.Sprintf("%v", _m.OpeningBalance))
-	builder.WriteString(", ")
 	builder.WriteString("balance=")
 	builder.WriteString(fmt.Sprintf("%v", _m.Balance))
+	builder.WriteString(", ")
+	builder.WriteString("party_type=")
+	builder.WriteString(fmt.Sprintf("%v", _m.PartyType))
+	builder.WriteString(", ")
+	builder.WriteString("address_line1=")
+	builder.WriteString(_m.AddressLine1)
+	builder.WriteString(", ")
+	builder.WriteString("address_line2=")
+	builder.WriteString(_m.AddressLine2)
+	builder.WriteString(", ")
+	builder.WriteString("city=")
+	builder.WriteString(_m.City)
+	builder.WriteString(", ")
+	builder.WriteString("state_id=")
+	builder.WriteString(fmt.Sprintf("%v", _m.StateID))
+	builder.WriteString(", ")
+	builder.WriteString("country_id=")
+	builder.WriteString(fmt.Sprintf("%v", _m.CountryID))
+	builder.WriteString(", ")
+	builder.WriteString("pincode=")
+	builder.WriteString(_m.Pincode)
+	builder.WriteString(", ")
+	builder.WriteString("phone=")
+	builder.WriteString(_m.Phone)
+	builder.WriteString(", ")
+	builder.WriteString("mobile=")
+	builder.WriteString(_m.Mobile)
+	builder.WriteString(", ")
+	builder.WriteString("email=")
+	builder.WriteString(_m.Email)
+	builder.WriteString(", ")
+	builder.WriteString("contact_person=")
+	builder.WriteString(_m.ContactPerson)
+	builder.WriteString(", ")
+	builder.WriteString("gst_registration_type=")
+	builder.WriteString(fmt.Sprintf("%v", _m.GstRegistrationType))
+	builder.WriteString(", ")
+	builder.WriteString("gstin=")
+	builder.WriteString(_m.Gstin)
+	builder.WriteString(", ")
+	builder.WriteString("pan=")
+	builder.WriteString(_m.Pan)
+	builder.WriteString(", ")
+	builder.WriteString("bank_name=")
+	builder.WriteString(_m.BankName)
+	builder.WriteString(", ")
+	builder.WriteString("bank_account_no=")
+	builder.WriteString(_m.BankAccountNo)
+	builder.WriteString(", ")
+	builder.WriteString("bank_ifsc=")
+	builder.WriteString(_m.BankIfsc)
+	builder.WriteString(", ")
+	builder.WriteString("bank_branch=")
+	builder.WriteString(_m.BankBranch)
 	builder.WriteString(", ")
 	builder.WriteString("is_system=")
 	builder.WriteString(fmt.Sprintf("%v", _m.IsSystem))

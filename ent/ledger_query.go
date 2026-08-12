@@ -12,11 +12,12 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/subhasundardass/retui/ent/country"
 	"github.com/subhasundardass/retui/ent/journal_line"
 	"github.com/subhasundardass/retui/ent/ledger"
 	"github.com/subhasundardass/retui/ent/ledger_group"
-	"github.com/subhasundardass/retui/ent/partymaster"
 	"github.com/subhasundardass/retui/ent/predicate"
+	"github.com/subhasundardass/retui/ent/state"
 )
 
 // LedgerQuery is the builder for querying Ledger entities.
@@ -27,7 +28,8 @@ type LedgerQuery struct {
 	inters           []Interceptor
 	predicates       []predicate.Ledger
 	withGroup        *LedgerGroupQuery
-	withParty        *PartyMasterQuery
+	withState        *StateQuery
+	withCountry      *CountryQuery
 	withJournalLines *JournalLineQuery
 	withFKs          bool
 	// intermediate query (i.e. traversal path).
@@ -88,9 +90,9 @@ func (_q *LedgerQuery) QueryGroup() *LedgerGroupQuery {
 	return query
 }
 
-// QueryParty chains the current query on the "party" edge.
-func (_q *LedgerQuery) QueryParty() *PartyMasterQuery {
-	query := (&PartyMasterClient{config: _q.config}).Query()
+// QueryState chains the current query on the "state" edge.
+func (_q *LedgerQuery) QueryState() *StateQuery {
+	query := (&StateClient{config: _q.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := _q.prepareQuery(ctx); err != nil {
 			return nil, err
@@ -101,8 +103,30 @@ func (_q *LedgerQuery) QueryParty() *PartyMasterQuery {
 		}
 		step := sqlgraph.NewStep(
 			sqlgraph.From(ledger.Table, ledger.FieldID, selector),
-			sqlgraph.To(partymaster.Table, partymaster.FieldID),
-			sqlgraph.Edge(sqlgraph.O2O, false, ledger.PartyTable, ledger.PartyColumn),
+			sqlgraph.To(state.Table, state.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, ledger.StateTable, ledger.StateColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(_q.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryCountry chains the current query on the "country" edge.
+func (_q *LedgerQuery) QueryCountry() *CountryQuery {
+	query := (&CountryClient{config: _q.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := _q.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := _q.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(ledger.Table, ledger.FieldID, selector),
+			sqlgraph.To(country.Table, country.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, false, ledger.CountryTable, ledger.CountryColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(_q.driver.Dialect(), step)
 		return fromU, nil
@@ -325,7 +349,8 @@ func (_q *LedgerQuery) Clone() *LedgerQuery {
 		inters:           append([]Interceptor{}, _q.inters...),
 		predicates:       append([]predicate.Ledger{}, _q.predicates...),
 		withGroup:        _q.withGroup.Clone(),
-		withParty:        _q.withParty.Clone(),
+		withState:        _q.withState.Clone(),
+		withCountry:      _q.withCountry.Clone(),
 		withJournalLines: _q.withJournalLines.Clone(),
 		// clone intermediate query.
 		sql:  _q.sql.Clone(),
@@ -344,14 +369,25 @@ func (_q *LedgerQuery) WithGroup(opts ...func(*LedgerGroupQuery)) *LedgerQuery {
 	return _q
 }
 
-// WithParty tells the query-builder to eager-load the nodes that are connected to
-// the "party" edge. The optional arguments are used to configure the query builder of the edge.
-func (_q *LedgerQuery) WithParty(opts ...func(*PartyMasterQuery)) *LedgerQuery {
-	query := (&PartyMasterClient{config: _q.config}).Query()
+// WithState tells the query-builder to eager-load the nodes that are connected to
+// the "state" edge. The optional arguments are used to configure the query builder of the edge.
+func (_q *LedgerQuery) WithState(opts ...func(*StateQuery)) *LedgerQuery {
+	query := (&StateClient{config: _q.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
-	_q.withParty = query
+	_q.withState = query
+	return _q
+}
+
+// WithCountry tells the query-builder to eager-load the nodes that are connected to
+// the "country" edge. The optional arguments are used to configure the query builder of the edge.
+func (_q *LedgerQuery) WithCountry(opts ...func(*CountryQuery)) *LedgerQuery {
+	query := (&CountryClient{config: _q.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	_q.withCountry = query
 	return _q
 }
 
@@ -445,9 +481,10 @@ func (_q *LedgerQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Ledge
 		nodes       = []*Ledger{}
 		withFKs     = _q.withFKs
 		_spec       = _q.querySpec()
-		loadedTypes = [3]bool{
+		loadedTypes = [4]bool{
 			_q.withGroup != nil,
-			_q.withParty != nil,
+			_q.withState != nil,
+			_q.withCountry != nil,
 			_q.withJournalLines != nil,
 		}
 	)
@@ -478,9 +515,15 @@ func (_q *LedgerQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Ledge
 			return nil, err
 		}
 	}
-	if query := _q.withParty; query != nil {
-		if err := _q.loadParty(ctx, query, nodes, nil,
-			func(n *Ledger, e *PartyMaster) { n.Edges.Party = e }); err != nil {
+	if query := _q.withState; query != nil {
+		if err := _q.loadState(ctx, query, nodes, nil,
+			func(n *Ledger, e *State) { n.Edges.State = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := _q.withCountry; query != nil {
+		if err := _q.loadCountry(ctx, query, nodes, nil,
+			func(n *Ledger, e *Country) { n.Edges.Country = e }); err != nil {
 			return nil, err
 		}
 	}
@@ -523,30 +566,61 @@ func (_q *LedgerQuery) loadGroup(ctx context.Context, query *LedgerGroupQuery, n
 	}
 	return nil
 }
-func (_q *LedgerQuery) loadParty(ctx context.Context, query *PartyMasterQuery, nodes []*Ledger, init func(*Ledger), assign func(*Ledger, *PartyMaster)) error {
-	fks := make([]driver.Value, 0, len(nodes))
-	nodeids := make(map[int]*Ledger)
+func (_q *LedgerQuery) loadState(ctx context.Context, query *StateQuery, nodes []*Ledger, init func(*Ledger), assign func(*Ledger, *State)) error {
+	ids := make([]int, 0, len(nodes))
+	nodeids := make(map[int][]*Ledger)
 	for i := range nodes {
-		fks = append(fks, nodes[i].ID)
-		nodeids[nodes[i].ID] = nodes[i]
+		fk := nodes[i].StateID
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
 	}
-	if len(query.ctx.Fields) > 0 {
-		query.ctx.AppendFieldOnce(partymaster.FieldLedgerID)
+	if len(ids) == 0 {
+		return nil
 	}
-	query.Where(predicate.PartyMaster(func(s *sql.Selector) {
-		s.Where(sql.InValues(s.C(ledger.PartyColumn), fks...))
-	}))
+	query.Where(state.IDIn(ids...))
 	neighbors, err := query.All(ctx)
 	if err != nil {
 		return err
 	}
 	for _, n := range neighbors {
-		fk := n.LedgerID
-		node, ok := nodeids[fk]
+		nodes, ok := nodeids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "ledger_id" returned %v for node %v`, fk, n.ID)
+			return fmt.Errorf(`unexpected foreign-key "state_id" returned %v`, n.ID)
 		}
-		assign(node, n)
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
+}
+func (_q *LedgerQuery) loadCountry(ctx context.Context, query *CountryQuery, nodes []*Ledger, init func(*Ledger), assign func(*Ledger, *Country)) error {
+	ids := make([]int, 0, len(nodes))
+	nodeids := make(map[int][]*Ledger)
+	for i := range nodes {
+		fk := nodes[i].CountryID
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(country.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "country_id" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
 	}
 	return nil
 }
@@ -608,6 +682,12 @@ func (_q *LedgerQuery) querySpec() *sqlgraph.QuerySpec {
 		}
 		if _q.withGroup != nil {
 			_spec.Node.AddColumnOnce(ledger.FieldGroupID)
+		}
+		if _q.withState != nil {
+			_spec.Node.AddColumnOnce(ledger.FieldStateID)
+		}
+		if _q.withCountry != nil {
+			_spec.Node.AddColumnOnce(ledger.FieldCountryID)
 		}
 	}
 	if ps := _q.predicates; len(ps) > 0 {

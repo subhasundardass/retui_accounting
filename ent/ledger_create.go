@@ -10,10 +10,11 @@ import (
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/subhasundardass/retui/ent/country"
 	"github.com/subhasundardass/retui/ent/journal_line"
 	"github.com/subhasundardass/retui/ent/ledger"
 	"github.com/subhasundardass/retui/ent/ledger_group"
-	"github.com/subhasundardass/retui/ent/partymaster"
+	"github.com/subhasundardass/retui/ent/state"
 )
 
 // LedgerCreate is the builder for creating a Ledger entity.
@@ -97,20 +98,6 @@ func (_c *LedgerCreate) SetNillableDescription(v *string) *LedgerCreate {
 	return _c
 }
 
-// SetOpeningBalance sets the "opening_balance" field.
-func (_c *LedgerCreate) SetOpeningBalance(v float64) *LedgerCreate {
-	_c.mutation.SetOpeningBalance(v)
-	return _c
-}
-
-// SetNillableOpeningBalance sets the "opening_balance" field if the given value is not nil.
-func (_c *LedgerCreate) SetNillableOpeningBalance(v *float64) *LedgerCreate {
-	if v != nil {
-		_c.SetOpeningBalance(*v)
-	}
-	return _c
-}
-
 // SetBalance sets the "balance" field.
 func (_c *LedgerCreate) SetBalance(v float64) *LedgerCreate {
 	_c.mutation.SetBalance(v)
@@ -121,6 +108,258 @@ func (_c *LedgerCreate) SetBalance(v float64) *LedgerCreate {
 func (_c *LedgerCreate) SetNillableBalance(v *float64) *LedgerCreate {
 	if v != nil {
 		_c.SetBalance(*v)
+	}
+	return _c
+}
+
+// SetPartyType sets the "party_type" field.
+func (_c *LedgerCreate) SetPartyType(v ledger.PartyType) *LedgerCreate {
+	_c.mutation.SetPartyType(v)
+	return _c
+}
+
+// SetNillablePartyType sets the "party_type" field if the given value is not nil.
+func (_c *LedgerCreate) SetNillablePartyType(v *ledger.PartyType) *LedgerCreate {
+	if v != nil {
+		_c.SetPartyType(*v)
+	}
+	return _c
+}
+
+// SetAddressLine1 sets the "address_line1" field.
+func (_c *LedgerCreate) SetAddressLine1(v string) *LedgerCreate {
+	_c.mutation.SetAddressLine1(v)
+	return _c
+}
+
+// SetNillableAddressLine1 sets the "address_line1" field if the given value is not nil.
+func (_c *LedgerCreate) SetNillableAddressLine1(v *string) *LedgerCreate {
+	if v != nil {
+		_c.SetAddressLine1(*v)
+	}
+	return _c
+}
+
+// SetAddressLine2 sets the "address_line2" field.
+func (_c *LedgerCreate) SetAddressLine2(v string) *LedgerCreate {
+	_c.mutation.SetAddressLine2(v)
+	return _c
+}
+
+// SetNillableAddressLine2 sets the "address_line2" field if the given value is not nil.
+func (_c *LedgerCreate) SetNillableAddressLine2(v *string) *LedgerCreate {
+	if v != nil {
+		_c.SetAddressLine2(*v)
+	}
+	return _c
+}
+
+// SetCity sets the "city" field.
+func (_c *LedgerCreate) SetCity(v string) *LedgerCreate {
+	_c.mutation.SetCity(v)
+	return _c
+}
+
+// SetNillableCity sets the "city" field if the given value is not nil.
+func (_c *LedgerCreate) SetNillableCity(v *string) *LedgerCreate {
+	if v != nil {
+		_c.SetCity(*v)
+	}
+	return _c
+}
+
+// SetStateID sets the "state_id" field.
+func (_c *LedgerCreate) SetStateID(v int) *LedgerCreate {
+	_c.mutation.SetStateID(v)
+	return _c
+}
+
+// SetNillableStateID sets the "state_id" field if the given value is not nil.
+func (_c *LedgerCreate) SetNillableStateID(v *int) *LedgerCreate {
+	if v != nil {
+		_c.SetStateID(*v)
+	}
+	return _c
+}
+
+// SetCountryID sets the "country_id" field.
+func (_c *LedgerCreate) SetCountryID(v int) *LedgerCreate {
+	_c.mutation.SetCountryID(v)
+	return _c
+}
+
+// SetNillableCountryID sets the "country_id" field if the given value is not nil.
+func (_c *LedgerCreate) SetNillableCountryID(v *int) *LedgerCreate {
+	if v != nil {
+		_c.SetCountryID(*v)
+	}
+	return _c
+}
+
+// SetPincode sets the "pincode" field.
+func (_c *LedgerCreate) SetPincode(v string) *LedgerCreate {
+	_c.mutation.SetPincode(v)
+	return _c
+}
+
+// SetNillablePincode sets the "pincode" field if the given value is not nil.
+func (_c *LedgerCreate) SetNillablePincode(v *string) *LedgerCreate {
+	if v != nil {
+		_c.SetPincode(*v)
+	}
+	return _c
+}
+
+// SetPhone sets the "phone" field.
+func (_c *LedgerCreate) SetPhone(v string) *LedgerCreate {
+	_c.mutation.SetPhone(v)
+	return _c
+}
+
+// SetNillablePhone sets the "phone" field if the given value is not nil.
+func (_c *LedgerCreate) SetNillablePhone(v *string) *LedgerCreate {
+	if v != nil {
+		_c.SetPhone(*v)
+	}
+	return _c
+}
+
+// SetMobile sets the "mobile" field.
+func (_c *LedgerCreate) SetMobile(v string) *LedgerCreate {
+	_c.mutation.SetMobile(v)
+	return _c
+}
+
+// SetNillableMobile sets the "mobile" field if the given value is not nil.
+func (_c *LedgerCreate) SetNillableMobile(v *string) *LedgerCreate {
+	if v != nil {
+		_c.SetMobile(*v)
+	}
+	return _c
+}
+
+// SetEmail sets the "email" field.
+func (_c *LedgerCreate) SetEmail(v string) *LedgerCreate {
+	_c.mutation.SetEmail(v)
+	return _c
+}
+
+// SetNillableEmail sets the "email" field if the given value is not nil.
+func (_c *LedgerCreate) SetNillableEmail(v *string) *LedgerCreate {
+	if v != nil {
+		_c.SetEmail(*v)
+	}
+	return _c
+}
+
+// SetContactPerson sets the "contact_person" field.
+func (_c *LedgerCreate) SetContactPerson(v string) *LedgerCreate {
+	_c.mutation.SetContactPerson(v)
+	return _c
+}
+
+// SetNillableContactPerson sets the "contact_person" field if the given value is not nil.
+func (_c *LedgerCreate) SetNillableContactPerson(v *string) *LedgerCreate {
+	if v != nil {
+		_c.SetContactPerson(*v)
+	}
+	return _c
+}
+
+// SetGstRegistrationType sets the "gst_registration_type" field.
+func (_c *LedgerCreate) SetGstRegistrationType(v ledger.GstRegistrationType) *LedgerCreate {
+	_c.mutation.SetGstRegistrationType(v)
+	return _c
+}
+
+// SetNillableGstRegistrationType sets the "gst_registration_type" field if the given value is not nil.
+func (_c *LedgerCreate) SetNillableGstRegistrationType(v *ledger.GstRegistrationType) *LedgerCreate {
+	if v != nil {
+		_c.SetGstRegistrationType(*v)
+	}
+	return _c
+}
+
+// SetGstin sets the "gstin" field.
+func (_c *LedgerCreate) SetGstin(v string) *LedgerCreate {
+	_c.mutation.SetGstin(v)
+	return _c
+}
+
+// SetNillableGstin sets the "gstin" field if the given value is not nil.
+func (_c *LedgerCreate) SetNillableGstin(v *string) *LedgerCreate {
+	if v != nil {
+		_c.SetGstin(*v)
+	}
+	return _c
+}
+
+// SetPan sets the "pan" field.
+func (_c *LedgerCreate) SetPan(v string) *LedgerCreate {
+	_c.mutation.SetPan(v)
+	return _c
+}
+
+// SetNillablePan sets the "pan" field if the given value is not nil.
+func (_c *LedgerCreate) SetNillablePan(v *string) *LedgerCreate {
+	if v != nil {
+		_c.SetPan(*v)
+	}
+	return _c
+}
+
+// SetBankName sets the "bank_name" field.
+func (_c *LedgerCreate) SetBankName(v string) *LedgerCreate {
+	_c.mutation.SetBankName(v)
+	return _c
+}
+
+// SetNillableBankName sets the "bank_name" field if the given value is not nil.
+func (_c *LedgerCreate) SetNillableBankName(v *string) *LedgerCreate {
+	if v != nil {
+		_c.SetBankName(*v)
+	}
+	return _c
+}
+
+// SetBankAccountNo sets the "bank_account_no" field.
+func (_c *LedgerCreate) SetBankAccountNo(v string) *LedgerCreate {
+	_c.mutation.SetBankAccountNo(v)
+	return _c
+}
+
+// SetNillableBankAccountNo sets the "bank_account_no" field if the given value is not nil.
+func (_c *LedgerCreate) SetNillableBankAccountNo(v *string) *LedgerCreate {
+	if v != nil {
+		_c.SetBankAccountNo(*v)
+	}
+	return _c
+}
+
+// SetBankIfsc sets the "bank_ifsc" field.
+func (_c *LedgerCreate) SetBankIfsc(v string) *LedgerCreate {
+	_c.mutation.SetBankIfsc(v)
+	return _c
+}
+
+// SetNillableBankIfsc sets the "bank_ifsc" field if the given value is not nil.
+func (_c *LedgerCreate) SetNillableBankIfsc(v *string) *LedgerCreate {
+	if v != nil {
+		_c.SetBankIfsc(*v)
+	}
+	return _c
+}
+
+// SetBankBranch sets the "bank_branch" field.
+func (_c *LedgerCreate) SetBankBranch(v string) *LedgerCreate {
+	_c.mutation.SetBankBranch(v)
+	return _c
+}
+
+// SetNillableBankBranch sets the "bank_branch" field if the given value is not nil.
+func (_c *LedgerCreate) SetNillableBankBranch(v *string) *LedgerCreate {
+	if v != nil {
+		_c.SetBankBranch(*v)
 	}
 	return _c
 }
@@ -195,28 +434,25 @@ func (_c *LedgerCreate) SetNillableIsActive(v *bool) *LedgerCreate {
 	return _c
 }
 
+// SetID sets the "id" field.
+func (_c *LedgerCreate) SetID(v int) *LedgerCreate {
+	_c.mutation.SetID(v)
+	return _c
+}
+
 // SetGroup sets the "group" edge to the Ledger_Group entity.
 func (_c *LedgerCreate) SetGroup(v *Ledger_Group) *LedgerCreate {
 	return _c.SetGroupID(v.ID)
 }
 
-// SetPartyID sets the "party" edge to the PartyMaster entity by ID.
-func (_c *LedgerCreate) SetPartyID(id int) *LedgerCreate {
-	_c.mutation.SetPartyID(id)
-	return _c
+// SetState sets the "state" edge to the State entity.
+func (_c *LedgerCreate) SetState(v *State) *LedgerCreate {
+	return _c.SetStateID(v.ID)
 }
 
-// SetNillablePartyID sets the "party" edge to the PartyMaster entity by ID if the given value is not nil.
-func (_c *LedgerCreate) SetNillablePartyID(id *int) *LedgerCreate {
-	if id != nil {
-		_c = _c.SetPartyID(*id)
-	}
-	return _c
-}
-
-// SetParty sets the "party" edge to the PartyMaster entity.
-func (_c *LedgerCreate) SetParty(v *PartyMaster) *LedgerCreate {
-	return _c.SetPartyID(v.ID)
+// SetCountry sets the "country" edge to the Country entity.
+func (_c *LedgerCreate) SetCountry(v *Country) *LedgerCreate {
+	return _c.SetCountryID(v.ID)
 }
 
 // AddJournalLineIDs adds the "journal_lines" edge to the Journal_Line entity by IDs.
@@ -285,13 +521,73 @@ func (_c *LedgerCreate) defaults() {
 		v := ledger.DefaultDescription
 		_c.mutation.SetDescription(v)
 	}
-	if _, ok := _c.mutation.OpeningBalance(); !ok {
-		v := ledger.DefaultOpeningBalance
-		_c.mutation.SetOpeningBalance(v)
-	}
 	if _, ok := _c.mutation.Balance(); !ok {
 		v := ledger.DefaultBalance
 		_c.mutation.SetBalance(v)
+	}
+	if _, ok := _c.mutation.PartyType(); !ok {
+		v := ledger.DefaultPartyType
+		_c.mutation.SetPartyType(v)
+	}
+	if _, ok := _c.mutation.AddressLine1(); !ok {
+		v := ledger.DefaultAddressLine1
+		_c.mutation.SetAddressLine1(v)
+	}
+	if _, ok := _c.mutation.AddressLine2(); !ok {
+		v := ledger.DefaultAddressLine2
+		_c.mutation.SetAddressLine2(v)
+	}
+	if _, ok := _c.mutation.City(); !ok {
+		v := ledger.DefaultCity
+		_c.mutation.SetCity(v)
+	}
+	if _, ok := _c.mutation.Pincode(); !ok {
+		v := ledger.DefaultPincode
+		_c.mutation.SetPincode(v)
+	}
+	if _, ok := _c.mutation.Phone(); !ok {
+		v := ledger.DefaultPhone
+		_c.mutation.SetPhone(v)
+	}
+	if _, ok := _c.mutation.Mobile(); !ok {
+		v := ledger.DefaultMobile
+		_c.mutation.SetMobile(v)
+	}
+	if _, ok := _c.mutation.Email(); !ok {
+		v := ledger.DefaultEmail
+		_c.mutation.SetEmail(v)
+	}
+	if _, ok := _c.mutation.ContactPerson(); !ok {
+		v := ledger.DefaultContactPerson
+		_c.mutation.SetContactPerson(v)
+	}
+	if _, ok := _c.mutation.GstRegistrationType(); !ok {
+		v := ledger.DefaultGstRegistrationType
+		_c.mutation.SetGstRegistrationType(v)
+	}
+	if _, ok := _c.mutation.Gstin(); !ok {
+		v := ledger.DefaultGstin
+		_c.mutation.SetGstin(v)
+	}
+	if _, ok := _c.mutation.Pan(); !ok {
+		v := ledger.DefaultPan
+		_c.mutation.SetPan(v)
+	}
+	if _, ok := _c.mutation.BankName(); !ok {
+		v := ledger.DefaultBankName
+		_c.mutation.SetBankName(v)
+	}
+	if _, ok := _c.mutation.BankAccountNo(); !ok {
+		v := ledger.DefaultBankAccountNo
+		_c.mutation.SetBankAccountNo(v)
+	}
+	if _, ok := _c.mutation.BankIfsc(); !ok {
+		v := ledger.DefaultBankIfsc
+		_c.mutation.SetBankIfsc(v)
+	}
+	if _, ok := _c.mutation.BankBranch(); !ok {
+		v := ledger.DefaultBankBranch
+		_c.mutation.SetBankBranch(v)
 	}
 	if _, ok := _c.mutation.IsSystem(); !ok {
 		v := ledger.DefaultIsSystem
@@ -347,11 +643,94 @@ func (_c *LedgerCreate) check() error {
 			return &ValidationError{Name: "alias", err: fmt.Errorf(`ent: validator failed for field "Ledger.alias": %w`, err)}
 		}
 	}
-	if _, ok := _c.mutation.OpeningBalance(); !ok {
-		return &ValidationError{Name: "opening_balance", err: errors.New(`ent: missing required field "Ledger.opening_balance"`)}
-	}
 	if _, ok := _c.mutation.Balance(); !ok {
 		return &ValidationError{Name: "balance", err: errors.New(`ent: missing required field "Ledger.balance"`)}
+	}
+	if _, ok := _c.mutation.PartyType(); !ok {
+		return &ValidationError{Name: "party_type", err: errors.New(`ent: missing required field "Ledger.party_type"`)}
+	}
+	if v, ok := _c.mutation.PartyType(); ok {
+		if err := ledger.PartyTypeValidator(v); err != nil {
+			return &ValidationError{Name: "party_type", err: fmt.Errorf(`ent: validator failed for field "Ledger.party_type": %w`, err)}
+		}
+	}
+	if v, ok := _c.mutation.AddressLine1(); ok {
+		if err := ledger.AddressLine1Validator(v); err != nil {
+			return &ValidationError{Name: "address_line1", err: fmt.Errorf(`ent: validator failed for field "Ledger.address_line1": %w`, err)}
+		}
+	}
+	if v, ok := _c.mutation.AddressLine2(); ok {
+		if err := ledger.AddressLine2Validator(v); err != nil {
+			return &ValidationError{Name: "address_line2", err: fmt.Errorf(`ent: validator failed for field "Ledger.address_line2": %w`, err)}
+		}
+	}
+	if v, ok := _c.mutation.City(); ok {
+		if err := ledger.CityValidator(v); err != nil {
+			return &ValidationError{Name: "city", err: fmt.Errorf(`ent: validator failed for field "Ledger.city": %w`, err)}
+		}
+	}
+	if v, ok := _c.mutation.Pincode(); ok {
+		if err := ledger.PincodeValidator(v); err != nil {
+			return &ValidationError{Name: "pincode", err: fmt.Errorf(`ent: validator failed for field "Ledger.pincode": %w`, err)}
+		}
+	}
+	if v, ok := _c.mutation.Phone(); ok {
+		if err := ledger.PhoneValidator(v); err != nil {
+			return &ValidationError{Name: "phone", err: fmt.Errorf(`ent: validator failed for field "Ledger.phone": %w`, err)}
+		}
+	}
+	if v, ok := _c.mutation.Mobile(); ok {
+		if err := ledger.MobileValidator(v); err != nil {
+			return &ValidationError{Name: "mobile", err: fmt.Errorf(`ent: validator failed for field "Ledger.mobile": %w`, err)}
+		}
+	}
+	if v, ok := _c.mutation.Email(); ok {
+		if err := ledger.EmailValidator(v); err != nil {
+			return &ValidationError{Name: "email", err: fmt.Errorf(`ent: validator failed for field "Ledger.email": %w`, err)}
+		}
+	}
+	if v, ok := _c.mutation.ContactPerson(); ok {
+		if err := ledger.ContactPersonValidator(v); err != nil {
+			return &ValidationError{Name: "contact_person", err: fmt.Errorf(`ent: validator failed for field "Ledger.contact_person": %w`, err)}
+		}
+	}
+	if _, ok := _c.mutation.GstRegistrationType(); !ok {
+		return &ValidationError{Name: "gst_registration_type", err: errors.New(`ent: missing required field "Ledger.gst_registration_type"`)}
+	}
+	if v, ok := _c.mutation.GstRegistrationType(); ok {
+		if err := ledger.GstRegistrationTypeValidator(v); err != nil {
+			return &ValidationError{Name: "gst_registration_type", err: fmt.Errorf(`ent: validator failed for field "Ledger.gst_registration_type": %w`, err)}
+		}
+	}
+	if v, ok := _c.mutation.Gstin(); ok {
+		if err := ledger.GstinValidator(v); err != nil {
+			return &ValidationError{Name: "gstin", err: fmt.Errorf(`ent: validator failed for field "Ledger.gstin": %w`, err)}
+		}
+	}
+	if v, ok := _c.mutation.Pan(); ok {
+		if err := ledger.PanValidator(v); err != nil {
+			return &ValidationError{Name: "pan", err: fmt.Errorf(`ent: validator failed for field "Ledger.pan": %w`, err)}
+		}
+	}
+	if v, ok := _c.mutation.BankName(); ok {
+		if err := ledger.BankNameValidator(v); err != nil {
+			return &ValidationError{Name: "bank_name", err: fmt.Errorf(`ent: validator failed for field "Ledger.bank_name": %w`, err)}
+		}
+	}
+	if v, ok := _c.mutation.BankAccountNo(); ok {
+		if err := ledger.BankAccountNoValidator(v); err != nil {
+			return &ValidationError{Name: "bank_account_no", err: fmt.Errorf(`ent: validator failed for field "Ledger.bank_account_no": %w`, err)}
+		}
+	}
+	if v, ok := _c.mutation.BankIfsc(); ok {
+		if err := ledger.BankIfscValidator(v); err != nil {
+			return &ValidationError{Name: "bank_ifsc", err: fmt.Errorf(`ent: validator failed for field "Ledger.bank_ifsc": %w`, err)}
+		}
+	}
+	if v, ok := _c.mutation.BankBranch(); ok {
+		if err := ledger.BankBranchValidator(v); err != nil {
+			return &ValidationError{Name: "bank_branch", err: fmt.Errorf(`ent: validator failed for field "Ledger.bank_branch": %w`, err)}
+		}
 	}
 	if _, ok := _c.mutation.IsSystem(); !ok {
 		return &ValidationError{Name: "is_system", err: errors.New(`ent: missing required field "Ledger.is_system"`)}
@@ -385,8 +764,10 @@ func (_c *LedgerCreate) sqlSave(ctx context.Context) (*Ledger, error) {
 		}
 		return nil, err
 	}
-	id := _spec.ID.Value.(int64)
-	_node.ID = int(id)
+	if _spec.ID.Value != _node.ID {
+		id := _spec.ID.Value.(int64)
+		_node.ID = int(id)
+	}
 	_c.mutation.id = &_node.ID
 	_c.mutation.done = true
 	return _node, nil
@@ -397,6 +778,10 @@ func (_c *LedgerCreate) createSpec() (*Ledger, *sqlgraph.CreateSpec) {
 		_node = &Ledger{config: _c.config}
 		_spec = sqlgraph.NewCreateSpec(ledger.Table, sqlgraph.NewFieldSpec(ledger.FieldID, field.TypeInt))
 	)
+	if id, ok := _c.mutation.ID(); ok {
+		_node.ID = id
+		_spec.ID.Value = id
+	}
 	if value, ok := _c.mutation.CreateTime(); ok {
 		_spec.SetField(ledger.FieldCreateTime, field.TypeTime, value)
 		_node.CreateTime = value
@@ -421,13 +806,73 @@ func (_c *LedgerCreate) createSpec() (*Ledger, *sqlgraph.CreateSpec) {
 		_spec.SetField(ledger.FieldDescription, field.TypeString, value)
 		_node.Description = value
 	}
-	if value, ok := _c.mutation.OpeningBalance(); ok {
-		_spec.SetField(ledger.FieldOpeningBalance, field.TypeFloat64, value)
-		_node.OpeningBalance = value
-	}
 	if value, ok := _c.mutation.Balance(); ok {
 		_spec.SetField(ledger.FieldBalance, field.TypeFloat64, value)
 		_node.Balance = value
+	}
+	if value, ok := _c.mutation.PartyType(); ok {
+		_spec.SetField(ledger.FieldPartyType, field.TypeEnum, value)
+		_node.PartyType = value
+	}
+	if value, ok := _c.mutation.AddressLine1(); ok {
+		_spec.SetField(ledger.FieldAddressLine1, field.TypeString, value)
+		_node.AddressLine1 = value
+	}
+	if value, ok := _c.mutation.AddressLine2(); ok {
+		_spec.SetField(ledger.FieldAddressLine2, field.TypeString, value)
+		_node.AddressLine2 = value
+	}
+	if value, ok := _c.mutation.City(); ok {
+		_spec.SetField(ledger.FieldCity, field.TypeString, value)
+		_node.City = value
+	}
+	if value, ok := _c.mutation.Pincode(); ok {
+		_spec.SetField(ledger.FieldPincode, field.TypeString, value)
+		_node.Pincode = value
+	}
+	if value, ok := _c.mutation.Phone(); ok {
+		_spec.SetField(ledger.FieldPhone, field.TypeString, value)
+		_node.Phone = value
+	}
+	if value, ok := _c.mutation.Mobile(); ok {
+		_spec.SetField(ledger.FieldMobile, field.TypeString, value)
+		_node.Mobile = value
+	}
+	if value, ok := _c.mutation.Email(); ok {
+		_spec.SetField(ledger.FieldEmail, field.TypeString, value)
+		_node.Email = value
+	}
+	if value, ok := _c.mutation.ContactPerson(); ok {
+		_spec.SetField(ledger.FieldContactPerson, field.TypeString, value)
+		_node.ContactPerson = value
+	}
+	if value, ok := _c.mutation.GstRegistrationType(); ok {
+		_spec.SetField(ledger.FieldGstRegistrationType, field.TypeEnum, value)
+		_node.GstRegistrationType = value
+	}
+	if value, ok := _c.mutation.Gstin(); ok {
+		_spec.SetField(ledger.FieldGstin, field.TypeString, value)
+		_node.Gstin = value
+	}
+	if value, ok := _c.mutation.Pan(); ok {
+		_spec.SetField(ledger.FieldPan, field.TypeString, value)
+		_node.Pan = value
+	}
+	if value, ok := _c.mutation.BankName(); ok {
+		_spec.SetField(ledger.FieldBankName, field.TypeString, value)
+		_node.BankName = value
+	}
+	if value, ok := _c.mutation.BankAccountNo(); ok {
+		_spec.SetField(ledger.FieldBankAccountNo, field.TypeString, value)
+		_node.BankAccountNo = value
+	}
+	if value, ok := _c.mutation.BankIfsc(); ok {
+		_spec.SetField(ledger.FieldBankIfsc, field.TypeString, value)
+		_node.BankIfsc = value
+	}
+	if value, ok := _c.mutation.BankBranch(); ok {
+		_spec.SetField(ledger.FieldBankBranch, field.TypeString, value)
+		_node.BankBranch = value
 	}
 	if value, ok := _c.mutation.IsSystem(); ok {
 		_spec.SetField(ledger.FieldIsSystem, field.TypeBool, value)
@@ -466,20 +911,38 @@ func (_c *LedgerCreate) createSpec() (*Ledger, *sqlgraph.CreateSpec) {
 		_node.GroupID = nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
-	if nodes := _c.mutation.PartyIDs(); len(nodes) > 0 {
+	if nodes := _c.mutation.StateIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.O2O,
+			Rel:     sqlgraph.M2O,
 			Inverse: false,
-			Table:   ledger.PartyTable,
-			Columns: []string{ledger.PartyColumn},
+			Table:   ledger.StateTable,
+			Columns: []string{ledger.StateColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(partymaster.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(state.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
+		_node.StateID = nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := _c.mutation.CountryIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: false,
+			Table:   ledger.CountryTable,
+			Columns: []string{ledger.CountryColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(country.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.CountryID = nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := _c.mutation.JournalLinesIDs(); len(nodes) > 0 {
@@ -546,7 +1009,7 @@ func (_c *LedgerCreateBulk) Save(ctx context.Context) ([]*Ledger, error) {
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
-				if specs[i].ID.Value != nil {
+				if specs[i].ID.Value != nil && nodes[i].ID == 0 {
 					id := specs[i].ID.Value.(int64)
 					nodes[i].ID = int(id)
 				}

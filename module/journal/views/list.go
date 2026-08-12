@@ -11,7 +11,7 @@ import (
 )
 
 type JournalListComponent struct {
-	controller *journal.JournalController
+	controller *journal.Controller
 	ctx        *appctx.AppContext
 	// form       *FormComponent
 }
@@ -25,7 +25,12 @@ func NewJournalListComponent(ctx *appctx.AppContext) *JournalListComponent {
 }
 
 func (c *JournalListComponent) bindKeys() {
-	if !retui.IsFocused("journal_list") {
+	key := retui.CurrentKey
+
+	if key == (retui.Key{}) || key.Consumed {
+		return
+	}
+	if retui.CapturedFocus() != "" {
 		return
 	}
 
@@ -33,9 +38,9 @@ func (c *JournalListComponent) bindKeys() {
 	case retui.KeyEscape:
 		retui.PopScreen()
 	case retui.KeyF2:
-		retui.Debugf("F2 Pressed.......")
-		win := JournalCreateWindow(c.ctx)
-		win.Show()
+		// retui.Debugf("F2 Pressed.......")
+		// win := JournalCreateWindow(c.ctx)
+		// win.Show()
 	}
 }
 
@@ -68,7 +73,7 @@ func (c *JournalListComponent) List(ctx *appctx.AppContext) retui.Element {
 func (c *JournalListComponent) buildToolbar(selected *ent.Journal) retui.Element {
 	title := "Journals"
 	if selected != nil {
-		title = fmt.Sprintf("Journals  %s", selected.ID)
+		title = fmt.Sprintf("Journals  %d", selected.ID)
 	}
 
 	return retui.Box(
@@ -146,10 +151,10 @@ func (c *JournalListComponent) buildTable(
 				setSelected(journals[i])
 			}
 
-			if retui.CurrentKey.Code == retui.KeyEnter {
-				// fmt.Print(journals[i].ID)
-				// c.controller.ShowJournal(journals[i].ID)
-			}
+			// if retui.CurrentKey.Code == retui.KeyEnter {
+			// 	// fmt.Print(journals[i].ID)
+			// 	// c.controller.ShowJournal(journals[i].ID)
+			// }
 
 		}).
 		Render()

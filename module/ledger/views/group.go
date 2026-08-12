@@ -13,11 +13,14 @@ import (
 type LedgerGroupComponent struct {
 	ctx        *appctx.AppContext
 	controller *ledger.LedgerController
+	formComp   *GroupFormComponent
 }
 
-func NewLedgerGroupComponent(ctx *appctx.AppContext) *LedgerGroupComponent {
+func NewLedgerGroupComponent(ctx *appctx.AppContext, form *GroupFormComponent) *LedgerGroupComponent {
 	return &LedgerGroupComponent{
+		ctx:        ctx,
 		controller: ledger.NewController(ctx),
+		formComp:   form,
 	}
 }
 
@@ -29,8 +32,18 @@ func (c *LedgerGroupComponent) bindKeys() {
 	switch retui.CurrentKey.Code {
 	case retui.KeyEscape:
 		retui.PopScreen()
-	case retui.KeyF2:
-		retui.Debugf("F2 Pressed.......")
+	case retui.KeyAltC:
+		retui.Debugf("Alt+C Pressed.......")
+		// win :=
+		if c.formComp == nil {
+			c.formComp = NewGroupFormComponent(c.ctx)
+			c.formComp.SetOnSaved(func() {
+				// refresh list after save
+			})
+		}
+		win := c.formComp.GroupCreateForm(c.ctx)
+		win.Show()
+		retui.CurrentKey.Consumed = true
 	}
 }
 
@@ -68,7 +81,7 @@ func (c *LedgerGroupComponent) List(ctx *appctx.AppContext) retui.Element {
 func (c *LedgerGroupComponent) buildToolbar(selected *ent.Ledger_Group) retui.Element {
 	title := "Groups"
 	if selected != nil {
-		title = fmt.Sprintf("Groups :  %s", selected.Name)
+		title = fmt.Sprintf("Groups   %s", selected.Name)
 	}
 
 	return retui.Box(
@@ -82,7 +95,13 @@ func (c *LedgerGroupComponent) buildToolbar(selected *ent.Ledger_Group) retui.El
 		retui.NewStyle().Foreground(retui.BrightCyan).
 			Border(retui.Border{Bottom: true, Left: true, Right: true, Top: true, Color: retui.Gray(1)}),
 		retui.Text(title, retui.NewStyle().Bold(true)),
-		retui.Text("Create <F2>", retui.NewStyle().Bold(true).Foreground(retui.Gold)),
+		retui.Box(
+			retui.Props{
+				Gap: 1,
+			},
+			retui.NewStyle(),
+			retui.Text("Create <Alt+C>", retui.NewStyle().Bold(true).Foreground(retui.Gold)),
+		),
 	)
 }
 
@@ -94,15 +113,34 @@ func (c *LedgerGroupComponent) buildGroupTable(
 	tbl := components.Table().
 		Headers([]string{"Code", "Name", "Nature", "Description"}).
 		Rows(rows).
-		// Width(210).
-		// Height(33).
 		HeaderColor(retui.Cyan).
 		ColumnWidths([]int{20, 30, 20, 80}).
 		ShowBorders(true).
 		SelectedIndex(0).
 		Focused(true).
 		OnChange(func(i int) {
+
+			if i < 0 || i >= len(rows) {
+				return
+			}
+
 			setSelected(groups[i])
+
+			// Edit:
+			if retui.CurrentKey.Code == retui.KeyEnter {
+				// if err := c.formComp.LoadForEdit(companies[i].ID); err != nil {
+				// 	retui.Debugf("failed to load company for edit: %v", err)
+				// 	return
+				// }
+
+				// win := c.formComp.GroupEditForm(c.ctx)
+				// if win != nil {
+				// 	win.Show()
+				// }
+
+				// c.controller.EditGroup(groups[i].ID)
+				c.formComp.OpenForEdit(groups[i].ID, c.ctx)
+			}
 
 		}).Render()
 

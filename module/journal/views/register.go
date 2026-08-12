@@ -8,17 +8,19 @@ import (
 func Register(ctx *context.AppContext) {
 
 	// formComp := NewLedgerFormComponent(ctx)
-	listJournalComp := NewJournalListComponent(ctx)
+
+	list_Journal := NewJournalListComponent(ctx)
+	create_Journal := NewJournalCreateWindow(ctx)
 
 	ui.Register("journal_list", ui.Screen{
 		ID:     "journal_list",
 		Title:  "Ledgers",
-		Render: listJournalComp.List,
+		Render: list_Journal.List,
 	})
 
-	// ui.Register("company_form", ui.Screen{
-	// 	ID:     "company_form",
-	// 	Title:  "Company Form",
-	// 	Render: formComp.Form,
-	// })
+	ui.Register("journal_entry", ui.Screen{
+		ID:     "journal_entry",
+		Title:  "Journal Entry",
+		Render: create_Journal.JournalCreateForm,
+	})
 }

@@ -86,8 +86,7 @@ func (c *Component) bindKeys() {
 	switch retui.CurrentKey.Code {
 	case retui.KeyEscape:
 		retui.PopScreen()
-	case retui.KeyF2:
-		retui.Debugf("F2 Pressed.......")
+	case retui.KeyAltC:
 		win := c.form.CreateForm(c.ctx)
 		win.Show()
 
@@ -118,8 +117,7 @@ func (c *Component) buildToolbar() retui.Element {
 				Gap: 1,
 			},
 			retui.NewStyle(),
-			retui.Text("Create <F2>", retui.NewStyle().Bold(true).Foreground(retui.Gold)),
-			retui.Text("Edit <F4>", retui.NewStyle().Bold(true).Foreground(retui.Cyan)),
+			retui.Text("Create <Alt+C>", retui.NewStyle().Bold(true).Foreground(retui.Gold)),
 		),
 	)
 }

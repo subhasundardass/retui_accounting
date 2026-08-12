@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/subhasundardass/retui/ent"
@@ -93,7 +94,7 @@ func (r *LedgerRepository) Insert(ctx context.Context, data *ent.Ledger) (*ent.L
 
 	// Validate required fields
 	if data.Code == "" {
-		return nil, fmt.Errorf("Code is required")
+		return nil, errors.New("code is required")
 	}
 
 	// Validate required fields

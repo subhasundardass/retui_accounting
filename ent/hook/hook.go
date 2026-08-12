@@ -81,18 +81,6 @@ func (f Ledger_GroupFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.LedgerGroupMutation", m)
 }
 
-// The PartyMasterFunc type is an adapter to allow the use of ordinary
-// function as PartyMaster mutator.
-type PartyMasterFunc func(context.Context, *ent.PartyMasterMutation) (ent.Value, error)
-
-// Mutate calls f(ctx, m).
-func (f PartyMasterFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
-	if mv, ok := m.(*ent.PartyMasterMutation); ok {
-		return f(ctx, mv)
-	}
-	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.PartyMasterMutation", m)
-}
-
 // The SettingsFunc type is an adapter to allow the use of ordinary
 // function as Settings mutator.
 type SettingsFunc func(context.Context, *ent.SettingsMutation) (ent.Value, error)

@@ -98,8 +98,8 @@ func (c *FormComponent) CreateForm(ctx *appctx.AppContext) *window.Window {
 	c.win = window.NewWindow().
 		SetTitle("Create Company").
 		SetModal(true).
-		Center().
-		SetSize(100, 40)
+		SetSize(100, 17).
+		Center()
 
 	c.win.SetRenderFn(func() retui.Element {
 		c.state, c.setState = retui.UseState(company.FormState{})
@@ -115,8 +115,8 @@ func (c *FormComponent) EditForm(ctx *appctx.AppContext) *window.Window {
 	c.win = window.NewWindow().
 		SetTitle("Edit Company").
 		SetModal(true).
-		Center().
-		SetSize(100, 40)
+		SetSize(120, 17).
+		Center()
 
 	c.win.SetRenderFn(func() retui.Element {
 		// Seed UseState with the state already populated by LoadForEdit,
@@ -180,6 +180,12 @@ func (c *FormComponent) save() {
 }
 
 func (c *FormComponent) buildWindow(ctx *appctx.AppContext) retui.Element {
+
+	form := retui.UseForm(company.FormState{})
+	v := form.Values()
+
+	// retui.SetHidden("code", true)
+
 	isFocused := func(index int) bool {
 		return c.state.FocusIndex == index
 	}
@@ -188,6 +194,7 @@ func (c *FormComponent) buildWindow(ctx *appctx.AppContext) retui.Element {
 		retui.Props{
 			Gap:     1,
 			Padding: [4]int{0, 1, 0, 1},
+			Wrap:    true,
 		},
 		retui.NewStyle(),
 		retui.Box(
@@ -206,7 +213,8 @@ func (c *FormComponent) buildWindow(ctx *appctx.AppContext) retui.Element {
 			components.TextInput().
 				ID("code").
 				Focused(isFocused(0)).
-				Value(c.state.Code).
+				// Hidden(true).
+				Value(v.Code).
 				OnChange(func(id, value string) {
 					var b strings.Builder
 					for _, r := range strings.ToUpper(value) {
@@ -214,9 +222,10 @@ func (c *FormComponent) buildWindow(ctx *appctx.AppContext) retui.Element {
 							b.WriteRune(r)
 						}
 					}
-					s := c.state
-					s.Code = b.String()
-					c.setState(s)
+					if err := form.SetField("Code", b.String()); err != nil {
+						// surface to the form's error state so the user sees it, rather than swallowing
+						form.SetError("Code", err)
+					}
 				}).
 				Render(),
 		),
@@ -348,9 +357,11 @@ func (c *FormComponent) buildWindow(ctx *appctx.AppContext) retui.Element {
 			),
 			widgets.CountryComponent(
 				ctx,
+				"country",
 				int(c.state.Country),
 				30,
 				isFocused(6),
+				"",
 				func(id, value string) {
 					s := c.state
 					i, err := strconv.Atoi(value)
@@ -372,11 +383,13 @@ func (c *FormComponent) buildWindow(ctx *appctx.AppContext) retui.Element {
 				retui.Text("State", retui.NewStyle()),
 			),
 			widgets.StateComponent(
-				c.state.Country,
 				ctx,
+				"state",
+				c.state.Country,
 				c.state.State,
 				30,
 				isFocused(7),
+				"",
 				func(id, value string) {
 					s := c.state
 					i, err := strconv.Atoi(value)
@@ -601,22 +614,8 @@ func (c *FormComponent) buildWindow(ctx *appctx.AppContext) retui.Element {
 						Render(),
 
 					components.Button().
-						ID("cancel").
-						Label("Cancel").
-						Focused(isFocused(16)).
-						Style(retui.NewStyle().Background(retui.Gray(2)).Foreground(retui.BrightWhite)).
-						OnKeyPress(func(id string, key retui.Key) bool {
-							if key.Code == retui.KeyEnter {
-								c.win.Close()
-								return true
-							}
-							return false
-						}).
-						Render(),
-
-					components.Button().
 						ID("reset").
-						Focused(isFocused(17)).
+						Focused(isFocused(16)).
 						Style(retui.NewStyle().Background(retui.Gray(2)).Foreground(retui.BrightWhite)).
 						OnKeyPress(func(id string, key retui.Key) bool {
 							if key.Code == retui.KeyEnter {
