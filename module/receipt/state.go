@@ -10,7 +10,7 @@ const (
 type PartyLine struct {
 	Ledger  int
 	Remarks string
-	Amount  float32
+	Amount  float64
 }
 
 type FormState struct {
@@ -19,11 +19,11 @@ type FormState struct {
 	Mode       FormMode
 	//--
 
-	SlNo        int
+	VcNo        string
 	Reference   string
 	Date        string
 	Narration   string
-	Amount      float32
+	Amount      float64
 	RcptAccount int
 
 	//--

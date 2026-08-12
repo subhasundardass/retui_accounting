@@ -157,9 +157,9 @@ func (c *LedgerFormComponent) buildForm(ctx *appctx.AppContext) retui.Element {
 			Prefix(" : ").
 			Focused(v.FocusIndex == 0).
 			OnChange(func(id, value string) {
-				if err := form.SetField("Code", v); err != nil {
+				if err := form.SetField("Code", value); err != nil {
 					// surface to the form's error state so the user sees it, rather than swallowing
-					form.SetError("Code", err)
+					_ = form.SetField("Code", value)
 				}
 			}).
 			Render(),
@@ -170,7 +170,7 @@ func (c *LedgerFormComponent) buildForm(ctx *appctx.AppContext) retui.Element {
 		retui.Props{Gap: 1, Width: retui.Grow(2)},
 		retui.NewStyle(),
 		retui.Box(
-			retui.Props{Width: retui.Fixed(20)},
+			retui.Props{Width: retui.Fixed(10)},
 			retui.NewStyle(),
 			retui.Text("Name", retui.NewStyle()),
 		),
@@ -181,9 +181,9 @@ func (c *LedgerFormComponent) buildForm(ctx *appctx.AppContext) retui.Element {
 			Prefix(" : ").
 			Focused(v.FocusIndex == 1).
 			OnChange(func(id, value string) {
-				if err := form.SetField("Code", v); err != nil {
+				if err := form.SetField("Name", value); err != nil {
 					// surface to the form's error state so the user sees it, rather than swallowing
-					form.SetError("Code", err)
+					_ = form.SetField("Name", value)
 				}
 			}).
 			Render(),
@@ -194,7 +194,7 @@ func (c *LedgerFormComponent) buildForm(ctx *appctx.AppContext) retui.Element {
 		retui.Props{Gap: 1, Width: retui.Grow(1)},
 		retui.NewStyle(),
 		retui.Box(
-			retui.Props{Width: retui.Fixed(20)},
+			retui.Props{Width: retui.Fixed(10)},
 			retui.NewStyle(),
 			retui.Text("Alias", retui.NewStyle()),
 		),
@@ -234,7 +234,7 @@ func (c *LedgerFormComponent) buildForm(ctx *appctx.AppContext) retui.Element {
 					retui.Debugf("Invalid Group ID: %v", err)
 					return
 				}
-				if err := form.SetField("GroupID", value); err != nil {
+				if err := form.SetField("GroupID", util.StringToInt(value, 0)); err != nil {
 					_ = form.SetField("GroupID", i)
 				}
 			},
@@ -559,8 +559,8 @@ func (c *LedgerFormComponent) buildForm(ctx *appctx.AppContext) retui.Element {
 			}).
 			Value(v.GSTRegistrationType).
 			OnChange(func(id, value string) {
-				if err := form.SetField("Phone", value); err != nil {
-					_ = form.SetField("Phone", value)
+				if err := form.SetField("GSTRegistrationType", value); err != nil {
+					_ = form.SetField("GSTRegistrationType", value)
 				}
 			}).
 			Render(),
@@ -721,6 +721,7 @@ func (c *LedgerFormComponent) buildForm(ctx *appctx.AppContext) retui.Element {
 				if key.Code == retui.KeyEnter {
 					retui.Debugf("value: %v", v)
 					c.save(v)
+					form.Reset()
 					return true
 				}
 				return false

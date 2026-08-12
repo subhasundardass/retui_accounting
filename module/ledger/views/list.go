@@ -111,7 +111,7 @@ func (c *LedgerComponent) buildToolbar(selected *ent.Ledger) retui.Element {
 		retui.NewStyle().Foreground(retui.BrightCyan).
 			Border(retui.Border{Bottom: true, Left: true, Right: true, Top: true, Color: retui.Gray(1)}),
 		retui.Text(title, retui.NewStyle().Bold(true)),
-		retui.Text("Create <F2>", retui.NewStyle().Bold(true).Foreground(retui.Gold)),
+		retui.Text("Create <Alt+C>", retui.NewStyle().Bold(true).Foreground(retui.Gold)),
 	)
 }
 

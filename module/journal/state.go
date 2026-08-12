@@ -2,10 +2,10 @@ package journal
 
 type FormMode int
 
-const (
-	ModeCreate FormMode = iota
-	ModeUpdate
-)
+// const (
+// 	ModeCreate FormMode = iota
+// 	ModeUpdate
+// )
 
 type JournalLine struct {
 	LedgerCode string

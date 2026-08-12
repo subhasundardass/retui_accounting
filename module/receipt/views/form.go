@@ -2,6 +2,7 @@ package views
 
 import (
 	"fmt"
+	"strconv"
 
 	appctx "github.com/subhasundardass/retui/internal/context"
 	"github.com/subhasundardass/retui/internal/util"
@@ -24,7 +25,7 @@ type FormComponent struct {
 
 	// onSaved is called after a successful save so the caller (e.g. the
 	// companies list) can refresh its data.
-	onClose func()
+	// onSave func()
 }
 
 func NewFormComponent(ctx *appctx.AppContext) *FormComponent {
@@ -37,7 +38,7 @@ func NewFormComponent(ctx *appctx.AppContext) *FormComponent {
 	}
 }
 
-func bindKeys(form *retui.Form[receipt.FormState]) {
+func (c *FormComponent) bindKeys(form *retui.Form[receipt.FormState]) {
 	key := retui.CurrentKey
 	if key == (retui.Key{}) || key.Consumed {
 		return
@@ -69,33 +70,8 @@ func bindKeys(form *retui.Form[receipt.FormState]) {
 		// Save functionality
 		// v := form.Values()
 
-		// entry := receipt.FormState{
-		// 	SlNo:        v.SlNo,
-		// 	Reference:   v.Reference,
-		// 	Date:        v.Date,
-		// 	Amount:      v.Amount,
-		// 	RcptAccount: v.RcptAccount,
-		// 	Narration:   v.Narration,
-		// 	Lines:       v.Lines,
-		// }
-
-		// jrnl, err := form.Controller.SaveJournal(entry) // NOTE: form has no Controller field in the
-		// // original snippet; wire this to
-		// // FormComponent.controller instead — see
-		// // note below the code block.
-		// if err != nil {
-		// 	components.ShowError(err.Error())
-		// 	return
-		// }
-
-		// components.ShowSuccess(fmt.Sprintf("Journal %s saved.", jrnl.VoucherNo))
-
-		// --Reset
+		c.save(v)
 		form.Reset()
-		nv := form.Values() // read AFTER reset
-		nv.Lines = []receipt.PartyLine{{}, {}}
-		nv.FocusIndex = 0
-		form.SetValues(nv)
 
 	default:
 		return
@@ -202,10 +178,17 @@ func (c *FormComponent) Receipt(ctx *appctx.AppContext) retui.Element {
 	)
 }
 
+func (c *FormComponent) LoadForEdit(id int, state receipt.FormState) {
+	c.editing = true
+	c.editID = id
+	c.state = state
+	// also need to push `state` into the form hook, depending on how UseForm reseeds
+}
+
 func (c *FormComponent) new(ctx *appctx.AppContext) retui.Element {
 
 	form := retui.UseForm(c.state) // single call, once per render
-	bindKeys(form)                 // single call too — see note below
+	c.bindKeys(form)               // single call too — see note below
 
 	return components.Panel().
 		Header(retui.Box(
@@ -288,7 +271,7 @@ func (c *FormComponent) buildHead(form *retui.Form[receipt.FormState]) retui.Ele
 	// form := retui.UseForm(c.state)
 	v := form.Values()
 
-	bindKeys(form)
+	c.bindKeys(form)
 
 	slNo := retui.Box(
 		retui.Props{Gap: 1},
@@ -302,12 +285,12 @@ func (c *FormComponent) buildHead(form *retui.Form[receipt.FormState]) retui.Ele
 			retui.Text("Receipt No", retui.NewStyle()),
 		),
 		components.TextInput().
-			ID("code").
-			Value(util.IntToString(v.SlNo)).
+			ID("vcNo").
+			Value(v.VcNo).
 			Prefix(" : ").
 			Focused(v.FocusIndex == 0).
 			OnChange(func(id, value string) {
-				if err := form.SetField("SlNo", value); err != nil {
+				if err := form.SetField("VcNo", value); err != nil {
 					retui.Debugf("SetField error: %v", err)
 				}
 			}).
@@ -387,7 +370,7 @@ func (c *FormComponent) buildHead(form *retui.Form[receipt.FormState]) retui.Ele
 			}).
 			Render(),
 	)
-	// Receipt Account
+	// Receipt Account (Cash/Bank)
 	rcptAccount := retui.Box(
 		retui.Props{Gap: 1},
 		retui.NewStyle(),
@@ -399,14 +382,14 @@ func (c *FormComponent) buildHead(form *retui.Form[receipt.FormState]) retui.Ele
 			retui.NewStyle(),
 			retui.Text("Receipt By", retui.NewStyle()),
 		),
-		components.NumberInput().
+		components.SelectDropdown().
 			ID("rcptAccount").
+			Options(c.controller.CashBankOptions()).
 			Prefix(" : ").
-			Decimals(2).
+			Value(strconv.Itoa(v.RcptAccount)).
 			Focused(v.FocusIndex == 4).
-			Value(float64(v.RcptAccount)).
-			OnChange(func(id string, value float64) {
-				if err := form.SetField("RcptAccount", value); err != nil {
+			OnChange(func(s1, value string) {
+				if err := form.SetField("RcptAccount", util.StringToInt(value, 0)); err != nil {
 					retui.Debugf("SetField error: %v", err)
 				}
 			}).
@@ -474,7 +457,7 @@ func (c *FormComponent) buildHead(form *retui.Form[receipt.FormState]) retui.Ele
 // -- Party Section
 func (c *FormComponent) buildPartyRow(ctx *appctx.AppContext, form *retui.Form[receipt.FormState]) retui.Element {
 
-	bindKeys(form)
+	c.bindKeys(form)
 
 	return retui.Box(
 		retui.Props{
@@ -504,7 +487,7 @@ func (c *FormComponent) lineItemRows(ctx *appctx.AppContext, form *retui.Form[re
 func (c *FormComponent) lineRow(ctx *appctx.AppContext, form *retui.Form[receipt.FormState], i int) retui.Element {
 
 	v := form.Values()
-	bindKeys(form)
+	c.bindKeys(form)
 
 	base := totalFields + i*fieldsPerLine // focus index of this row's first field
 
@@ -555,15 +538,20 @@ func (c *FormComponent) lineRow(ctx *appctx.AppContext, form *retui.Form[receipt
 			Focused(v.FocusIndex == base+2).
 			Width(30).
 			OnChange(func(id string, value float64) {
-				setLine(func(l *receipt.PartyLine) { l.Amount = float32(value) })
+				setLine(func(l *receipt.PartyLine) { l.Amount = float64(value) })
 			}).
 			OnKeyPress(func(s string, key retui.Key) bool {
 				if key.Code == retui.KeyEnter {
 					v := form.Values()
-					v.Lines = append(v.Lines, receipt.PartyLine{})
-					v.FocusIndex = totalFields + (len(v.Lines)-1)*fieldsPerLine
-					form.SetValues(v)
-					return true // Consume the event
+					if i == len(v.Lines)-1 { // only grow when on the last row
+						v.Lines = append(v.Lines, receipt.PartyLine{})
+						v.FocusIndex = totalFields + (len(v.Lines)-1)*fieldsPerLine
+						form.SetValues(v)
+					} else {
+						v.FocusIndex = totalFields + (i+1)*fieldsPerLine // move to next existing row
+						form.SetValues(v)
+					}
+					return true
 				}
 				return false // Allow other key events to pass through
 			}).
@@ -577,4 +565,41 @@ func (c *FormComponent) lineRow(ctx *appctx.AppContext, form *retui.Form[receipt
 		partyRemarks,
 		partyAmount,
 	)
+}
+
+// --Save
+func (c *FormComponent) save(state receipt.FormState) {
+
+	mode := receipt.ModeCreate
+	id := 0
+	if c.editing {
+		mode = receipt.ModeUpdate
+		id = c.editID
+	}
+
+	if state.RcptAccount == 0 {
+		components.ShowError("Please select a receipt account")
+		return
+	}
+	var lineTotal float64
+	for _, l := range state.Lines {
+		if l.Ledger == 0 {
+			continue
+		}
+		lineTotal += l.Amount
+	}
+	if float64(state.Amount) != lineTotal {
+		components.ShowError("Amount doesn't match party line total")
+		return
+	}
+
+	_, err := c.controller.Save(mode, id, state)
+	if err != nil {
+		retui.Debugf("Save failed: %v", err)
+		components.ShowError("Save failed: " + err.Error())
+		// TODO: surface this error in the UI (e.g. an Errors/status field on state)
+		return
+	}
+
+	components.ShowSuccess("Ladger Saved ")
 }
