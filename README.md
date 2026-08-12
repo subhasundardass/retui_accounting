@@ -2,8 +2,8 @@
 
 # retui
 
-**Build terminal apps in Go the same way you'd build a modern web app —**
-**with components, hooks, and a flexbox-style layout system.**
+**A component-driven framework for building fast, modern Terminal User Interfaces in Go —**
+**components, hooks, and flexbox-style layout, instead of manually painting characters to a screen.**
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/subhasundardass/retui.svg)](https://pkg.go.dev/github.com/subhasundardass/retui)
 [![CI](https://github.com/subhasundardass/retui/actions/workflows/ci.yml/badge.svg)](https://github.com/subhasundardass/retui/actions/workflows/ci.yml)
@@ -11,7 +11,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.md)
 [![Go Version](https://img.shields.io/badge/go-1.26%2B-00ADD8?logo=go)](go.mod)
 
-[Quick Start](#quick-start) · [Why retui?](#why-retui) · [Features](#features) · [Wiki](https://github.com/subhasundardass/retui/wiki) · [Contributing](#contributing)
+[Quick Start](#quick-start) · [Why retui?](#why-retui) · [Features](#features) · [Components](#components) · [Wiki](https://github.com/subhasundardass/retui/wiki) · [Contributing](#contributing)
 
 <img src="https://github.com/subhasundardass/retui/raw/main/retui_banner.png" alt="retui banner" width="720">
 
@@ -37,43 +37,6 @@ No prior terminal-UI experience needed. If you can write a Go function, you can 
 | ⚡ **Cell-level diffing**                   | Only the terminal cells that actually changed are repainted — smooth, flicker-free updates even on large screens.                                          |
 | 🔋 **Batteries included**                   | Focus management, modals/windows, forms, and a virtualized `Table` ship in the core — not bolted on as third-party plugins.                                |
 | 🎓 **Gentle learning curve**                | If you know React's mental model, you already know 80% of retui.                                                                                           |
-
-## Components
-
-Everything below ships in `retui/components` — no third-party plugins required for a typical app.
-
-| Component        | What it does                                                                                            |
-| ---------------- | ------------------------------------------------------------------------------------------------------- |
-| `Button`         | Clickable/focusable action trigger with an `OnPress` callback                                           |
-| `TextInput`      | Single-line text field with placeholder, focus, and submit handling                                     |
-| `Password`       | Masked single-line input for secrets                                                                    |
-| `TextArea`       | Multi-line text field                                                                                   |
-| `Number`         | Numeric input with an empty/unset state distinct from zero                                              |
-| `Date`           | Date input with configurable min/max bounds                                                             |
-| `Checkbox`       | Boolean toggle                                                                                          |
-| `List`           | Keyboard-navigable selectable list (Up/Down/Home/End/Enter)                                             |
-| `Tree`           | Expandable/collapsible hierarchical list                                                                |
-| `Table`          | Tabular data grid with row virtualization — only visible rows are rendered, so large datasets stay fast |
-| `SelectDropdown` | Dropdown single-select                                                                                  |
-| `SelectPicker`   | Inline single-select picker                                                                             |
-| `ProgressBar`    | Filled/empty block bar for progress (0–1)                                                               |
-| `Spinner`        | Animated braille loading indicator                                                                      |
-| `Badge`          | Short colored status label                                                                              |
-| `Panel`          | Bordered, titled content container                                                                      |
-| `Toast`          | Transient notification message                                                                          |
-
-> **Honest note:** `List` currently renders every item in the underlying slice each frame — it does not row-virtualize the way `Table` does. Fine for lists of a few hundred items; if you're paging through thousands of rows, reach for `Table` instead, or [open an issue](https://github.com/subhasundardass/retui/issues/new) if `List` virtualization would help your use case.
-
-## Features
-
-- **Components** — see the [full table below](#components) for what ships out of the box
-- **Hooks** — `UseState`, `UseStateKeyed`, `UseReducer`, `UseMemo`, `UseRef`, `UseEffect`, `UseContext`
-- **Layout** — flexbox-style `Box`/`Row`/`Column` with sizing, gap, padding, margin, align, and justify
-- **Styling** — colors, borders (sharp, rounded, double, thick), text attributes, style inheritance down the tree
-- **Focus & navigation** — keyboard-driven focus traversal between components and screens
-- **Windows & modals** — floating, overlaid dialogs and popups via the `window` package
-- **Forms** — typed form state with `UseForm[T]`
-- **Markdown rendering** — headers, bold, italic, code, links, lists, blockquotes, and tables, straight from a string
 
 ## Quick Start
 
@@ -128,6 +91,43 @@ The repo ships with a demo that exercises the built-in components — a good way
 ```bash
 go run ./cmd/app
 ```
+
+## Features
+
+- **Components** — see the [full table below](#components) for what ships out of the box
+- **Hooks** — `UseState`, `UseStateKeyed`, `UseReducer`, `UseMemo`, `UseRef`, `UseEffect`, `UseContext`
+- **Layout** — flexbox-style `Box`/`Row`/`Column` with sizing, gap, padding, margin, align, and justify
+- **Styling** — colors, borders (sharp, rounded, double, thick), text attributes, style inheritance down the tree
+- **Focus & navigation** — keyboard-driven focus traversal between components and screens
+- **Windows & modals** — floating, overlaid dialogs and popups via the `window` package
+- **Forms** — typed form state with `UseForm[T]`
+- **Markdown rendering** — headers, bold, italic, code, links, lists, blockquotes, and tables, straight from a string
+
+## Components
+
+Everything below ships in `retui/components` — no third-party plugins required for a typical app.
+
+| Component        | What it does                                                                                            |
+| ---------------- | ------------------------------------------------------------------------------------------------------- |
+| `Button`         | Clickable/focusable action trigger with an `OnPress` callback                                           |
+| `TextInput`      | Single-line text field with placeholder, focus, and submit handling                                     |
+| `Password`       | Masked single-line input for secrets                                                                    |
+| `TextArea`       | Multi-line text field                                                                                   |
+| `Number`         | Numeric input with an empty/unset state distinct from zero                                              |
+| `Date`           | Date input with configurable min/max bounds                                                             |
+| `Checkbox`       | Boolean toggle                                                                                          |
+| `List`           | Keyboard-navigable selectable list (Up/Down/Home/End/Enter)                                             |
+| `Tree`           | Expandable/collapsible hierarchical list                                                                |
+| `Table`          | Tabular data grid with row virtualization — only visible rows are rendered, so large datasets stay fast |
+| `SelectDropdown` | Dropdown single-select                                                                                  |
+| `SelectPicker`   | Inline single-select picker                                                                             |
+| `ProgressBar`    | Filled/empty block bar for progress (0–1)                                                               |
+| `Spinner`        | Animated braille loading indicator                                                                      |
+| `Badge`          | Short colored status label                                                                              |
+| `Panel`          | Bordered, titled content container                                                                      |
+| `Toast`          | Transient notification message                                                                          |
+
+> **Honest note:** `List` currently renders every item in the underlying slice each frame — it does not row-virtualize the way `Table` does. Fine for lists of a few hundred items; if you're paging through thousands of rows, reach for `Table` instead, or [open an issue](https://github.com/subhasundardass/retui/issues/new) if `List` virtualization would help your use case.
 
 ## retui vs. other Go TUI libraries
 
