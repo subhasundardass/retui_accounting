@@ -6,9 +6,6 @@ on:
   pull_request:
     branches: [main, develop]
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 permissions:
   contents: read
   pull-requests: write
@@ -17,15 +14,17 @@ jobs:
   build-test:
     name: Build & Test
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        go-version: ["1.26.2", "1.26.3"]
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
-          go-version: "1.26.3"
+          go-version: ${{ matrix.go-version }}
           check-latest: true
           cache: true
 
@@ -55,25 +54,18 @@ jobs:
             exit 1
           fi
 
-      - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@v8
-        with:
-          version: latest
-
       - name: Run tests with coverage
         run: |
+          # Find only packages that actually have _test.go files
           TEST_PKGS=$(go list -f '{{if .TestGoFiles}}{{.ImportPath}}{{end}}' ./retui/... | tr '\n' ' ')
-
+          
           if [ -z "$TEST_PKGS" ]; then
-            echo "⚠️ No test files found in ./retui/..."
+            echo "⚠️  No test files found in ./retui/..."
             exit 1
           fi
-
+          
           echo "📋 Testing packages: $TEST_PKGS"
-          go test $TEST_PKGS -v -race \
-            -covermode=atomic \
-            -coverprofile=coverage.out \
-            -coverpkg=./retui/...
+          go test $TEST_PKGS -v -race -covermode=atomic -coverprofile=coverage.out -coverpkg=./retui/...
 
       - name: Display coverage summary
         run: |
@@ -85,35 +77,52 @@ jobs:
           go tool cover -html=coverage.out -o coverage.html
 
       - name: Upload coverage artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
-          name: coverage-report
+          name: coverage-report-${{ matrix.go-version }}
           path: |
             coverage.out
             coverage.html
 
       - name: Upload test results on failure
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         if: failure()
         with:
-          name: test-results
+          name: test-results-${{ matrix.go-version }}
           path: |
             coverage.out
             *.test
 
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: "1.26.3"
+          cache: true
+
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v9
+        with:
+          version: latest
+          args: --timeout=5m
+
   security:
     name: Security Scan
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version: "1.26.3"
-          check-latest: true
           cache: true
 
       - name: Install govulncheck
@@ -123,3 +132,10 @@ jobs:
       - name: Run govulncheck
         run: |
           govulncheck ./retui/...
+
+      - name: Upload security results
+        uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: security-results
+          path: vuln-report.json
