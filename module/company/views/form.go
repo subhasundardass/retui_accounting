@@ -222,7 +222,10 @@ func (c *FormComponent) buildWindow(ctx *appctx.AppContext) retui.Element {
 							b.WriteRune(r)
 						}
 					}
-					form.SetField("Code", b.String())
+					if err := form.SetField("Code", b.String()); err != nil {
+						// surface to the form's error state so the user sees it, rather than swallowing
+						form.SetError("Code", err)
+					}
 				}).
 				Render(),
 		),

@@ -698,14 +698,8 @@ render:
 		display = config.Placeholder
 	}
 
-	// Check validation against the committed value (not the in-progress text)
-	isValid := true
-	if config.HasMin && config.Value < config.Min {
-		isValid = false
-	}
-	if config.HasMax && config.Value > config.Max {
-		isValid = false
-	}
+	isValid := (!config.HasMin || config.Value >= config.Min) &&
+		(!config.HasMax || config.Value <= config.Max)
 
 	// Apply styles. The selected state gets its own distinct highlight so
 	// it reads as "everything will be replaced" rather than a normal

@@ -1,6 +1,8 @@
 package example
 
 import (
+	"log"
+
 	"github.com/subhasundardass/retui/retui"
 	"github.com/subhasundardass/retui/retui/window"
 )
@@ -11,7 +13,9 @@ import (
 // flexbox-style layout system.
 func Example() retui.Element {
 	// The root application has two focus regions: the sidebar and content.
-	retui.SetFocusOrder([]string{"sidebar", "content"})
+	if err := retui.SetFocusOrder([]string{"sidebar", "content"}); err != nil {
+		log.Fatalf("SetFocusOrder: %v", err)
+	}
 
 	if retui.CurrentFocus() == "" && !window.IsAnyModalOpen() {
 		retui.SetFocus("sidebar")

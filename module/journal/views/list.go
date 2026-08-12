@@ -73,7 +73,7 @@ func (c *JournalListComponent) List(ctx *appctx.AppContext) retui.Element {
 func (c *JournalListComponent) buildToolbar(selected *ent.Journal) retui.Element {
 	title := "Journals"
 	if selected != nil {
-		title = fmt.Sprintf("Journals  %s", selected.ID)
+		title = fmt.Sprintf("Journals  %d", selected.ID)
 	}
 
 	return retui.Box(
@@ -151,10 +151,10 @@ func (c *JournalListComponent) buildTable(
 				setSelected(journals[i])
 			}
 
-			if retui.CurrentKey.Code == retui.KeyEnter {
-				// fmt.Print(journals[i].ID)
-				// c.controller.ShowJournal(journals[i].ID)
-			}
+			// if retui.CurrentKey.Code == retui.KeyEnter {
+			// 	// fmt.Print(journals[i].ID)
+			// 	// c.controller.ShowJournal(journals[i].ID)
+			// }
 
 		}).
 		Render()

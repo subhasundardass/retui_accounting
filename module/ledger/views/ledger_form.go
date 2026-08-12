@@ -157,7 +157,10 @@ func (c *LedgerFormComponent) buildForm(ctx *appctx.AppContext) retui.Element {
 			Prefix(" : ").
 			Focused(v.FocusIndex == 0).
 			OnChange(func(id, value string) {
-				form.SetField("Code", value)
+				if err := form.SetField("Code", v); err != nil {
+					// surface to the form's error state so the user sees it, rather than swallowing
+					form.SetError("Code", err)
+				}
 			}).
 			Render(),
 	)
@@ -178,7 +181,10 @@ func (c *LedgerFormComponent) buildForm(ctx *appctx.AppContext) retui.Element {
 			Prefix(" : ").
 			Focused(v.FocusIndex == 1).
 			OnChange(func(id, value string) {
-				form.SetField("Name", value)
+				if err := form.SetField("Code", v); err != nil {
+					// surface to the form's error state so the user sees it, rather than swallowing
+					form.SetError("Code", err)
+				}
 			}).
 			Render(),
 	)
@@ -199,7 +205,9 @@ func (c *LedgerFormComponent) buildForm(ctx *appctx.AppContext) retui.Element {
 			Prefix(" : ").
 			Focused(v.FocusIndex == 2).
 			OnChange(func(id, value string) {
-				form.SetField("Alias", value)
+				if err := form.SetField("Alias", value); err != nil {
+					_ = form.SetField("Alias", value)
+				}
 			}).
 			Render(),
 	)
@@ -226,7 +234,9 @@ func (c *LedgerFormComponent) buildForm(ctx *appctx.AppContext) retui.Element {
 					retui.Debugf("Invalid Group ID: %v", err)
 					return
 				}
-				form.SetField("GroupID", i)
+				if err := form.SetField("GroupID", value); err != nil {
+					_ = form.SetField("GroupID", i)
+				}
 			},
 		),
 	)
@@ -254,7 +264,9 @@ func (c *LedgerFormComponent) buildForm(ctx *appctx.AppContext) retui.Element {
 			}).
 			Value(v.PartyType).
 			OnChange(func(id, value string) {
-				form.SetField("PartyType", value)
+				if err := form.SetField("PartyType", value); err != nil {
+					_ = form.SetField("PartyType", value)
+				}
 			}).
 			Render(),
 	)
@@ -275,7 +287,7 @@ func (c *LedgerFormComponent) buildForm(ctx *appctx.AppContext) retui.Element {
 			Height(1).
 			Focused(v.FocusIndex == 5).
 			OnChange(func(id, value string) {
-				form.SetField("Description", value)
+				_ = form.SetField("Description", value)
 			}).
 			Render(),
 	)
@@ -296,7 +308,9 @@ func (c *LedgerFormComponent) buildForm(ctx *appctx.AppContext) retui.Element {
 			Prefix(" : ").
 			Focused(v.FocusIndex == 6).
 			OnChange(func(id, value string) {
-				form.SetField("AddressLine1", value)
+				if err := form.SetField("AddressLine1", value); err != nil {
+					_ = form.SetField("AddressLine1", value)
+				}
 			}).
 			Render(),
 	)
@@ -316,7 +330,10 @@ func (c *LedgerFormComponent) buildForm(ctx *appctx.AppContext) retui.Element {
 			Value(v.AddressLine2).
 			Focused(v.FocusIndex == 7).
 			OnChange(func(id, value string) {
-				form.SetField("AddressLine2", value)
+				if err := form.SetField("AddressLine2", value); err != nil {
+					_ = form.SetField("AddressLine2", value)
+				}
+
 			}).
 			Render(),
 	)
@@ -344,7 +361,10 @@ func (c *LedgerFormComponent) buildForm(ctx *appctx.AppContext) retui.Element {
 					retui.Debugf("Invalid Country ID: %v", err)
 					return
 				}
-				form.SetField("CountryID", i)
+				if err := form.SetField("CountryID", value); err != nil {
+
+					_ = form.SetField("CountryID", i)
+				}
 			},
 		),
 	)
@@ -372,7 +392,10 @@ func (c *LedgerFormComponent) buildForm(ctx *appctx.AppContext) retui.Element {
 					retui.Debugf("Invalid State ID: %v", err)
 					return
 				}
-				form.SetField("StateID", i)
+				if err := form.SetField("StateID", value); err != nil {
+
+					_ = form.SetField("StateID", i)
+				}
 			},
 		),
 	)
@@ -392,7 +415,9 @@ func (c *LedgerFormComponent) buildForm(ctx *appctx.AppContext) retui.Element {
 			Prefix(" : ").
 			Focused(v.FocusIndex == 10).
 			OnChange(func(id, value string) {
-				form.SetField("City", value)
+				if err := form.SetField("City", value); err != nil {
+					_ = form.SetField("City", value)
+				}
 			}).
 			Render(),
 	)
@@ -413,7 +438,9 @@ func (c *LedgerFormComponent) buildForm(ctx *appctx.AppContext) retui.Element {
 			Prefix(" : ").
 			Focused(v.FocusIndex == 11).
 			OnChange(func(id, value string) {
-				form.SetField("Pincode", value)
+				if err := form.SetField("Pincode", value); err != nil {
+					_ = form.SetField("Pincode", value)
+				}
 			}).
 			Render(),
 	)
@@ -434,7 +461,9 @@ func (c *LedgerFormComponent) buildForm(ctx *appctx.AppContext) retui.Element {
 			Prefix(" : ").
 			Focused(v.FocusIndex == 12).
 			OnChange(func(id, value string) {
-				form.SetField("Phone", value)
+				if err := form.SetField("Phone", value); err != nil {
+					_ = form.SetField("Phone", value)
+				}
 			}).
 			Render(),
 	)
@@ -454,7 +483,9 @@ func (c *LedgerFormComponent) buildForm(ctx *appctx.AppContext) retui.Element {
 			Value(v.Mobile).
 			Focused(v.FocusIndex == 13).
 			OnChange(func(id, value string) {
-				form.SetField("Mobile", value)
+				if err := form.SetField("Mobile", value); err != nil {
+					_ = form.SetField("Mobile", value)
+				}
 			}).
 			Render(),
 	)
@@ -474,7 +505,9 @@ func (c *LedgerFormComponent) buildForm(ctx *appctx.AppContext) retui.Element {
 			Prefix(" : ").
 			Focused(v.FocusIndex == 14).
 			OnChange(func(id, value string) {
-				form.SetField("Email", value)
+				if err := form.SetField("Email", value); err != nil {
+					_ = form.SetField("Email", value)
+				}
 			}).
 			Render(),
 	)
@@ -494,7 +527,9 @@ func (c *LedgerFormComponent) buildForm(ctx *appctx.AppContext) retui.Element {
 			Prefix(" : ").
 			Focused(v.FocusIndex == 15).
 			OnChange(func(id, value string) {
-				form.SetField("ContactPerson", value)
+				if err := form.SetField("ContactPerson", value); err != nil {
+					_ = form.SetField("ContactPerson", value)
+				}
 			}).
 			Render(),
 	)
@@ -524,7 +559,9 @@ func (c *LedgerFormComponent) buildForm(ctx *appctx.AppContext) retui.Element {
 			}).
 			Value(v.GSTRegistrationType).
 			OnChange(func(id, value string) {
-				form.SetField("GSTRegistrationType", value)
+				if err := form.SetField("Phone", value); err != nil {
+					_ = form.SetField("Phone", value)
+				}
 			}).
 			Render(),
 	)
@@ -544,7 +581,9 @@ func (c *LedgerFormComponent) buildForm(ctx *appctx.AppContext) retui.Element {
 			Prefix(" : ").
 			Focused(v.FocusIndex == 17).
 			OnChange(func(id, value string) {
-				form.SetField("GSTIN", value)
+				if err := form.SetField("GSTIN", value); err != nil {
+					_ = form.SetField("GSTIN", value)
+				}
 			}).
 			Render(),
 	)
@@ -564,6 +603,7 @@ func (c *LedgerFormComponent) buildForm(ctx *appctx.AppContext) retui.Element {
 			Prefix(" : ").
 			Focused(v.FocusIndex == 18).
 			OnChange(func(id, value string) {
+
 				form.SetField("PAN", value)
 			}).
 			Render(),

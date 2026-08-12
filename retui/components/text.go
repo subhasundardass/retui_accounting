@@ -300,10 +300,7 @@ render:
 	}
 
 	// Check validation
-	isValid := true
-	if config.MinLength > 0 && len(runes) < config.MinLength {
-		isValid = false
-	}
+	isValid := config.MinLength <= 0 || len(runes) >= config.MinLength
 
 	// Determine display value
 	display := config.Value
