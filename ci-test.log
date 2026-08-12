@@ -1,60 +1,60 @@
 ==================================================
 RetUI CI Test Log
-Started: Sunday 09 August 2026 05:12:24 PM IST
+Started: Wed 12 Aug 2026 12:25:07 PM IST
 ==================================================
-[gosec] 2026/08/09 17:12:33 Including rules: default
-[gosec] 2026/08/09 17:12:33 Excluding rules: default
-[gosec] 2026/08/09 17:12:33 Including analyzers: default
-[gosec] 2026/08/09 17:12:33 Excluding analyzers: default
-[gosec] 2026/08/09 17:12:33 Import directory: /home/dev/Desktop/experimental/retui_accounting/retui
-[gosec] 2026/08/09 17:12:33 Import directory: /home/dev/Desktop/experimental/retui_accounting/retui/window
-[gosec] 2026/08/09 17:12:33 Import directory: /home/dev/Desktop/experimental/retui_accounting/retui/components
-[gosec] 2026/08/09 17:12:33 Checking package: window
-[gosec] 2026/08/09 17:12:33 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/window/manager.go
-[gosec] 2026/08/09 17:12:33 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/window/renderer.go
-[gosec] 2026/08/09 17:12:33 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/window/window.go
-[gosec] 2026/08/09 17:12:34 Checking package: retui
-[gosec] 2026/08/09 17:12:34 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/elements.go
-[gosec] 2026/08/09 17:12:34 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/focus.go
-[gosec] 2026/08/09 17:12:34 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/form.go
-[gosec] 2026/08/09 17:12:34 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/hooks.go
-[gosec] 2026/08/09 17:12:34 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/key.go
-[gosec] 2026/08/09 17:12:34 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/layout.go
-[gosec] 2026/08/09 17:12:34 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/logger.go
-[gosec] 2026/08/09 17:12:34 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/markdown.go
-[gosec] 2026/08/09 17:12:34 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/navigation.go
-[gosec] 2026/08/09 17:12:34 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/node.go
-[gosec] 2026/08/09 17:12:34 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/overlay.go
-[gosec] 2026/08/09 17:12:34 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/renderer.go
-[gosec] 2026/08/09 17:12:34 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/resize_unix.go
-[gosec] 2026/08/09 17:12:34 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/runtime.go
-[gosec] 2026/08/09 17:12:34 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/screen.go
-[gosec] 2026/08/09 17:12:34 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/style.go
-[gosec] 2026/08/09 17:12:34 Checking package: components
-[gosec] 2026/08/09 17:12:34 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/components/badge.go
-[gosec] 2026/08/09 17:12:34 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/components/button.go
-[gosec] 2026/08/09 17:12:34 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/components/checkbox.go
-[gosec] 2026/08/09 17:12:34 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/components/date.go
-[gosec] 2026/08/09 17:12:34 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/components/list.go
-[gosec] 2026/08/09 17:12:34 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/components/number.go
-[gosec] 2026/08/09 17:12:34 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/components/panel.go
-[gosec] 2026/08/09 17:12:34 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/components/password.go
-[gosec] 2026/08/09 17:12:34 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/components/progress_bar.go
-[gosec] 2026/08/09 17:12:34 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/components/select_dropdown.go
-[gosec] 2026/08/09 17:12:34 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/components/select_picker.go
-[gosec] 2026/08/09 17:12:34 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/components/spinner.go
-[gosec] 2026/08/09 17:12:34 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/components/table.go
-[gosec] 2026/08/09 17:12:34 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/components/text.go
-[gosec] 2026/08/09 17:12:34 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/components/textarea.go
-[gosec] 2026/08/09 17:12:34 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/components/toast.go
-[gosec] 2026/08/09 17:12:34 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/components/tree.go
+[gosec] 2026/08/12 12:25:17 Including rules: default
+[gosec] 2026/08/12 12:25:17 Excluding rules: default
+[gosec] 2026/08/12 12:25:17 Including analyzers: default
+[gosec] 2026/08/12 12:25:17 Excluding analyzers: default
+[gosec] 2026/08/12 12:25:17 Import directory: /home/dev/Desktop/experimental/retui_accounting/retui/components
+[gosec] 2026/08/12 12:25:17 Import directory: /home/dev/Desktop/experimental/retui_accounting/retui/window
+[gosec] 2026/08/12 12:25:17 Import directory: /home/dev/Desktop/experimental/retui_accounting/retui
+[gosec] 2026/08/12 12:25:17 Checking package: window
+[gosec] 2026/08/12 12:25:17 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/window/manager.go
+[gosec] 2026/08/12 12:25:18 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/window/renderer.go
+[gosec] 2026/08/12 12:25:18 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/window/window.go
+[gosec] 2026/08/12 12:25:18 Checking package: retui
+[gosec] 2026/08/12 12:25:18 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/elements.go
+[gosec] 2026/08/12 12:25:18 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/focus.go
+[gosec] 2026/08/12 12:25:18 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/form.go
+[gosec] 2026/08/12 12:25:18 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/hooks.go
+[gosec] 2026/08/12 12:25:18 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/key.go
+[gosec] 2026/08/12 12:25:18 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/layout.go
+[gosec] 2026/08/12 12:25:18 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/logger.go
+[gosec] 2026/08/12 12:25:18 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/markdown.go
+[gosec] 2026/08/12 12:25:18 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/navigation.go
+[gosec] 2026/08/12 12:25:18 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/node.go
+[gosec] 2026/08/12 12:25:18 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/overlay.go
+[gosec] 2026/08/12 12:25:18 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/renderer.go
+[gosec] 2026/08/12 12:25:18 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/resize_unix.go
+[gosec] 2026/08/12 12:25:18 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/runtime.go
+[gosec] 2026/08/12 12:25:18 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/screen.go
+[gosec] 2026/08/12 12:25:18 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/style.go
+[gosec] 2026/08/12 12:25:18 Checking package: components
+[gosec] 2026/08/12 12:25:18 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/components/badge.go
+[gosec] 2026/08/12 12:25:18 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/components/button.go
+[gosec] 2026/08/12 12:25:18 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/components/checkbox.go
+[gosec] 2026/08/12 12:25:18 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/components/date.go
+[gosec] 2026/08/12 12:25:18 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/components/list.go
+[gosec] 2026/08/12 12:25:18 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/components/number.go
+[gosec] 2026/08/12 12:25:18 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/components/panel.go
+[gosec] 2026/08/12 12:25:18 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/components/password.go
+[gosec] 2026/08/12 12:25:18 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/components/progress_bar.go
+[gosec] 2026/08/12 12:25:18 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/components/select_dropdown.go
+[gosec] 2026/08/12 12:25:18 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/components/select_picker.go
+[gosec] 2026/08/12 12:25:18 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/components/spinner.go
+[gosec] 2026/08/12 12:25:18 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/components/table.go
+[gosec] 2026/08/12 12:25:18 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/components/text.go
+[gosec] 2026/08/12 12:25:18 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/components/textarea.go
+[gosec] 2026/08/12 12:25:18 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/components/toast.go
+[gosec] 2026/08/12 12:25:18 Checking file: /home/dev/Desktop/experimental/retui_accounting/retui/components/tree.go
 Results:
 
 
 [1;36mSummary:[0m
   Gosec  : dev
   Files  : 36
-  Lines  : 15712
+  Lines  : 15805
   Nosec  : 1
   Issues : [1;32m0[0m
 
@@ -70,5 +70,5 @@ Use '-show verbose' for more details.
 
 ==================================================
 ALL TESTS PASSED
-Finished: Sunday 09 August 2026 05:12:36 PM IST
+Finished: Wed 12 Aug 2026 12:25:22 PM IST
 ==================================================

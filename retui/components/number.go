@@ -106,7 +106,7 @@ func NumberInput() *NumberInputField {
 			Hidden:           false,
 			Step:             1,
 			Decimals:         0,
-			ArrowStep:        true,
+			ArrowStep:        false,
 			SelectAllOnFocus: true,
 			OnChange:         nil,
 			OnKeyPress:       nil,
