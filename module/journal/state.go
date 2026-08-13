@@ -8,16 +8,17 @@ type FormMode int
 // )
 
 type JournalLine struct {
-	LedgerCode string
-	Debit      float64
-	Credit     float64
-	Remarks    string
+	LedgerID int
+	Debit    float64
+	Credit   float64
+	Remarks  string
 }
 
 type FormState struct {
-	FocusIndex  int
-	Errors      map[string]string
-	Mode        FormMode
+	FocusIndex int
+	Errors     map[string]string
+	Mode       FormMode
+	//--
 	VcNo        string
 	VcDate      string
 	VcReference string

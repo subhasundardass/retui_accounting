@@ -25,3 +25,12 @@ func StringToFloat(s string, defaultValue float64) float64 {
 func FloatToString(num float64) string {
 	return strconv.FormatFloat(num, 'f', -1, 64)
 }
+
+// deref safely reads an Optional().Nillable() string field, returning ""
+// instead of panicking when the value was never set.
+func Deref(s *string) string {
+	if s == nil {
+		return ""
+	}
+	return *s
+}

@@ -5,6 +5,7 @@ import (
 	"context"
 	"fmt"
 
+	"entgo.io/ent/dialect/sql"
 	"github.com/subhasundardass/retui/ent"
 	"github.com/subhasundardass/retui/ent/journal"
 	"github.com/subhasundardass/retui/ent/journal_line"
@@ -107,7 +108,9 @@ func (r *repository) Get(ctx context.Context, id int) (*ent.Journal, error) {
 }
 
 func (r *repository) List(ctx context.Context, filter ListFilter) ([]*ent.Journal, error) {
-	q := r.client.Journal.Query().WithLines()
+	q := r.client.Journal.Query().
+		Order(journal.ByID(sql.OrderDesc())).
+		WithLines()
 
 	if filter.Type != "" {
 		q = q.Where(journal.VoucherTypeEQ(string(filter.Type)))
@@ -178,7 +181,7 @@ func createJournalWithLines(ctx context.Context, txClient *ent.Client, in Vouche
 }
 
 func createLines(ctx context.Context, txClient *ent.Client, journalID int, lines []LineInput) error {
-	builders := make([]*ent.JournalLineClient, 0, len(lines))
+	builders := make([]*ent.JournalLineCreate, 0, len(lines))
 
 	for i, l := range lines {
 		b := txClient.Journal_Line.Create().

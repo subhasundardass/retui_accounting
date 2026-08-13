@@ -9,7 +9,17 @@ import (
 
 const epsilon = 0.005 // tolerance for float rounding on money comparisons
 
-func ValidateCreate(input FormState) error {
+// Balanced reports whether debit and credit are equal within floating
+// point tolerance. Never compare money totals with == directly.
+func Balanced(debit, credit float64) bool {
+	diff := debit - credit
+	if diff < 0 {
+		diff = -diff
+	}
+	return diff < epsilon
+}
+
+func ValidateFormShape(input FormState) error {
 	v := validator.New()
 
 	v.Field("vcNo", strings.TrimSpace(input.VcNo)).Required().MinLength(1).MaxLength(20)

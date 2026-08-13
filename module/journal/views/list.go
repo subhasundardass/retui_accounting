@@ -5,6 +5,7 @@ import (
 
 	"github.com/subhasundardass/retui/ent"
 	appctx "github.com/subhasundardass/retui/internal/context"
+	"github.com/subhasundardass/retui/internal/util"
 	"github.com/subhasundardass/retui/module/journal"
 	"github.com/subhasundardass/retui/retui"
 	"github.com/subhasundardass/retui/retui/components"
@@ -50,7 +51,7 @@ func (c *JournalListComponent) List(ctx *appctx.AppContext) retui.Element {
 	selected, setSelected := retui.UseState(&ent.Journal{})
 
 	retui.UseEffect(func() func() {
-		list, err := c.controller.ListWithPagination(0, 40)
+		list, err := c.controller.List(0, 40)
 		if err != nil {
 			retui.Errorf("Error fetching data %s", err.Error())
 			return nil
@@ -98,15 +99,14 @@ func (c *JournalListComponent) buildTable(
 
 	rows := make([][]string, len(journals))
 	for i, j := range journals {
-
 		rows[i] = []string{
 			j.VoucherDate.Format("02/01/2006"),
-			string(j.VoucherNo),
-			string(*j.ReferenceNo),
-			string(j.VoucherType),
+			j.VoucherNo,
+			util.Deref(j.ReferenceNo),
+			j.VoucherType,
 			fmt.Sprintf("%.2f", j.TotalDebit),
 			fmt.Sprintf("%.2f", j.TotalCredit),
-			*j.Narration,
+			util.Deref(j.Narration),
 			string(j.JournalStatus),
 		}
 	}
@@ -147,21 +147,19 @@ func (c *JournalListComponent) buildTable(
 			10,
 		}).
 		OnChange(func(i int) {
-			if i >= 0 && i < len(journals) {
-				setSelected(journals[i])
+			if i < 0 || i >= len(journals) {
+				return
 			}
+			setSelected(journals[i])
 
-			// if retui.CurrentKey.Code == retui.KeyEnter {
-			// 	// fmt.Print(journals[i].ID)
-			// 	// c.controller.ShowJournal(journals[i].ID)
-			// }
-
+			if retui.CurrentKey.Code == retui.KeyEnter {
+				c.controller.ShowJournal(journals[i].ID)
+			}
 		}).
 		Render()
 
 	return retui.Box(
 		retui.Props{
-			// Direction: retui.Column,
 			Height: retui.Fixed(33),
 		},
 		retui.NewStyle(),
