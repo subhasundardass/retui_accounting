@@ -31,7 +31,6 @@ type FormComponent struct {
 func NewFormComponent(ctx *appctx.AppContext) *FormComponent {
 	return &FormComponent{
 		controller: receipt.NewController(ctx),
-
 		state: receipt.FormState{
 			Lines: []receipt.PartyLine{{}},
 		},
@@ -68,10 +67,7 @@ func (c *FormComponent) bindKeys(form *retui.Form[receipt.FormState]) {
 
 	case retui.KeyF10:
 		// Save functionality
-		// v := form.Values()
-
-		c.save(v)
-		form.Reset()
+		c.save(form)
 
 	default:
 		return
@@ -90,90 +86,10 @@ func (c *FormComponent) Receipt(ctx *appctx.AppContext) retui.Element {
 		retui.NewStyle(),
 		retui.Box(
 			retui.Props{
-				Width: retui.Grow(5),
-			},
-			retui.NewStyle(),
-			c.new(ctx),
-		),
-		retui.Box(
-			retui.Props{
 				Width: retui.Grow(1),
 			},
 			retui.NewStyle(),
-			components.Panel().
-				Header(retui.Text(" Shortcut", retui.NewStyle().Bold(true))).
-				Children(
-					retui.Box(
-						retui.Props{
-							Gap:       0,
-							Direction: retui.Column,
-							Width:     retui.Grow(1),
-							Padding:   [4]int{0, 1, 0, 1},
-						},
-						retui.NewStyle(),
-
-						// Company
-						widgets.ShortCutItem("Select Company", "F1"),
-						widgets.ShortCutItem("Change Data", "F2"),
-						widgets.ShortCutItem("Contra Voucher", "F4"),
-						// Data
-						widgets.ShortCutItem("Change Data", "F5"),
-					),
-				).
-				Divider().
-				Children(
-					retui.Box(
-						retui.Props{
-							Gap:       0,
-							Direction: retui.Column,
-							Width:     retui.Grow(1),
-							Padding:   [4]int{0, 1, 0, 1},
-						},
-						retui.NewStyle(),
-
-						// Vouchers
-						widgets.ShortCutItem("F4-Contra Voucher", "F3"),
-						widgets.ShortCutItem("F5-Payment Voucher", "F3"),
-						widgets.ShortCutItem("F6-Receipt Voucher", "F3"),
-						widgets.ShortCutItem("F7-Journal Voucher", "F3"),
-
-						// Sales / Purchase
-						widgets.ShortCutItem("F8-Sale Voucher", "F4"),
-						widgets.ShortCutItem("F9-Purchase Voucher", "F4"),
-					),
-				).
-				Divider().
-				Children(
-					retui.Box(
-						retui.Props{
-							Gap:       0,
-							Direction: retui.Column,
-							Width:     retui.Grow(1),
-							Padding:   [4]int{0, 1, 0, 1},
-						},
-						retui.NewStyle(),
-
-						// Features / Configuration
-						widgets.ShortCutItem("F11-Company Features", "F5"),
-						widgets.ShortCutItem("F12-Configuration", "F5"),
-					),
-				).
-				Divider().
-				Children(
-					retui.Box(
-						retui.Props{
-							Gap:       0,
-							Direction: retui.Column,
-							Width:     retui.Grow(1),
-							Padding:   [4]int{0, 1, 0, 1},
-						},
-						retui.NewStyle(),
-
-						// Features / Configuration
-						widgets.ShortCutItem("F11-Company Features", "F5"),
-					),
-				).
-				Render(),
+			c.new(ctx),
 		),
 	)
 }
@@ -210,7 +126,7 @@ func (c *FormComponent) new(ctx *appctx.AppContext) retui.Element {
 					Padding: [4]int{0, 1, 0, 1},
 				},
 				retui.NewStyle(),
-				c.buildHead(form),
+				c.buildHead(ctx, form),
 			),
 		).
 		DividerWithText("Particulars").
@@ -266,7 +182,7 @@ func (c *FormComponent) new(ctx *appctx.AppContext) retui.Element {
 }
 
 // ---- Header Section
-func (c *FormComponent) buildHead(form *retui.Form[receipt.FormState]) retui.Element {
+func (c *FormComponent) buildHead(ctx *appctx.AppContext, form *retui.Form[receipt.FormState]) retui.Element {
 
 	// form := retui.UseForm(c.state)
 	v := form.Values()
@@ -382,18 +298,26 @@ func (c *FormComponent) buildHead(form *retui.Form[receipt.FormState]) retui.Ele
 			retui.NewStyle(),
 			retui.Text("Receipt By", retui.NewStyle()),
 		),
-		components.SelectDropdown().
-			ID("rcptAccount").
-			Options(c.controller.CashBankOptions()).
-			Prefix(" : ").
-			Value(strconv.Itoa(v.RcptAccount)).
-			Focused(v.FocusIndex == 4).
-			OnChange(func(s1, value string) {
+		widgets.CashBankDropdown(
+			ctx, "rcptAccount", strconv.Itoa(v.RcptAccount), 40, v.FocusIndex == 4,
+			func(id, value string) {
 				if err := form.SetField("RcptAccount", util.StringToInt(value, 0)); err != nil {
 					retui.Debugf("SetField error: %v", err)
 				}
-			}).
-			Render(),
+			},
+		),
+		// components.SelectDropdown().
+		// 	ID("rcptAccount").
+		// 	Options(c.controller.CashBankOptions()).
+		// 	Prefix(" : ").
+		// 	Value(strconv.Itoa(v.RcptAccount)).
+		// 	Focused(v.FocusIndex == 4).
+		// 	OnChange(func(s1, value string) {
+		// 		if err := form.SetField("RcptAccount", util.StringToInt(value, 0)); err != nil {
+		// 			retui.Debugf("SetField error: %v", err)
+		// 		}
+		// 	}).
+		// 	Render(),
 	)
 
 	// Narration
@@ -568,7 +492,14 @@ func (c *FormComponent) lineRow(ctx *appctx.AppContext, form *retui.Form[receipt
 }
 
 // --Save
-func (c *FormComponent) save(state receipt.FormState) {
+func (c *FormComponent) save(form *retui.Form[receipt.FormState]) {
+
+	state := form.Values()
+
+	if err := receipt.ValidateForm(state); err != nil {
+		components.ShowError(err.Error())
+		return // validation failed — don't reset, keep the user's input
+	}
 
 	mode := receipt.ModeCreate
 	id := 0
@@ -577,29 +508,27 @@ func (c *FormComponent) save(state receipt.FormState) {
 		id = c.editID
 	}
 
-	if state.RcptAccount == 0 {
-		components.ShowError("Please select a receipt account")
-		return
-	}
-	var lineTotal float64
-	for _, l := range state.Lines {
-		if l.Ledger == 0 {
-			continue
-		}
-		lineTotal += l.Amount
-	}
-	if float64(state.Amount) != lineTotal {
-		components.ShowError("Amount doesn't match party line total")
-		return
-	}
-
 	_, err := c.controller.Save(mode, id, state)
 	if err != nil {
 		retui.Debugf("Save failed: %v", err)
 		components.ShowError("Save failed: " + err.Error())
-		// TODO: surface this error in the UI (e.g. an Errors/status field on state)
-		return
+		return // save failed — don't reset, keep the user's input
 	}
 
-	components.ShowSuccess("Ladger Saved ")
+	components.ShowSuccess("Receipt saved")
+
+	// Only reached on success. Clear edit-mode state too, or the next
+	// unrelated "new entry" save would incorrectly PATCH the old record.
+	c.editing = false
+	c.editID = 0
+	c.state = receipt.FormState{Lines: []receipt.PartyLine{{}}}
+
+	form.Reset()
+
+	// Reset() may only clear fields tracked via SetField — force the slice
+	// and focus back explicitly so stale party lines can't linger.
+	fresh := form.Values()
+	fresh.Lines = []receipt.PartyLine{{}}
+	fresh.FocusIndex = 0
+	form.SetValues(fresh)
 }

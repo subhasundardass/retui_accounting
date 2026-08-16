@@ -48,8 +48,17 @@ func NewBootstrap() (*Bootstrap, error) {
 		Config:  cfg,
 		cleanup: make([]func() error, 0),
 		state: &appState{
-			darkMode: false,
-			config:   &config.Config{AppName: cfg.AppName},
+			darkMode: cfg.Theme == "dark",
+			// Previously this rebuilt a fresh Config with only AppName
+			// copied over, silently dropping Version/Theme/Debug/
+			// DateFormat/Timezone/etc. even though Load() had already
+			// read them. Reuse the fully loaded config as-is.
+			config: cfg,
+			user: &user{
+				name:  "Guest",
+				email: "guest@example.com",
+				role:  "viewer",
+			},
 		},
 	}
 
@@ -102,14 +111,19 @@ func InitDB(cfg *config.Config) (*database.DB, error) {
 		return nil, fmt.Errorf("config is nil")
 	}
 
-	// Get database path
+	// config.Load() already resolves SQLitePath to an absolute path
+	// anchored at the config file's directory (or the executable's own
+	// directory when running on defaults) — see config.resolveDataPath.
+	// That anchoring is what makes `build/retui` write its database to
+	// `build/data/retui.db` regardless of the caller's working
+	// directory. Re-deriving it here against cwd, as before, would
+	// undo that guarantee for anyone who cd's elsewhere before running
+	// the binary, so we just trust it — with a last-resort fallback in
+	// case InitDB is ever called directly with a hand-built Config.
 	dbPath := cfg.SQLitePath
 	if dbPath == "" {
-		dbPath = "./data/retui.db"
-	}
-
-	// Convert to absolute path
-	if !filepath.IsAbs(dbPath) {
+		dbPath = filepath.Join(config.ExecutableDir(), "data", "retui.db")
+	} else if !filepath.IsAbs(dbPath) {
 		absPath, err := filepath.Abs(dbPath)
 		if err == nil {
 			dbPath = absPath
@@ -189,12 +203,19 @@ func (b *Bootstrap) setContext() {
 		return
 	}
 
+	userName := "Guest"
+	if b.state.user != nil && b.state.user.name != "" {
+		userName = b.state.user.name
+	}
+
 	b.AppCtx.Set(appctx.AppContextValues{
 		// CurrentPage: retui.CurrentScreen(),
 		AppName:  b.state.config.AppName,
 		DarkMode: b.state.darkMode,
+		UserName: userName,
 		DB:       b.DB,
 		Context:  b.Ctx,
+		Config:   b.state.config,
 		// GetStack:   retui.ScreenStackSnapshot,
 		// GetCurrent: retui.CurrentScreen,
 
@@ -232,15 +253,20 @@ func (b *Bootstrap) RegisterCleanup(fn func() error) {
 func (b *Bootstrap) Shutdown() error {
 	retui.Debug("Shutting down...")
 
-	if b.DB != nil {
-		return b.DB.Close()
-	}
-	// Cancel context
+	// NOTE: this used to `return b.DB.Close()` here, which meant
+	// Cancel() and every registered cleanup func (including the one
+	// that closes b.DB itself, registered in NewBootstrap) were
+	// skipped entirely whenever a DB was present. DB.Close() is
+	// idempotent-safe to call twice, but we no longer need to since
+	// closing it is already one of the registered cleanup functions.
+
+	// Cancel context so any goroutines watching b.Ctx unwind first.
 	if b.Cancel != nil {
 		b.Cancel()
 	}
 
-	// Run cleanup functions in reverse order
+	// Run cleanup functions in reverse order (most-recently-registered
+	// first), matching typical defer-stack teardown semantics.
 	var errs []error
 	b.mu.Lock()
 	for i := len(b.cleanup) - 1; i >= 0; i-- {

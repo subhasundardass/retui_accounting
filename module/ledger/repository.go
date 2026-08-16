@@ -3,8 +3,11 @@ package ledger
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/subhasundardass/retui/ent"
+	"github.com/subhasundardass/retui/ent/journal"
+	"github.com/subhasundardass/retui/ent/journal_line"
 	"github.com/subhasundardass/retui/ent/ledger"
 	"github.com/subhasundardass/retui/ent/ledger_group"
 )
@@ -246,4 +249,64 @@ func (r *Repository) GroupUpdate(ctx context.Context, id int, in LedgerGroupStat
 		SetIsSystem(in.IsSystem).
 		SetDescription(in.Description).
 		Save(ctx)
+}
+
+// OpeningBalance sums all debit/credit lines against ledgerAc dated
+// strictly before `from`.
+//
+// ASSUMPTION: journal_line has a direct LedgerID field (mirroring how
+// ent.Ledger.GroupID is queried via ledger.GroupIDEQ in your Repository).
+// If the ledger link is edge-only, swap for:
+//
+//	journal_line.HasLedgerWith(ledger.ID(ledgerAc))
+func (r *Repository) OpeningBalance(ctx context.Context, ledgerAc int, from time.Time) (float64, error) {
+	if r.client == nil {
+		return 0, fmt.Errorf("database client not initialized")
+	}
+
+	var result []struct {
+		SumDebit  float64 `json:"debit_sum"`
+		SumCredit float64 `json:"credit_sum"`
+	}
+
+	err := r.client.Journal_Line.Query().
+		Where(
+			journal_line.LedgerIDEQ(ledgerAc),
+			journal_line.HasJournalWith(journal.VoucherDateLT(from)),
+		).
+		Aggregate(
+			ent.As(ent.Sum(journal_line.FieldDebit), "debit_sum"),
+			ent.As(ent.Sum(journal_line.FieldCredit), "credit_sum"),
+		).
+		Scan(ctx, &result)
+	if err != nil {
+		return 0, fmt.Errorf("statement: opening balance: %w", err)
+	}
+	if len(result) == 0 {
+		return 0, nil // no lines before `from` — opening balance is zero
+	}
+
+	return result[0].SumDebit - result[0].SumCredit, nil
+}
+
+func (r *Repository) Entries(ctx context.Context, ledgerAc int, from, to time.Time) ([]*ent.Journal_Line, error) {
+	if r.client == nil {
+		return nil, fmt.Errorf("database client not initialized")
+	}
+
+	lines, err := r.client.Journal_Line.Query().
+		Where(
+			journal_line.LedgerIDEQ(ledgerAc),
+			journal_line.HasJournalWith(
+				journal.VoucherDateGTE(from),
+				journal.VoucherDateLTE(to),
+			),
+		).
+		WithJournal().
+		All(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("statement: entries query: %w", err)
+	}
+
+	return lines, nil
 }

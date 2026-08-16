@@ -105,7 +105,6 @@ func (c *JournalListComponent) buildTable(
 			util.Deref(j.ReferenceNo),
 			j.VoucherType,
 			fmt.Sprintf("%.2f", j.TotalDebit),
-			fmt.Sprintf("%.2f", j.TotalCredit),
 			util.Deref(j.Narration),
 			string(j.JournalStatus),
 		}
@@ -118,8 +117,7 @@ func (c *JournalListComponent) buildTable(
 			"Voucher No",
 			"Reference",
 			"Type",
-			"Debit",
-			"Credit",
+			"Amount",
 			"Narration",
 			"Status",
 		}).
@@ -128,7 +126,6 @@ func (c *JournalListComponent) buildTable(
 			"left",
 			"left",
 			"left",
-			"right",
 			"right",
 			"left",
 			"center",
@@ -141,7 +138,6 @@ func (c *JournalListComponent) buildTable(
 			15,
 			15,
 			15,
-			20,
 			20,
 			60,
 			10,

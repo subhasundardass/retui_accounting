@@ -1,10 +1,13 @@
 package layout
 
-import "github.com/subhasundardass/retui/retui"
+import (
+	"github.com/subhasundardass/retui/internal/context"
+	"github.com/subhasundardass/retui/retui"
+)
 
 func Header(props retui.Props) retui.Element {
 
-	// appctx := context.Use() // ← one line, done
+	appctx := context.Use() // ← one line, done
 
 	header := retui.Box(
 		retui.Props{
@@ -15,7 +18,7 @@ func Header(props retui.Props) retui.Element {
 			Align:     retui.AlignCenter,
 		},
 		retui.NewStyle().Background(retui.Gray(1)),
-		retui.Text("layout demo", retui.NewStyle()),
+		retui.Text(appctx.AppName(), retui.NewStyle().Foreground(retui.White).Bold(true)),
 		retui.Text("v0.0.15", retui.NewStyle()),
 	)
 

@@ -2,8 +2,12 @@ package ledger
 
 import (
 	"context"
+	"fmt"
+	"sort"
+	"time"
 
 	"github.com/subhasundardass/retui/ent"
+	"github.com/subhasundardass/retui/internal/util"
 )
 
 type Service interface {
@@ -12,6 +16,8 @@ type Service interface {
 	GetLedgersByGroup(ctx context.Context, groupID int) ([]*ent.Ledger, error)
 	GetLedger(ctx context.Context, id int) (*ent.Ledger, error)
 	GetCashBankLedgers(ctx context.Context) ([]*ent.Ledger, error)
+	GetStatement(ctx context.Context, ledgerAc int, from, to time.Time) (Result, error)
+	GetOpeningBalance(ctx context.Context, ledgerAc int, asOf time.Time) (float64, error)
 }
 
 type service struct {
@@ -48,4 +54,65 @@ func (s *service) GetLedger(
 
 func (s *service) GetCashBankLedgers(ctx context.Context) ([]*ent.Ledger, error) {
 	return s.repo.ListByCodes(ctx, "CASH", "BANK")
+}
+
+func (s *service) GetOpeningBalance(ctx context.Context, ledgerAc int, asOf time.Time) (float64, error) {
+	if ledgerAc <= 0 {
+		return 0, fmt.Errorf("statement: ledger account is required")
+	}
+	return s.repo.OpeningBalance(ctx, ledgerAc, asOf)
+}
+
+// ======
+func (s *service) GetStatement(ctx context.Context, ledgerAc int, from, to time.Time) (Result, error) {
+	if ledgerAc <= 0 {
+		return Result{}, fmt.Errorf("statement: ledger account is required")
+	}
+	if to.Before(from) {
+		return Result{}, fmt.Errorf("statement: to date cannot be before from date")
+	}
+
+	opening, err := s.repo.OpeningBalance(ctx, ledgerAc, from)
+	if err != nil {
+		return Result{}, err
+	}
+
+	lines, err := s.repo.Entries(ctx, ledgerAc, from, to)
+	if err != nil {
+		return Result{}, err
+	}
+
+	sort.SliceStable(lines, func(i, j int) bool {
+		vi, vj := lines[i].Edges.Journal, lines[j].Edges.Journal
+		if vi == nil || vj == nil {
+			return false
+		}
+		return vi.VoucherDate.Before(vj.VoucherDate)
+	})
+
+	entries := make([]Entry, 0, len(lines))
+	running := opening
+	for _, l := range lines {
+		j := l.Edges.Journal
+		if j == nil {
+			continue // line loaded without its journal edge — skip rather than panic
+		}
+		running += l.Debit - l.Credit
+		entries = append(entries, Entry{
+			ID:          int64(l.ID),
+			Date:        j.VoucherDate,
+			VoucherNo:   j.VoucherNo,
+			VoucherType: j.VoucherType,
+			Narration:   util.Deref(j.Narration),
+			Debit:       l.Debit,
+			Credit:      l.Credit,
+			Balance:     running,
+		})
+	}
+
+	return Result{
+		Rows:           entries,
+		OpeningBalance: opening,
+		ClosingBalance: running,
+	}, nil
 }

@@ -3,12 +3,14 @@ package receipt
 import (
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/subhasundardass/retui/ent"
 	appctx "github.com/subhasundardass/retui/internal/context"
 	"github.com/subhasundardass/retui/module/journal"
 	"github.com/subhasundardass/retui/module/ledger"
+	"github.com/subhasundardass/retui/retui"
 	"github.com/subhasundardass/retui/retui/components"
 )
 
@@ -36,25 +38,27 @@ func NewController(ctx *appctx.AppContext) *Controller {
 	return controller
 }
 
-// func (c *Controller) loadCashBankDropdown() error {
-// 	ledgers, err := c.ledgerService.GetCashBankLedgers(c.ctx.Context)
-// 	if err != nil {
-// 		return fmt.Errorf("failed to load cash/bank ledgers: %w", err)
-// 	}
+func (c *Controller) List(offset, limit int) ([]*ent.Journal, error) {
+	if limit <= 0 {
+		limit = 20
+	}
+	if offset < 0 {
+		offset = 0
+	}
 
-// 	options := make([]components.SelectOption, 0, len(ledgers))
+	journals, err := c.journalService.List(c.ctx.Context, journal.ListFilter{
+		Limit:  limit,
+		Offset: offset,
+		Type:   journal.VoucherRV,
+	})
+	if err != nil {
+		retui.Error(err)
+		return nil, err
+	}
 
-// 	for _, item := range ledgers {
-// 		options = append(options, components.SelectOption{
-// 			Label: item.Name,
-// 			Value: strconv.Itoa(item.ID),
-// 		})
-// 	}
-
-// 	c.cashBankOptions = options
-
-// 	return options
-// }
+	retui.Infof("Loaded %d journals", len(journals))
+	return journals, nil
+}
 
 func (c *Controller) CashBankOptions() []components.SelectOption {
 	ledgers, err := c.ledgerService.GetCashBankLedgers(c.ctx.Context)
@@ -76,40 +80,9 @@ func (c *Controller) CashBankOptions() []components.SelectOption {
 
 // --Save
 func (c *Controller) Save(mode FormMode, id int, in FormState) (*ent.Journal, error) {
-	vType := journal.VoucherJV
-
-	date, err := time.Parse("02/01/2006", in.Date) // matches your DD/MM/YYYY format
+	vIn, err := buildVoucherInput(in)
 	if err != nil {
-		return nil, fmt.Errorf("invalid date: %w", err)
-	}
-
-	lines := make([]journal.LineInput, 0, len(in.Lines)+1)
-
-	// Receipt account (cash/bank) is debited — money coming in.
-	lines = append(lines, journal.LineInput{
-		LedgerID: in.RcptAccount,
-		Debit:    in.Amount,
-	})
-
-	// Each party line is credited — the source of the money.
-	for _, l := range in.Lines {
-		if l.Ledger == 0 {
-			continue
-		}
-		lines = append(lines, journal.LineInput{
-			LedgerID:    l.Ledger,
-			Credit:      float64(l.Amount),
-			Description: l.Remarks,
-		})
-	}
-
-	vIn := journal.VoucherInput{
-		Type:        vType,
-		VoucherNo:   in.VcNo,
-		ReferenceNo: in.Reference,
-		Date:        date,
-		Narration:   in.Narration,
-		Lines:       lines,
+		return nil, err
 	}
 
 	jMode := journal.ModeCreate
@@ -175,29 +148,47 @@ func amountsEqual(a, b float64) bool {
 	return diff < epsilon
 }
 
-// buildJournalInput maps the UI form state into whatever shape the
-// repository layer expects for persistence. Adjust field names to
-// match your actual ent.JournalCreateInput / repo signature.
-func buildJournalInput(in FormState) ent.Journal {
-	lines := make([]ent.Journal, 0, len(in.Lines))
+// buildVoucherInput maps the receipt form state into a journal.VoucherInput.
+// The receipt account (cash/bank) is debited — money coming in — and each
+// party line is credited, representing the source of the money.
+func buildVoucherInput(in FormState) (journal.VoucherInput, error) {
+	if in.RcptAccount == 0 {
+		return journal.VoucherInput{}, fmt.Errorf("receipt account is required")
+	}
+
+	date, err := time.Parse("02/01/2006", strings.TrimSpace(in.Date))
+	if err != nil {
+		return journal.VoucherInput{}, fmt.Errorf("invalid date format, expected DD/MM/YYYY: %w", err)
+	}
+
+	lines := make([]journal.LineInput, 0, len(in.Lines)+1)
+
+	// Receipt account (cash/bank) is debited — money coming in.
+	lines = append(lines, journal.LineInput{
+		LedgerID: in.RcptAccount,
+		Debit:    in.Amount,
+	})
+
+	// Each party line is credited — the source of the money.
 	for _, l := range in.Lines {
 		if l.Ledger == 0 {
-			continue
+			continue // skip blank trailing rows
 		}
-		lines = append(lines, ent.Journal{
-			// LedgerID: l.Ledger,
-			// Amount:   float64(l.Amount),
-			// Remarks:  l.Remarks,
+		lines = append(lines, journal.LineInput{
+			LedgerID:    l.Ledger,
+			Credit:      float64(l.Amount),
+			Description: l.Remarks,
 		})
 	}
 
-	return ent.Journal{
-		// VcNo:       in.VcNo,
-		// Reference:  in.Reference,
-		// Date:       in.Date,
-		// Amount:     in.Amount,
-		// RcptLedger: in.RcptAccount,
-		// Narration:  in.Narration,
-		// Lines:      lines,
-	}
+	return journal.VoucherInput{
+		Type:        journal.VoucherRV, // Receipt Voucher
+		VoucherNo:   in.VcNo,
+		Date:        date,
+		VoucherDate: date,
+		ReferenceNo: in.Reference,
+		Narration:   in.Narration,
+		Status:      journal.StatusDraft,
+		Lines:       lines,
+	}, nil
 }

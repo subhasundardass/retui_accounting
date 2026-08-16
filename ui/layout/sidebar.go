@@ -52,12 +52,15 @@ var sidebarTree = []components.TreeNode{
 			},
 		},
 	},
+
 	{
 		ID:    "report",
 		Label: "Reports",
 		Children: []components.TreeNode{
+			{ID: "statement", Label: "Statement of Accounts"},
 			{ID: "journal_list", Label: "Journals"},
 			{ID: "receipt_book", Label: "Receipt Book"},
+			{ID: "payment_book", Label: "Payment Book"},
 			{ID: "cash_book", Label: "Cash Book"},
 			{ID: "bank_book", Label: "Bank Book"},
 			{ID: "trail_balance", Label: "Trail Balance"},
@@ -121,10 +124,10 @@ func SidebarTree(ctx *context.AppContext, props retui.Props) retui.Element {
 			retui.Box(
 				retui.Props{
 					Justify: retui.JustifySpaceBetween,
-					Padding: [4]int{0, 0, 1, 0}},
+					Padding: [4]int{1, 0, 1, 0}},
 				retui.NewStyle(),
-				retui.Text("Navigation", retui.NewStyle().Bold(true).Foreground(retui.Black)),
-				retui.Text("[ F2 ]", retui.NewStyle().Foreground(retui.Cyan)),
+				retui.Text("Navigation", retui.NewStyle().Bold(true).Foreground(retui.White)),
+				retui.Text("[ X ]", retui.NewStyle()),
 			),
 
 			components.Tree(

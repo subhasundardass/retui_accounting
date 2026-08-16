@@ -6,7 +6,7 @@ import (
 	validator "github.com/subhasundardass/retui/internal/validation"
 )
 
-func Validate(input FormState) error {
+func ValidateInput(input FormState) error {
 	v := validator.New()
 
 	v.Field("date", strings.TrimSpace(input.Date)).Required()

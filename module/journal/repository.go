@@ -110,7 +110,9 @@ func (r *repository) Get(ctx context.Context, id int) (*ent.Journal, error) {
 func (r *repository) List(ctx context.Context, filter ListFilter) ([]*ent.Journal, error) {
 	q := r.client.Journal.Query().
 		Order(journal.ByID(sql.OrderDesc())).
-		WithLines()
+		WithLines(func(q *ent.JournalLineQuery) {
+			q.WithLedger()
+		})
 
 	if filter.Type != "" {
 		q = q.Where(journal.VoucherTypeEQ(string(filter.Type)))

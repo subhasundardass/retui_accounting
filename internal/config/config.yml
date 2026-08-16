@@ -9,3 +9,8 @@ api_endpoint: "http://localhost:8080"
 log_level: "debug"
 
 sqlite_path: "./data/retui.db"
+
+# App level
+date_format: "DD/MM/YYYY"
+timezone: "Asia/Kolkata +5.30"
+
