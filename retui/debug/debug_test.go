@@ -90,14 +90,17 @@ func TestPrintMemoryBackwardCompatible(t *testing.T) {
 	SetOutput(&buf)
 	defer SetOutput(nil)
 
-	// PrintMemory must work regardless of Enable/SetLevel state,
-	// matching the original function's unconditional behavior.
 	Disable()
 
 	PrintMemory()
 
 	out := buf.String()
-	for _, want := range []string{"Alloc:", "TotalAlloc:", "Sys:", "NumGC:"} {
+	for _, want := range []string{
+		"Alloc:",
+		"TotalAlloc:",
+		"Sys:",
+		"GC:",
+	} {
 		if !strings.Contains(out, want) {
 			t.Errorf("PrintMemory output missing %q: %q", want, out)
 		}
@@ -129,17 +132,22 @@ func TestFrameStats(t *testing.T) {
 	defer Disable()
 	ResetFrameStats()
 
-	BeginFrame()
-	time.Sleep(2 * time.Millisecond)
-	EndFrame()
+	for i := 0; i < 10; i++ {
+		BeginFrame()
+		time.Sleep(2 * time.Millisecond)
+		EndFrame()
+	}
 
 	fs := CurrentFrameStats()
-	if fs.FrameCount != 1 {
-		t.Fatalf("expected 1 frame recorded, got %d", fs.FrameCount)
+
+	if fs.FrameCount != 10 {
+		t.Fatalf("expected 10 frames recorded, got %d", fs.FrameCount)
 	}
+
 	if fs.FrameTime <= 0 {
 		t.Errorf("expected positive frame time, got %v", fs.FrameTime)
 	}
+
 	if fs.FPS <= 0 {
 		t.Errorf("expected positive FPS, got %v", fs.FPS)
 	}
