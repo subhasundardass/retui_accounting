@@ -10,140 +10,157 @@ import (
 
 var DefaultContext = retui.CreateContext[*AppContext](nil)
 
-// Use returns the current context
+// Use returns the current application context.
 func Use() *AppContext {
 	return retui.UseContext(DefaultContext)
 }
 
-// AppContext is the value threaded through the render tree via retui's
-// context mechanism. It previously only carried three loose fields
-// (appName, darkMode, userName) derived by hand from Config in
-// Bootstrap.setContext — anything added to Config later (Version,
-// Theme, DateFormat, Timezone, ...) was invisible to screens even
-// though it had been loaded. Screens now get the whole *config.Config
-// via Config()/cfg, so nothing loaded at startup is stranded again.
+// AppContext contains application-wide runtime state threaded through
+// the RetUI render tree.
 type AppContext struct {
-	Context    context.Context
+	Context context.Context
+
 	appName    string
 	darkMode   bool
 	userName   string
 	toggleDark func()
-	cfg        *config.Config
+
+	cfg *config.Config
 
 	DB *database.DB
+
+	// Active company for the current application session.
+	companyID int
 }
 
+// AppContextValues contains the values used to initialize AppContext.
 type AppContextValues struct {
 	Context    context.Context
 	AppName    string
 	DarkMode   bool
 	UserName   string
 	ToggleDark func()
-	DB         *database.DB
 
-	// Config is the fully loaded application configuration. When set,
-	// it becomes the source of truth for AppName()/Theme()/etc. — pass
-	// AppName/DarkMode above only if you need to override a specific
-	// field without touching Config itself (e.g. a runtime dark-mode
-	// toggle layered on top of the on-disk theme default).
+	DB *database.DB
+
+	// CompanyID is the company currently active in the application.
+	CompanyID int
+
+	// Config is the fully loaded application configuration.
 	Config *config.Config
 }
 
+// Set initializes the application context.
 func (c *AppContext) Set(v AppContextValues) {
-	// Add nil check
 	if c == nil {
 		return
 	}
+
 	c.Context = v.Context
 	c.appName = v.AppName
 	c.darkMode = v.DarkMode
 	c.userName = v.UserName
 	c.toggleDark = v.ToggleDark
 	c.DB = v.DB
+	c.companyID = v.CompanyID
 	c.cfg = v.Config
 
-	// Backfill from Config for anything the caller left unset, so a
-	// partially-populated AppContextValues (as older call sites still
-	// send) doesn't lose data that Config actually has.
+	// Use Config as the fallback source for application values.
 	if v.Config != nil {
 		if c.appName == "" {
 			c.appName = v.Config.AppName
 		}
-		if v.UserName == "" && c.userName == "" {
-			c.userName = "Guest"
-		}
+	}
+
+	if c.userName == "" {
+		c.userName = "Guest"
 	}
 }
 
+// Ctx returns the application context.
 func (c *AppContext) Ctx() context.Context {
 	if c == nil || c.Context == nil {
 		return context.Background()
 	}
+
 	return c.Context
 }
 
-func (c *AppContext) AppName() string {
+// CompanyID returns the currently active company ID.
+//
+// A value of 0 means no company is currently selected.
+func (c *AppContext) CompanyID() int {
 	if c == nil {
+		return 0
+	}
+
+	return c.companyID
+}
+
+// SetCompanyID changes the currently active company.
+//
+// Persistence of the selected company should be handled by config.Settings;
+// this method only changes the runtime application state.
+func (c *AppContext) SetCompanyID(id int) {
+	if c == nil {
+		return
+	}
+
+	c.companyID = id
+}
+
+// AppName returns the configured application name.
+func (c *AppContext) AppName() string {
+	if c == nil || c.appName == "" {
 		return "App"
 	}
+
 	return c.appName
 }
 
+// IsDarkMode reports whether dark mode is currently enabled.
 func (c *AppContext) IsDarkMode() bool {
 	if c == nil {
 		return false
 	}
+
 	return c.darkMode
 }
 
+// UserName returns the current user name.
 func (c *AppContext) UserName() string {
-	if c == nil {
+	if c == nil || c.userName == "" {
 		return "Guest"
 	}
+
 	return c.userName
 }
 
+// ToggleDark toggles the current dark-mode state.
 func (c *AppContext) ToggleDark() {
 	if c == nil || c.toggleDark == nil {
 		return
 	}
+
 	c.toggleDark()
 }
 
-// Config returns the fully loaded application configuration, or nil if
-// none was set (e.g. AppContext used outside of Bootstrap). Screens
-// should prefer this over the individual convenience getters below when
-// they need more than one field, to avoid a long chain of nil-checked
-// one-liners.
+// Config returns the fully loaded application configuration.
 func (c *AppContext) Config() *config.Config {
 	if c == nil {
 		return nil
 	}
+
 	return c.cfg
 }
 
-// Version returns the configured app version, or "" if unset.
+// Version returns the configured application version.
 func (c *AppContext) Version() string {
 	if c == nil || c.cfg == nil {
 		return ""
 	}
+
 	return c.cfg.Version
-}
-
-// Theme returns the configured theme name (e.g. "dark", "light").
-func (c *AppContext) Theme() string {
-	if c == nil || c.cfg == nil {
-		return "dark"
-	}
-	return c.cfg.Theme
-}
-
-// DefaultPage returns the screen ID to show when none is selected.
-func (c *AppContext) DefaultPage() string {
-	if c == nil || c.cfg == nil {
-		return "dashboard"
-	}
-	return c.cfg.DefaultPage
 }
 
 // DateFormat returns the configured display date format.
@@ -151,14 +168,16 @@ func (c *AppContext) DateFormat() string {
 	if c == nil || c.cfg == nil {
 		return "DD/MM/YYYY"
 	}
+
 	return c.cfg.DateFormat
 }
 
-// Timezone returns the configured timezone label.
+// Timezone returns the configured timezone.
 func (c *AppContext) Timezone() string {
 	if c == nil || c.cfg == nil {
 		return "UTC"
 	}
+
 	return c.cfg.Timezone
 }
 
@@ -167,5 +186,6 @@ func (c *AppContext) Debug() bool {
 	if c == nil || c.cfg == nil {
 		return false
 	}
+
 	return c.cfg.Debug
 }

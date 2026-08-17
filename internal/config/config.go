@@ -18,14 +18,11 @@ import (
 // config.json can be dropped next to the binary and read without code
 // changes.
 type Config struct {
-	AppName     string `json:"app_name"     yaml:"app_name"`
-	Version     string `json:"version"      yaml:"version"`
-	DefaultPage string `json:"default_page" yaml:"default_page"`
-	Theme       string `json:"theme"        yaml:"theme"`
-	Debug       bool   `json:"debug"        yaml:"debug"`
-	APIEndpoint string `json:"api_endpoint" yaml:"api_endpoint"`
-	LogLevel    string `json:"log_level"    yaml:"log_level"`
-	SQLitePath  string `json:"sqlite_path"  yaml:"sqlite_path"`
+	AppName    string `json:"app_name"     yaml:"app_name"`
+	Version    string `json:"version"      yaml:"version"`
+	Debug      bool   `json:"debug"        yaml:"debug"`
+	LogLevel   string `json:"log_level"    yaml:"log_level"`
+	SQLitePath string `json:"sqlite_path"  yaml:"sqlite_path"`
 
 	// App-level fields present in config.yml but previously dropped on
 	// the floor because Load() never parsed YAML at all.
@@ -45,15 +42,14 @@ var (
 // final result if no config file is found at all.
 func defaults() *Config {
 	return &Config{
-		AppName:     "Accountant",
-		Version:     "1.0.0",
-		DefaultPage: "dashboard",
-		Theme:       "dark",
-		Debug:       false,
-		LogLevel:    "info",
-		SQLitePath:  "./data/retui.db",
-		DateFormat:  "DD/MM/YYYY",
-		Timezone:    "UTC",
+		AppName:    "Accountant",
+		Version:    "1.0.0",
+		Debug:      false,
+		LogLevel:   "info",
+		SQLitePath: "./data/retui.db",
+
+		DateFormat: "DD/MM/YYYY",
+		Timezone:   "UTC",
 	}
 }
 
@@ -78,12 +74,21 @@ func defaults() *Config {
 //   - DEBUG              -> Debug
 //   - RETUI_SQLITE_PATH  -> SQLitePath
 func Load() *Config {
-	once.Do(func() {
-		config, configPath = load()
-	})
-
 	mu.RLock()
-	defer mu.RUnlock()
+	if config != nil {
+		cfg := config
+		mu.RUnlock()
+		return cfg
+	}
+	mu.RUnlock()
+
+	mu.Lock()
+	defer mu.Unlock()
+
+	if config == nil {
+		config, configPath = load()
+	}
+
 	return config
 }
 

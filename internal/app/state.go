@@ -32,7 +32,6 @@ func init() {
 			// Respect the configured theme as the initial value instead
 			// of hard-coding light mode, so config.yml's theme: "dark"
 			// is actually honored on first render.
-			darkMode: cfg.Theme == "dark",
 			user: &user{
 				name:  "Guest",
 				email: "guest@example.com",

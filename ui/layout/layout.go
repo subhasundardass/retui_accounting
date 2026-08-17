@@ -37,7 +37,7 @@ func MasterLayout(ctx *appctx.AppContext, props LayoutProps) retui.Element {
 	final := retui.Box(
 		retui.Props{Direction: retui.Column, Gap: 0, Width: retui.Grow(1), Height: retui.Grow(1)},
 		retui.NewStyle(),
-		Header(retui.Props{}),
+		Header(ctx, retui.Props{}),
 		body,
 		Footer(retui.Props{}),
 	)

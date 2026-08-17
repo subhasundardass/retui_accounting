@@ -4,7 +4,9 @@ import (
 	"fmt"
 
 	"github.com/subhasundardass/retui/ent"
+	"github.com/subhasundardass/retui/internal/config"
 	appctx "github.com/subhasundardass/retui/internal/context"
+	"github.com/subhasundardass/retui/retui"
 )
 
 type Controller struct {
@@ -16,6 +18,75 @@ func NewController(ctx *appctx.AppContext) *Controller {
 	return &Controller{
 		ctx:  ctx,
 		repo: NewRepository(ctx.DB.Client),
+	}
+}
+
+// --Initialize company
+func (c *Controller) Initialize() (*StartupResult, error) {
+	settings, err := config.LoadSettings()
+	if err != nil {
+		return nil, fmt.Errorf("load company settings: %w", err)
+	}
+
+	// Try the company used in the previous session.
+	if settings.LastCompanyID > 0 {
+		company, err := c.repo.Get(
+			c.ctx.Ctx(),
+			settings.LastCompanyID,
+		)
+
+		if err == nil {
+			c.ctx.SetCompanyID(company.ID)
+
+			return &StartupResult{
+				State:   StartupReady,
+				Company: company,
+			}, nil
+		}
+
+		// Previous company no longer exists.
+		// Ignore stale setting and continue startup.
+		retui.Debugf(
+			"Last company %d no longer exists; selecting another company",
+			settings.LastCompanyID,
+		)
+	}
+
+	// No valid previous company. Check how many companies exist.
+	count, err := c.repo.Count(c.ctx.Ctx())
+	if err != nil {
+		return nil, fmt.Errorf("count companies: %w", err)
+	}
+
+	switch count {
+	case 0:
+		return &StartupResult{
+			State: StartupCreateCompany,
+		}, nil
+
+	case 1:
+		companies, err := c.repo.List(c.ctx.Ctx())
+		if err != nil {
+			return nil, fmt.Errorf("load company: %w", err)
+		}
+
+		company := companies[0]
+
+		if err := config.SaveLastCompany(company.ID); err != nil {
+			return nil, fmt.Errorf("save last company: %w", err)
+		}
+
+		c.ctx.SetCompanyID(company.ID)
+
+		return &StartupResult{
+			State:   StartupReady,
+			Company: company,
+		}, nil
+
+	default:
+		return &StartupResult{
+			State: StartupSelectCompany,
+		}, nil
 	}
 }
 
