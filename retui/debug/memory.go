@@ -2,6 +2,7 @@ package debug
 
 import (
 	"fmt"
+	"math"
 	"runtime"
 	"sync"
 	"time"
@@ -9,7 +10,7 @@ import (
 
 // MemStats is a stable snapshot of Go runtime memory statistics.
 //
-// The raw memory values come directly from runtime.MemStats.
+// Raw memory values come directly from runtime.MemStats.
 // Derived rate metrics such as GCPerSec and GCPausePerSec are calculated
 // by the memory sampler.
 type MemStats struct {
@@ -41,8 +42,8 @@ type MemStats struct {
 	GCPausePerSec time.Duration
 }
 
-// memorySampler keeps the previous runtime statistics needed to calculate
-// rates without making ReadMemStats() stateful.
+// memorySampler stores the previous runtime statistics needed to calculate
+// rate metrics.
 type memorySampler struct {
 	mu sync.RWMutex
 
@@ -59,50 +60,30 @@ var memSampler memorySampler
 
 // ReadMemStats captures a fresh snapshot of Go runtime statistics.
 //
-// This function intentionally has no internal sampling state.
-// Every call reads the current runtime statistics directly.
+// This function reads runtime statistics directly and does not maintain
+// sampling state.
 //
-// Because runtime.ReadMemStats can briefly stop the world, avoid calling
-// this on every render frame in performance-sensitive code.
-//
-// For repeatedly displayed debug information, prefer CurrentMemStats().
+// runtime.ReadMemStats may briefly stop the world, so avoid calling this
+// on every render frame. For frequently displayed debug information,
+// use CurrentMemStats().
 func ReadMemStats() MemStats {
 	var m runtime.MemStats
-
 	runtime.ReadMemStats(&m)
 
-	return MemStats{
-		Alloc:       m.Alloc,
-		TotalAlloc:  m.TotalAlloc,
-		Sys:         m.Sys,
-		HeapObjects: m.HeapObjects,
-		NumGC:       m.NumGC,
-		Goroutines:  runtime.NumGoroutine(),
-		GCPause:     time.Duration(m.PauseTotalNs),
-	}
+	return memStatsFromRuntime(m)
 }
 
 // SampleMemStats reads the current runtime memory statistics and updates
-// the internal memory sampler.
+// the internal sampler.
 //
-// This should be called periodically, for example every 500ms or 1 second,
-// rather than once per render frame.
+// Call this periodically, for example every 500ms or 1 second, rather
+// than once per render frame.
 func SampleMemStats() MemStats {
 	var m runtime.MemStats
-
 	runtime.ReadMemStats(&m)
 
 	now := time.Now()
-
-	current := MemStats{
-		Alloc:       m.Alloc,
-		TotalAlloc:  m.TotalAlloc,
-		Sys:         m.Sys,
-		HeapObjects: m.HeapObjects,
-		NumGC:       m.NumGC,
-		Goroutines:  runtime.NumGoroutine(),
-		GCPause:     time.Duration(m.PauseTotalNs),
-	}
+	current := memStatsFromRuntime(m)
 
 	memSampler.mu.Lock()
 	defer memSampler.mu.Unlock()
@@ -137,7 +118,7 @@ func SampleMemStats() MemStats {
 
 		pauseDelta := m.PauseTotalNs - memSampler.lastPauseNs
 
-		current.GCPausePerSec = time.Duration(
+		current.GCPausePerSec = durationFromNanoseconds(
 			float64(pauseDelta) / seconds,
 		)
 	}
@@ -153,7 +134,7 @@ func SampleMemStats() MemStats {
 // CurrentMemStats returns the most recently sampled memory statistics.
 //
 // Unlike ReadMemStats(), this does not call runtime.ReadMemStats() and is
-// therefore safe to use from the footer/render path.
+// therefore safe to use from the render/footer path.
 func CurrentMemStats() MemStats {
 	memSampler.mu.RLock()
 	defer memSampler.mu.RUnlock()
@@ -176,7 +157,7 @@ func ResetMemStatsSampler() {
 	memSampler.started = false
 }
 
-// String renders the memory statistics in a human-readable format.
+// String renders memory statistics in a human-readable format.
 func (m MemStats) String() string {
 	return fmt.Sprintf(
 		"Alloc: %.2f MB | TotalAlloc: %.2f MB | Sys: %.2f MB | HeapObjects: %d | GC: %d | GC/s: %.2f | GC Pause: %s | GC Pause/s: %s | Goroutines: %d",
@@ -210,6 +191,38 @@ func LogMemory() {
 	writeEntry(LevelInfo, CurrentMemStats().String())
 }
 
+// memStatsFromRuntime converts runtime.MemStats into the application's
+// stable MemStats representation.
+func memStatsFromRuntime(m runtime.MemStats) MemStats {
+	return MemStats{
+		Alloc:       m.Alloc,
+		TotalAlloc:  m.TotalAlloc,
+		Sys:         m.Sys,
+		HeapObjects: m.HeapObjects,
+		NumGC:       m.NumGC,
+		Goroutines:  runtime.NumGoroutine(),
+		GCPause:     durationFromNanoseconds(float64(m.PauseTotalNs)),
+	}
+}
+
+// durationFromNanoseconds safely converts nanoseconds represented as a
+// float64 into time.Duration.
+//
+// time.Duration is an int64, while runtime.MemStats pause counters are
+// uint64. Guarding the conversion avoids integer-overflow warnings and
+// protects against impossible/out-of-range values.
+func durationFromNanoseconds(ns float64) time.Duration {
+	if ns <= 0 {
+		return 0
+	}
+
+	if ns >= float64(math.MaxInt64) {
+		return time.Duration(math.MaxInt64)
+	}
+
+	return time.Duration(ns)
+}
+
 // mb converts bytes to megabytes.
 func mb(b uint64) float64 {
 	return float64(b) / 1024 / 1024
@@ -228,10 +241,16 @@ func formatDuration(d time.Duration) string {
 		return fmt.Sprintf("%dns", d.Nanoseconds())
 
 	case d < time.Millisecond:
-		return fmt.Sprintf("%.0fµs", float64(d)/float64(time.Microsecond))
+		return fmt.Sprintf(
+			"%.0fµs",
+			float64(d)/float64(time.Microsecond),
+		)
 
 	case d < time.Second:
-		return fmt.Sprintf("%.2fms", float64(d)/float64(time.Millisecond))
+		return fmt.Sprintf(
+			"%.2fms",
+			float64(d)/float64(time.Millisecond),
+		)
 
 	default:
 		return fmt.Sprintf("%.2fs", d.Seconds())
