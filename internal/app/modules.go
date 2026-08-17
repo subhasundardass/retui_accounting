@@ -6,7 +6,10 @@ import (
 	"github.com/subhasundardass/retui/module/dashboard"
 	journal "github.com/subhasundardass/retui/module/journal/views"
 	ledger "github.com/subhasundardass/retui/module/ledger/views"
+	payment "github.com/subhasundardass/retui/module/payment/views"
 	receipt "github.com/subhasundardass/retui/module/receipt/views"
+	reports "github.com/subhasundardass/retui/module/reports/views"
+	statement "github.com/subhasundardass/retui/module/statement/views"
 )
 
 func (b *Bootstrap) registerModules() {
@@ -16,6 +19,9 @@ func (b *Bootstrap) registerModules() {
 		ledger.Register,
 		journal.Register,
 		receipt.Register,
+		payment.Register,
+		reports.Register,
+		statement.Register,
 	}
 
 	for _, register := range registerFns {

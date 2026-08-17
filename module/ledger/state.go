@@ -67,9 +67,9 @@ type LedgerState struct {
 	BankBranch    string
 
 	// Status fields
-	IsSystem bool
-	IsParty  bool
-	IsBank   bool
-	IsCash   bool
+	// IsSystem bool
+	// IsParty  bool
+	// IsBank   bool
+	// IsCash   bool
 	IsActive bool
 }

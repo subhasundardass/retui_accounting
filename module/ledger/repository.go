@@ -3,8 +3,11 @@ package ledger
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/subhasundardass/retui/ent"
+	"github.com/subhasundardass/retui/ent/journal"
+	"github.com/subhasundardass/retui/ent/journal_line"
 	"github.com/subhasundardass/retui/ent/ledger"
 	"github.com/subhasundardass/retui/ent/ledger_group"
 )
@@ -24,7 +27,8 @@ func (r *Repository) List(ctx context.Context) ([]*ent.Ledger, error) {
 
 	return r.client.Ledger.Query().
 		WithGroup().
-		Limit(40).All(ctx)
+		Order(ent.Asc(ledger_group.FieldName)).
+		All(ctx)
 }
 
 func (r *Repository) GetLedger(ctx context.Context, id int) (*ent.Ledger, error) {
@@ -33,6 +37,16 @@ func (r *Repository) GetLedger(ctx context.Context, id int) (*ent.Ledger, error)
 		Where(ledger.ID(id)).
 		WithGroup().
 		Only(ctx)
+}
+
+func (r *Repository) ListByCodes(
+	ctx context.Context,
+	codes ...string,
+) ([]*ent.Ledger, error) {
+	return r.client.Ledger.
+		Query().
+		Where(ledger.HasGroupWith(ledger_group.CodeIn(codes...))).
+		All(ctx)
 }
 
 // Default returns the first `limit` ledgers, used to seed the select
@@ -114,16 +128,54 @@ func (r *Repository) ListByGroup(ctx context.Context, groupID int) ([]*ent.Ledge
 	return r.client.Ledger.Query().
 		Where(ledger.GroupIDEQ(groupID)).
 		WithGroup().
-		Limit(40).All(ctx)
+		All(ctx)
 }
 
-func (r *Repository) LedgerCreate(ctx context.Context, in LedgerState) (*ent.Ledger, error) {
-	return r.client.Ledger.
+func (r *Repository) LedgerCreate(
+	ctx context.Context,
+	in LedgerState,
+) (*ent.Ledger, error) {
+	create := r.client.Ledger.
 		Create().
 		SetCode(in.Code).
 		SetName(in.Name).
+		SetAlias(in.Alias).
 		SetDescription(in.Description).
-		Save(ctx)
+		SetAddressLine1(in.AddressLine1).
+		SetAddressLine2(in.AddressLine2).
+		SetCity(in.City).
+		SetPincode(in.Pincode).
+		SetPhone(in.Phone).
+		SetMobile(in.Mobile).
+		SetEmail(in.Email).
+		SetContactPerson(in.ContactPerson).
+		SetGstRegistrationType(
+			ledger.GstRegistrationType(in.GSTRegistrationType),
+		).
+		SetGstin(in.GSTIN).
+		SetPan(in.PAN).
+		SetBankName(in.BankName).
+		SetBankAccountNo(in.BankAccountNo).
+		SetBankIfsc(in.BankIFSC).
+		SetBankBranch(in.BankBranch).
+		SetIsActive(in.IsActive)
+
+	// Set group if provided.
+	if in.GroupID > 0 {
+		create.SetGroupID(in.GroupID)
+	}
+
+	// Set state if provided.
+	if in.StateID > 0 {
+		create.SetStateID(in.StateID)
+	}
+
+	// Set country if provided.
+	if in.CountryID > 0 {
+		create.SetCountryID(in.CountryID)
+	}
+
+	return create.Save(ctx)
 }
 
 func (r *Repository) LedgerUpdate(ctx context.Context, id int, in LedgerState) (*ent.Ledger, error) {
@@ -138,8 +190,6 @@ func (r *Repository) LedgerUpdate(ctx context.Context, id int, in LedgerState) (
 		SetAddressLine1(in.AddressLine1).
 		SetAddressLine2(in.AddressLine2).
 		SetCity(in.City).
-		// SetState(in.StateID).
-		// SetCountry(in.CountryID).
 		SetPincode(in.Pincode).
 		SetPhone(in.Phone).
 		SetMobile(in.Mobile).
@@ -152,10 +202,6 @@ func (r *Repository) LedgerUpdate(ctx context.Context, id int, in LedgerState) (
 		SetBankAccountNo(in.BankAccountNo).
 		SetBankIfsc(in.BankIFSC).
 		SetBankBranch(in.BankBranch).
-		// SetIsSystem(in.IsSystem).
-		// SetIsParty(in.IsParty).
-		// SetIsBank(in.IsBank).
-		// SetIsCash(in.IsCash).
 		SetIsActive(in.IsActive)
 
 	// Set state and country if provided
@@ -203,4 +249,64 @@ func (r *Repository) GroupUpdate(ctx context.Context, id int, in LedgerGroupStat
 		SetIsSystem(in.IsSystem).
 		SetDescription(in.Description).
 		Save(ctx)
+}
+
+// OpeningBalance sums all debit/credit lines against ledgerAc dated
+// strictly before `from`.
+//
+// ASSUMPTION: journal_line has a direct LedgerID field (mirroring how
+// ent.Ledger.GroupID is queried via ledger.GroupIDEQ in your Repository).
+// If the ledger link is edge-only, swap for:
+//
+//	journal_line.HasLedgerWith(ledger.ID(ledgerAc))
+func (r *Repository) OpeningBalance(ctx context.Context, ledgerAc int, from time.Time) (float64, error) {
+	if r.client == nil {
+		return 0, fmt.Errorf("database client not initialized")
+	}
+
+	var result []struct {
+		SumDebit  float64 `json:"debit_sum"`
+		SumCredit float64 `json:"credit_sum"`
+	}
+
+	err := r.client.Journal_Line.Query().
+		Where(
+			journal_line.LedgerIDEQ(ledgerAc),
+			journal_line.HasJournalWith(journal.VoucherDateLT(from)),
+		).
+		Aggregate(
+			ent.As(ent.Sum(journal_line.FieldDebit), "debit_sum"),
+			ent.As(ent.Sum(journal_line.FieldCredit), "credit_sum"),
+		).
+		Scan(ctx, &result)
+	if err != nil {
+		return 0, fmt.Errorf("statement: opening balance: %w", err)
+	}
+	if len(result) == 0 {
+		return 0, nil // no lines before `from` — opening balance is zero
+	}
+
+	return result[0].SumDebit - result[0].SumCredit, nil
+}
+
+func (r *Repository) Entries(ctx context.Context, ledgerAc int, from, to time.Time) ([]*ent.Journal_Line, error) {
+	if r.client == nil {
+		return nil, fmt.Errorf("database client not initialized")
+	}
+
+	lines, err := r.client.Journal_Line.Query().
+		Where(
+			journal_line.LedgerIDEQ(ledgerAc),
+			journal_line.HasJournalWith(
+				journal.VoucherDateGTE(from),
+				journal.VoucherDateLTE(to),
+			),
+		).
+		WithJournal().
+		All(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("statement: entries query: %w", err)
+	}
+
+	return lines, nil
 }

@@ -29,7 +29,9 @@ func init() {
 	once.Do(func() {
 		cfg := config.Load()
 		state = &appState{
-			darkMode: false,
+			// Respect the configured theme as the initial value instead
+			// of hard-coding light mode, so config.yml's theme: "dark"
+			// is actually honored on first render.
 			user: &user{
 				name:  "Guest",
 				email: "guest@example.com",

@@ -11,135 +11,118 @@ import (
 )
 
 type Controller struct {
-	ctx  *appctx.AppContext
-	repo *JournalRepository
+	ctx     *appctx.AppContext
+	service Service
 }
 
 func NewController(ctx *appctx.AppContext) *Controller {
+	repo := NewRepository(ctx.DB.Client)
 	return &Controller{
-		ctx:  ctx,
-		repo: NewRepository(ctx.DB.Client),
+		ctx:     ctx,
+		service: NewService(repo),
 	}
 }
 
-func (c *Controller) ListWithPagination(offset, limit int) ([]*ent.Journal, error) {
+// ---- Screen navigation ----
+
+func (*Controller) ShowJournal(id int) {
+	retui.SetFocus("journal_view")
+	retui.PushScreen("journal_view", retui.ScreenParams{"journalID": id})
+}
+
+// ---- Reads ----
+
+func (c *Controller) Get(id int) (*ent.Journal, error) {
+	j, err := c.service.Get(c.ctx.Context, id)
+	if err != nil {
+		retui.Error(err)
+		return nil, err
+	}
+	return j, nil
+}
+
+func (c *Controller) List(offset, limit int) ([]*ent.Journal, error) {
 	if limit <= 0 {
 		limit = 20
 	}
-
 	if offset < 0 {
 		offset = 0
 	}
 
-	journals, err := c.repo.ListWithPagination(c.ctx.Context, offset, limit)
-	retui.Infof("Loaded %d journals", len(journals))
+	journals, err := c.service.List(c.ctx.Context, ListFilter{
+		Limit:  limit,
+		Offset: offset,
+	})
 	if err != nil {
 		retui.Error(err)
 		return nil, err
 	}
 
+	retui.Infof("Loaded %d journals", len(journals))
 	return journals, nil
 }
 
-// ShowJournal
-func (*Controller) ShowJournal(id int) {
-	// retui.Debugf("ID=========%d", id)
-	retui.SetFocus("journal_view")
-	retui.PushScreen("journal_view", retui.ScreenParams{"journalID": id})
-}
+// ---- Write ----
 
-// Save Journal
-func (c *Controller) SaveJournal(input FormState) (*ent.Journal, error) {
-
-	// Validation first — before any DB work
-	if err := ValidateJournal(input); err != nil {
+// Save creates or updates a journal voucher from form input. Validation
+// (balance check, required fields, etc.) happens inside c.service.Save —
+// the controller's only job is mapping FormState → VoucherInput.
+func (c *Controller) Save(mode Mode, id int, input FormState) (*ent.Journal, error) {
+	in, err := buildVoucherInput(input)
+	if err != nil {
 		return nil, err
 	}
 
-	voucherDate, err := time.Parse("02/01/2006", input.VcDate)
+	j, err := c.service.Save(c.ctx.Context, mode, id, in)
 	if err != nil {
-		return nil, fmt.Errorf("invalid date format, expected DD/MM/YYYY: %w", err)
+		retui.Error(err)
+		return nil, err
 	}
 
-	journal := &ent.Journal{
-		Date:          voucherDate,
-		VoucherType:   "JV",
-		VoucherNo:     input.VcNo,
-		VoucherDate:   voucherDate,
-		ReferenceNo:   &input.VcReference,
-		Narration:     &input.VcNarration,
-		JournalStatus: "DRAFT",
+	retui.Infof("Journal %s saved successfully.", j.VoucherNo)
+	return j, nil
+}
+
+// buildVoucherInput maps UI form state into the generic VoucherInput
+// shape the journal Service understands. This is where DD/MM/YYYY
+// strings become time.Time and free-text fields get trimmed.
+func buildVoucherInput(input FormState) (VoucherInput, error) {
+
+	if err := ValidateFormShape(input); err != nil {
+		return VoucherInput{}, err
 	}
 
-	var lines []JournalLine
+	vcNo := strings.TrimSpace(input.VcNo)
+	if vcNo == "" {
+		return VoucherInput{}, fmt.Errorf("voucher number is required")
+	}
+
+	date, err := time.Parse("02/01/2006", strings.TrimSpace(input.VcDate))
+	if err != nil {
+		return VoucherInput{}, fmt.Errorf("invalid date format, expected DD/MM/YYYY: %w", err)
+	}
+
+	lines := make([]LineInput, 0, len(input.Lines))
 	for _, l := range input.Lines {
-		lines = append(lines, JournalLine{
-			LedgerCode: l.LedgerCode,
-			Debit:      l.Debit,
-			Credit:     l.Credit,
-			Remarks:    l.Remarks,
+		if l.LedgerID == 0 && l.Debit == 0 && l.Credit == 0 {
+			continue // skip blank trailing rows from the UI
+		}
+		lines = append(lines, LineInput{
+			LedgerID:    l.LedgerID,
+			Debit:       l.Debit,
+			Credit:      l.Credit,
+			Description: strings.TrimSpace(l.Remarks),
 		})
 	}
 
-	jrnl, err := c.repo.CreateNew(c.ctx.Context, journal, lines)
-	if err != nil {
-		return nil, err
-	}
-
-	retui.Infof("Journal %s saved successfully.", jrnl.VoucherNo)
-	return jrnl, nil
-}
-
-// ValidateJournal validates header + lines
-func ValidateJournal(input FormState) error {
-	// -- Header validation
-	if strings.TrimSpace(input.VcNo) == "" {
-		return fmt.Errorf("voucher number is required")
-	}
-	if strings.TrimSpace(input.VcDate) == "" {
-		return fmt.Errorf("voucher date is required")
-	}
-	// Validate date format
-	if _, err := time.Parse("02/01/2006", input.VcDate); err != nil {
-		return fmt.Errorf("invalid date format, expected DD/MM/YYYY")
-	}
-
-	// -- Line validation
-	if len(input.Lines) < 2 {
-		return fmt.Errorf("journal must have at least 2 lines")
-	}
-
-	var totalDebit, totalCredit float64
-	for i, line := range input.Lines {
-		lineNo := i + 1
-
-		if strings.TrimSpace(line.LedgerCode) == "" {
-			return fmt.Errorf("line %d: ledger is required", lineNo)
-		}
-		if line.Debit < 0 {
-			return fmt.Errorf("line %d: debit cannot be negative", lineNo)
-		}
-		if line.Credit < 0 {
-			return fmt.Errorf("line %d: credit cannot be negative", lineNo)
-		}
-		if line.Debit == 0 && line.Credit == 0 {
-			return fmt.Errorf("line %d: debit or credit must be entered", lineNo)
-		}
-		if line.Debit > 0 && line.Credit > 0 {
-			return fmt.Errorf("line %d: cannot have both debit and credit", lineNo)
-		}
-
-		totalDebit += line.Debit
-		totalCredit += line.Credit
-	}
-
-	// -- Balance check
-	if totalDebit != totalCredit {
-		return fmt.Errorf(
-			"journal is not balanced — debit %.2f, credit %.2f (difference: %.2f)",
-			totalDebit, totalCredit, totalDebit-totalCredit,
-		)
-	}
-
-	return nil
+	return VoucherInput{
+		Type:        VoucherJV,
+		VoucherNo:   vcNo,
+		Date:        date,
+		VoucherDate: date,
+		ReferenceNo: strings.TrimSpace(input.VcReference),
+		Narration:   strings.TrimSpace(input.VcNarration),
+		Status:      StatusDraft,
+		Lines:       lines,
+	}, nil
 }

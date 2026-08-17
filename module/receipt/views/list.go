@@ -1,9 +1,15 @@
 package views
 
 import (
+	"fmt"
+	"strings"
+
+	"github.com/subhasundardass/retui/ent"
 	appctx "github.com/subhasundardass/retui/internal/context"
+	"github.com/subhasundardass/retui/internal/util"
 	"github.com/subhasundardass/retui/module/receipt"
 	"github.com/subhasundardass/retui/retui"
+	"github.com/subhasundardass/retui/retui/components"
 )
 
 // Component holds the "companies" screen's controller and cached render
@@ -35,24 +41,41 @@ func (c *Component) bindKeys() {
 	case retui.KeyEscape:
 		retui.PopScreen()
 
-	case retui.KeyF6:
-		// win := OpenReceiptForm(c.ctx, func() {})
-		// win.Show()
 	}
 }
 
 func (c *Component) ReceiptBook(ctx *appctx.AppContext) retui.Element {
+
+	journals, setJournals := retui.UseState([]*ent.Journal{})
+	selected, setSelected := retui.UseState(&ent.Journal{})
+
+	retui.UseEffect(func() func() {
+		list, err := c.controller.List(0, 40)
+		if err != nil {
+			retui.Errorf("Error fetching data %s", err.Error())
+			return nil
+		}
+
+		setJournals(list)
+		return nil
+	}, []any{})
+
 	c.bindKeys()
 	return retui.Box(
 		retui.Props{
-			Gap: 1,
+			Direction: retui.Column,
 		},
 		retui.NewStyle(),
-		c.buildToolbar(),
+		c.buildToolbar(selected),
+		c.buildTable(journals, setSelected),
 	)
 }
 
-func (c *Component) buildToolbar() retui.Element {
+func (c *Component) buildToolbar(selected *ent.Journal) retui.Element {
+	title := "Receipt Book  "
+	if selected != nil {
+		title = fmt.Sprintf("Receipt Book  %d", selected.ID)
+	}
 
 	return retui.Box(
 		retui.Props{
@@ -64,7 +87,108 @@ func (c *Component) buildToolbar() retui.Element {
 		},
 		retui.NewStyle().Foreground(retui.BrightCyan).
 			Border(retui.Border{Bottom: true, Left: true, Right: true, Top: true, Color: retui.Gray(1)}),
-		retui.Text("Receipt Book", retui.NewStyle().Bold(true)),
-		retui.Text("Create Receipt <F6>", retui.NewStyle().Bold(true).Foreground(retui.Gold)),
+		retui.Text(title, retui.NewStyle().Bold(true)),
+		retui.Text("Create <F2>", retui.NewStyle().Bold(true).Foreground(retui.Gold)),
+	)
+}
+
+func (c *Component) buildTable(
+	journals []*ent.Journal,
+	setSelected func(*ent.Journal),
+) retui.Element {
+	rows := make([][]string, len(journals))
+
+	for i, j := range journals {
+		var partyName string
+		var byName string
+
+		for _, line := range j.Edges.Lines {
+			ledger, err := line.Edges.LedgerOrErr()
+			if err != nil {
+				continue
+			}
+
+			name := strings.TrimSpace(ledger.Name)
+			code := strings.ToUpper(strings.TrimSpace(ledger.Code))
+
+			if code == "CASH" || code == "BANK" ||
+				strings.EqualFold(name, "Cash In Hand") ||
+				strings.EqualFold(name, "Bank") {
+				byName = name
+			} else {
+				partyName = name
+			}
+		}
+
+		rows[i] = []string{
+			j.VoucherDate.Format("02/01/2006"),
+			j.VoucherNo,
+			util.Deref(j.ReferenceNo),
+			j.VoucherType,
+			partyName,
+			byName,
+			fmt.Sprintf("%.2f", j.TotalDebit),
+			util.Deref(j.Narration),
+			string(j.JournalStatus),
+		}
+	}
+
+	tbl := components.Table().
+		ID("journal_table").
+		Headers([]string{
+			"Date",
+			"Voucher No",
+			"Reference",
+			"Type",
+			"Party",
+			"By",
+			"Amount",
+			"Narration",
+			"Status",
+		}).
+		Alignments([]string{
+			"left",
+			"left",
+			"left",
+			"left",
+			"left",
+			"left",
+			"right",
+			"left",
+			"center",
+		}).
+		Focused(true).
+		Rows(rows).
+		SelectedIndex(0).
+		ColumnWidths([]int{
+			15,
+			10,
+			15,
+			10,
+			30,
+			30,
+			15,
+			30,
+			10,
+		}).
+		OnChange(func(i int) {
+			if i < 0 || i >= len(journals) {
+				return
+			}
+
+			setSelected(journals[i])
+
+			if retui.CurrentKey.Code == retui.KeyEnter {
+				// c.controller.ShowJournal(journals[i].ID)
+			}
+		}).
+		Render()
+
+	return retui.Box(
+		retui.Props{
+			Height: retui.Fixed(33),
+		},
+		retui.NewStyle(),
+		tbl,
 	)
 }

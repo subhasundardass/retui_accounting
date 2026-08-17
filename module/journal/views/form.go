@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	appctx "github.com/subhasundardass/retui/internal/context"
+	"github.com/subhasundardass/retui/internal/util"
 	"github.com/subhasundardass/retui/module/journal"
 	"github.com/subhasundardass/retui/retui"
 	"github.com/subhasundardass/retui/retui/components"
@@ -13,7 +14,12 @@ import (
 type JournalCreateComponent struct {
 	controller *journal.Controller
 	ctx        *appctx.AppContext
-	// form       *FormComponent
+
+	// editing/editID mirror the same pattern used in receipt.FormComponent:
+	// form state itself never carries "am I editing" — that's UI-session
+	// state, not voucher data.
+	editing bool
+	editID  int
 }
 
 const (
@@ -21,6 +27,9 @@ const (
 	debitWidth   = 10
 	creditWidth  = 10
 	remarksWidth = 50
+
+	journalFieldsPerLine = 4 // Ledger, Debit, Credit, Remarks
+	journalHeaderFields  = 4 // VcNo, VcDate, VcReference, VcNarration
 )
 
 func NewJournalCreateWindow(ctx *appctx.AppContext) *JournalCreateComponent {
@@ -28,6 +37,17 @@ func NewJournalCreateWindow(ctx *appctx.AppContext) *JournalCreateComponent {
 		controller: journal.NewController(ctx),
 		ctx:        ctx,
 	}
+}
+
+// LoadForEdit switches the form into update mode for an existing
+// journal. Not wired to a caller yet — hook this up from wherever a
+// journal list/detail view lets the user choose "edit".
+func (c *JournalCreateComponent) LoadForEdit(id int, state journal.FormState) {
+	c.editing = true
+	c.editID = id
+	// NOTE: pushing `state` into the live retui.UseForm hook depends on
+	// how that hook reseeds on re-render — confirm it does before relying
+	// on this to populate the form with existing values.
 }
 
 func (c *JournalCreateComponent) bindKeys(form *retui.Form[journal.FormState]) {
@@ -40,18 +60,14 @@ func (c *JournalCreateComponent) bindKeys(form *retui.Form[journal.FormState]) {
 	}
 
 	v := form.Values()
-	totalFields := 4 + len(v.Lines)*4 // confirm: 4 JournalLine fields shown here, is there a 5th (delete action)?
+	totalFields := journalHeaderFields + len(v.Lines)*journalFieldsPerLine
 
 	moveFocus := func(delta int) {
 		if totalFields == 0 {
 			return
 		}
-
 		v.FocusIndex = (v.FocusIndex + delta + totalFields) % totalFields
-
-		// Focus movement shouldn't mark the form dirty.
-		form.SetValuesSilent(v)
-
+		form.SetValuesSilent(v) // focus movement shouldn't mark the form dirty
 	}
 
 	switch key.Code {
@@ -63,44 +79,54 @@ func (c *JournalCreateComponent) bindKeys(form *retui.Form[journal.FormState]) {
 		retui.PopScreen()
 
 	case retui.KeyF4:
-		v := form.Values()
-		v.Lines = append(v.Lines, journal.JournalLine{})
-
-		// Move focus to the Ledger field of the new row
-		v.FocusIndex = 4 + (len(v.Lines)-1)*4
-		form.SetValues(v)
+		c.addLine(form)
 
 	case retui.KeyF10:
-		// Save functionality
-		for _, line := range v.Lines {
-			retui.Infof("%+v\n", line)
-		}
-		entry := journal.FormState{
-			VcNo:        v.VcNo,
-			VcDate:      v.VcDate,
-			VcReference: v.VcReference,
-			VcNarration: v.VcNarration,
-			Lines:       v.Lines,
-		}
-
-		jrnl, err := c.controller.SaveJournal(entry)
-		if err != nil {
-			components.ShowError(err.Error())
-			return
-		}
-
-		components.ShowSuccess(fmt.Sprintf("Journal %s saved.", jrnl.VoucherNo))
-		//--Reset
-		form.Reset()
-		v := form.Values() // read AFTER reset
-		v.Lines = []journal.JournalLine{{}, {}}
-		form.SetValues(v) // push back ✗
+		c.save(form)
 
 	default:
 		return
 	}
 
 	retui.CurrentKey.Consumed = true
+}
+
+// addLine appends a blank line and moves focus to its first field.
+// Shared by the F4 shortcut and "Enter" in the last remarks field.
+func (c *JournalCreateComponent) addLine(form *retui.Form[journal.FormState]) {
+	v := form.Values()
+	v.Lines = append(v.Lines, journal.JournalLine{})
+	v.FocusIndex = journalHeaderFields + (len(v.Lines)-1)*journalFieldsPerLine
+	form.SetValues(v)
+}
+
+// save persists the current form values and resets the form on success.
+func (c *JournalCreateComponent) save(form *retui.Form[journal.FormState]) {
+	v := form.Values()
+
+	mode := journal.ModeCreate
+	id := 0
+	if c.editing {
+		mode = journal.ModeUpdate
+		id = c.editID
+	}
+
+	jrnl, err := c.controller.Save(mode, id, v)
+	if err != nil {
+		components.ShowError(err.Error())
+		return
+	}
+
+	components.ShowSuccess(fmt.Sprintf("Journal %s saved.", jrnl.VoucherNo))
+
+	// Reset back to a fresh two-line form. If retui.Form.Reset() already
+	// reseeds from the initial UseForm(...) value (which also starts with
+	// two blank lines), this SetValues call is redundant — but it's cheap
+	// insurance against Reset() zeroing Lines to nil instead.
+	form.Reset()
+	fresh := form.Values()
+	fresh.Lines = []journal.JournalLine{{}, {}}
+	form.SetValues(fresh)
 }
 
 func (c *JournalCreateComponent) JournalCreateForm(ctx *appctx.AppContext) retui.Element {
@@ -110,7 +136,6 @@ func (c *JournalCreateComponent) JournalCreateForm(ctx *appctx.AppContext) retui
 	})
 
 	panel := components.Panel().
-		// Width(retui.Percent(80)).
 		Header(retui.Box(
 			retui.Props{
 				Direction: retui.Row,
@@ -132,14 +157,12 @@ func (c *JournalCreateComponent) JournalCreateForm(ctx *appctx.AppContext) retui
 		).
 		DividerWithText("Total").
 		Children(
-			c.footerSecton(form),
+			c.footerSection(form),
 		).
 		Render()
 
 	return retui.Box(
-		retui.Props{
-			Gap: 1,
-		},
+		retui.Props{Gap: 1},
 		retui.NewStyle(),
 		panel,
 	)
@@ -154,9 +177,7 @@ func (c *JournalCreateComponent) calculateTotals(lines []journal.JournalLine) (t
 }
 
 func (c *JournalCreateComponent) headerSection(form *retui.Form[journal.FormState]) retui.Element {
-
 	v := form.Values()
-
 	c.bindKeys(form)
 
 	return retui.Box(
@@ -167,7 +188,6 @@ func (c *JournalCreateComponent) headerSection(form *retui.Form[journal.FormStat
 		},
 		retui.NewStyle(),
 
-		// Voucher No
 		retui.Box(
 			retui.Props{Gap: 1},
 			retui.NewStyle(),
@@ -179,15 +199,12 @@ func (c *JournalCreateComponent) headerSection(form *retui.Form[journal.FormStat
 					Width(15).
 					Value(v.VcNo).
 					OnChange(func(id string, value string) {
-						if err := form.SetField("VcNo", value); err != nil {
-							retui.Debugf("SetField error: %v", err) // or however you actually log
-						}
+						c.setField(form, "VcNo", value)
 					}).
 					Render(),
 			),
 		),
 
-		// Voucher Date
 		retui.Box(
 			retui.Props{Gap: 1},
 			retui.NewStyle(),
@@ -200,15 +217,12 @@ func (c *JournalCreateComponent) headerSection(form *retui.Form[journal.FormStat
 					Value(v.VcDate).
 					Format("DD/MM/YYYY").
 					OnChange(func(id, value string) {
-						if err := form.SetField("VcDate", value); err != nil {
-							retui.Debugf("SetField error: %v", err) // or however you actually log
-						}
+						c.setField(form, "VcDate", value)
 					}).
 					Render(),
 			),
 		),
 
-		// Reference
 		retui.Box(
 			retui.Props{Gap: 1},
 			retui.NewStyle(),
@@ -221,15 +235,12 @@ func (c *JournalCreateComponent) headerSection(form *retui.Form[journal.FormStat
 					Width(20).
 					Placeholder("Enter Reference").
 					OnChange(func(id string, value string) {
-						if err := form.SetField("VcReference", value); err != nil {
-							retui.Debugf("SetField error: %v", err) // or however you actually log
-						}
+						c.setField(form, "VcReference", value)
 					}).
 					Render(),
 			),
 		),
 
-		// Narration
 		retui.Box(
 			retui.Props{Gap: 1},
 			retui.NewStyle(),
@@ -243,9 +254,7 @@ func (c *JournalCreateComponent) headerSection(form *retui.Form[journal.FormStat
 					Placeholder("Narration").
 					Style(retui.NewStyle().Bold(true)).
 					OnChange(func(id string, value string) {
-						if err := form.SetField("VcNarration", value); err != nil {
-							retui.Debugf("SetField error: %v", err) // or however you actually log
-						}
+						c.setField(form, "VcNarration", value)
 					}).
 					Render(),
 			),
@@ -253,9 +262,17 @@ func (c *JournalCreateComponent) headerSection(form *retui.Form[journal.FormStat
 	)
 }
 
-func (c *JournalCreateComponent) footerSecton(form *retui.Form[journal.FormState]) retui.Element {
+// setField wraps form.SetField with consistent error logging so every
+// OnChange callback isn't repeating the same three lines.
+func (c *JournalCreateComponent) setField(form *retui.Form[journal.FormState], field string, value any) {
+	if err := form.SetField(field, value); err != nil {
+		retui.Debugf("SetField(%s) error: %v", field, err)
+	}
+}
+
+func (c *JournalCreateComponent) footerSection(form *retui.Form[journal.FormState]) retui.Element {
 	totalDebit, totalCredit := c.calculateTotals(form.Values().Lines)
-	balanced := totalDebit == totalCredit // Calculate balance properly
+	balanced := journal.Balanced(totalDebit, totalCredit) // was: totalDebit == totalCredit (unsafe float compare)
 
 	return retui.Box(
 		retui.Props{
@@ -266,7 +283,6 @@ func (c *JournalCreateComponent) footerSecton(form *retui.Form[journal.FormState
 
 		retui.Box(
 			retui.Props{}, retui.NewStyle(),
-
 			retui.Box(
 				retui.Props{
 					Direction: retui.Row,
@@ -275,40 +291,26 @@ func (c *JournalCreateComponent) footerSecton(form *retui.Form[journal.FormState
 				},
 				retui.NewStyle(),
 
-				// Ledger column - show "TOTAL"
 				retui.Box(
 					retui.Props{Width: retui.Fit()},
 					retui.NewStyle(),
-					retui.Text(
-						fmt.Sprintf("%s :", "TOTAL :"),
-						retui.NewStyle().Bold(true).Foreground(retui.Blue),
-					),
+					retui.Text("TOTAL :", retui.NewStyle().Bold(true).Foreground(retui.Blue)),
 				),
-
-				// Debit column
 				retui.Box(
 					retui.Props{Width: retui.Fit()},
 					retui.NewStyle(),
-					retui.Text(
-						fmt.Sprintf("%.2f", totalDebit),
-						retui.NewStyle().Bold(true).Foreground(retui.Green),
-					),
+					retui.Text(fmt.Sprintf("%.2f", totalDebit), retui.NewStyle().Bold(true).Foreground(retui.Green)),
 				),
-
-				// Credit column
 				retui.Box(
 					retui.Props{Width: retui.Fit()},
 					retui.NewStyle(),
-					retui.Text(
-						fmt.Sprintf("%.2f", totalCredit),
-						retui.NewStyle().Bold(true).Foreground(retui.Green),
-					),
+					retui.Text(fmt.Sprintf("%.2f", totalCredit), retui.NewStyle().Bold(true).Foreground(retui.Green)),
 				),
 			),
 		),
 
 		retui.Text(
-			fmt.Sprintf("Balanced :%t", balanced), // Use %t for boolean
+			fmt.Sprintf("Balanced :%t", balanced),
 			func() retui.Style {
 				style := retui.NewStyle().Bold(true)
 				if balanced {
@@ -320,31 +322,20 @@ func (c *JournalCreateComponent) footerSecton(form *retui.Form[journal.FormState
 	)
 }
 
-func (c *JournalCreateComponent) lineItemRows(
-	form *retui.Form[journal.FormState],
-) []retui.Element {
-
+func (c *JournalCreateComponent) lineItemRows(form *retui.Form[journal.FormState]) []retui.Element {
 	v := form.Values()
 
-	rows := []retui.Element{
-		c.lineHeader(),
-	}
-
+	rows := []retui.Element{c.lineHeader()}
 	for i := range v.Lines {
 		rows = append(rows, c.lineRow(form, i))
 	}
-
 	return rows
 }
 
 func headerCell(label string, width int) retui.Element {
-
 	width = retui.CurrentScreenWidth * width / 100
-
 	return retui.Box(
-		retui.Props{
-			Width: retui.Fixed(width),
-		},
+		retui.Props{Width: retui.Fixed(width)},
 		retui.NewStyle(),
 		retui.Text(label, retui.NewStyle().Bold(true)),
 	)
@@ -358,7 +349,6 @@ func (c *JournalCreateComponent) lineHeader() retui.Element {
 			Padding:   [4]int{0, 1, 0, 1},
 		},
 		retui.NewStyle(),
-
 		headerCell("Ledger", ledgerWidth),
 		headerCell("Debit", debitWidth),
 		headerCell("Credit", creditWidth),
@@ -366,15 +356,10 @@ func (c *JournalCreateComponent) lineHeader() retui.Element {
 	)
 }
 
-func (c *JournalCreateComponent) lineRow(
-	form *retui.Form[journal.FormState],
-	index int,
-) retui.Element {
-
+func (c *JournalCreateComponent) lineRow(form *retui.Form[journal.FormState], index int) retui.Element {
 	v := form.Values()
-
 	line := v.Lines[index]
-	base := 4 + index*4
+	base := journalHeaderFields + index*journalFieldsPerLine
 
 	return retui.Box(
 		retui.Props{
@@ -384,12 +369,10 @@ func (c *JournalCreateComponent) lineRow(
 			Width:     retui.Grow(1),
 		},
 		retui.NewStyle(),
-
 		c.ledgerField(form, index, base, line, ledgerWidth),
 		c.debitField(form, index, base, line, debitWidth),
 		c.creditField(form, index, base, line, creditWidth),
 		c.remarksField(form, index, base, line, remarksWidth),
-		// c.deleteButton(form, index, base),
 	)
 }
 
@@ -399,18 +382,19 @@ func (c *JournalCreateComponent) ledgerField(
 	line journal.JournalLine,
 	width int,
 ) retui.Element {
-
 	wid := retui.CurrentScreenWidth * width / 100
 
+	// LedgerComponent works with the string form of a ledger ID (same
+	// pattern as receipt.PartyLine) — never a "code" like "CASH"/"BANK".
 	return widgets.LedgerComponent(
 		c.ctx,
 		fmt.Sprintf("ledger_%d", index),
-		line.LedgerCode,
+		util.IntToString(line.LedgerID),
 		wid,
 		form.Values().FocusIndex == focus,
 		func(id, value string) {
-			c.updateLine(form, index, func(line *journal.JournalLine) {
-				line.LedgerCode = value
+			c.updateLine(form, index, func(l *journal.JournalLine) {
+				l.LedgerID = util.StringToInt(value, 0)
 			})
 		},
 	)
@@ -477,14 +461,10 @@ func (c *JournalCreateComponent) remarksField(
 		}).
 		OnKeyPress(func(s string, k retui.Key) bool {
 			if k.Code == retui.KeyEnter {
-				v := form.Values()
-				v.Lines = append(v.Lines, journal.JournalLine{})
-
-				v.FocusIndex = 4 + (len(v.Lines)-1)*4
-				form.SetValues(v)
-				return true // Consume the event
+				c.addLine(form)
+				return true
 			}
-			return false // Allow other key events to pass through
+			return false
 		}).
 		Render()
 }
@@ -495,32 +475,9 @@ func (c *JournalCreateComponent) updateLine(
 	update func(*journal.JournalLine),
 ) {
 	v := form.Values()
-
 	if index < 0 || index >= len(v.Lines) {
 		return
 	}
-
 	update(&v.Lines[index])
-
 	form.SetValues(v)
 }
-
-// func (c *JournalCreateComponent) deleteButton(
-// 	form *retui.Form[journal.FormState],
-// 	index, focus int,
-// ) retui.Element {
-
-// 	return components.Button().
-// 		ID(fmt.Sprintf("delete_%d", index)).
-// 		Label("Delete").
-// 		Width(13).
-// 		Focused(form.Values().FocusIndex == focus+4).
-// 		Style(retui.NewStyle()).
-// 		ActiveStyle(
-// 			retui.NewStyle().
-// 				Foreground(retui.White).
-// 				Background(retui.Red).
-// 				Bold(true),
-// 		).
-// 		Render()
-// }
